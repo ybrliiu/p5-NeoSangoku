@@ -6,7 +6,7 @@ site.conf      # サイト設定ファイル
 color.conf     # 色設定ファイル
 template.conf  # テンプレート用の設定ファイル
 
-command.conf   # コマンドリスト表示順定義ファイル
+command_order.conf   # コマンドリスト表示順定義ファイル
 lank.conf      # 階級リスト
 weapon.conf    # 武器データ一覧
 guard.conf     # 防具データ一覧
