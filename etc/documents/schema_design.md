@@ -112,8 +112,8 @@ CREATE TABLE "town" (
   "technology_max" int NOT NULL,
   "wall" int NOT NULL,
   "wall_max" int NOT NULL,
-  "wallpower" int NOT NULL,
-  "wallpower_max" int NOT NULL,
+  "wall_power" int NOT NULL,
+  "wall_power_max" int NOT NULL,
   "price" numeric(4, 3) DEFAULT 1.0
 );
 

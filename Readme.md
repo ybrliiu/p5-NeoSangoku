@@ -1,5 +1,4 @@
 # next
-設定ファイル定義(後book, weapon, guard, init_town)
 DBクラス定義
 Configクラス定義
 Recordクラス定義
