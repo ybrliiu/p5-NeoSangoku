@@ -8,6 +8,7 @@ requires qw/Exception::Tiny 0.2.1/;
 requires qw/Exporter 5.72/;
 requires qw/Carp 1.36/
 requires qw/parent 0.232/;
+requires qw/constant/;
 
 requires qw/Encode 2.72/
 requires qw/Cwd 3.56_01/;

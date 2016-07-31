@@ -1,6 +1,6 @@
 # Model層規約
 必要に応じてJikkoku::Model::Roleを使用
-オブジェクト指向：Mouse(継承、Mixin、委譲など必要なときのみ使用)
+オブジェクト指向：Mouse(継承、Mixin、委譲など必要なときのみ使用) ただし、DB::Row::*は非Mouse(Mouseだと上手く動かないっぽい)
 引数チェック:自作関数(Jikkoku::Util::validate_args), or Data::Validater
 例外処理:eval-if
 必要に応じてException::Tinyを継承した例外搬送クラスを作成
