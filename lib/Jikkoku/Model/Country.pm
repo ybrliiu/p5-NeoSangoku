@@ -1,4 +1,4 @@
-package Jikkoku::Model::Town {
+package Jikkoku::Model::Country {
 
   use Jikkoku;
   use Mouse;
@@ -7,19 +7,12 @@ package Jikkoku::Model::Town {
   use Jikkoku::Util qw/project_root_dir/;
   use Config::PL;
 
-  use constant TABLE_NAME => 'town';
+  use constant TABLE_NAME => 'country';
 
   sub init {
     my ($class) = @_;
-
     $class->delete_all();
-
-    my $path = project_root_dir() . 'etc/config/data/init_town.conf';
-    my $init_data = config_do($path)->{'init_town'};
-    
-    for my $town (values %$init_data) {
-      $class->db->do_insert(TABLE_NAME() => $town);
-    }
+    $class->db->do_insert(TABLE_NAME() => { name => '無所属', color => 'gray' });
   }
 
   sub get {

@@ -2,7 +2,7 @@ package Jikkoku::Model::Role::DB {
 
   use Jikkoku;
   use Mouse::Role;
-  requires 'TABLE_NAME';
+  requires qw/TABLE_NAME get/;
 
   use Jikkoku::Util qw/project_root_dir/;
   use Config::PL;
@@ -21,7 +21,7 @@ package Jikkoku::Model::Role::DB {
 
   sub get_all {
     my ($class) = @_;
-    my @rows = $class->db->select($class->TABLE_NAME => {});
+    my @rows = $class->db->search($class->TABLE_NAME => {});
     return \@rows;
   }
 
