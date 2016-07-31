@@ -29,7 +29,11 @@ DB/Row/Player/
       /Diplomacy    # 国家間の外交
       /IconUploader
 
-# REFERENCES で外部キー制約、ON DELETE CASCADEで外部キー削除時に同時削除する
+
+#スキーマ定義
+・REFERENCES で外部キー制約、ON DELETE CASCADEで外部キー削除時に同時削除する
+・下のSQL文をpsqlから入力& ../script/teng_schema_dumper.pl を実行、Jikkoku::DB::Schema クラスを出力
+
 <pre>
 
 
@@ -56,7 +60,7 @@ CREATE TABLE "country_position" (
 
 CREATE TABLE "country_law" (
   "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE,
-  "id"    serial NOT NULL,
+  "id"    serial PRIMARY KEY,
   "title" text NOT NULL,
   "name" text NOT NULL,
   "message"   text NOT NULL
