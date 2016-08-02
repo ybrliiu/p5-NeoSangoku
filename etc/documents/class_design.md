@@ -33,6 +33,7 @@ Model/Player/
      /Town/
           /Letter
      /Site
+          /LoginList       # Redis
      /Notice
      /Forum
      /IdleTalk
@@ -53,6 +54,7 @@ Model/Player/
           /Log.pm
           /Letter.pm
           /BBS.pm
+          /Redis.pm
 
 # Config層規約
 Jikkoku::Config以下に設定ファイルのクラスを記述
@@ -61,6 +63,7 @@ Jikkoku::Config以下に設定ファイルのクラスを記述
 URLのエンドポイントに応じてクラス作成 + ループ処理の処理
 基本的にクラスメソッドの集合
 エラーはJikkoku::Errorクラスに格納
+トランザクション&eval-ifはここで
 
      /Command/
              /各コマンドのモジュール

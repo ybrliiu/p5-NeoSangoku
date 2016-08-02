@@ -17,8 +17,9 @@ requires qw/Path::Tiny 0.096/
 requires qw/Config::PL 0.02/;
 
 on test => sub {
-  requires qw/Test::More/;
-  requires qw/Test::Exception/;
-  requires qw/Test::PostgreSQL/;
+  requires qw/Test::More 1.001014/;
+  requires qw/Test::Exception 0.43/;
+  requires qw/Test::PostgreSQL 1.20/;
+  requires qw/SQL::SplitStatement 1.00020/;
 };
 
