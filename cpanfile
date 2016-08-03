@@ -20,6 +20,10 @@ on test => sub {
   requires qw/Test::More 1.001014/;
   requires qw/Test::Exception 0.43/;
   requires qw/Test::PostgreSQL 1.20/;
+  requires qw/Test::Name::FromLine 0.13/;
+  requires qw/Harriet 00.05/;
   requires qw/SQL::SplitStatement 1.00020/;
+  requires qw/Data::Dumper/;
+  requires qw/YAML::Dumper/;
 };
 

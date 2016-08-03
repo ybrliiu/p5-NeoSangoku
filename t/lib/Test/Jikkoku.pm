@@ -2,9 +2,8 @@ package Test::Jikkoku {
   
   use Jikkoku;
   
-  use Exporter 'import';
+  use Exporter qw/import/;
   our @EXPORT = qw/dump_yaml/;
-  
   use YAML::Dumper;
   use Data::Dumper;
   # Data::Dumperで無理やりutf8文字を表示させる
@@ -13,7 +12,9 @@ package Test::Jikkoku {
     sub qquote { return shift; }
   }
   $Data::Dumper::Useperl = 1;
-  
+
+  use Test::Name::FromLine; # テスト実行時に行番号付加
+
   # YAMLでダンプ
   sub dump_yaml {
     my $data = shift;
@@ -36,9 +37,10 @@ __END__
   
   Test::Jikkoku - 十国志NETのためのTestモジュール
   
-=head1 備考
-  
-  dump_yaml 関数が自動的にインポートされます
+=head1 使用法
+
+  # テスト実行時に行番号表示、Data::Dumperのutf8化、dump_yaml関数インポート
+  use Test::Jikkoku;
   
 =head1 関数
   
