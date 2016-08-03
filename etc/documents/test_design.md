@@ -17,4 +17,5 @@ use Test::Jikkoku;  # Data::Dumperのutf8化, dump_yaml関数インポート,Tes
 
 use Test::Exception           # 例外なげるmethodのテスト
 use Test::Jikkoku::PostgreSQL # データベースを使ったテスト用
+Test::Jikkoku::PostgreSQL->construct();
 

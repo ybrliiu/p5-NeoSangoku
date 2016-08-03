@@ -11,7 +11,7 @@ package Test::Jikkoku::PostgreSQL {
 
   sub construct {
     my ($class) = @_;
-    my $dbh = DBI->connect($ENV{TEST_POSTGRESQL}) or die 'connect failed';
+    my $dbh = DBI->connect($ENV{TEST_POSTGRESQL}, $ENV{TEST_POSTGRESQL_USER}) or die 'connect failed';
     my $file = path('etc/documents', 'jikkoku_schema.sql');
     my $sql = $file->slurp();
     my $splitter = SQL::SplitStatement->new(

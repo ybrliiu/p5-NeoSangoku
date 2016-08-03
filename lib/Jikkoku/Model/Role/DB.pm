@@ -14,9 +14,15 @@ package Jikkoku::Model::Role::DB {
     state $db;
     return $db if defined $db;
 
-    my $path = project_root_dir() . 'etc/config/db.conf';
-    my $config = config_do($path);
-    $db = Jikkoku::DB->new(%$config);
+    # DB使うテストの時
+    if ($ENV{TEST_POSTGRESQL}) {
+      my ($dsn, $user) = ($ENV{TEST_POSTGRESQL}, $ENV{TEST_POSTGRESQL_USER});
+      $db = Jikkoku::DB->new(connect_info => [$dsn, $user]);
+    } else {
+      my $path = project_root_dir() . 'etc/config/db.conf';
+      my $config = config_do($path);
+      $db = Jikkoku::DB->new(%$config);
+    }
   }
 
   sub get_all {
