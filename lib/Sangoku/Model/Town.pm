@@ -27,6 +27,7 @@ package Sangoku::Model::Town {
     $class->db->single(TABLE_NAME() => {name => $name});
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;

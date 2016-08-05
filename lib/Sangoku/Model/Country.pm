@@ -12,7 +12,7 @@ package Sangoku::Model::Country {
   sub init {
     my ($class) = @_;
     $class->delete_all();
-    $class->db->do_insert(TABLE_NAME() => { name => '無所属', color => 'gray' });
+    $class->db->do_insert(TABLE_NAME() => {name => '無所属', color => 'gray'});
   }
 
   sub get {
@@ -20,6 +20,7 @@ package Sangoku::Model::Country {
     $class->db->single(TABLE_NAME() => {name => $name});
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;
