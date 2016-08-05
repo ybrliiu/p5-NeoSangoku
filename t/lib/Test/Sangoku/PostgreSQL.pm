@@ -1,6 +1,6 @@
-package Test::Jikkoku::PostgreSQL {
+package Test::Sangoku::PostgreSQL {
 
-  use Jikkoku;
+  use Sangoku;
 
   use Harriet; # テストの時に使うデーモン取扱
   use DBI;
@@ -13,7 +13,7 @@ package Test::Jikkoku::PostgreSQL {
   sub construct {
     my ($class) = @_;
     my $dbh = DBI->connect($ENV{TEST_POSTGRESQL}, $ENV{TEST_POSTGRESQL_USER}) or die 'connect failed';
-    my $file = path('etc/documents', 'jikkoku_schema.sql');
+    my $file = path('etc/documents', 'sangoku_schema.sql');
     my $sql = $file->slurp();
 
     # delete all table

@@ -1,12 +1,12 @@
-package Jikkoku::Model::Role::DB {
+package Sangoku::Model::Role::DB {
 
-  use Jikkoku;
+  use Sangoku;
   use Mouse::Role;
   requires qw/TABLE_NAME get/;
 
-  use Jikkoku::Util qw/project_root_dir/;
+  use Sangoku::Util qw/project_root_dir/;
   use Config::PL;
-  use Jikkoku::DB;
+  use Sangoku::DB;
 
   sub db {
     my ($class) = @_;
@@ -17,11 +17,11 @@ package Jikkoku::Model::Role::DB {
     # DB使うテストの時
     if ($ENV{TEST_POSTGRESQL}) {
       my ($dsn, $user) = ($ENV{TEST_POSTGRESQL}, $ENV{TEST_POSTGRESQL_USER});
-      $db = Jikkoku::DB->new(connect_info => [$dsn, $user]);
+      $db = Sangoku::DB->new(connect_info => [$dsn, $user]);
     } else {
       my $path = project_root_dir() . 'etc/config/db.conf';
       my $config = config_do($path);
-      $db = Jikkoku::DB->new(%$config);
+      $db = Sangoku::DB->new(%$config);
     }
   }
 

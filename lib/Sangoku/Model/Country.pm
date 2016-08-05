@@ -1,10 +1,10 @@
-package Jikkoku::Model::Country {
+package Sangoku::Model::Country {
 
-  use Jikkoku;
+  use Sangoku;
   use Mouse;
-  with 'Jikkoku::Model::Role::DB';
+  with 'Sangoku::Model::Role::DB';
 
-  use Jikkoku::Util qw/project_root_dir/;
+  use Sangoku::Util qw/project_root_dir/;
   use Config::PL;
 
   use constant TABLE_NAME => 'country';

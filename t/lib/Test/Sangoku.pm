@@ -1,6 +1,6 @@
-package Test::Jikkoku {
+package Test::Sangoku {
   
-  use Jikkoku;
+  use Sangoku;
   
   use Exporter qw/import/;
   our @EXPORT = qw/dump_yaml/;
@@ -35,12 +35,12 @@ __END__
 
 =head1 名前
   
-  Test::Jikkoku - 十国志NETのためのTestモジュール
+  Test::Sangoku - 十国志NETのためのTestモジュール
   
 =head1 使用法
 
   # テスト実行時に行番号表示、Data::Dumperのutf8化、dump_yaml関数インポート
-  use Test::Jikkoku;
+  use Test::Sangoku;
   
 =head1 関数
   

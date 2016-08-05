@@ -1,17 +1,17 @@
-use Jikkoku 'test';
+use Sangoku 'test';
 use Test::More;
-use Test::Jikkoku;
-use Test::Jikkoku::PostgreSQL;
+use Test::Sangoku;
+use Test::Sangoku::PostgreSQL;
 
-use Jikkoku::Model::Town;
+use Sangoku::Model::Town;
 
-my $class = 'Jikkoku::Model::Town';
-Test::Jikkoku::PostgreSQL->construct();
+my $class = 'Sangoku::Model::Town';
+Test::Sangoku::PostgreSQL->construct();
 
 # テストの下準備
 {
-  use Jikkoku::Model::Country;
-  Jikkoku::Model::Country->init();
+  use Sangoku::Model::Country;
+  Sangoku::Model::Country->init();
 }
 
 subtest 'init' => sub {

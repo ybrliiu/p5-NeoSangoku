@@ -1,4 +1,4 @@
-use Jikkoku 'test';
+use Sangoku 'test';
 
 use DBI;
 use SQL::SplitStatement;
@@ -7,7 +7,7 @@ use Test::PostgreSQL;
 
 my $pgsql = Test::PostgreSQL->new() || die 'pgsql fail.';
 my $dbh = DBI->connect($pgsql->dsn) || die 'dbi fail.';
-my $file = path('etc/documents', 'jikkoku_schema.sql');
+my $file = path('etc/documents', 'sangoku_schema.sql');
 my $sql = $file->slurp();
 my $splitter = SQL::SplitStatement->new(
   keep_terminator      => 1,

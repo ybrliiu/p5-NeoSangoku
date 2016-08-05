@@ -1,9 +1,9 @@
-package Jikkoku::DB::Schema {
+package Sangoku::DB::Schema {
 
   # generate from script/teng_schema_duper.pl
   # and define row_class
 
-  use Jikkoku;
+  use Sangoku;
   use Teng::Schema::Declare;
   
   table {
@@ -30,7 +30,7 @@ package Jikkoku::DB::Schema {
       {name => 'icon', type => 4},
       {name => 'time', type => -5},
     );
-    row_class 'Jikkoku::DB::Row::Country::ConferenceReply';
+    row_class 'Sangoku::DB::Row::Country::ConferenceReply';
   };
 
   table {
@@ -45,7 +45,7 @@ package Jikkoku::DB::Schema {
       {name => 'icon', type => 4},
       {name => 'time', type => -5},
     );
-    row_class 'Jikkoku::DB::Row::Country::ConferenceThread';
+    row_class 'Sangoku::DB::Row::Country::ConferenceThread';
   };
 
   table {
@@ -58,7 +58,7 @@ package Jikkoku::DB::Schema {
       {name => 'name', type => -1},
       {name => 'message', type => -1},
     );
-    row_class 'Jikkoku::DB::Row::Country::Law';
+    row_class 'Sangoku::DB::Row::Country::Law';
   };
 
   table {
@@ -75,7 +75,7 @@ package Jikkoku::DB::Schema {
       {name => 'message', type => -1},
       {name => 'time', type => -5},
     );
-    row_class 'Jikkoku::DB::Row::Country::Letter';
+    row_class 'Sangoku::DB::Row::Country::Letter';
   };
 
   table {
@@ -92,7 +92,7 @@ package Jikkoku::DB::Schema {
       {name => 'archery_general_id', type => -1},
       {name => 'infantry_general_id', type => -1},
     );
-    row_class 'Jikkoku::DB::Row::Country::Position';
+    row_class 'Sangoku::DB::Row::Country::Position';
   };
 
   table {
@@ -217,7 +217,7 @@ package Jikkoku::DB::Schema {
       {name => 'atack_town', type => 4},
       {name => 'wall_destroy', type => 4},
     );
-    row_class 'Jikkoku::DB::Row::Player::BattleRecord';
+    row_class 'Sangoku::DB::Row::Player::BattleRecord';
   };
 
   table {
@@ -232,7 +232,7 @@ package Jikkoku::DB::Schema {
       {name => 'skill2_category', type => -1},
       {name => 'skill2_name', type => -1},
     );
-    row_class 'Jikkoku::DB::Row::Player::Book';
+    row_class 'Sangoku::DB::Row::Player::Book';
   };
 
   table {
@@ -243,7 +243,7 @@ package Jikkoku::DB::Schema {
       {name => 'command_name', type => -1},
       {name => 'execution_num', type => 4},
     );
-    row_class 'Jikkoku::DB::Row::Player::CommandRecord';
+    row_class 'Sangoku::DB::Row::Player::CommandRecord';
   };
 
   table {
@@ -252,7 +252,7 @@ package Jikkoku::DB::Schema {
     columns (
       {name => 'player_id', type => -1},
     );
-    row_class 'Jikkoku::DB::Row::Player::Config';
+    row_class 'Sangoku::DB::Row::Player::Config';
   };
 
   table {
@@ -267,7 +267,7 @@ package Jikkoku::DB::Schema {
       {name => 'skill2_category', type => -1},
       {name => 'skill2_name', type => -1},
     );
-    row_class 'Jikkoku::DB::Row::Player::Guard';
+    row_class 'Sangoku::DB::Row::Player::Guard';
   };
 
   table {
@@ -285,7 +285,7 @@ package Jikkoku::DB::Schema {
       {name => 'message', type => -1},
       {name => 'time', type => -5},
     );
-    row_class 'Jikkoku::DB::Row::Player::Invite';
+    row_class 'Sangoku::DB::Row::Player::Invite';
   };
 
   table {
@@ -302,7 +302,7 @@ package Jikkoku::DB::Schema {
       {name => 'message', type => -1},
       {name => 'time', type => -5},
     );
-    row_class 'Jikkoku::DB::Row::Player::Letter';
+    row_class 'Sangoku::DB::Row::Player::Letter';
   };
 
   table {
@@ -313,7 +313,7 @@ package Jikkoku::DB::Schema {
       {name => 'skill_category', type => -1},
       {name => 'skill_name', type => -1},
     );
-    row_class 'Jikkoku::DB::Row::Player::Skill';
+    row_class 'Sangoku::DB::Row::Player::Skill';
   };
 
   table {
@@ -325,7 +325,7 @@ package Jikkoku::DB::Schema {
       {name => 'people', type => 4},
       {name => 'training', type => 4},
     );
-    row_class 'Jikkoku::DB::Row::Player::Soldier';
+    row_class 'Sangoku::DB::Row::Player::Soldier';
   };
 
   table {
@@ -340,7 +340,7 @@ package Jikkoku::DB::Schema {
       {name => 'skill2_category', type => -1},
       {name => 'skill2_name', type => -1},
     );
-    row_class 'Jikkoku::DB::Row::Player::Weapon';
+    row_class 'Sangoku::DB::Row::Player::Weapon';
   };
 
   table {
@@ -397,7 +397,7 @@ package Jikkoku::DB::Schema {
       {name => 'message', type => -1},
       {name => 'time', type => -5},
     );
-    row_class 'Jikkoku::DB::Row::Town::Letter';
+    row_class 'Sangoku::DB::Row::Town::Letter';
   };
 
   table {
@@ -427,7 +427,7 @@ package Jikkoku::DB::Schema {
       {name => 'message', type => -1},
       {name => 'time', type => -5},
     );
-    row_class 'Jikkoku::DB::Row::Unit::Letter';
+    row_class 'Sangoku::DB::Row::Unit::Letter';
   };
 
 }

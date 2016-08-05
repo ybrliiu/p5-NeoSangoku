@@ -1,5 +1,5 @@
 -- REFERENCES で外部キー制約、ON DELETE CASCADEで外部キー削除時に同時削除する
--- 下のSQL文をpsqlから入力& ../script/teng_schema_dumper.pl を実行、Jikkoku::DB::Schema クラスを出力
+-- 下のSQL文をpsqlから入力& ../script/teng_schema_dumper.pl を実行、Sangoku::DB::Schema クラスを出力
 
 
 -- 国関連テーブル

@@ -1,7 +1,7 @@
-use Jikkoku 'test';
+use Sangoku 'test';
 use Test::More;
-use Test::Jikkoku;
-use Jikkoku::Util qw/child_list/;
+use Test::Sangoku;
+use Sangoku::Util qw/child_list/;
 
 use_ok $_ for @{ child_list() };
 

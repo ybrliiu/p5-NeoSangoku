@@ -32,5 +32,5 @@ DB/Row/Player/
 
 #スキーマ定義
 
-etc/document/jikkoku_schema.sql を参照
+etc/document/sangoku_schema.sql を参照
 

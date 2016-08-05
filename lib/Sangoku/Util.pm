@@ -1,6 +1,6 @@
-package Jikkoku::Util {
+package Sangoku::Util {
 
-  use Jikkoku;
+  use Sangoku;
 
   use Cwd 'getcwd';
   use Exporter 'import';

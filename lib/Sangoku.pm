@@ -1,4 +1,4 @@
-package Jikkoku 0.01 {
+package Sangoku 0.01 {
 
   use strict;
   use warnings;
@@ -33,13 +33,13 @@ __END__
 
 =head1 名前
   
-  Jikkoku - 十国志NETの基礎モジュール
+  Sangoku - NEO三国志NET基礎モジュール
   
 =head1 メソッド
   
 =head2 import
   
   モジュール読み込み時に実行されるメソッドです。
-  use Jikkoku;で普通にこのモジュールを読み込むと、読み込んだ側でuse strict,warnigns,utf8,feature:5.18が有効になります。
+  use Sangoku;で普通にこのモジュールを読み込むと、読み込んだ側でuse strict,warnigns,utf8,feature:5.18が有効になります。
   
 =cut

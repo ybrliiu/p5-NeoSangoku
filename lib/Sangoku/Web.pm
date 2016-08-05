@@ -1,4 +1,4 @@
-package Jikkoku::Web {
+package Sangoku::Web {
 
   use Mojo::Base 'Mojolicious';
 
@@ -8,7 +8,7 @@ package Jikkoku::Web {
 
     # Router
     my $r = $self->routes;
-    $r->namespaces(['Jikkoku::Web::Controller']);
+    $r->namespaces(['Sangoku::Web::Controller']);
 
     # Normal route to controller
     $r->get('/')->to('example#welcome');
