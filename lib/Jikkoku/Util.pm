@@ -65,6 +65,7 @@ package Jikkoku::Util {
   # package名から子ディレクトリのリスト作成(再帰的に)
   sub child_list {
     my ($pkg) = @_;
+    $pkg //= '';
 
     my $root = project_root_dir() . 'lib/';
     my $dir = $root . $pkg =~ s!::!/!r;

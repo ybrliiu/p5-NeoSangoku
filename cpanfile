@@ -25,5 +25,6 @@ on test => sub {
   requires qw/SQL::SplitStatement 1.00020/;
   requires qw/Data::Dumper/;
   requires qw/YAML::Dumper/;
+  requires qw/IO::Scalar/;
 };
 

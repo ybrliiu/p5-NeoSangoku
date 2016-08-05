@@ -8,10 +8,13 @@ use Jikkoku::Model::Country;
 my $class = 'Jikkoku::Model::Country';
 Test::Jikkoku::PostgreSQL->construct();
 
-subtest 'get' => sub {
+subtest 'init' => sub {
   ok $class->init();
-  my $country = $class->get('無所属');
-  diag $country->name;
 };
 
-done_testing;
+subtest 'get' => sub {
+  ok(my $country = $class->get('無所属'));
+  is $country->name, '無所属';
+};
+
+done_testing();
