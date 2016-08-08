@@ -36,6 +36,11 @@ package Sangoku::Model::Role::DB {
     $class->db->delete($class->TABLE_NAME => {});
   }
 
+  sub init {
+    my ($class) = @_;
+    $class->delete_all();
+  }
+
 }
 
 1;

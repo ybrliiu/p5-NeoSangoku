@@ -9,11 +9,10 @@ package Sangoku::Model::Country {
 
   use constant TABLE_NAME => 'country';
 
-  sub init {
+  after 'init' => sub {
     my ($class) = @_;
-    $class->delete_all();
     $class->db->do_insert(TABLE_NAME() => {name => '無所属', color => 'gray'});
-  }
+  };
 
   sub get {
     my ($class, $name) = @_;

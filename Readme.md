@@ -1,8 +1,5 @@
 # next
-[issue]
-Model db,Service 環境変数がある
-testのとき tableに依存関係がいろいろあると初期化時の単体テストがとてもやりにくい->どうするか？
-Test::Sangoku::PostgreSQL->construct(sub {}); ?
+DB::Exception*定義
 
 DBクラス定義
 Configクラス定義

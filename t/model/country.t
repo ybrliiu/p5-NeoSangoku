@@ -9,7 +9,8 @@ my $class = 'Sangoku::Model::Country';
 Test::Sangoku::PostgreSQL->construct();
 
 subtest 'init' => sub {
-  ok $class->init();
+  $class->init();
+  ok 1;
 };
 
 subtest 'get' => sub {

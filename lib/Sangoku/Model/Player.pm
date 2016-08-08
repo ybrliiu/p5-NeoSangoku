@@ -4,15 +4,21 @@ package Sangoku::Model::Player {
   use Mouse;
   with 'Sangoku::Model::Role::DB';
 
+  use Sangoku::Util qw/project_root_dir/;
+  use Config::PL;
+
   use constant TABLE_NAME => 'player';
 
-  sub init {
+  after 'init' => sub {
     my ($class) = @_;
-    $class->delete_all();
+
+    my $path = project_root_dir() . 'etc/config/site.conf';
+    my $site = config_do($path)->{'site'};
+
     $class->db->do_insert(TABLE_NAME() => {
-      id   => 'administrator',
+      id   => $site->{admin_id},
       name => '管理人',
-      pass => 'password',
+      pass => $site->{admin_pass},
       icon => 0,
       country_name => '無所属',
       town_name    => '開封',
@@ -23,7 +29,7 @@ package Sangoku::Model::Player {
       loyalty      => 10,
       update_time  => time,
     });
-  }
+  };
 
   sub get {
     my ($class, $id) = @_;

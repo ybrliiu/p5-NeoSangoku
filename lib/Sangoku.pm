@@ -19,7 +19,7 @@ package Sangoku 0.01 {
   # インポートするプラグマ
   sub import_pragma {
     my ($class) = @_;
-    $_->import for(qw/strict warnings utf8/);
+    $_->import for qw/strict warnings utf8/;
     feature->import(':5.18');
   }
   
