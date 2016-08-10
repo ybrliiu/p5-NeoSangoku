@@ -4,7 +4,7 @@ package Sangoku::Model::Player {
   use Mouse;
   with 'Sangoku::Model::Role::DB';
 
-  use Sangoku::Util qw/project_root_dir/;
+  use Sangoku::Util qw/validate_keys project_root_dir/;
   use Config::PL;
 
   use constant TABLE_NAME => 'player';
@@ -15,7 +15,7 @@ package Sangoku::Model::Player {
     my $path = project_root_dir() . 'etc/config/site.conf';
     my $site = config_do($path)->{'site'};
 
-    $class->db->do_insert(TABLE_NAME() => {
+    $class->regist(
       id   => $site->{admin_id},
       name => '管理人',
       pass => $site->{admin_pass},
@@ -28,12 +28,19 @@ package Sangoku::Model::Player {
       popular      => 10,
       loyalty      => 10,
       update_time  => time,
-    });
+    );
   };
 
   sub get {
     my ($class, $id) = @_;
     $class->db->single(TABLE_NAME() => {id => $id});
+  }
+
+  sub regist {
+    my ($class, %args) = @_;
+    validate_keys(\%args => [qw/id name pass icon country_name town_name  force intellect leadership popular loyalty  update_time/]);
+
+    $class->db->do_insert(TABLE_NAME() => \%args);
   }
 
   __PACKAGE__->meta->make_immutable();

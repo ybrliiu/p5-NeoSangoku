@@ -30,4 +30,8 @@ subtest 'get' => sub {
   is $town->name, '管理人';
 };
 
+subtest 'regist' => sub {
+  ok 1;
+};
+
 done_testing();

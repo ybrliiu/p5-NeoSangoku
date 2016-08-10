@@ -12,8 +12,8 @@ package Sangoku::DB::Exception {
     my ($class, %args) = @_;
     validate_keys(\%args => [qw/message reason sql bind/]);
 
-    ($args{package}, $args{file}, $args{line}) = caller(0);
-    ($args{call_package}, $args{call_file}, $args{call_line}, $args{call_sub}) = caller(1);
+    ($args{package}, $args{file}, $args{line}) = caller(3);
+    ($args{call_package}, $args{call_file}, $args{call_line}, $args{call_sub}) = caller(4);
 
     die $class->new(%args);
   }
