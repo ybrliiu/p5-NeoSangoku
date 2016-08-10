@@ -24,6 +24,10 @@ package Sangoku::DB::Exception {
 
     require Data::Dumper;
     local $Data::Dumper::Maxdepth = 2;
+    # 英文字以外が文字化けしないように
+    no warnings 'redefine';
+    local *Data::Dumper::qquote = sub { shift };
+    local $Data::Dumper::Useperl = 1;
 
     my $format = <<"EOF";
 [%s]
