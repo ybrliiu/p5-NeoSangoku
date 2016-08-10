@@ -5,13 +5,12 @@ use Test::Sangoku::PostgreSQL;
 
 use Sangoku::Model::Unit;
 
-use Config::PL;
-use Sangoku::Util qw/project_root_dir/;
+use Sangoku::Util qw/load_config/;
 
 my $class = 'Sangoku::Model::Unit';
 Test::Sangoku::PostgreSQL->construct();
 
-my $admin_id = config_do( project_root_dir() . 'etc/config/site.conf' )->{'site'}{'admin_id'};
+my $admin_id = load_config('etc/config/site.conf')->{'site'}{'admin_id'};
 
 # テストの下準備
 {

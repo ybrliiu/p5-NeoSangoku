@@ -2,9 +2,11 @@ package Sangoku::Util {
 
   use Sangoku;
 
-  use Cwd 'getcwd';
   use Exporter 'import';
-  our @EXPORT_OK = qw/project_root_dir validate_keys minute_second daytime date datetime child_list child_load/;
+  our @EXPORT_OK = qw/project_root_dir load_config validate_keys minute_second daytime date datetime child_list child_load/;
+
+  use Cwd 'getcwd';
+  use Config::PL;
   use Time::Piece;
   use Encode 'decode';
   use Path::Tiny;
@@ -15,6 +17,12 @@ package Sangoku::Util {
     return $dir if $dir;
     $dir = getcwd() . '/';
     return $dir;
+  }
+
+  # 設定ファイル読み込み
+  sub load_config {
+    my ($path) = @_;
+    config_do(project_root_dir() . $path);
   }
 
   # 引数ハッシュのチェック

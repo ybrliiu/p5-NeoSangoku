@@ -4,16 +4,14 @@ package Sangoku::Model::Town {
   use Mouse;
   with 'Sangoku::Model::Role::DB';
 
-  use Sangoku::Util qw/project_root_dir/;
-  use Config::PL;
+  use Sangoku::Util qw/load_config/;
 
   use constant TABLE_NAME => 'town';
 
   after 'init' => sub {
     my ($class) = @_;
 
-    my $path = project_root_dir() . 'etc/config/data/init_town.conf';
-    my $init_data = config_do($path)->{'init_town'};
+    my $init_data = load_config('etc/config/data/init_town.conf')->{'init_town'};
     
     for my $town (values %$init_data) {
       $class->db->do_insert(TABLE_NAME() => $town);

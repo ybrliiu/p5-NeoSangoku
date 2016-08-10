@@ -5,8 +5,7 @@ use Test::Sangoku::PostgreSQL;
 
 use Sangoku::Model::Player;
 
-use Config::PL;
-use Sangoku::Util qw/project_root_dir/;
+use Sangoku::Util qw/load_config/;
 
 my $class = 'Sangoku::Model::Player';
 Test::Sangoku::PostgreSQL->construct();
@@ -23,8 +22,7 @@ subtest 'init' => sub {
 };
 
 subtest 'get' => sub {
-  my $path = project_root_dir() . 'etc/config/site.conf';
-  my $site = config_do($path)->{'site'};
+  my $site = load_config('etc/config/site.conf')->{'site'};
   my $admin_id = $site->{admin_id};
   ok(my $town = $class->get($admin_id));
   is $town->name, '管理人';

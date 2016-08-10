@@ -4,8 +4,7 @@ package Sangoku::Model::Role::DB {
   use Mouse::Role;
   requires qw/TABLE_NAME get/;
 
-  use Sangoku::Util qw/project_root_dir/;
-  use Config::PL;
+  use Sangoku::Util qw/load_config/;
   use Sangoku::DB;
 
   sub db {
@@ -19,8 +18,7 @@ package Sangoku::Model::Role::DB {
       my ($dsn, $user) = ($ENV{TEST_POSTGRESQL}, $ENV{TEST_POSTGRESQL_USER});
       $db = Sangoku::DB->new(connect_info => [$dsn, $user]);
     } else {
-      my $path = project_root_dir() . 'etc/config/db.conf';
-      my $config = config_do($path);
+      my $config = load_config('etc/config/db.conf');
       $db = Sangoku::DB->new(%$config);
     }
   }

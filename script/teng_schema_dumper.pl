@@ -6,13 +6,12 @@ use Sangoku;
 
 use DBI;
 use Teng::Schema::Dumper;
-use Sangoku::Util qw/project_root_dir/;
-use Config::PL;
+use Sangoku::Util qw/load_config/;
 
-my $info = config_do( project_root_dir() . 'etc/config/db.conf');
+my $info = load_config('etc/config/db.conf');
 
 my $dbh = DBI->connect(@{ $info->{connect_info} });
 print Teng::Schema::Dumper->dump(
-  dbh => $dbh,
+  dbh       => $dbh,
   namespace => 'Sangoku::DB',
 );

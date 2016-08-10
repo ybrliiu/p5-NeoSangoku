@@ -4,16 +4,14 @@ package Sangoku::Model::Player {
   use Mouse;
   with 'Sangoku::Model::Role::DB';
 
-  use Sangoku::Util qw/validate_keys project_root_dir/;
-  use Config::PL;
+  use Sangoku::Util qw/validate_keys load_config/;
 
   use constant TABLE_NAME => 'player';
 
   after 'init' => sub {
     my ($class) = @_;
 
-    my $path = project_root_dir() . 'etc/config/site.conf';
-    my $site = config_do($path)->{'site'};
+    my $site = load_config('etc/config/site.conf')->{'site'};
 
     $class->regist(
       id   => $site->{admin_id},
