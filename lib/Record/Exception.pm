@@ -5,8 +5,8 @@ package Record::Exception {
   use Record;
 
   # 非Mouseクラス継承の際はアテリビュートを再宣言する必要がある(そもそも委譲を考慮した方がよいかも...)
-  has [qw/message package subroutine/] => (is => 'ro', required => 1);
-  has 'call' => (is => 'ro', isa => 'HashRef', required => 1);
+  has [qw/message package file line/] => (is => 'ro', isa => 'Str', required => 1);
+  has [qw/call_package call_file call_line call_sub/] => (is => 'ro', isa => 'Str', required => 1);
   has [qw/obj/] => (is => 'ro', required => 1);
 
   # 非Mouseクラスを継承するために必要な処理
@@ -29,32 +29,41 @@ package Record::Exception {
     } else {
       %args = @_;
     }
-    $args{message} = $class unless defined $args{message} && $args{message} ne '';
 
-    # 呼び出し元の情報を格納
-    my @call = (caller 1)[0 .. 3];
-    my @keys = qw/package file line sub/;
-    $args{call} = +{ map { $keys[$_] => $call[$_] } 0 .. 3 };
-
-    $args{package} = caller 0;
-    $args{subroutine} = (caller 2)[3];
+    ($args{package}, $args{file}, $args{line}) = caller(0);
+    ($args{call_package}, $args{call_file}, $args{call_line}, $args{call_sub}) = caller(1);
 
     die $class->new(%args);
   }
 
   sub as_string {
     my $self = shift;
-my $print = <<"EOF";
-[Record::Exception]
+    my $class = ref $self;
+
+    require Data::Dumper;
+    local $Data::Dumper::Maxdepth = 2;
+    # 英文字以外が文字化けしないように
+    no warnings 'redefine';
+    local *Data::Dumper::qquote = sub { shift };
+    local $Data::Dumper::Useperl = 1;
+
+    my $format = <<"EOF";
+[%s]
 
 %s at %s line %s.
+  %s called at %s line %s.
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 object data:
   %s
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 EOF
-    sprintf $print, $self->message, $self->call->{file}, $self->call->{line}, $self->dump;
+    sprintf $format => (
+      $class,
+      $self->{message}, $self->{file}, $self->{line},
+      $self->{call_sub}, $self->{call_file}, $self->{call_line},
+      Data::Dumper::Dumper($self->{obj}),
+    );
   }
 
   __PACKAGE__->meta->make_immutable;

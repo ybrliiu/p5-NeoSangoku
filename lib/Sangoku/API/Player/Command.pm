@@ -3,6 +3,8 @@ package Sangoku::API::Player::Command {
   use Sangoku;
   use Mouse;
 
+  use constant max => 126; # コマンド最大件数
+
   has [qw/id detail/] => (is => 'ro', isa => 'Str');
   has 'options' => (is => 'ro', isa => 'HashRef');
   
@@ -12,9 +14,6 @@ package Sangoku::API::Player::Command {
     return "etc/record/list/command/command/$id.dat";
   }
   
-  # コマンド最大数
-  sub max() { 126 }
-
   __PACKAGE__->meta->make_immutable();
 }
 
