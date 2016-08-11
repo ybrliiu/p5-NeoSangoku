@@ -2,6 +2,7 @@ package Sangoku::API::Player::Command {
 
   use Sangoku;
   use Mouse;
+  with 'Sangoku::API::Role::Record';
 
   use constant max => 126; # コマンド最大件数
 
@@ -11,7 +12,7 @@ package Sangoku::API::Player::Command {
   # ファイルの場所
   sub file_path { 
     my ($class, $id)  = @_;
-    return "etc/record/list/command/command/$id.dat";
+    return "etc/record/player/command/$id.dat";
   }
   
   __PACKAGE__->meta->make_immutable();

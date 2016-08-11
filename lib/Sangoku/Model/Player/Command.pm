@@ -9,20 +9,60 @@ package Sangoku::Model::Player::Command {
   has 'id'     => (is => 'ro', isa => 'Str', required => 1);
   has 'record' => (is => 'ro', isa => 'Record::List::Command', lazy => 1, builder => '_build_record');
 
+  my $CLASS = 'Sangoku::API::Player::Command';
+  our $NONE_DATA = {
+    id      => 'None',
+    detail  => '何もしない',
+    options => {},
+  };
+
   sub _build_record {
     my ($self) = @_;
-    my $class = 'Sangoku::API::Player::Command';
     Record::List::Command->new(
-      file => $class->file_path( $self->id ),
-      max  => $class->max,
+      file => $CLASS->file_path( $self->id ),
+      max  => $CLASS->max,
     );
   }
 
   sub init {
     my ($self) = @_;
     $self->record->make();
-    $self->record->open->data();
-    $self->record->close();
+    $self->input(undef, [0 .. $CLASS->max()-1]);
+  }
+
+  sub input {
+    my ($self, $data, $numbers) = @_;
+    $data //= $NONE_DATA;
+
+    my $object = $CLASS->new($data);
+
+    my $record = $self->record();
+    $record->open('LOCK_EX');
+    $record->input($object, $numbers);
+    $record->close();
+  }
+
+  sub delete {
+    my ($self, $numbers) = @_;
+    my $none   = $CLASS->new($NONE_DATA);
+    my $record = $self->record();
+    $record->open('LOCK_EX');
+    $record->delete($none, $numbers);
+    $record->close();
+  }
+
+  sub insert {
+    my ($self, $insert_numbers, $num) = @_;
+    my $none   = $CLASS->new($NONE_DATA);
+    my $record = $self->record();
+    $record->open('LOCK_EX');
+    $record->insert($none, $insert_numbers, $num);
+    $record->close();
+  }
+
+  sub remove {
+    my ($self) = @_;
+    $self->record->remove();
   }
 
   sub get {
