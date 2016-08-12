@@ -8,8 +8,8 @@ package Sangoku::API::Role::Record {
 
     # テストの時のファイルパス(etc/record/tmp...)
     if ($ENV{TEST_RECORD}) {
-      my $regex = '\D' x length('etc/record/');
-      (my $file_path = $class->$orig($id)) =~ s!($regex)!$1tmp/!;
+      my $regex = '\D' x length($ENV{TEST_RECORD_DIR});
+      (my $file_path = $class->$orig($id)) =~ s!($regex)!$1$ENV{TEST_RECORD_TMP_DIR}/!;
       $file_path;
     } else {
       $class->$orig($id);

@@ -1,6 +1,7 @@
 use Sangoku 'test';
 use Test::More;
 use Test::Sangoku;
+use Test::Exception;
 
 use Sangoku::Util;
 
