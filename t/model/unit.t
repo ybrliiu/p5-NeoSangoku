@@ -7,9 +7,8 @@ use Sangoku::Model::Unit;
 
 use Sangoku::Util qw/load_config/;
 
-my $class = 'Sangoku::Model::Unit';
-Test::Sangoku::PostgreSQL->construct();
-
+my $class    = 'Sangoku::Model::Unit';
+my $psql     = Test::Sangoku::PostgreSQL->new();
 my $admin_id = load_config('etc/config/site.conf')->{'site'}{'admin_id'};
 
 # テストの下準備

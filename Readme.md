@@ -1,5 +1,7 @@
 # next
-DB::Exception*定義
+test規約
+Test::* document
+Model::Player作成
 
 DBクラス定義
 Configクラス定義

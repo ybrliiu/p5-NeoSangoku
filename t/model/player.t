@@ -8,7 +8,7 @@ use Sangoku::Model::Player;
 use Sangoku::Util qw/load_config/;
 
 my $class = 'Sangoku::Model::Player';
-Test::Sangoku::PostgreSQL->construct();
+my $psql  = Test::Sangoku::PostgreSQL->new();
 
 # テストの下準備
 {

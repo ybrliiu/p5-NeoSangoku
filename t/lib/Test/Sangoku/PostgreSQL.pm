@@ -20,16 +20,18 @@ package Test::Sangoku::PostgreSQL {
       dbh => $dbh,
     };
 
-    my $schema = path($self->{schema});
-    my $sql    = $schema->slurp();
-
-    my $splitter = SQL::SplitStatement->new(
-      keep_terminator      => 1,
-      keep_comments        => 0,
-      keep_empty_statement => 0,
-    );
-    for ( $splitter->split($sql) ) {
-      $self->{dbh}->do($_) || die $self->{dbh}->errstr;
+    # schema 流し込み
+    {
+      my $schema = path($self->{schema});
+      my $sql    = $schema->slurp();
+      my $splitter = SQL::SplitStatement->new(
+        keep_terminator      => 1,
+        keep_comments        => 0,
+        keep_empty_statement => 0,
+      );
+      for ( $splitter->split($sql) ) {
+        $self->{dbh}->do($_) || die $self->{dbh}->errstr;
+      }
     }
 
     return bless $self, $class;
@@ -46,31 +48,6 @@ package Test::Sangoku::PostgreSQL {
       $self->{dbh}->do('create schema public;');
     }
   }
-
-  sub construct {
-    my ($class) = @_;
-    my $dbh = DBI->connect($ENV{TEST_POSTGRESQL}, $ENV{TEST_POSTGRESQL_USER}) or die 'connect failed';
-    my $file = path('etc/documents/sangoku_schema.sql');
-    my $sql = $file->slurp();
-
-    # delete all table
-    {
-      my $fh = IO::Scalar->new(\my $anon);
-      local *STDERR = $fh;
-      $dbh->do('drop schema public cascade;');
-      $dbh->do('create schema public;');
-    }
-
-    my $splitter = SQL::SplitStatement->new(
-      keep_terminator      => 1,
-      keep_comments        => 0,
-      keep_empty_statement => 0,
-    );
-    for ( $splitter->split($sql) ) {
-      $dbh->do($_) || die $dbh->errstr;
-    }
-  }
-
 
 }
 

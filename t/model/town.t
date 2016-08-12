@@ -6,7 +6,7 @@ use Test::Sangoku::PostgreSQL;
 use Sangoku::Model::Town;
 
 my $class = 'Sangoku::Model::Town';
-Test::Sangoku::PostgreSQL->construct();
+my $psql  = Test::Sangoku::PostgreSQL->new();
 
 # テストの下準備
 {

@@ -6,7 +6,7 @@ use Test::Sangoku::PostgreSQL;
 use Sangoku::Model::Country;
 
 my $class = 'Sangoku::Model::Country';
-Test::Sangoku::PostgreSQL->construct();
+my $psql  = Test::Sangoku::PostgreSQL->new();
 
 subtest 'init' => sub {
   $class->init();
