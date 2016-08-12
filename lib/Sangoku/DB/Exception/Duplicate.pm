@@ -3,6 +3,7 @@ package Sangoku::DB::Exception::Duplicate {
   use Sangoku;
   use parent 'Sangoku::DB::Exception';
 
+  use Carp qw/confess/;
   use Class::Accessor::Lite new => 0;
   Class::Accessor::Lite->mk_ro_accessors(qw/table_name/);
 
@@ -17,6 +18,9 @@ package Sangoku::DB::Exception::Duplicate {
 
     # Sangoku::Model::{ ... }::TABLE_NAME()
     $args{table_name} = "$args{package}"->TABLE_NAME();
+
+    eval { confess 'start trace' };
+    $args{trace} = $@;
 
     die $class->new(%args);
   }

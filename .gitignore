@@ -1,2 +1,5 @@
 # etc/config/db.conf はパスワードとかも載せるのでとりあえず除外
 etc/config/db.conf
+
+# ログは要らない
+log/
