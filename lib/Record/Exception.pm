@@ -6,7 +6,7 @@ package Record::Exception {
 
   # 非Mouseクラス継承の際はアテリビュートを再宣言する必要がある(そもそも委譲を考慮した方がよいかも...)
   has [qw/message package file line/] => (is => 'ro', isa => 'Str', required => 1);
-  has [qw/call_package call_file call_line call_sub/] => (is => 'ro', isa => 'Str', required => 1);
+  has [qw/call_package call_file call_line call_sub trace/] => (is => 'ro', isa => 'Str', required => 1);
   has [qw/obj/] => (is => 'ro', required => 1);
 
   # 非Mouseクラスを継承するために必要な処理
@@ -32,6 +32,10 @@ package Record::Exception {
 
     ($args{package}, $args{file}, $args{line}) = caller(0);
     ($args{call_package}, $args{call_file}, $args{call_line}, $args{call_sub}) = caller(1);
+    
+    # trace
+    eval { confess 'trace start' };
+    $args{trace} = $@;
 
     die $class->new(%args);
   }
@@ -54,7 +58,9 @@ package Record::Exception {
   %s called at %s line %s.
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-object data:
+Trace:
+  %s
+Object data:
   %s
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 EOF
@@ -62,6 +68,7 @@ EOF
       $class,
       $self->{message}, $self->{file}, $self->{line},
       $self->{call_sub}, $self->{call_file}, $self->{call_line},
+      $self->{trace},
       Data::Dumper::Dumper($self->{obj}),
     );
   }

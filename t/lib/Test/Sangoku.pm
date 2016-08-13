@@ -7,9 +7,9 @@ package Test::Sangoku {
   use YAML::Dumper;
   use Data::Dumper;
   # Data::Dumperで無理やりutf8文字を表示させる
-  package Data::Dumper {
+  {
     no warnings 'redefine';
-    sub qquote { return shift; }
+    *Data::Dumper::qquote = sub { shift };
   }
   $Data::Dumper::Useperl = 1;
 

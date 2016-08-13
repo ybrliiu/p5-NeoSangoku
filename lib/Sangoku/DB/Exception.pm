@@ -12,14 +12,22 @@ package Sangoku::DB::Exception {
   sub throw {
     my ($class, %args) = @_;
     validate_keys(\%args => [qw/message reason sql bind/]);
+    $class->_throw(\%args);
+  }
 
-    ($args{package}, $args{file}, $args{line}) = caller(3);
-    ($args{call_package}, $args{call_file}, $args{call_line}, $args{call_sub}) = caller(4);
+  sub _throw {
+    my ($class, $args, $code) = @_;
+
+    my %args = %$args;
+    ($args{package}, $args{file}, $args{line}) = caller(4);
+    ($args{call_package}, $args{call_file}, $args{call_line}, $args{call_sub}) = caller(5);
     
-    eval { confess 'start trace' };
+    eval { confess 'trace start' };
     $args{trace} = $@;
 
-    die $class->new(%args);
+    my $self = $class->new(%args);
+    $code->($self) if defined $code;
+    die $self;
   }
 
   sub as_string {
