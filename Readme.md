@@ -1,6 +1,4 @@
 # next
-test規約
-Test::* document
 Model::Player作成
 
 DBクラス定義

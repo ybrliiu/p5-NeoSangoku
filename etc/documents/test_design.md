@@ -15,7 +15,10 @@ use Sangoku 'test';
 use Test::More;
 use Test::Sangoku;  # Data::Dumperのutf8化, dump_yaml関数インポート,Test::Name::FromLine付加
 
-use Test::Exception           # 例外なげるmethodのテスト
-use Test::Sangoku::PostgreSQL # データベースを使ったテスト用
-Test::Sangoku::PostgreSQL->construct();
+use Test::Exception;           # 例外なげるmethodのテスト
 
+use Test::Sangoku::PostgreSQL; # データベースを使ったテスト用
+my $psql = Test::Sangoku::PostgreSQL->new();
+
+use Test::Record;              # Record.pm使ったテスト用
+my $rec = Test::Record->new();
