@@ -37,7 +37,6 @@ package Sangoku::Model::Player {
   sub regist {
     my ($class, %args) = @_;
     validate_keys(\%args => [qw/id name pass icon country_name town_name  force intellect leadership popular loyalty  update_time/]);
-
     $class->db->do_insert(TABLE_NAME() => \%args);
   }
 
