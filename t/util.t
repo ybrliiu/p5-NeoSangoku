@@ -20,8 +20,8 @@ subtest 'time' => sub {
   is(Sangoku::Util::datetime(1449914400), '2015/12/12(土) 19:00:00');
 };
 
-subtest 'child_list' => sub {
-  ok(my $list = Sangoku::Util::child_list('Sangoku::DB'));
+subtest 'child_module_list' => sub {
+  ok(my $list = Sangoku::Util::child_module_list('Sangoku::DB'));
   ok(my @exists = grep { $_ eq 'Sangoku::DB::Schema' } @$list);
 };
 
