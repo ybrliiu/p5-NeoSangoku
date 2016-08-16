@@ -21,14 +21,24 @@ package Sangoku::Model::Player::Command {
     my ($self) = @_;
     Record::List::Command->new(
       file => CLASS->file_path( $self->id ),
-      max  => CLASS->max,
+      max  => CLASS->MAX(),
     );
   }
 
   sub init {
     my ($self) = @_;
     $self->record->make();
-    $self->input(undef, [0 .. CLASS->max()-1]);
+    $self->input(undef, [0 .. CLASS->MAX()-1]);
+  }
+
+  sub get {
+    my ($self, $num) = @_;
+    return $self->record->open->get($num);
+  }
+
+  sub get_all {
+    my ($self) = @_;
+    return $self->record->open->data();
   }
 
   sub input {
@@ -64,16 +74,6 @@ package Sangoku::Model::Player::Command {
   sub remove {
     my ($self) = @_;
     $self->record->remove();
-  }
-
-  sub get {
-    my ($self, $num) = @_;
-    return $self->record->open->get($num);
-  }
-
-  sub get_all {
-    my ($self) = @_;
-    return $self->record->open->data();
   }
 
   __PACKAGE__->meta->make_immutable();

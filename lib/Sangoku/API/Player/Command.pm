@@ -4,10 +4,10 @@ package Sangoku::API::Player::Command {
   use Mouse;
   with 'Sangoku::API::Role::Record';
 
-  use constant max => 126; # コマンド最大件数
+  use constant MAX => 126; # コマンド最大件数
 
-  has [qw/id detail/] => (is => 'ro', isa => 'Str');
-  has 'options' => (is => 'ro', isa => 'HashRef');
+  has [qw/id detail/] => (is => 'ro', isa => 'Str', required => 1);
+  has 'options'       => (is => 'ro', isa => 'HashRef');
   
   # ファイルの場所
   sub file_path { 

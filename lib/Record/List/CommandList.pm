@@ -5,17 +5,16 @@ package Record::List::CommandList {
   use Record;
   
   # コマンドリストデータ取得
-  sub find {
+  sub at {
     my ($self, $no) = @_;
-    return $self->data->[$no];
+    my $result = $self->data->[$no];
+    defined $result ? $result : Record::Exception->throw("${no}番目の要素は存在してません。", $self);
   }
   
   # コマンドリストデータ更新
-  sub update {
+  sub save {
     my ($self, $no, $obj) = @_;
-    my $data = $self->data;
-    $data->[$no] = $obj;
-    $self->data($data);
+    $self->data->[$no] = $obj;
     return $self;
   }
   

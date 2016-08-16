@@ -16,6 +16,16 @@ package Sangoku::API::Role::Record {
     }
   };
 
+  sub get_attributes {
+    my ($class) = @_;
+    state $attributes;
+    return $attributes if defined $attributes;
+
+    my @list = $class->meta->get_all_attributes;
+    @list = map { $_->name } @list;
+    return ($attributes = \@list);
+  }
+
 }
 
 1;

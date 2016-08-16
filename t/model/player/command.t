@@ -21,7 +21,7 @@ subtest 'init' => sub {
   my $list = $obj->get_all();
   is($list->[0]->id, 'None');
   
-  my $max = $class->CLASS->max();
+  my $max = $class->CLASS->MAX();
   is($list->[$max - 1]->id, 'None');
 };
 
