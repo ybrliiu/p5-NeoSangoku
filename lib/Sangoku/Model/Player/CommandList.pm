@@ -3,8 +3,9 @@ package Sangoku::Model::Player::CommandList {
   use Sangoku;
   use Mouse;
 
+  use Carp qw/croak/;
   use Record::List::CommandList;
-  use Sangoku::API::Player::Command;
+  use Sangoku::API::Player::CommandList;
   use Sangoku::Util qw/validate_keys/;
 
   use constant CLASS => 'Sangoku::API::Player::CommandList';
@@ -42,7 +43,7 @@ package Sangoku::Model::Player::CommandList {
   sub at {
     my ($self, $no) = @_;
     my $command_list = $self->record->open->at($no);
-    die 'command data is not exists.' unless @{ $command_list->command() };
+    croak 'command data is not exists.' if $command_list->is_default_name();
     return $command_list;
   }
 
@@ -59,7 +60,9 @@ package Sangoku::Model::Player::CommandList {
   sub change_name {
     my ($self, $no, $name) = @_;
     die 'nameが指定されていません' if !$name;
-    $self->save($no, {name => $name});
+    # 空データでないかチェック
+    $self->at($no);
+    $self->save($no => {name => $name});
   }
 
   sub delete {
