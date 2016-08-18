@@ -2,25 +2,24 @@ package Sangoku::Model::Player::Command {
 
   use Sangoku;
   use Mouse;
+  with 'Sangoku::Model::Role::Record';
 
   use Record::List::Command;
   use Sangoku::API::Player::Command;
 
-  use constant CLASS => 'Sangoku::API::Player::Command';
-
-  has 'id'     => (is => 'ro', isa => 'Str', required => 1);
-  has 'record' => (is => 'ro', isa => 'Record::List::Command', lazy => 1, builder => '_build_record');
-
-  our $NONE_DATA = {
-    id      => 'None',
-    detail  => '何もしない',
-    options => {},
+  use constant {
+    CLASS     => 'Sangoku::API::Player::Command',
+    NONE_DATA => {
+      id      => 'None',
+      detail  => '何もしない',
+      options => {},
+    },
   };
 
   sub _build_record {
     my ($self) = @_;
     Record::List::Command->new(
-      file => CLASS->file_path( $self->id ),
+      file => CLASS->file_path($self->id),
       max  => CLASS->MAX(),
     );
   }
@@ -29,16 +28,6 @@ package Sangoku::Model::Player::Command {
     my ($self) = @_;
     $self->record->make();
     $self->input(undef, [0 .. CLASS->MAX()-1]);
-  }
-
-  sub get {
-    my ($self, $num) = @_;
-    return $self->record->open->get($num);
-  }
-
-  sub get_all {
-    my ($self) = @_;
-    return $self->record->open->data();
   }
 
   sub input {
@@ -53,15 +42,6 @@ package Sangoku::Model::Player::Command {
     $record->close();
   }
 
-  sub delete {
-    my ($self, $numbers) = @_;
-    my $none   = CLASS->new($NONE_DATA);
-    my $record = $self->record();
-    $record->open('LOCK_EX');
-    $record->delete($none, $numbers);
-    $record->close();
-  }
-
   sub insert {
     my ($self, $insert_numbers, $num) = @_;
     my $none   = CLASS->new($NONE_DATA);
@@ -71,9 +51,13 @@ package Sangoku::Model::Player::Command {
     $record->close();
   }
 
-  sub remove {
-    my ($self) = @_;
-    $self->record->remove();
+  sub delete {
+    my ($self, $numbers) = @_;
+    my $none   = CLASS->new($NONE_DATA);
+    my $record = $self->record();
+    $record->open('LOCK_EX');
+    $record->delete($none, $numbers);
+    $record->close();
   }
 
   __PACKAGE__->meta->make_immutable();
