@@ -32,7 +32,7 @@ package Sangoku::Model::Player::Command {
 
   sub input {
     my ($self, $data, $numbers) = @_;
-    $data //= $NONE_DATA;
+    $data //= NONE_DATA;
 
     my $object = CLASS->new($data);
 
@@ -44,7 +44,7 @@ package Sangoku::Model::Player::Command {
 
   sub insert {
     my ($self, $insert_numbers, $num) = @_;
-    my $none   = CLASS->new($NONE_DATA);
+    my $none   = CLASS->new(NONE_DATA);
     my $record = $self->record();
     $record->open('LOCK_EX');
     $record->insert($none, $insert_numbers, $num);
@@ -53,7 +53,7 @@ package Sangoku::Model::Player::Command {
 
   sub delete {
     my ($self, $numbers) = @_;
-    my $none   = CLASS->new($NONE_DATA);
+    my $none   = CLASS->new(NONE_DATA);
     my $record = $self->record();
     $record->open('LOCK_EX');
     $record->delete($none, $numbers);
