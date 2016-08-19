@@ -22,8 +22,8 @@ subtest 'init' => sub {
   ok 1;
 };
 
-subtest 'create' => sub {
-  ok $class->create(
+subtest 'regist' => sub {
+  ok $class->regist(
     id   => $admin_id,
     name => 'テスト部隊',
     message      => '',

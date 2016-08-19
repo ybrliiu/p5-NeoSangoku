@@ -13,6 +13,7 @@ package Sangoku::Model::Player {
 
     my $site = load_config('etc/config/site.conf')->{'site'};
 
+    # 管理人を登録
     $class->regist(
       id   => $site->{admin_id},
       name => '管理人',
@@ -31,12 +32,22 @@ package Sangoku::Model::Player {
 
   sub get {
     my ($class, $id) = @_;
-    $class->db->single(TABLE_NAME() => {id => $id});
+    return $class->db->single(TABLE_NAME() => {id => $id});
+  }
+
+  sub delete {
+    my ($class, $id) = @_;
+    $class->db->delete(TABLE_NAME() => {id => $id});
   }
 
   sub regist {
     my ($class, %args) = @_;
-    validate_keys(\%args => [qw/id name pass icon country_name town_name  force intellect leadership popular loyalty  update_time/]);
+    validate_keys(\%args => [qw/id name pass icon country_name town_name force intellect leadership popular loyalty update_time/]);
+    $class->_regist(%args);
+  }
+
+  sub _regist {
+    my ($class, %args) = @_;
     $class->db->do_insert(TABLE_NAME() => \%args);
   }
 

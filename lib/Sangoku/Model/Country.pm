@@ -19,6 +19,11 @@ package Sangoku::Model::Country {
     $class->db->single(TABLE_NAME() => {name => $name});
   }
 
+  sub delete {
+    my ($class, $name) = @_;
+    $class->db->delete(TABLE_NAME() => {name => $name});
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 
