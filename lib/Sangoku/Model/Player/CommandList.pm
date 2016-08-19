@@ -12,7 +12,7 @@ package Sangoku::Model::Player::CommandList {
 
   sub _build_record {
     my ($self) = @_;
-    Record::List::CommandList->new(
+    return Record::List::CommandList->new(
       file => CLASS->file_path( $self->id ),
       max  => CLASS->MAX(),
     );

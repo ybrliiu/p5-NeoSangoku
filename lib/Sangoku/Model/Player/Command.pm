@@ -18,7 +18,7 @@ package Sangoku::Model::Player::Command {
 
   sub _build_record {
     my ($self) = @_;
-    Record::List::Command->new(
+    return Record::List::Command->new(
       file => CLASS->file_path($self->id),
       max  => CLASS->MAX(),
     );
