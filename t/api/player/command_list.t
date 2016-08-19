@@ -17,10 +17,4 @@ subtest 'new' => sub {
   ok $command_list->is_default_name();
 };
 
-subtest 'record_test' => sub {
-  require Test::Record;
-  my $test = Test::Record->new();
-  like $class->file_path('test'), qr/$ENV{TEST_RECORD_TMP_DIR}/;
-};
-
 done_testing();
