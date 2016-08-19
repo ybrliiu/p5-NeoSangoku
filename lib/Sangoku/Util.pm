@@ -3,7 +3,7 @@ package Sangoku::Util {
   use Sangoku;
 
   use Exporter 'import';
-  our @EXPORT_OK = qw/project_root_dir load_config validate_keys minute_second daytime date datetime child_module_list child_module_load/;
+  our @EXPORT_OK = qw/project_root_dir load_config validate_keys minute_second daytime date datetime child_module_list load_child_module/;
 
   use Cwd 'getcwd';
   use Config::PL;
@@ -93,7 +93,7 @@ package Sangoku::Util {
   }
 
   # package名から子ディレクトリ内にあるモジュールをロード
-  sub child_module_load {
+  sub load_child_module {
     my ($pkg) = @_;
     my $list = child_module_list($pkg);
     for (0 .. @$list-1) {
