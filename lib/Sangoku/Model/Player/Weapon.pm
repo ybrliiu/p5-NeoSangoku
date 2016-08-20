@@ -6,7 +6,7 @@ package Sangoku::Model::Player::Weapon {
 
   use Sangoku::Util qw/validate_keys/;
 
-  use constant TABLE_NAME => 'player_book';
+  use constant TABLE_NAME => 'player_weapon';
 
   sub get {
     my ($class, $player_id) = @_;

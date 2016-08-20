@@ -5,13 +5,18 @@ use Test::Sangoku::PostgreSQL;
 
 use Sangoku::Model::Player::Book;
 
-my $class = 'Sangoku::Model::Player::Book';
-my $psql  = Test::Sangoku::PostgreSQL->new();
+use Sangoku::Util qw/load_config/;
+
+my $site     = load_config('etc/config/site.conf')->{'site'};
+my $admin_id = $site->{admin_id};
+my $class    = 'Sangoku::Model::Player::Book';
+my $psql     = Test::Sangoku::PostgreSQL->new();
 
 # テストの下準備
 {
   eval "require Sangoku::Model::$_" for qw/Country Town Player/;
-  "Sangoku::Model::$_"->init() for qw/Country Town Player/;
+  "Sangoku::Model::$_"->init() for qw/Country Town/;
+  Sangoku::Model::Player->regist_body(%{ Sangoku::Model::Player->administer_data() });
 }
 
 subtest 'init' => sub {
@@ -19,7 +24,13 @@ subtest 'init' => sub {
   ok 1;
 };
 
+subtest 'regist' => sub {
+  ok $class->regist(player_id => $admin_id, power => 0);
+};
+
 subtest 'get' => sub {
+  ok(my $book = $class->get($admin_id));
+  is $book->name, '紙切れ';
 };
 
 done_testing();
