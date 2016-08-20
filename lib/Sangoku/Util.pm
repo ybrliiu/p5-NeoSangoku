@@ -74,9 +74,12 @@ package Sangoku::Util {
   sub child_module_list {
     my ($pkg) = @_;
     $pkg //= '';
+    warn $pkg;
 
     my $root = project_root_dir() . 'lib/';
-    my $dir = $root . $pkg =~ s!::!/!r;
+    (my $dir = $root . $pkg) =~ s!::!/!g;
+
+    warn $dir;
 
     my $iter = path($dir)->iterator({recurse => 1});
     my @list;

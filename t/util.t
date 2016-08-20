@@ -21,8 +21,8 @@ subtest 'time' => sub {
 };
 
 subtest 'child_module_list' => sub {
-  ok(my $list = Sangoku::Util::child_module_list('Sangoku::DB'));
-  ok(my @exists = grep { $_ eq 'Sangoku::DB::Schema' } @$list);
+  ok(my $list = Sangoku::Util::child_module_list('Sangoku::Model::Player'));
+  ok(my @exists = grep { $_ eq 'Sangoku::Model::Player::Command' } @$list);
 };
 
 done_testing();
