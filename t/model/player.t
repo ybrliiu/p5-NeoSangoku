@@ -2,6 +2,7 @@ use Sangoku 'test';
 use Test::More;
 use Test::Sangoku;
 use Test::Sangoku::PostgreSQL;
+use Test::Record;
 
 use Sangoku::Model::Player;
 
@@ -9,6 +10,7 @@ use Sangoku::Util qw/load_config/;
 
 my $class = 'Sangoku::Model::Player';
 my $psql  = Test::Sangoku::PostgreSQL->new();
+my $rec   = Test::Record->new();
 
 # テストの下準備
 {

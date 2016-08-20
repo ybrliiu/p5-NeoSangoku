@@ -79,8 +79,6 @@ package Sangoku::Util {
     my $root = project_root_dir() . 'lib/';
     (my $dir = $root . $pkg) =~ s!::!/!g;
 
-    warn $dir;
-
     my $iter = path($dir)->iterator({recurse => 1});
     my @list;
     while (my $path = $iter->()) {
