@@ -15,8 +15,7 @@ my $psql     = Test::Sangoku::PostgreSQL->new();
 # テストの下準備
 {
   eval "require Sangoku::Model::$_" for qw/Country Town Player/;
-  "Sangoku::Model::$_"->init() for qw/Country Town/;
-  Sangoku::Model::Player->regist_body(%{ Sangoku::Model::Player->administer_data() });
+  "Sangoku::Model::$_"->init() for qw/Country Town Player/;
 }
 
 subtest 'init' => sub {

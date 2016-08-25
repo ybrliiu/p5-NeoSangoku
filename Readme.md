@@ -1,7 +1,12 @@
 # next
+url設計  
+テストに使用するプレイヤーデータの作成  
+
 Model::Player作成
+Row::Player
+test追記、テスト共通部分くくりだす
 
 DBクラス定義
 Configクラス定義
 Recordクラス定義
-Townモデル定義、都市の初期化
+Townモデル定義
