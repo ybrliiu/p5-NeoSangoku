@@ -1,5 +1,4 @@
 # next
-url設計  
 テストに使用するプレイヤーデータの作成  
 
 Model::Player作成

@@ -162,14 +162,42 @@ package Sangoku::Web {
     # /admin
     {
       my $admin = $r->any('/admin')->to(controller => 'Admin');
-      $admin->any( '/')->to(action => '');
-      $admin->any( '/comfirm-reset-game')->to(action => 'comfirm_reset_game');
-      $admin->post('/reset-game')->to(action => 'reset_game');
-      $admin->any( '/input-edit-player')->to(action => 'reset_game');
-      $admin->post('/edit-player')->to(action => 'comfirm_reset_game');
+      $admin->post('/logout')->to(action => 'logout');
+      my $auth = $admin->under->to(action => 'auth');
+      $auth->any( '/'                             )->to(action => 'root');
+      $auth->any( '/comfirm-reset-game'           )->to(action => 'comfirm_reset_game');
+      $auth->post('/reset-game'                   )->to(action => 'reset_game');
+      $auth->any( '/choose-edit-player'           )->to(action => 'reset_game');
+      $auth->any( '/input-edit-player'            )->to(action => 'reset_game');
+      $auth->post('/edit-player'                  )->to(action => 'comfirm_reset_game');
+      $auth->any( '/comfirm-detect-illegal-player')->to(action => 'reset_game');
+      $auth->post('/detect-illegal-player'        )->to(action => 'comfirm_reset_game');
+      $auth->any( '/input-delete-icon'            )->to(action => 'comfirm_reset_game');
+      $auth->post('/delete-icon'                  )->to(action => 'reset_game');
+      $auth->any( '/input-announce'               )->to(action => 'comfirm_reset_game');
+      $auth->post('/announce'                     )->to(action => 'reset_game');
+      
+      # /admin/forum
+      {
+        my $forum = $auth->any('/forum')->to(controller => 'Admin::Forum');
+        $forum->post('/write'        )->to(action => 'write');
+        $forum->post('/new-thread'   )->to(action => 'new_thread');
+        $forum->post('/delete-reply' )->to(action => 'delete_reply');
+        $forum->post('/delete-thread')->to(action => 'delete_thread');
+        $forum->post('/edit-reply'   )->to(action => 'edit_reply');
+        $forum->post('/edit-thread'  )->to(action => 'edit_thread');
+      }
+
+      # /admin/idle-talk
+      {
+        my $idle_talk = $auth->any('/idle-talk')->to(controller => 'Admin::IdleTalk');
+        $idle_talk->get( '/'          )->to(controller => 'root');
+        $idle_talk->post('/delete'    )->to(controller => 'delete');
+        $idle_talk->post('/delete-all')->to(controller => 'delete_all');
+      }
     }
 
-    # /api
+    # /v1/api
     {
       my $api = $r->any('/v1/api')->to(controller => 'V1::API');
     }
