@@ -1,5 +1,6 @@
 # next
 テストに使用するプレイヤーデータの作成  
+create Record::FlockManager
 
 Model::Player作成
 Row::Player

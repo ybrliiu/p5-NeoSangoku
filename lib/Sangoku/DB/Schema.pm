@@ -14,7 +14,7 @@ package Sangoku::DB::Schema {
       {name => 'color', type => -1},
       {name => 'continue_year', type => 4},
       {name => 'command_message', type => -1},
-      {name => 'invite_message', type => -1},
+      {name => 'invitation_message', type => -1},
     );
   };
 
@@ -158,7 +158,7 @@ package Sangoku::DB::Schema {
   };
 
   table {
-    name 'notice';
+    name 'announce';
     pk 'id';
     columns (
       {name => 'id', type => 4},
