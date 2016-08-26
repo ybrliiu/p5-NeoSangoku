@@ -6,9 +6,9 @@
 CREATE TABLE "country" (
   "name"  text PRIMARY KEY,
   "color" text DEFAULT '',
-  "continue_year"   int DEFAULT 0,
-  "command_message" text DEFAULT '',
-  "invite_message"  text DEFAULT ''
+  "continue_year"       int DEFAULT 0,
+  "command_message"     text DEFAULT '',
+  "invitation_message"  text DEFAULT ''
 );
 
 CREATE TABLE "country_position" (
@@ -271,7 +271,7 @@ CREATE TABLE "site" (
 
 
 -- 運営からのお知らせ
-CREATE TABLE "notice" (
+CREATE TABLE "announce" (
   "id" serial PRIMARY KEY,
   "message" text NOT NULL
 );
