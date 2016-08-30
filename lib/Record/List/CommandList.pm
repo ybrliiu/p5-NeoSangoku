@@ -1,8 +1,8 @@
 package Record::List::CommandList {
   
-  use Mouse;
-  extends 'Record::List'; # 継承
   use Record;
+  use Mouse;
+  extends 'Record::List';
   
   # コマンドリストデータ取得
   sub at {

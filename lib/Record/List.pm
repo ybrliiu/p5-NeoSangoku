@@ -1,8 +1,8 @@
 package Record::List {
   
-  use Mouse;
-  with 'Record::Base'; # ロール
   use Record;
+  use Mouse;
+  with 'Record::Base';
   
   has 'data' => (is => 'rw', isa => 'ArrayRef', lazy => 1, builder => '_build_data');
   # dataの最大数

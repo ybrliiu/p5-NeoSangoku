@@ -1,15 +1,15 @@
 package Record::Hash {
   
-  use Mouse;
-  with 'Record::Base'; # ロール
   use Record;
+  use Mouse;
+  with 'Record::Base';
   
   has 'data' => (is => 'rw', isa => 'HashRef', lazy => 1, builder => '_build_data');
   
   sub _build_data { {} }
   
   # データ取得
-  sub find {
+  sub at {
     my ($self, $key) = @_;
     my $data = $self->data;
     return exists($data->{$key}) ? $data->{$key} : Record::Exception->throw('キーが存在しません', $self);
@@ -61,7 +61,7 @@ package Record::Hash {
   # データ更新
   sub update {
     my ($self, $key, $obj) = @_;
-    $self->find($key);
+    $self->at($key);
     my $data = $self->data;
     $data->{$key} = $obj;
     $self->data($data);
@@ -71,7 +71,7 @@ package Record::Hash {
   # データ削除
   sub delete {
     my ($self, $key) = @_;
-    $self->find($key);
+    $self->at($key);
     my $data = $self->data;
     delete $data->{$key};
     $self->data($data);

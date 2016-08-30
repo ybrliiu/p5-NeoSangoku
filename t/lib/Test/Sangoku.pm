@@ -13,9 +13,8 @@ package Test::Sangoku {
   }
   $Data::Dumper::Useperl = 1;
 
-  use Test::Name::FromLine; # テスト実行時に行番号付加
+  use Test::Name::FromLine;
 
-  # YAMLでダンプ
   sub dump_yaml {
     my $data = shift;
     state $dumper;

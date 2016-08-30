@@ -30,9 +30,12 @@ package Record::Exception {
       %args = @_;
     }
 
+    # unlock when locked.(lockしぱなっしだと他のfhからアクセスできなくなってしまう)
+    $args{obj}->close() if $args{obj}->fh;
+
     ($args{package}, $args{file}, $args{line}) = caller(0);
     ($args{call_package}, $args{call_file}, $args{call_line}, $args{call_sub}) = caller(1);
-    
+
     # trace
     eval { confess 'trace start' };
     $args{trace} = $@;

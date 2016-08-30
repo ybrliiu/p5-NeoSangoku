@@ -167,15 +167,15 @@ package Sangoku::Web {
       $auth->any( '/'                             )->to(action => 'root');
       $auth->any( '/comfirm-reset-game'           )->to(action => 'comfirm_reset_game');
       $auth->post('/reset-game'                   )->to(action => 'reset_game');
-      $auth->any( '/choose-edit-player'           )->to(action => 'reset_game');
-      $auth->any( '/input-edit-player'            )->to(action => 'reset_game');
-      $auth->post('/edit-player'                  )->to(action => 'comfirm_reset_game');
-      $auth->any( '/comfirm-detect-illegal-player')->to(action => 'reset_game');
-      $auth->post('/detect-illegal-player'        )->to(action => 'comfirm_reset_game');
-      $auth->any( '/input-delete-icon'            )->to(action => 'comfirm_reset_game');
-      $auth->post('/delete-icon'                  )->to(action => 'reset_game');
-      $auth->any( '/input-announce'               )->to(action => 'comfirm_reset_game');
-      $auth->post('/announce'                     )->to(action => 'reset_game');
+      $auth->any( '/choose-edit-player'           )->to(action => 'choose_edit_player');
+      $auth->any( '/input-edit-player'            )->to(action => 'input_edit_player');
+      $auth->post('/edit-player'                  )->to(action => 'edit_player');
+      $auth->any( '/comfirm-detect-illegal-player')->to(action => 'comfirm_detect_illegal_player');
+      $auth->post('/detect-illegal-player'        )->to(action => 'detect_illegal_player');
+      $auth->any( '/input-delete-icon'            )->to(action => 'input_delete_icon');
+      $auth->post('/delete-icon'                  )->to(action => 'delete_icon');
+      $auth->any( '/input-announce'               )->to(action => 'input_announce');
+      $auth->post('/announce'                     )->to(action => 'announce');
       
       # /admin/forum
       {

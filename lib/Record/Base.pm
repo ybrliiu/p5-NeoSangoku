@@ -2,22 +2,11 @@ package Record::Base {
 
   use Mouse::Role;
   use Record;
-  use Storable qw/fd_retrieve nstore_fd nstore/; # データ保存用
+  use Storable qw/fd_retrieve nstore_fd nstore/;
   
-  # アテリビュート(フィールド+アクセッサ)
   has 'file' => (is => 'rw', isa => 'Str', required => 1);
-  has 'fh' => (is => 'rw', isa => 'FileHandle');
+  has 'fh'   => (is => 'rw', isa => 'FileHandle');
   
-  sub data {
-    my $self = shift;
-    state $memory = {};
-    if (@_) {
-      $memory->{$self->file} = shift;
-    }
-    return exists $memory->{$self->file} ? $memory->{$self->file} : ();
-  }
-
-  # インスタンス生成後処理
   sub BUILD {
     my $self = shift;
     $self->file( Record->project_dir() . $self->file );
@@ -73,15 +62,20 @@ package Record::Base {
 
   sub rollback {
     my $self = shift;
-    $self->data(undef);
-    $self->open;
-    $self->close;
+    $self->{data} = undef;
+    $self->open();
+    $self->close();
   }
   
   # ファイル削除
   sub remove {
     my $self = shift;
     unlink($self->file) or Record::Exception->throw("ファイルが存在していないようです($!)", $self);
+  }
+
+  sub DESTROY {
+    my $self = shift;
+    $self->close() if $self->fh;
   }
   
 }

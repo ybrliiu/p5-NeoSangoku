@@ -1,4 +1,4 @@
-package Record 0.04 {
+package Record 0.05 {
 
   use strict;
   use warnings;
@@ -7,14 +7,13 @@ package Record 0.04 {
   
   use Cwd 'getcwd';
   
-  # インポート
   sub import {
     my ($class, $option) = @_;
     $option //= '';
 
-    if($option eq 'Test'){
+    if($option eq 'test'){
       $_->import for(qw/strict warnings/);
-      unshift @INC, './t/lib'; # テストの時パス追加
+      unshift @INC, './t/lib';
     }
     utf8->import;
     feature->import(':5.14');
@@ -48,7 +47,7 @@ Record - データ保存モジュール
 
 =head1 DESCRIPTION
 
-Record is ...
+Record is stroable.pm wrapper,
 
 =head1 LICENSE
 
