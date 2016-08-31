@@ -9,7 +9,7 @@ package Sangoku::API::Player::CommandList {
     DEFAULT_NAME => '-',
   };
 
-  has 'name'    => (is => 'rw', isa => 'Str', default => \&DEFAULT_NAME);
+  has 'name'    => (is => 'rw', isa => 'Str', default => DEFAULT_NAME);
   has 'command' => (is => 'rw', isa => 'ArrayRef', default => sub { [] });
 
   # ファイルの場所

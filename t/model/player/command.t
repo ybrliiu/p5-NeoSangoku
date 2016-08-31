@@ -5,7 +5,7 @@ use Test::Record;
 
 use Sangoku::Model::Player::Command;
 
-my $TR   = Test::Record->new();
+my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::Player::Command';
 my $OBJ;
 my $PLAYER_ID = 'test_player';
@@ -19,10 +19,11 @@ subtest 'init' => sub {
   ok $OBJ->init($PLAYER_ID);
   
   my $list = $OBJ->get_all();
-  is($list->[0]->id, 'None');
+  my $none = $OBJ->NONE_DATA;
+  is($list->[0]->id, $none->{id});
   
   my $max = $TEST_CLASS->CLASS->MAX();
-  is($list->[$max - 1]->id, 'None');
+  is($list->[$max - 1]->id, $none->{id});
 };
 
 subtest 'input' => sub {

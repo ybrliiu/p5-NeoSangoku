@@ -2,20 +2,21 @@ use Sangoku 'test';
 use Test::More;
 use Test::Sangoku;
 use Test::Sangoku::PostgreSQL;
+use Test::Record;
 
 use Sangoku::Model::Unit;
 
-use Sangoku::Util qw/load_config/;
-
-my $TEST_CLASS    = 'Sangoku::Model::Unit';
-my $PSQL     = Test::Sangoku::PostgreSQL->new();
-my $admin_id = load_config('etc/config/site.conf')->{'site'}{'admin_id'};
+my $TEST_CLASS = 'Sangoku::Model::Unit';
+my $PSQL = Test::Sangoku::PostgreSQL->new();
+my $TR = Test::Record->new();
 
 # テストの下準備
 {
   eval "require Sangoku::Model::$_" for qw/Country Town Player/;
   "Sangoku::Model::$_"->init() for qw/Country Town Player/;
 }
+
+my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
 
 subtest 'init' => sub {
   $TEST_CLASS->init();
@@ -24,7 +25,7 @@ subtest 'init' => sub {
 
 subtest 'create' => sub {
   ok $TEST_CLASS->create({
-    id   => $admin_id,
+    id   => $PLAYER_ID,
     name => 'テスト部隊',
     message      => '',
     country_name => '無所属',
@@ -32,7 +33,7 @@ subtest 'create' => sub {
 };
 
 subtest 'get' => sub {
-  ok(my $unit = $TEST_CLASS->get($admin_id));
+  ok(my $unit = $TEST_CLASS->get($PLAYER_ID));
   is $unit->name, 'テスト部隊';
 };
 

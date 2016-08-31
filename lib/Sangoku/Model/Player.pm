@@ -9,25 +9,43 @@ package Sangoku::Model::Player {
 
   use constant TABLE_NAME => 'player';
 
+  sub ADMINISTARTOR_DATA() {
+    my $site = load_config('etc/config/site.conf')->{'site'};
+    state $data = {
+      player => {
+        id   => $site->{admin_id},
+        name => '管理人',
+        pass => $site->{admin_pass},
+        icon => 0,
+        country_name => '無所属',
+        town_name    => '開封',
+        force        => 10,
+        intellect    => 10,
+        leadership   => 10,
+        popular      => 10,
+        loyalty      => 10,
+        update_time  => time,
+      },
+      weapon => {
+        player_id => $site->{admin_id},
+        power     => 0,
+      },
+      guard  => {
+        player_id => $site->{admin_id},
+        power     => 0,
+      },
+      book   => {
+        player_id => $site->{admin_id},
+        power     => 0,
+      },
+    };
+  }
+
   after 'init' => sub {
     my ($class) = @_;
 
     # 管理人を登録
-    my $site = load_config('etc/config/site.conf')->{'site'};
-    $class->create({
-      id   => $site->{admin_id},
-      name => '管理人',
-      pass => $site->{admin_pass},
-      icon => 0,
-      country_name => '無所属',
-      town_name    => '開封',
-      force        => 10,
-      intellect    => 10,
-      leadership   => 10,
-      popular      => 10,
-      loyalty      => 10,
-      update_time  => time,
-    });
+    $class->regist(ADMINISTARTOR_DATA);
   };
 
   sub get {
@@ -49,13 +67,33 @@ package Sangoku::Model::Player {
   sub regist {
     my ($class, $args) = @_;
     validate_keys($args => [qw/player weapon guard book/]);
+
     $class->create($args->{player});
+
+    for (qw/Command CommandList CommandLog/) {
+      my $model = "$class::$_"->new(id => $args->{player}{id});
+      $model->init();
+    }
+
+    for (qw/weapon guard book/) {
+      my $pkg = ucfirst $_;
+      "$class::$pkg"->create($args->{$_});
+    }
   }
 
   sub erase {
+    my ($class, $id) = @_;
+
+    $class->delete($id);
+    for (qw/Command CommandList CommandLog/) {
+      my $model = "$class::$_"->new(id => $id);
+      $model->remove();
+    }
   }
 
   __PACKAGE__->meta->make_immutable();
 }
 
 1;
+
+__END__

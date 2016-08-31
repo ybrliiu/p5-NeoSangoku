@@ -2,20 +2,16 @@ use Sangoku 'test';
 use Test::More;
 use Test::Sangoku;
 use Test::Sangoku::PostgreSQL;
+use Test::Sangoku::Util qw/prepare_player_model_tests/;
 
+use Sangoku::Model::Player;
 use Sangoku::Model::Player::Book;
 
-use Sangoku::Util qw/load_config/;
+my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
+my $TEST_CLASS = 'Sangoku::Model::Player::Book';
+my $PSQL = Test::Sangoku::PostgreSQL->new();
 
-my $ADMIN_ID = load_config('etc/config/site.conf')->{site}{admin_id};
-my $TEST_CLASS    = 'Sangoku::Model::Player::Book';
-my $PSQL     = Test::Sangoku::PostgreSQL->new();
-
-# テストの下準備
-{
-  eval "require Sangoku::Model::$_" for qw/Country Town Player/;
-  "Sangoku::Model::$_"->init() for qw/Country Town Player/;
-}
+prepare_player_model_tests();
 
 subtest 'init' => sub {
   $TEST_CLASS->init();
@@ -23,11 +19,11 @@ subtest 'init' => sub {
 };
 
 subtest 'create' => sub {
-  ok $TEST_CLASS->create({player_id => $ADMIN_ID, power => 0});
+  ok $TEST_CLASS->create({player_id => $PLAYER_ID, power => 0});
 };
 
 subtest 'get' => sub {
-  ok(my $book = $TEST_CLASS->get($ADMIN_ID));
+  ok(my $book = $TEST_CLASS->get($PLAYER_ID));
   is $book->name, '紙切れ';
 };
 

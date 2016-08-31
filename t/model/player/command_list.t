@@ -6,7 +6,7 @@ use Test::Exception;
 
 use Sangoku::Model::Player::CommandList;
 
-my $TR   = Test::Record->new();
+my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::Player::CommandList';
 my $OBJ;
 my $PLAYER_ID = 'test_player';
@@ -20,10 +20,11 @@ subtest 'init' => sub {
   ok $OBJ->init($PLAYER_ID);
   
   my $list = $OBJ->get_all();
-  is($list->[0]->name, '-');
+  my $default_name = $OBJ->CLASS->DEFAULT_NAME;
+  is($list->[0]->name, $default_name);
   
   my $max = $TEST_CLASS->CLASS->MAX();
-  is($list->[$max - 1]->name, '-');
+  is($list->[$max - 1]->name, $default_name);
 
   dies_ok { $OBJ->at(2) };
 };

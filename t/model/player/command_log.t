@@ -5,7 +5,7 @@ use Test::Record;
 
 use Sangoku::Model::Player::CommandLog;
 
-my $TR   = Test::Record->new();
+my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::Player::CommandLog';
 my $OBJ;
 my $PLAYER_ID = 'test_player';
