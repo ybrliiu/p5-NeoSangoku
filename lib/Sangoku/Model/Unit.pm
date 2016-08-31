@@ -14,9 +14,9 @@ package Sangoku::Model::Unit {
   }
 
   sub create {
-    my ($class, %args) = @_;
-    validate_keys(\%args => [qw/id name country_name message/]);
-    $class->db->do_insert(TABLE_NAME() => \%args);
+    my ($class, $args) = @_;
+    validate_keys($args => [qw/id name country_name message/]);
+    $class->db->do_insert(TABLE_NAME() => $args);
   }
 
   sub delete {

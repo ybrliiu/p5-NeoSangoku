@@ -23,12 +23,12 @@ subtest 'init' => sub {
 };
 
 subtest 'create' => sub {
-  ok $class->create(
+  ok $class->create({
     id   => $admin_id,
     name => 'テスト部隊',
     message      => '',
     country_name => '無所属',
-  );
+  });
 };
 
 subtest 'get' => sub {

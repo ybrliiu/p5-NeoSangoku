@@ -14,7 +14,7 @@ package Sangoku::Model::Player {
 
     # 管理人を登録
     my $site = load_config('etc/config/site.conf')->{'site'};
-    $class->create(
+    $class->create({
       id   => $site->{admin_id},
       name => '管理人',
       pass => $site->{admin_pass},
@@ -27,7 +27,7 @@ package Sangoku::Model::Player {
       popular      => 10,
       loyalty      => 10,
       update_time  => time,
-    );
+    });
   };
 
   sub get {
@@ -36,9 +36,9 @@ package Sangoku::Model::Player {
   }
 
   sub create {
-    my ($class, %args) = @_;
-    validate_keys(\%args => [qw/id name pass icon country_name town_name force intellect leadership popular loyalty update_time/]);
-    $class->db->do_insert(TABLE_NAME() => \%args);
+    my ($class, $args) = @_;
+    validate_keys($args => [qw/id name pass icon country_name town_name force intellect leadership popular loyalty update_time/]);
+    $class->db->do_insert(TABLE_NAME() => $args);
   }
 
   sub delete {
@@ -47,8 +47,9 @@ package Sangoku::Model::Player {
   }
 
   sub regist {
-    my ($class, %args) = @_;
-    validate_keys(\%args => [qw/player weapon guard book/]);
+    my ($class, $args) = @_;
+    validate_keys($args => [qw/player weapon guard book/]);
+    $class->create($args->{player});
   }
 
   sub erase {
