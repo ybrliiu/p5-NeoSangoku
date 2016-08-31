@@ -6,26 +6,26 @@ use Test::Exception;
 
 use Sangoku::Model::Player::CommandList;
 
-my $rec   = Test::Record->new();
-my $class = 'Sangoku::Model::Player::CommandList';
-my $obj;
-my $player_id = 'test_player';
+my $TR   = Test::Record->new();
+my $TEST_CLASS = 'Sangoku::Model::Player::CommandList';
+my $OBJ;
+my $PLAYER_ID = 'test_player';
 
 subtest 'new' => sub {
-  $obj = $class->new(id => $player_id);
-  isa_ok($obj, $class);
+  $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);
+  isa_ok($OBJ, $TEST_CLASS);
 };
 
 subtest 'init' => sub {
-  ok $obj->init($player_id);
+  ok $OBJ->init($PLAYER_ID);
   
-  my $list = $obj->get_all();
+  my $list = $OBJ->get_all();
   is($list->[0]->name, '-');
   
-  my $max = $class->CLASS->MAX();
+  my $max = $TEST_CLASS->CLASS->MAX();
   is($list->[$max - 1]->name, '-');
 
-  dies_ok { $obj->at(2) };
+  dies_ok { $OBJ->at(2) };
 };
 
 subtest 'save' => sub {
@@ -33,24 +33,24 @@ subtest 'save' => sub {
     name    => '',
     command => [0 .. 10],
   };
-  ok $obj->save(0 => $data);
-  is($obj->at(0)->name, '保存リスト0');
+  ok $OBJ->save(0 => $data);
+  is($OBJ->at(0)->name, '保存リスト0');
 };
 
 subtest 'change_name' => sub {
-  ok $obj->change_name(0 => 'new_name');
-  ok(my $command_list = $obj->at(0));
+  ok $OBJ->change_name(0 => 'new_name');
+  ok(my $command_list = $OBJ->at(0));
   is($command_list->name(), 'new_name');
-  dies_ok { $obj->change_name(1) };
+  dies_ok { $OBJ->change_name(1) };
 };
 
 subtest 'delete' => sub {
-  ok $obj->delete(0);
-  dies_ok { $obj->at(0) };
+  ok $OBJ->delete(0);
+  dies_ok { $OBJ->at(0) };
 };
 
 subtest 'remove' => sub {
-  ok $obj->remove();
+  ok $OBJ->remove();
 };
 
 done_testing();

@@ -5,30 +5,30 @@ use Test::Record;
 
 use Sangoku::Model::Player::CommandLog;
 
-my $rec   = Test::Record->new();
-my $class = 'Sangoku::Model::Player::CommandLog';
-my $obj;
-my $player_id = 'test_player';
+my $TR   = Test::Record->new();
+my $TEST_CLASS = 'Sangoku::Model::Player::CommandLog';
+my $OBJ;
+my $PLAYER_ID = 'test_player';
 
 subtest 'new' => sub {
-  $obj = $class->new(id => $player_id);
-  isa_ok($obj, $class);
+  $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);
+  isa_ok($OBJ, $TEST_CLASS);
 };
 
 subtest 'init' => sub {
-  ok $obj->init($player_id);
-  my $list = $obj->get_all();
+  ok $OBJ->init($PLAYER_ID);
+  my $list = $OBJ->get_all();
   ok !@$list;
 };
 
 subtest 'add' => sub {
-  ok $obj->add('this is test log.');
-  ok(my $list = $obj->get_all);
+  ok $OBJ->add('this is test log.');
+  ok(my $list = $OBJ->get_all);
   like $list->[0], qr/this is test log./;
 };
 
 subtest 'remove' => sub {
-  ok $obj->remove();
+  ok $OBJ->remove();
 };
 
 done_testing();

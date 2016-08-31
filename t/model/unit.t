@@ -7,8 +7,8 @@ use Sangoku::Model::Unit;
 
 use Sangoku::Util qw/load_config/;
 
-my $class    = 'Sangoku::Model::Unit';
-my $psql     = Test::Sangoku::PostgreSQL->new();
+my $TEST_CLASS    = 'Sangoku::Model::Unit';
+my $PSQL     = Test::Sangoku::PostgreSQL->new();
 my $admin_id = load_config('etc/config/site.conf')->{'site'}{'admin_id'};
 
 # テストの下準備
@@ -18,12 +18,12 @@ my $admin_id = load_config('etc/config/site.conf')->{'site'}{'admin_id'};
 }
 
 subtest 'init' => sub {
-  $class->init();
+  $TEST_CLASS->init();
   ok 1;
 };
 
 subtest 'create' => sub {
-  ok $class->create({
+  ok $TEST_CLASS->create({
     id   => $admin_id,
     name => 'テスト部隊',
     message      => '',
@@ -32,7 +32,7 @@ subtest 'create' => sub {
 };
 
 subtest 'get' => sub {
-  ok(my $unit = $class->get($admin_id));
+  ok(my $unit = $TEST_CLASS->get($admin_id));
   is $unit->name, 'テスト部隊';
 };
 

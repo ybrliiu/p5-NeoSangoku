@@ -5,32 +5,32 @@ use Test::Record;
 
 use Sangoku::Model::Player::Command;
 
-my $rec   = Test::Record->new();
-my $class = 'Sangoku::Model::Player::Command';
-my $obj;
-my $player_id = 'test_player';
+my $TR   = Test::Record->new();
+my $TEST_CLASS = 'Sangoku::Model::Player::Command';
+my $OBJ;
+my $PLAYER_ID = 'test_player';
 
 subtest 'new' => sub {
-  $obj = $class->new(id => $player_id);
-  isa_ok($obj, $class);
+  $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);
+  isa_ok($OBJ, $TEST_CLASS);
 };
 
 subtest 'init' => sub {
-  ok $obj->init($player_id);
+  ok $OBJ->init($PLAYER_ID);
   
-  my $list = $obj->get_all();
+  my $list = $OBJ->get_all();
   is($list->[0]->id, 'None');
   
-  my $max = $class->CLASS->MAX();
+  my $max = $TEST_CLASS->CLASS->MAX();
   is($list->[$max - 1]->id, 'None');
 };
 
 subtest 'input' => sub {
-  ok $obj->input(undef, [0 .. 10]);
+  ok $OBJ->input(undef, [0 .. 10]);
 };
 
 subtest 'remove' => sub {
-  ok $obj->remove();
+  ok $OBJ->remove();
 };
 
 done_testing();

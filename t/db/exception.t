@@ -4,11 +4,11 @@ use Test::Sangoku;
 use Test::Exception; # 例外を伴うテスト
 
 use Sangoku::DB::Exception;
-my $class = 'Sangoku::DB::Exception';
+my $TEST_CLASS = 'Sangoku::DB::Exception';
 
 subtest 'throw exception' => sub {
   throws_ok {
-    $class->throw(
+    $TEST_CLASS->throw(
       message => 'test_throw',
       sql     => 'TEST SQL',
       reason  => 'test reason',
@@ -19,7 +19,7 @@ subtest 'throw exception' => sub {
 
 subtest 'operation verification' => sub {
   eval {
-    $class->throw(
+    $TEST_CLASS->throw(
       message => 'test_throw',
       sql     => 'TEST SQL',
       reason  => 'test reason',
@@ -27,7 +27,7 @@ subtest 'operation verification' => sub {
     )
   };
   my $e = $@;
-  ok $class->caught($e), 'discriminate error';
+  ok $TEST_CLASS->caught($e), 'discriminate error';
   diag $e;
 };
 

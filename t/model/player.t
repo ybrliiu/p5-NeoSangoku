@@ -8,8 +8,8 @@ use Sangoku::Model::Player;
 
 use Sangoku::Util qw/load_config/;
 
-my $class = 'Sangoku::Model::Player';
-my $psql  = Test::Sangoku::PostgreSQL->new();
+my $TEST_CLASS = 'Sangoku::Model::Player';
+my $PSQL  = Test::Sangoku::PostgreSQL->new();
 
 # テストの下準備
 {
@@ -18,14 +18,14 @@ my $psql  = Test::Sangoku::PostgreSQL->new();
 }
 
 subtest 'init' => sub {
-  $class->init();
+  $TEST_CLASS->init();
   ok 1;
 };
 
 subtest 'get' => sub {
   my $site = load_config('etc/config/site.conf')->{'site'};
   my $admin_id = $site->{admin_id};
-  ok(my $town = $class->get($admin_id));
+  ok(my $town = $TEST_CLASS->get($admin_id));
   is $town->name, '管理人';
 };
 

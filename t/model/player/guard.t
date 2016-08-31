@@ -7,10 +7,9 @@ use Sangoku::Model::Player::Guard;
 
 use Sangoku::Util qw/load_config/;
 
-my $site     = load_config('etc/config/site.conf')->{'site'};
-my $admin_id = $site->{admin_id};
-my $class    = 'Sangoku::Model::Player::Guard';
-my $psql     = Test::Sangoku::PostgreSQL->new();
+my $ADMIN_ID = load_config('etc/config/site.conf')->{site}{admin_id};
+my $TEST_CLASS    = 'Sangoku::Model::Player::Guard';
+my $PSQL     = Test::Sangoku::PostgreSQL->new();
 
 # テストの下準備
 {
@@ -19,16 +18,16 @@ my $psql     = Test::Sangoku::PostgreSQL->new();
 }
 
 subtest 'init' => sub {
-  $class->init();
+  $TEST_CLASS->init();
   ok 1;
 };
 
 subtest 'create' => sub {
-  ok $class->create({player_id => $admin_id, power => 0});
+  ok $TEST_CLASS->create({player_id => $ADMIN_ID, power => 0});
 };
 
 subtest 'get' => sub {
-  ok(my $book = $class->get($admin_id));
+  ok(my $book = $TEST_CLASS->get($ADMIN_ID));
   is $book->name, '麻の服';
 };
 

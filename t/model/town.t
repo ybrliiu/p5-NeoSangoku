@@ -5,8 +5,8 @@ use Test::Sangoku::PostgreSQL;
 
 use Sangoku::Model::Town;
 
-my $class = 'Sangoku::Model::Town';
-my $psql  = Test::Sangoku::PostgreSQL->new();
+my $TEST_CLASS = 'Sangoku::Model::Town';
+my $PSQL  = Test::Sangoku::PostgreSQL->new();
 
 # テストの下準備
 {
@@ -15,12 +15,12 @@ my $psql  = Test::Sangoku::PostgreSQL->new();
 }
 
 subtest 'init' => sub {
-  $class->init();
+  $TEST_CLASS->init();
   ok 1;
 };
 
 subtest 'get' => sub {
-  ok(my $town = $class->get('金陵'));
+  ok(my $town = $TEST_CLASS->get('金陵'));
   is $town->name, '金陵';
 };
 

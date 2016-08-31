@@ -5,16 +5,16 @@ use Test::Sangoku::PostgreSQL;
 
 use Sangoku::Model::Country;
 
-my $class = 'Sangoku::Model::Country';
-my $psql  = Test::Sangoku::PostgreSQL->new();
+my $TEST_CLASS = 'Sangoku::Model::Country';
+my $PSQL  = Test::Sangoku::PostgreSQL->new();
 
 subtest 'init' => sub {
-  $class->init();
+  $TEST_CLASS->init();
   ok 1;
 };
 
 subtest 'get' => sub {
-  ok(my $country = $class->get('無所属'));
+  ok(my $country = $TEST_CLASS->get('無所属'));
   is $country->name, '無所属';
 };
 
