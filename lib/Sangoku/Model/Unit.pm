@@ -13,7 +13,7 @@ package Sangoku::Model::Unit {
     $class->db->single(TABLE_NAME() => {id => $id});
   }
 
-  sub regist {
+  sub create {
     my ($class, %args) = @_;
     validate_keys(\%args => [qw/id name country_name message/]);
     $class->db->do_insert(TABLE_NAME() => \%args);

@@ -74,7 +74,6 @@ package Sangoku::Util {
   sub child_module_list {
     my ($pkg) = @_;
     $pkg //= '';
-    warn $pkg;
 
     my $root = project_root_dir() . 'lib/';
     (my $dir = $root . $pkg) =~ s!::!/!g;

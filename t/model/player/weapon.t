@@ -23,8 +23,8 @@ subtest 'init' => sub {
   ok 1;
 };
 
-subtest 'regist' => sub {
-  ok $class->regist(player_id => $admin_id, power => 0);
+subtest 'create' => sub {
+  ok $class->create(player_id => $admin_id, power => 0);
 };
 
 subtest 'get' => sub {

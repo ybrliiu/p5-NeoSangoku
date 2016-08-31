@@ -13,7 +13,7 @@ package Sangoku::Model::Player::Guard {
     return $class->db->single(TABLE_NAME() => {player_id => $player_id});
   }
 
-  sub regist {
+  sub create {
     my ($class, %args) = @_;
     validate_keys(\%args => [qw/player_id power/]);
     $class->db->do_insert(TABLE_NAME() => \%args);

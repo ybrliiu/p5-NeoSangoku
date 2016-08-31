@@ -29,7 +29,7 @@ subtest 'get' => sub {
   is $town->name, '管理人';
 };
 
-subtest 'regist' => sub {
+subtest 'create' => sub {
   ok 1;
 };
 
