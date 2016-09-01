@@ -1,5 +1,6 @@
 # スキーマ設計
 
+```
 DB/Row/Player/
              /Config
              /Weapon
@@ -28,9 +29,9 @@ DB/Row/Player/
       /IdleTalk
       /Diplomacy    # 国家間の外交
       /IconUploader
+```
 
-
-#スキーマ定義
+# スキーマ定義
 
 etc/document/sangoku_schema.sql を参照
 

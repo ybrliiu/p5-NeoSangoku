@@ -1,4 +1,5 @@
 # ディレクトリ構成
+```
 00_compile.pm
 01_sangoku.pm
 model/
@@ -9,8 +10,9 @@ web/
 
 harriet/          # Harriet用スクリプト
 lib/Test/Sangoku/ # テスト専用のモジュール群
+```
 
-# 基本構成
+# 基本的な書き方
 ``` perl
 use Sangoku 'test';
 use Test::More;
@@ -24,4 +26,14 @@ my $TEST_CLASS = 'Sangoku::TestClass';      # テストするモジュール
 
 my $PSQL = Test::Sangoku::PostgreSQL->new();
 my $TR = Test::Record->new();
+
+subtest 'first test' => sub {
+  ok 1;
+  ...
+};
+
+...
+
+done_testing();
+
 ```

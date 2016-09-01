@@ -1,12 +1,14 @@
 # Model層規約
-必要に応じてSangoku::Model::Roleを使用
-オブジェクト指向：Mouse(継承、Mixin、委譲など必要なときのみ使用) ただし、DB::Row::*は非Mouse(Mouseだと上手く動かないっぽい)
-引数チェック:自作関数(Sangoku::Util::validate_args), or Data::Validater
-例外処理:eval-if
-必要に応じてException::Tinyを継承した例外搬送クラスを作成
+・必要に応じてSangoku::Model::Roleを使用  
+・オブジェクト指向：Mouse(継承、Mixin、委譲など必要なときのみ使用)  
+・引数チェック:自作関数(Sangoku::Util::validate_keys, validate_args),  
+・引数が多い時の受取方法:HashRef  
+・例外処理:eval-if  
+・必要に応じてException::Tinyを継承した例外搬送クラスを作成  
+・クラスメソッドのみで作成できるならそれで良い  
 
-できる限りクラスメソッドのみで作成
-
+## ディレクトリ構成
+```
 Model/Player/
             /Config
             /Weapon
@@ -47,30 +49,36 @@ Model/Player/
      /Soldier
      /Skill
 
-     /Role/DB.pm
-          /Config.pm
-          /Log.pm
-          /Letter.pm
-          /BBS.pm
-          /Redis.pm
+     /Role/DB
+            /Parent
+          /Config
+          /Log
+          /Letter
+          /BBS
+          /Redis
+```
 
-# Config層規約
-Sangoku::Config以下に設定ファイルのクラスを記述
+# API層規約
+・Model層で管理対象になるオブジェクトクラスの定義をする。(例:Record.pmのクラス、設定ファイルの情報のオブジェクトクラス(武器、兵士など))  
+・Mouseで記述する。  
 
 # Service層規約
-・URLのエンドポイントに応じてクラス作成 + ループ処理の処理
-・バリデーションもここに書く(Mojo::Validatorで)
-・トランザクション&eval-ifはここで(=これもインスタンス化
-・エラー検証＆エラーデータ格納はSangoku::Validatorに
+・URLのエンドポイントに応じてクラス作成 + ループ(バッチ)処理の処理  
+・バリデーションもここに書く(Sangoku::Validatorで)  
+・トランザクション&eval-ifはここで  
+・トランザクションの管理はこちらで基本する。  
+・エラー検証＆エラーデータ格納はSangoku::Validatorに  
 
+```
      /Command/
              /各コマンドのモジュール
-
+```
 
 # Controller規約
-基本的に以下のように書く
-バリデーションは基本的にここでしない
+基本的に以下のように書く。  
+バリデーションは基本的にここでしない。  
 
+``` perl
 sub root {
   my self = shift;
 
@@ -84,4 +92,5 @@ sub root {
   # or
   $self->render(template => 'player/unit/root', variant => 'phone');
 }
+```
 

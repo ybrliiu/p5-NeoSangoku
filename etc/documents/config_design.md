@@ -1,3 +1,5 @@
+# 設定ファイル設計
+```
 hypnotoad.conf # 本番サーバ用設定ファイル
 db.conf        # データベース設定ファイル
 NYTProf.conf   # Devel::NYTProfの設定ファイル
@@ -14,3 +16,4 @@ book.conf      # 書籍データ一覧
 soldier.conf   # 兵士データ一覧
 skill.conf     # スキルデータ一覧
 init_town.conf # 都市初期化データ
+```

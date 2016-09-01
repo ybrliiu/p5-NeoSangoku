@@ -1,7 +1,5 @@
 # next
-テストに使用するプレイヤーデータの作成  
-create Record::FlockManager
-
+Util validate_args
 Model::Player作成
 Row::Player
 test追記、テスト共通部分くくりだす
