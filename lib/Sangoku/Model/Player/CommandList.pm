@@ -46,7 +46,7 @@ package Sangoku::Model::Player::CommandList {
 
   sub change_name {
     my ($self, $no, $name) = @_;
-    die 'nameが指定されていません' if !$name;
+    die 'nameが指定されていません' unless $name;
     # 空データでないかチェック
     $self->at($no);
     $self->save($no => {name => $name});

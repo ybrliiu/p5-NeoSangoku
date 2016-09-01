@@ -17,7 +17,7 @@ package Sangoku::API::Player::CommandLog {
   around 'BUILDARGS' => sub {
     my ($orig, $class, @args) = @_;
 
-    if (@args == 1 && ! ref $args[0]) {
+    if (@args == 1 && !ref $args[0]) {
       return $class->$orig(log => $args[0]);
     } else {
       return $class->$orig(@args);
@@ -26,7 +26,7 @@ package Sangoku::API::Player::CommandLog {
 
   sub BUILD {
     my ($self) = @_;
-    $self->{log} = $self->{log} . "(@{[ daytime() ]})";
+    $self->{log} = "$self->{log}(@{[ daytime() ]})";
   }
 
   # ファイルの場所

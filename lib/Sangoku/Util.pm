@@ -33,7 +33,7 @@ package Sangoku::Util {
 
     croak 'HashRefが渡されていません' if ref $args ne 'HASH';
 
-    my @not_exists = map { !exists($args->{$_}) ? $_ : () } @$keys;
+    my @not_exists = grep { not exists $args->{$_} } @$keys;
     if (@not_exists) {
       my ($file, $line) = (caller 1)[1 .. 2];
       # die関数の最後に\nを入れるとdieした時にファイル名と行が出力されなくなる
