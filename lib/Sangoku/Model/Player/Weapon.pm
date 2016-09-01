@@ -9,8 +9,8 @@ package Sangoku::Model::Player::Weapon {
   use constant TABLE_NAME => 'player_weapon';
 
   sub get {
-    my ($class, $player_id) = @_;
-    return $class->db->single(TABLE_NAME() => {player_id => $player_id});
+    my ($class, $id) = @_;
+    return $class->db->single(TABLE_NAME() => {player_id => $id});
   }
 
   sub create {

@@ -241,7 +241,7 @@ package Sangoku::DB::Schema {
     columns (
       {name => 'player_id', type => -1},
       {name => 'command_name', type => -1},
-      {name => 'execution_num', type => 4},
+      {name => 'execute_count', type => 4},
     );
     row_class 'Sangoku::DB::Row::Player::CommandRecord';
   };
