@@ -8,12 +8,12 @@ package Sangoku::Model::Player::Config {
 
   sub get {
     my ($class, $id) = @_;
-    return $class->db->single(TABLE_NAME() => {player_id => $id});
+    return $class->db->single(TABLE_NAME, {player_id => $id});
   }
 
   sub create {
     my ($class, $id) = @_;
-    $class->db->do_insert(TABLE_NAME() => {player_id => $id});
+    $class->db->do_insert(TABLE_NAME, {player_id => $id});
   }
 
   __PACKAGE__->meta->make_immutable();

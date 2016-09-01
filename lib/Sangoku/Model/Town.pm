@@ -14,13 +14,13 @@ package Sangoku::Model::Town {
     my $init_data = load_config('etc/config/data/init_town.conf')->{'init_town'};
     
     for my $town (values %$init_data) {
-      $class->db->do_insert(TABLE_NAME() => $town);
+      $class->db->do_insert(TABLE_NAME, $town);
     }
   };
 
   sub get {
     my ($class, $name) = @_;
-    $class->db->single(TABLE_NAME() => {name => $name});
+    $class->db->single(TABLE_NAME, {name => $name});
   }
 
   __PACKAGE__->meta->make_immutable();

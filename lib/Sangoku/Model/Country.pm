@@ -11,17 +11,17 @@ package Sangoku::Model::Country {
 
   after 'init' => sub {
     my ($class) = @_;
-    $class->db->do_insert(TABLE_NAME() => {name => '無所属', color => 'gray'});
+    $class->db->do_insert(TABLE_NAME, {name => '無所属', color => 'gray'});
   };
 
   sub get {
     my ($class, $name) = @_;
-    $class->db->single(TABLE_NAME() => {name => $name});
+    $class->db->single(TABLE_NAME, {name => $name});
   }
 
   sub delete {
     my ($class, $name) = @_;
-    $class->db->delete(TABLE_NAME() => {name => $name});
+    $class->db->delete(TABLE_NAME, {name => $name});
   }
 
   __PACKAGE__->meta->make_immutable();

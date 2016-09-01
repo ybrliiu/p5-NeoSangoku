@@ -10,13 +10,13 @@ package Sangoku::Model::Player::CommandRecord {
 
   sub get {
     my ($self) = @_;
-    my @columns = $self->db->search(TABLE_NAME() => {player_id => $self->id});
+    my @columns = $self->db->search(TABLE_NAME, {player_id => $self->id});
     return \@columns;
   }
 
   sub add {
     my ($self, $name) = @_;
-    $self->db->do_insert(TABLE_NAME() => {
+    $self->db->do_insert(TABLE_NAME, {
       player_id     => $self->id,
       command_name  => $name,
       execute_count => 1,
@@ -26,7 +26,7 @@ package Sangoku::Model::Player::CommandRecord {
   sub count {
     my ($self, $name) = @_;
 
-    my $row = $self->db->single(TABLE_NAME() => {
+    my $row = $self->db->single(TABLE_NAME, {
       player_id    => $self->id,
       command_name => $name,
     });
@@ -36,7 +36,7 @@ package Sangoku::Model::Player::CommandRecord {
 
   sub get_from_command_name {
     my ($class, $name) = @_;
-    my @columns = $class->db->search(TABLE_NAME() => {command_name => $name});
+    my @columns = $class->db->search(TABLE_NAME, {command_name => $name});
     return \@columns;
   }
 

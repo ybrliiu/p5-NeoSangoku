@@ -10,13 +10,13 @@ package Sangoku::Model::Player::Skill {
 
   sub get {
     my ($self) = @_;
-    my @columns = $self->db->search(TABLE_NAME() => {player_id => $self->id});
+    my @columns = $self->db->search(TABLE_NAME, {player_id => $self->id});
     return \@columns;
   }
 
   sub get_skills {
     my ($self, $category) = @_;
-    my @columns = $self->db->search(TABLE_NAME() => {
+    my @columns = $self->db->search(TABLE_NAME, {
       player_id      => $self->id,
       skill_category => $category,
     });
@@ -25,7 +25,7 @@ package Sangoku::Model::Player::Skill {
 
   sub add {
     my ($self, $category, $name) = @_;
-    $self->db->do_insert(TABLE_NAME() => {
+    $self->db->do_insert(TABLE_NAME, {
       player_id      => $self->id,
       skill_category => $category,
       skill_name     => $name,
