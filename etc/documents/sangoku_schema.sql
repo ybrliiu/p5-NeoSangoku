@@ -38,7 +38,7 @@ CREATE TABLE "country_conference_thread" (
   "name"    text NOT NULL,
   "message" text NOT NULL,
   "icon" int NOT NULL,
-  "time" bigint NOT NULL
+  "time" text NOT NULL
 );
 
 CREATE TABLE "country_conference_reply" (
@@ -48,7 +48,7 @@ CREATE TABLE "country_conference_reply" (
   "name"    text NOT NULL,
   "message" text NOT NULL,
   "icon" int NOT NULL,
-  "time" bigint NOT NULL
+  "time" text NOT NULL
 );
 
 CREATE TABLE "country_letter" (
@@ -60,7 +60,7 @@ CREATE TABLE "country_letter" (
   "sender_country_name" text NOT NULL,
   "receiver_name"       text NOT NULL,
   "message" text NOT NULL,
-  "time"    bigint NOT NULL
+  "time"    text NOT NULL
 );
 
 
@@ -95,7 +95,7 @@ CREATE TABLE "town_letter" (
   "sender_country_name" text NOT NULL,
   "receiver_name"       text NOT NULL,
   "message" text NOT NULL,
-  "time"    bigint NOT NULL
+  "time"    text NOT NULL
 );
 
 
@@ -210,25 +210,24 @@ CREATE TABLE "player_letter" (
   "player_id" text REFERENCES "player" ("id") ON DELETE CASCADE,
   "id"        serial PRIMARY KEY,
   "sender_name" text NOT NULL,
-  "sender_icon"  int NOT NULL,
+  "sender_icon" int NOT NULL,
   "sender_town_name"    text NOT NULL,
   "sender_country_name" text NOT NULL,
   "receiver_name"       text NOT NULL,
   "message" text NOT NULL,
-  "time"    bigint NOT NULL
+  "time"    text NOT NULL
 );
 
 CREATE TABLE "player_invite" (
   "player_id" text REFERENCES "player" ("id") ON DELETE CASCADE,
   "id"        serial PRIMARY KEY,
   "sender_name" text NOT NULL,
-  "sender_id"   text NOT NULL,
-  "sender_icon"  int NOT NULL,
+  "sender_icon" int NOT NULL,
   "sender_town_name"    text NOT NULL,
   "sender_country_name" text NOT NULL,
   "receiver_name"       text NOT NULL,
   "message" text NOT NULL,
-  "time"    bigint NOT NULL
+  "time"    text NOT NULL
 );
 
 
@@ -253,7 +252,7 @@ CREATE TABLE "unit_letter" (
   "sender_country_name" text NOT NULL,
   "receiver_name"       text NOT NULL,
   "message" text NOT NULL,
-  "time"    bigint NOT NULL
+  "time"    text NOT NULL
 );
 
 
@@ -284,7 +283,7 @@ CREATE TABLE "forum_thread" (
   "name"    text NOT NULL,
   "message" text NOT NULL,
   "icon" int NOT NULL,
-  "time" bigint NOT NULL
+  "time" text NOT NULL
 );
 
 -- 専用BBS返信
@@ -294,7 +293,7 @@ CREATE TABLE "forum_reply" (
   "name"    text NOT NULL,
   "message" text NOT NULL,
   "icon" int NOT NULL,
-  "time" bigint NOT NULL
+  "time" text NOT NULL
 );
 
 
@@ -304,7 +303,7 @@ CREATE TABLE "idle_talk" (
   "name" text NOT NULL,
   "icon"  int NOT NULL,
   "message" text NOT NULL,
-  "time"    bigint NOT NULL
+  "time"    text NOT NULL
 );
 
 
@@ -325,6 +324,6 @@ CREATE TABLE "diplomacy" (
 CREATE TABLE "icon_uploader" (
   "id"   serial PRIMARY KEY,
   "tag"  text DEFAULT '',
-  "time" bigint NOT NULL
+  "time" text NOT NULL
 );
 

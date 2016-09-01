@@ -28,7 +28,7 @@ package Sangoku::DB::Schema {
       {name => 'name', type => -1},
       {name => 'message', type => -1},
       {name => 'icon', type => 4},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
     row_class 'Sangoku::DB::Row::Country::ConferenceReply';
   };
@@ -43,7 +43,7 @@ package Sangoku::DB::Schema {
       {name => 'name', type => -1},
       {name => 'message', type => -1},
       {name => 'icon', type => 4},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
     row_class 'Sangoku::DB::Row::Country::ConferenceThread';
   };
@@ -73,7 +73,7 @@ package Sangoku::DB::Schema {
       {name => 'sender_country_name', type => -1},
       {name => 'receiver_name', type => -1},
       {name => 'message', type => -1},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
     row_class 'Sangoku::DB::Row::Country::Letter';
   };
@@ -118,7 +118,7 @@ package Sangoku::DB::Schema {
       {name => 'name', type => -1},
       {name => 'message', type => -1},
       {name => 'icon', type => 4},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
   };
 
@@ -131,7 +131,7 @@ package Sangoku::DB::Schema {
       {name => 'name', type => -1},
       {name => 'message', type => -1},
       {name => 'icon', type => 4},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
   };
 
@@ -141,7 +141,7 @@ package Sangoku::DB::Schema {
     columns (
       {name => 'id', type => 4},
       {name => 'tag', type => -1},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
   };
 
@@ -153,7 +153,7 @@ package Sangoku::DB::Schema {
       {name => 'name', type => -1},
       {name => 'icon', type => 4},
       {name => 'message', type => -1},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
   };
 
@@ -277,13 +277,12 @@ package Sangoku::DB::Schema {
       {name => 'player_id', type => -1},
       {name => 'id', type => 4},
       {name => 'sender_name', type => -1},
-      {name => 'sender_id', type => -1},
       {name => 'sender_icon', type => 4},
       {name => 'sender_town_name', type => -1},
       {name => 'sender_country_name', type => -1},
       {name => 'receiver_name', type => -1},
       {name => 'message', type => -1},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
     row_class 'Sangoku::DB::Row::Player::Invite';
   };
@@ -300,7 +299,7 @@ package Sangoku::DB::Schema {
       {name => 'sender_country_name', type => -1},
       {name => 'receiver_name', type => -1},
       {name => 'message', type => -1},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
     row_class 'Sangoku::DB::Row::Player::Letter';
   };
@@ -395,7 +394,7 @@ package Sangoku::DB::Schema {
       {name => 'sender_country_name', type => -1},
       {name => 'receiver_name', type => -1},
       {name => 'message', type => -1},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
     row_class 'Sangoku::DB::Row::Town::Letter';
   };
@@ -425,7 +424,7 @@ package Sangoku::DB::Schema {
       {name => 'sender_country_name', type => -1},
       {name => 'receiver_name', type => -1},
       {name => 'message', type => -1},
-      {name => 'time', type => -5},
+      {name => 'time', type => -1},
     );
     row_class 'Sangoku::DB::Row::Unit::Letter';
   };
