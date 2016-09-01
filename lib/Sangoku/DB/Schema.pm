@@ -277,6 +277,7 @@ package Sangoku::DB::Schema {
       {name => 'player_id', type => -1},
       {name => 'id', type => 4},
       {name => 'sender_name', type => -1},
+      {name => 'sender_id', type => -1},
       {name => 'sender_icon', type => 4},
       {name => 'sender_town_name', type => -1},
       {name => 'sender_country_name', type => -1},
@@ -320,7 +321,7 @@ package Sangoku::DB::Schema {
     pk 'player_id';
     columns (
       {name => 'player_id', type => -1},
-      {name => 'type', type => -1},
+      {name => 'name', type => -1},
       {name => 'people', type => 4},
       {name => 'training', type => 4},
     );

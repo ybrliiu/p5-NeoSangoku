@@ -193,7 +193,7 @@ CREATE TABLE "player_battle_record" (
 
 CREATE TABLE "player_soldier" (
   "player_id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
-  "type"      text DEFAULT '雑兵',
+  "name"      text DEFAULT '雑兵',
   -- Rowクラス側では兵士オブジェクトを委譲する
   "people"    int DEFAULT 0,
   "training"  int DEFAULT 0
@@ -222,6 +222,7 @@ CREATE TABLE "player_invite" (
   "player_id" text REFERENCES "player" ("id") ON DELETE CASCADE,
   "id"        serial PRIMARY KEY,
   "sender_name" text NOT NULL,
+  "sender_id"   text NOT NULL,
   "sender_icon" int NOT NULL,
   "sender_town_name"    text NOT NULL,
   "sender_country_name" text NOT NULL,
