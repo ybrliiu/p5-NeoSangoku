@@ -1,8 +1,10 @@
 package Record::Exception {
 
+  use Record;
   use Mouse;
   extends qw/Exception::Tiny/;
-  use Record;
+
+  use Carp qw/confess/;
 
   # 非Mouseクラス継承の際はアテリビュートを再宣言する必要がある(そもそも委譲を考慮した方がよいかも...)
   has [qw/message package file line/] => (is => 'ro', isa => 'Str', required => 1);

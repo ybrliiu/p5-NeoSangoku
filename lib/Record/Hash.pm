@@ -9,7 +9,7 @@ package Record::Hash {
   sub _build_data { {} }
   
   # データ取得
-  sub at {
+  sub fetch {
     my ($self, $key) = @_;
     my $data = $self->data;
     return exists($data->{$key}) ? $data->{$key} : Record::Exception->throw('キーが存在しません', $self);
@@ -61,7 +61,7 @@ package Record::Hash {
   # データ更新
   sub update {
     my ($self, $key, $obj) = @_;
-    $self->at($key);
+    $self->fetch($key);
     my $data = $self->data;
     $data->{$key} = $obj;
     $self->data($data);
@@ -71,7 +71,7 @@ package Record::Hash {
   # データ削除
   sub delete {
     my ($self, $key) = @_;
-    $self->at($key);
+    $self->fetch($key);
     my $data = $self->data;
     delete $data->{$key};
     $self->data($data);
