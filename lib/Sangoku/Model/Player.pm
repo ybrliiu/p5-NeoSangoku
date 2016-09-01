@@ -79,6 +79,8 @@ package Sangoku::Model::Player {
       my $pkg = ucfirst $_;
       "$class::$pkg"->create($args->{$_});
     }
+
+    "$class::$_"->create($args->{player}{id}) for qw/BattleRecord Config Soldier/;
   }
 
   sub erase {
