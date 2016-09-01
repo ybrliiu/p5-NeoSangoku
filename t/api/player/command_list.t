@@ -13,7 +13,7 @@ subtest 'check' => sub {
 
 subtest 'new' => sub {
   my $command_list = $TEST_CLASS->new();
-  isa_ok $command_list => $TEST_CLASS;
+  isa_ok $command_list, $TEST_CLASS;
   ok $command_list->is_default_name();
 };
 

@@ -22,7 +22,7 @@ subtest 'init' => sub {
 
 subtest 'new' => sub {
   $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);
-  isa_ok $OBJ => $TEST_CLASS;
+  isa_ok $OBJ, $TEST_CLASS;
 };
 
 subtest 'add' => sub {

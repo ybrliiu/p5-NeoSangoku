@@ -11,6 +11,11 @@ package Sangoku::Model::Player::Soldier {
     return $class->db->single(TABLE_NAME() => {player_id => $id});
   }
 
+  sub create {
+    my ($class) = @_;
+    $class->db->do_insert(TABLE_NAME() => {});
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 

@@ -15,7 +15,7 @@ subtest 'new' => sub {
     id     => 'Test',
     detail => 'てすと',
   );
-  isa_ok $command => $TEST_CLASS;
+  isa_ok $command, $TEST_CLASS;
 };
 
 subtest 'record_test' => sub {

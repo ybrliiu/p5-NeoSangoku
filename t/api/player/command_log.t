@@ -14,7 +14,7 @@ subtest 'check' => sub {
 
 subtest 'new' => sub {
   my $log = $TEST_CLASS->new('テストログ');
-  isa_ok $log => $TEST_CLASS;
+  isa_ok $log, $TEST_CLASS;
   like $log, qr/テストログ/;
   like $log, qr/@{[ daytime() ]}/;
 };

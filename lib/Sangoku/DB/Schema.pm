@@ -206,15 +206,15 @@ package Sangoku::DB::Schema {
     pk 'player_id';
     columns (
       {name => 'player_id', type => -1},
-      {name => 'atack_win', type => 4},
-      {name => 'atack_lose', type => 4},
+      {name => 'attack_win', type => 4},
+      {name => 'attack_lose', type => 4},
       {name => 'guard_win', type => 4},
       {name => 'guard_lose', type => 4},
       {name => 'draw', type => 4},
       {name => 'kill_people', type => 4},
       {name => 'die_people', type => 4},
       {name => 'conquer_town', type => 4},
-      {name => 'atack_town', type => 4},
+      {name => 'attack_town', type => 4},
       {name => 'wall_destroy', type => 4},
     );
     row_class 'Sangoku::DB::Row::Player::BattleRecord';

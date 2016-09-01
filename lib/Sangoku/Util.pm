@@ -2,6 +2,7 @@ package Sangoku::Util {
 
   use Sangoku;
 
+  use Carp qw/croak/;
   use Exporter 'import';
   our @EXPORT_OK = qw/project_root_dir load_config validate_keys minute_second daytime date datetime child_module_list load_child_module/;
 
@@ -30,11 +31,9 @@ package Sangoku::Util {
     my ($args, $keys, $name) = @_;
     $name = defined $name ? "$name\の" : '';
 
-    my @not_exists;
-    for (@$keys) {
-      push(@not_exists, $_) unless exists $args->{$_};
-    }
+    croak 'HashRefが渡されていません' if ref $args ne 'HASH';
 
+    my @not_exists = map { !exists($args->{$_}) ? $_ : () } @$keys;
     if (@not_exists) {
       my ($file, $line) = (caller 1)[1 .. 2];
       # die関数の最後に\nを入れるとdieした時にファイル名と行が出力されなくなる

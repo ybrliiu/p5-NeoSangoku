@@ -169,7 +169,7 @@ CREATE TABLE "player_book" (
 CREATE TABLE "player_command_record" (
   "player_id" text REFERENCES "player" ("id") ON DELETE CASCADE,
   "command_name"  text NOT NULL,
-  "execution_num" int DEFAULT 0,
+  "execute_count" int DEFAULT 0,
   PRIMARY KEY("player_id", "command_name")
   -- my $model = Jikokku::Model::Player::Command->new(id => 'plyaer_id');
   -- $model->get();
@@ -179,15 +179,15 @@ CREATE TABLE "player_command_record" (
 
 CREATE TABLE "player_battle_record" (
   "player_id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
-  "atack_win"    int DEFAULT 0,
-  "atack_lose"   int DEFAULT 0,
+  "attack_win"   int DEFAULT 0,
+  "attack_lose"  int DEFAULT 0,
   "guard_win"    int DEFAULT 0,
   "guard_lose"   int DEFAULT 0,
   "draw"         int DEFAULT 0,
   "kill_people"  int DEFAULT 0,
   "die_people"   int DEFAULT 0,
   "conquer_town" int DEFAULT 0,
-  "atack_town"   int DEFAULT 0,
+  "attack_town"  int DEFAULT 0,
   "wall_destroy" int DEFAULT 0
 );
 

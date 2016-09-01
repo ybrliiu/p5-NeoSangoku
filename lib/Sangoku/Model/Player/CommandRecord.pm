@@ -6,7 +6,7 @@ package Sangoku::Model::Player::CommandRecord {
 
   use constant TABLE_NAME => 'player_command_record';
 
-  has 'id' => (is => 'ro', isa => 'Str');
+  has 'id' => (is => 'ro', isa => 'Str', required => 1);
 
   sub get {
     my ($self) = @_;
