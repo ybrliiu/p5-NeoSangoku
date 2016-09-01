@@ -4,7 +4,7 @@ package Sangoku::Model::Unit {
   use Mouse;
   with 'Sangoku::Model::Role::DB';
 
-  use Sangoku::Util qw/validate_keys/;
+  use Sangoku::Util qw/validate_values/;
 
   use constant TABLE_NAME => 'unit';
 
@@ -15,7 +15,7 @@ package Sangoku::Model::Unit {
 
   sub create {
     my ($class, $args) = @_;
-    validate_keys($args => [qw/id name country_name message/]);
+    validate_values($args => [qw/id name country_name message/]);
     $class->db->do_insert(TABLE_NAME, $args);
   }
 

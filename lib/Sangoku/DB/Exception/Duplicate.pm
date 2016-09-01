@@ -6,11 +6,11 @@ package Sangoku::DB::Exception::Duplicate {
   use Class::Accessor::Lite new => 0;
   Class::Accessor::Lite->mk_ro_accessors(qw/table_name/);
 
-  use Sangoku::Util qw/validate_keys/;
+  use Sangoku::Util qw/validate_values/;
 
   sub throw {
     my ($class, %args) = @_;
-    validate_keys(\%args => [qw/message reason sql bind/]);
+    validate_values(\%args => [qw/message reason sql bind/]);
 
     $class->_throw(\%args, sub {
       my ($self) = @_;

@@ -7,11 +7,11 @@ package Sangoku::DB::Exception {
   use Class::Accessor::Lite new => 0;
   Class::Accessor::Lite->mk_ro_accessors(qw/reason sql bind call_package call_file call_line call_sub trace/);
 
-  use Sangoku::Util 'validate_keys';
+  use Sangoku::Util 'validate_values';
 
   sub throw {
     my ($class, %args) = @_;
-    validate_keys(\%args => [qw/message reason sql bind/]);
+    validate_values(\%args => [qw/message reason sql bind/]);
     $class->_throw(\%args);
   }
 

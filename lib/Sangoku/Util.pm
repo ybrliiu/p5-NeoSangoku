@@ -4,7 +4,7 @@ package Sangoku::Util {
 
   use Carp qw/croak/;
   use Exporter 'import';
-  our @EXPORT_OK = qw/project_root_dir load_config validate_keys minute_second daytime date datetime child_module_list load_child_module/;
+  our @EXPORT_OK = qw/project_root_dir load_config validate_values minute_second daytime date datetime child_module_list load_child_module/;
 
   use Cwd 'getcwd';
   use Config::PL;
@@ -27,7 +27,7 @@ package Sangoku::Util {
   }
 
   # 引数ハッシュのチェック
-  sub validate_keys {
+  sub validate_values {
     my ($args, $keys, $name) = @_;
     $name = defined $name ? "$name\の" : '';
 

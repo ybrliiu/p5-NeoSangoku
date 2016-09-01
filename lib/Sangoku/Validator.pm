@@ -15,7 +15,7 @@ package Sangoku::Validator {
   # => <input type="text" class="field-with-error">
   sub emphasis_error {
     my ($self, $key) = @_;
-    $self->is_error($key) ? 'field-with-error' : '';
+    return $self->is_error($key) ? 'field-with-error' : '';
   }
 
 }

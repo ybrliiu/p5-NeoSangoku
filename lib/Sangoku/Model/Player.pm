@@ -4,7 +4,7 @@ package Sangoku::Model::Player {
   use Mouse;
   with 'Sangoku::Model::Role::DB::Parent';
 
-  use Sangoku::Util qw/load_child_module validate_keys load_config/;
+  use Sangoku::Util qw/load_child_module validate_values load_config/;
   load_child_module(__PACKAGE__);
 
   use constant TABLE_NAME => 'player';
@@ -60,13 +60,13 @@ package Sangoku::Model::Player {
 
   sub create {
     my ($class, $args) = @_;
-    validate_keys($args => [qw/id name pass icon country_name town_name force intellect leadership popular loyalty update_time/]);
+    validate_values($args => [qw/id name pass icon country_name town_name force intellect leadership popular loyalty update_time/]);
     $class->db->do_insert(TABLE_NAME, $args);
   }
 
   sub regist {
     my ($class, $args) = @_;
-    validate_keys($args => [qw/player weapon guard book/]);
+    validate_values($args => [qw/player weapon guard book/]);
 
     $class->create($args->{player});
 

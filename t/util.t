@@ -7,10 +7,10 @@ use Sangoku::Util;
 
 sub test_sub {
   my ($args) = @_;
-  Sangoku::Util::validate_keys($args => [qw/name id/], 'something');
+  Sangoku::Util::validate_values($args => [qw/name id/], 'something');
 }
 
-subtest 'validate_keys' => sub {
+subtest 'validate_values' => sub {
   dies_ok(sub { test_sub({}) }, 'few argments');
   is($@, "somethingの キーが足りません(name, id) at t/util.t line 14\n");
   lives_ok(sub { test_sub({name => 'people', id => '7777'}) }, 'all ok');
