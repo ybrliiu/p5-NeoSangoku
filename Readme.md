@@ -1,10 +1,12 @@
+# NEO三国志NET
+CGIゲーム三国志NETを新しく作りなおしたゲームです。  
+
 # next
-Util validate_args
-Model::Player作成
+```
 Row::Player
-test追記、テスト共通部分くくりだす
 
 DBクラス定義
 Configクラス定義
 Recordクラス定義
 Townモデル定義
+```
