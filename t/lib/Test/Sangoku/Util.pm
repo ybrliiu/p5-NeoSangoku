@@ -3,7 +3,7 @@ package Test::Sangoku::Util {
   use Sangoku;
 
   use Exporter 'import';
-  our @EXPORT_OK = qw/TEST_PLAYER_DATA create_test_player prepare_player_model_tests/;
+  our @EXPORT_OK = qw/TEST_PLAYER_DATA create_test_player prepare_player_model_tests prepare_country_model_tests/;
 
   sub TEST_PLAYER_DATA() {
     my $id = 'test_player';
@@ -47,6 +47,16 @@ package Test::Sangoku::Util {
     "Sangoku::Model::$_"->init() for qw/Country Town/;
     my $klass = 'Sangoku::Model::Player';
     $klass->create($klass->ADMINISTARTOR_DATA->{player});
+  }
+
+  sub prepare_country_model_tests {
+    my $klass = 'Sangoku::Model::Country';
+    eval "require $klass";
+    my $neutral_data = $klass->NEUTRAL_DATA;
+    $klass->create({
+      name  => $neutral_data->{name},
+      color => $neutral_data->{gray},
+    });
   }
   
 }
