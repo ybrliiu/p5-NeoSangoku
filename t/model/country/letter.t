@@ -2,7 +2,7 @@ use Sangoku 'test';
 use Test::More;
 use Test::Sangoku;
 use Test::Sangoku::PostgreSQL;
-use Test::Sangoku::Util qw/prepare_player_model_tests create_test_player TEST_PLAYER_DATA/;
+use Test::Sangoku::Util qw/prepare_player_model_tests/;
 
 use Sangoku::Model::Player;
 use Sangoku::Model::Player::Letter;
@@ -17,7 +17,6 @@ my $OBJ;
 
 # player のtableなども準備しないといけないので
 prepare_player_model_tests();
-create_test_player();
 
 subtest 'new' => sub {
   $OBJ = $TEST_CLASS->new(name => $NEUTRAL_DATA->{name});
@@ -26,17 +25,14 @@ subtest 'new' => sub {
 
 subtest 'add, add_sended' => sub {
   my $sender = Sangoku::Model::Player->get($PLAYER_ID);
-  my $receiver = Sangoku::Model::Player->get(TEST_PLAYER_DATA->{player}{id});
 
   ok $OBJ->add({
     sender   => $sender,
-    receiver => $receiver,
     message  => '手紙テスト',
   });
 
   ok $OBJ->add({
     sender   => $sender,
-    receiver => $receiver,
     message  => 'テスト2',
   });
 };

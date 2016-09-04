@@ -19,14 +19,14 @@ package Sangoku::Model::Country::Letter {
 
   sub add {
     my ($self, $args) = @_;
-    validate_values($args => [qw/sender receiver message/]);
+    validate_values($args => [qw/sender message/]);
 
     my %letter_data = (
       sender_name         => $args->{sender}->name,
       sender_icon         => $args->{sender}->icon,
       sender_town_name    => $args->{sender}->town_name,
       sender_country_name => $args->{sender}->country_name,
-      receiver_name       => $args->{receiver}->name,
+      receiver_name       => $self->name,
       message             => $args->{message},
       time                => datetime(),
     );

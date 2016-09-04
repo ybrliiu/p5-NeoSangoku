@@ -13,10 +13,14 @@ package Sangoku::Model::Country::ConferenceReply {
 
   sub get {
     my ($self) = @_;
-    my @result = $self->db->search(TABLE_NAME, {
-      country_name => $self->name,
-      thread_id    => $self->thread_id,
-    });
+    my @result = $self->db->search(
+      TABLE_NAME,
+      {
+        country_name => $self->name,
+        thread_id    => $self->thread_id,
+      },
+      {order_by => 'id DESC'},
+    );
     return \@result;
   }
 
