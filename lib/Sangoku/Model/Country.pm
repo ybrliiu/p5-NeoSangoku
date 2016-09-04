@@ -45,6 +45,11 @@ package Sangoku::Model::Country {
       name  => $args->{name},
       color => $args->{color},
     }); 
+
+    Sangoku::Model::Country::Position->create({
+      name    => $args->{name},
+      king_id => $args->{king_id},
+    });
   }
 
   sub erase {
