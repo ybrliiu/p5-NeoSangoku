@@ -36,6 +36,16 @@ package Sangoku::Model::Player::Letter {
     ]);
   }
 
+  # 国宛などで自分が送った手紙を自分宛にも保存するためのメソッド
+  sub add_sended {
+    my ($self, $args) = @_;
+    validate_values($args => [qw/sender_name sender_icon 
+      sender_town_name sender_country_name receiver_name message time/]);
+
+    $args->{player_id} = $self->id;
+    $self->db->do_insert(TABLE_NAME, $args);
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 

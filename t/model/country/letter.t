@@ -6,22 +6,21 @@ use Test::Sangoku::Util qw/prepare_player_model_tests create_test_player TEST_PL
 
 use Sangoku::Model::Player;
 use Sangoku::Model::Player::Letter;
+use Sangoku::Model::Country;
+use Sangoku::Model::Country::Letter;
 
-my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
-my $TEST_CLASS = 'Sangoku::Model::Player::Letter';
-my $OBJ;
 my $PSQL = Test::Sangoku::PostgreSQL->new();
+my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
+my $NEUTRAL_DATA = Sangoku::Model::Country->NEUTRAL_DATA;
+my $TEST_CLASS = 'Sangoku::Model::Country::Letter';
+my $OBJ;
 
+# player のtableなども準備しないといけないので
 prepare_player_model_tests();
 create_test_player();
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 subtest 'new' => sub {
-  $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);
+  $OBJ = $TEST_CLASS->new(name => $NEUTRAL_DATA->{name});
   isa_ok $OBJ, $TEST_CLASS;
 };
 
@@ -40,37 +39,34 @@ subtest 'add, add_sended' => sub {
     receiver => $receiver,
     message  => 'テスト2',
   });
-
-  ok $OBJ->add_sended({
-    sender_name         => 'test_player',
-    sender_icon         => 100,
-    sender_town_name    => '金陵',
-    sender_country_name => '無所属',
-    receiver_name       => '管理人',
-    message             => 'this is letter.',
-    time                => '2016...',
-  });
 };
 
 subtest 'get_all' => sub {
   ok(my $list = $OBJ->get_all);
-  is @$list, 5;
+  is @$list, 2;
 };
 
 subtest 'get' => sub {
-  ok(my $list = $OBJ->get);
-  is @$list, 3;
 
   {
-    my $letter = $list->[1];
+    ok(my $list = $OBJ->get);
+    is @$list, 2;
+    my $letter = $list->[0];
     is $letter->message, 'テスト2';
   }
 
   {
+    ok(my $list = Sangoku::Model::Player::Letter->new(id => $PLAYER_ID)->get());
+    is @$list, 2;
     my $letter = $list->[0];
-    is $letter->sender_icon, 100;
+    is $letter->message, 'テスト2';
   }
+
+};
+
+subtest 'init' => sub {
+  $TEST_CLASS->init();
+  ok 1;
 };
 
 done_testing();
-
