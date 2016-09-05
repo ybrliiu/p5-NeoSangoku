@@ -387,7 +387,7 @@ package Sangoku::DB::Schema {
     name 'town_letter';
     pk 'id';
     columns (
-      {name => 'tonw_name', type => -1},
+      {name => 'town_name', type => -1},
       {name => 'id', type => 4},
       {name => 'sender_name', type => -1},
       {name => 'sender_icon', type => 4},

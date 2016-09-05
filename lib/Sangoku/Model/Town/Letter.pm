@@ -13,7 +13,7 @@ package Sangoku::Model::Town::Letter {
 
   sub get {
     my ($self) = @_;
-    my @columns = $self->db->search(TABLE_NAME, {country_name => $self->name}, {order_by => 'id DESC'});
+    my @columns = $self->db->search(TABLE_NAME, {town_name => $self->name}, {order_by => 'id DESC'});
     return \@columns;
   }
 
@@ -31,7 +31,7 @@ package Sangoku::Model::Town::Letter {
       time                => datetime(),
     );
 
-    $self->db->do_insert(TABLE_NAME, {country_name => $self->name, %letter_data});
+    $self->db->do_insert(TABLE_NAME, {town_name => $self->name, %letter_data});
     Sangoku::Model::Player::Letter->new(id => $args->{sender}->id)->add_sended(\%letter_data);
   }
 

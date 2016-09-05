@@ -87,7 +87,7 @@ CREATE TABLE "town" (
 );
 
 CREATE TABLE "town_letter" (
-  "tonw_name" text REFERENCES "town" ("name") ON DELETE CASCADE,
+  "town_name" text REFERENCES "town" ("name") ON DELETE CASCADE,
   "id"        serial PRIMARY KEY,
   "sender_name" text NOT NULL,
   "sender_icon"  int NOT NULL,
