@@ -4,6 +4,7 @@ use Test::Sangoku;
 use Test::Sangoku::PostgreSQL;
 use Test::Record;
 
+use Sangoku::Model::Player;
 use Sangoku::Model::Unit;
 
 my $TEST_CLASS = 'Sangoku::Model::Unit';
@@ -24,11 +25,12 @@ subtest 'init' => sub {
 };
 
 subtest 'create' => sub {
+  my $leader = Sangoku::Model::Player->get($PLAYER_ID);
+
   ok $TEST_CLASS->create({
-    id   => $PLAYER_ID,
-    name => 'テスト部隊',
-    message      => '',
-    country_name => '無所属',
+    leader  => $leader,
+    name    => 'テスト部隊',
+    message => '部隊紹介文',
   });
 };
 
