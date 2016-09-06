@@ -40,8 +40,6 @@ package Sangoku::Model::Player::Letter {
     $self->db->do_insert(TABLE_NAME, $args);
   }
 
-  __PACKAGE__->generate_method();
-
   __PACKAGE__->meta->make_immutable();
 }
 

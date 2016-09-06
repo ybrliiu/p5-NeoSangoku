@@ -8,8 +8,6 @@ package Sangoku::Model::Town::Letter {
 
   has 'name' => (is => 'ro', isa => 'Str', required => 1);
 
-  __PACKAGE__->generate_method();
-
   __PACKAGE__->meta->make_immutable();
 }
 
