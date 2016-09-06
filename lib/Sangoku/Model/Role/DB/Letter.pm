@@ -31,7 +31,7 @@ package Sangoku::Model::Role::DB::Letter {
     Sangoku::Model::Player::Letter->new(id => $args->{sender}->id)->add_sended(\%letter_data);
   }
 
-  sub prepare_method {
+  sub generate_method {
     my ($class) = @_;
 
     my $meta = $class->meta;

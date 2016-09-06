@@ -31,7 +31,7 @@ package Sangoku::Model::Player::Invite {
     ]);
   }
 
-  __PACKAGE__->prepare_method();
+  __PACKAGE__->generate_method();
   
   __PACKAGE__->meta->make_immutable();
 }
