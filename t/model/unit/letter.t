@@ -26,7 +26,11 @@ prepare_player_model_tests();
 }
 
 subtest 'new' => sub {
-  $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);
+  my $unit = Sangoku::Model::Unit->get($PLAYER_ID);
+  $OBJ = $TEST_CLASS->new(
+    id   => $unit->id,
+    name => $unit->name,
+  );
   isa_ok $OBJ, $TEST_CLASS;
 };
 

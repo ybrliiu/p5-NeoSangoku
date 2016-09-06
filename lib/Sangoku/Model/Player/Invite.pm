@@ -2,19 +2,13 @@ package Sangoku::Model::Player::Invite {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::DB';
+  with 'Sangoku::Model::Role::DB::Letter';
 
   use Sangoku::Util qw/validate_values datetime/;
 
   use constant TABLE_NAME => 'player_invite';
 
   has 'id' => (is => 'ro', isa => 'Str', required => 1);
-
-  sub get {
-    my ($self) = @_;
-    my @columns = $self->db->search(TABLE_NAME, {player_id => $self->id}, {order_by => 'id DESC'});
-    return \@columns;
-  }
 
   sub add {
     my ($self, $args) = @_;
@@ -37,6 +31,8 @@ package Sangoku::Model::Player::Invite {
     ]);
   }
 
+  __PACKAGE__->prepare_method();
+  
   __PACKAGE__->meta->make_immutable();
 }
 
