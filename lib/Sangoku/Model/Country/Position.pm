@@ -8,11 +8,6 @@ package Sangoku::Model::Country::Position {
   
   use constant TABLE_NAME => 'country_position';
 
-  sub get {
-    my ($class, $name) = @_;
-    $class->db->single(TABLE_NAME, {country_name => $name});
-  }
-
   sub create {
     my ($class, $args) = @_;
     validate_values($args => [qw/name king_id/]);
@@ -22,6 +17,8 @@ package Sangoku::Model::Country::Position {
       king_id      => $args->{king_id},
     });
   }
+
+  __PACKAGE__->generate_methods();
 
   __PACKAGE__->meta->make_immutable();
 }

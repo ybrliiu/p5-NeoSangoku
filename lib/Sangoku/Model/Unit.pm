@@ -8,11 +8,6 @@ package Sangoku::Model::Unit {
 
   use constant TABLE_NAME => 'unit';
 
-  sub get {
-    my ($class, $id) = @_;
-    $class->db->single(TABLE_NAME, {id => $id});
-  }
-
   sub create {
     my ($class, $args) = @_;
     validate_values($args => [qw/leader name message/]);
@@ -25,10 +20,7 @@ package Sangoku::Model::Unit {
     });
   }
 
-  sub delete {
-    my ($class, $id) = @_;
-    $class->db->delete(TABLE_NAME, {id => $id});
-  }
+  __PACKAGE__->generate_methods();
 
   __PACKAGE__->meta->make_immutable();
 }

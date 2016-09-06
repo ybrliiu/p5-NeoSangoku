@@ -48,16 +48,6 @@ package Sangoku::Model::Player {
     $class->regist(ADMINISTARTOR_DATA);
   };
 
-  sub get {
-    my ($class, $id) = @_;
-    return $class->db->single(TABLE_NAME, {id => $id});
-  }
-
-  sub delete {
-    my ($class, $id) = @_;
-    $class->db->delete(TABLE_NAME, {id => $id});
-  }
-
   sub create {
     my ($class, $args) = @_;
     validate_values($args => [qw/id name pass icon country_name town_name force intellect leadership popular loyalty update_time/]);
@@ -92,6 +82,8 @@ package Sangoku::Model::Player {
       $model->remove();
     }
   }
+  
+  __PACKAGE__->generate_methods();
 
   __PACKAGE__->meta->make_immutable();
 }

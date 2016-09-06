@@ -21,16 +21,6 @@ package Sangoku::Model::Country {
     $class->regist({name => '無所属', color => 'gray', king_id => ''});
   };
 
-  sub get {
-    my ($class, $name) = @_;
-    $class->db->single(TABLE_NAME, {name => $name});
-  }
-
-  sub delete {
-    my ($class, $name) = @_;
-    $class->db->delete(TABLE_NAME, {name => $name});
-  }
-
   sub create {
     my ($class, $args) = @_;
     validate_values($args => [qw/name color/]);
@@ -56,6 +46,8 @@ package Sangoku::Model::Country {
     my ($class, $name) = @_;
     $class->delete($name);
   }
+
+  __PACKAGE__->generate_methods();
 
   __PACKAGE__->meta->make_immutable();
 }

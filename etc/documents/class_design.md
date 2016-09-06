@@ -43,11 +43,12 @@ Model/Player/
      /HistoryLog   # Record.pm
      /AdminLog     # Record.pm を継承
 
-     /Book
+     /Book         # Config
      /Weapon
      /Guard
      /Soldier
      /Skill
+     /InitTownData
 
      /Role/DB
             /Parent

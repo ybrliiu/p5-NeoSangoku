@@ -8,16 +8,13 @@ package Sangoku::Model::Player::Weapon {
 
   use constant TABLE_NAME => 'player_weapon';
 
-  sub get {
-    my ($class, $id) = @_;
-    return $class->db->single(TABLE_NAME, {player_id => $id});
-  }
-
   sub create {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id power/]);
     $class->db->do_insert(TABLE_NAME, $args);
   }
+
+  __PACKAGE__->generate_methods();
 
   __PACKAGE__->meta->make_immutable();
 }
