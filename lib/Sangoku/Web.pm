@@ -165,7 +165,7 @@ package Sangoku::Web {
       $admin->post('/logout')->to(action => 'logout');
       my $auth = $admin->under->to(action => 'auth');
       $auth->any( '/'                             )->to(action => 'root');
-      $auth->any( '/comfirm-reset-game'           )->to(action => 'comfirm_reset_game');
+      $auth->any( '/input-reset-game'             )->to(action => 'input_reset_game');   # 更新開始時間を指定
       $auth->post('/reset-game'                   )->to(action => 'reset_game');
       $auth->any( '/choose-edit-player'           )->to(action => 'choose_edit_player');
       $auth->any( '/input-edit-player'            )->to(action => 'input_edit_player');

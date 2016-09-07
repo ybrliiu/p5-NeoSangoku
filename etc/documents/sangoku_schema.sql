@@ -266,6 +266,7 @@ CREATE TABLE "site" (
   "game_time"  bigint DEFAULT 0,
   "access"     int DEFAULT 0,
   "before_start" int DEFAULT 1,
+  "start_time"   bigint NOT NULL,
   "unite_flag"   int DEFAULT 0
 );
 

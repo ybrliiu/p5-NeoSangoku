@@ -354,6 +354,7 @@ package Sangoku::DB::Schema {
       {name => 'game_time', type => -5},
       {name => 'access', type => 4},
       {name => 'before_start', type => 4},
+      {name => 'start_time', type => -5},
       {name => 'unite_flag', type => 4},
     );
   };
