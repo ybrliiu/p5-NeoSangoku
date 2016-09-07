@@ -23,10 +23,13 @@ EOM
 
   ok(my $list = $TEST_CLASS->get);
   is @$list, 4;
+
   ok(my $list_limit = $TEST_CLASS->get(2));
   is @$list_limit, 2;
-  is $list->[0]->date, date();
-  is $list->[0]->message, 'mes4';
+
+  my $announce = $list->[0];
+  is $announce->date, date();
+  is $announce->message, 'mes4';
 };
 
 done_testing();
