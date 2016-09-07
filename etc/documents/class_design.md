@@ -33,7 +33,8 @@ Model/Player/
      /Town/
           /Letter
      /Site
-          /LoginList       # Redis
+
+     /LoginList       # Cache::ShareMemory
      /Notice
      /Forum
      /IdleTalk
