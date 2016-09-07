@@ -35,8 +35,9 @@ Model/Player/
      /Site
 
      /LoginList       # Cache::ShareMemory
-     /Notice
-     /Forum
+     /Announce
+     /ForumThread
+     /ForumReply
      /IdleTalk
      /Diplomacy
      /IconUploader
@@ -57,7 +58,6 @@ Model/Player/
           /Log
           /Letter
           /BBS
-          /Redis
 ```
 
 # API層規約

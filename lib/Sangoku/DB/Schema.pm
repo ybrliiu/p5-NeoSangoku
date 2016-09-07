@@ -162,6 +162,7 @@ package Sangoku::DB::Schema {
     pk 'id';
     columns (
       {name => 'id', type => 4},
+      {name => 'date', type => -1},
       {name => 'message', type => -1},
     );
   };

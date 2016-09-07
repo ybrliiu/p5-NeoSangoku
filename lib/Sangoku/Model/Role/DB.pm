@@ -25,7 +25,7 @@ package Sangoku::Model::Role::DB {
   
   sub get_all {
     my ($class) = @_;
-    my @rows = $class->db->search($class->TABLE_NAME => {});
+    my @rows = $class->db->search($class->TABLE_NAME, {});
     return \@rows;
   }
 

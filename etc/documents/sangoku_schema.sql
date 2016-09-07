@@ -274,6 +274,7 @@ CREATE TABLE "site" (
 -- 運営からのお知らせ
 CREATE TABLE "announce" (
   "id" serial PRIMARY KEY,
+  "date"    text NOT NULL, 
   "message" text NOT NULL
 );
 
