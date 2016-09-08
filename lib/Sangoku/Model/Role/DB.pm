@@ -41,22 +41,27 @@ package Sangoku::Model::Role::DB {
 
   # __PACKAGE__->generate_methods;
   sub generate_methods {
-    my ($class) = @_;
+    my ($class, @generate_list) = @_;
+    my %generate_list = map { $_ => 1 } @generate_list;
 
     my $primary_keys = $class->db->schema->get_table($class->TABLE_NAME)->primary_keys;
     my $table_name = $class->TABLE_NAME;
-
     my $meta = $class->meta;
+   
+    if ($generate_list{get} || !@generate_list) {
+      $meta->add_method(get => sub {
+        my ($class, $primary_key) = @_;
+        return $class->db->single($table_name, {$primary_keys->[0] => $primary_key});
+      });
+    }
 
-    $meta->add_method(get => sub {
-      my ($class, $primary_key) = @_;
-      return $class->db->single($table_name, {$primary_keys->[0] => $primary_key});
-    });
+    if ($generate_list{delete} || !@generate_list) {
+      $meta->add_method(delete => sub {
+        my ($class, $primary_key) = @_;
+        return $class->db->delete($table_name, {$primary_keys->[0] => $primary_key});
+      });
+    }
 
-    $meta->add_method(delete => sub {
-      my ($class, $primary_key) = @_;
-      return $class->db->delete($table_name, {$primary_keys->[0] => $primary_key});
-    });
   }
 
 }

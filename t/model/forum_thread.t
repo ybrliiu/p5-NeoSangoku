@@ -3,7 +3,6 @@ use Test::More;
 use Test::Sangoku;
 use Test::Sangoku::PostgreSQL;
 
-use Sangoku::Util qw/date/;
 use Sangoku::Model::ForumThread;
 
 my $TEST_CLASS = 'Sangoku::Model::ForumThread';

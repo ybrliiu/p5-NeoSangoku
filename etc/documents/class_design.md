@@ -36,9 +36,9 @@ Model/Player/
 
      /LoginList       # Cache::ShareMemory
      /Announce
-
      /ForumThread
      /ForumReply
+
      /IdleTalk
      /Diplomacy
      /IconUploader
