@@ -38,15 +38,15 @@ Model/Player/
      /Announce
      /ForumThread
      /ForumReply
-
      /IdleTalk
+     
      /Diplomacy
      /IconUploader
      /MapLog       # Record.pm
      /HistoryLog   # Record.pm
      /AdminLog     # Record.pm を継承
 
-     /Book         # Config
+     /Book         # Config HashRef -> ArrayRefにして順序を保証、HashRefでデータ欲しい時はModelでmethod作って対応
      /Weapon
      /Guard
      /Soldier
@@ -54,7 +54,9 @@ Model/Player/
      /InitTownData
 
      /Role/DB
-            /Parent
+             /Parent
+             /Letter
+
           /Config
           /Log
           /Letter
