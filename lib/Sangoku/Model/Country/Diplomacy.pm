@@ -21,9 +21,12 @@ package Sangoku::Model::Country::Diplomacy {
     return \@columns;
   }
 
+  # $month_and_years_num は $site->month_and_years_num から来る想定で
+
   sub can_invation {
     my ($self, $country_name, $month_and_years_num) = @_;
 
+    # 領土割譲・譲渡
     {
       my @columns = $self->db->search_by_sql(
         "SELECT * FROM @{[ TABLE_NAME ]}
@@ -34,6 +37,7 @@ package Sangoku::Model::Country::Diplomacy {
       return 1 if @columns;
     }
 
+    # 交戦
     {
       my @columns = $self->db->search_by_sql(
         "SELECT * FROM @{[ TABLE_NAME ]}
@@ -47,6 +51,8 @@ package Sangoku::Model::Country::Diplomacy {
     }
 
   }
+
+  # 宣戦布告のログ、手紙のみだすように可能にするのはServiceの方でやってね
 
   sub add {
     my ($self, $args) = @_;

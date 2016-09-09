@@ -28,6 +28,7 @@ Model/Player/
              /Law
              /Conference
              /Letter
+             /Diplomacy
      /Unit/
           /Letter
      /Town/
@@ -39,9 +40,8 @@ Model/Player/
      /ForumThread
      /ForumReply
      /IdleTalk
-     
-     /Diplomacy
      /IconUploader
+     
      /MapLog       # Record.pm
      /HistoryLog   # Record.pm
      /AdminLog     # Record.pm を継承
