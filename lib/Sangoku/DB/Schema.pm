@@ -96,7 +96,7 @@ package Sangoku::DB::Schema {
   };
 
   table {
-    name 'diplomacy';
+    name 'country_diplomacy';
     pk 'type','request_country','receive_country';
     columns (
       {name => 'type', type => -1},
@@ -107,6 +107,7 @@ package Sangoku::DB::Schema {
       {name => 'start_month', type => 4},
       {name => 'option', type => -1},
     );
+    row_class 'Sangoku::DB::Row::Country::Diplomacy';
   };
 
   table {

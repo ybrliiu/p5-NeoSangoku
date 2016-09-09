@@ -63,6 +63,18 @@ CREATE TABLE "country_letter" (
   "time"    text NOT NULL
 );
 
+-- 外交データ
+CREATE TABLE "country_diplomacy" (
+  "type" text NOT NULL,
+  "is_accepted" int DEFAULT 0,
+  "request_country" text REFERENCES "country" ("name") ON DELETE CASCADE,
+  "receive_country" text REFERENCES "country" ("name") ON DELETE CASCADE,
+  "start_year" int NOT NULL,
+  "start_month" int NOT NULL,
+  "option" text DEFAULT '',
+  PRIMARY KEY("type", "request_country", "receive_country")
+);
+
 
 -- 都市関連テーブル
 CREATE TABLE "town" (
@@ -307,19 +319,6 @@ CREATE TABLE "idle_talk" (
   "icon"  int NOT NULL,
   "message" text NOT NULL,
   "time"    text NOT NULL
-);
-
-
--- 外交データ
-CREATE TABLE "diplomacy" (
-  "type" text NOT NULL,
-  "is_accepted" int DEFAULT 0,
-  "request_country" text NOT NULL,
-  "receive_country" text NOT NULL,
-  "start_year" int NOT NULL,
-  "start_month" int NOT NULL,
-  "option" text DEFAULT '',
-  PRIMARY KEY("type", "request_country", "receive_country")
 );
 
 
