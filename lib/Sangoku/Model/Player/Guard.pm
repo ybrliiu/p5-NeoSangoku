@@ -14,8 +14,6 @@ package Sangoku::Model::Player::Guard {
     $class->db->do_insert(TABLE_NAME, $args);
   }
 
-  __PACKAGE__->generate_methods();
-
   __PACKAGE__->meta->make_immutable();
 }
 

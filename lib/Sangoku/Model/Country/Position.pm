@@ -18,8 +18,6 @@ package Sangoku::Model::Country::Position {
     });
   }
 
-  __PACKAGE__->generate_methods();
-
   __PACKAGE__->meta->make_immutable();
 }
 

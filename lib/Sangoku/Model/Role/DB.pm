@@ -39,29 +39,22 @@ package Sangoku::Model::Role::DB {
     $class->delete_all();
   }
 
-  # __PACKAGE__->generate_methods;
-  sub generate_methods {
-    my ($class, @generate_list) = @_;
-    my %generate_list = map { $_ => 1 } @generate_list;
+  sub primary_key {
+    my ($class) = @_;
+    state $primary_keys = {};
+    return exists $primary_keys->{$class}
+      ? $primary_keys->{$class}
+      : ( $primary_keys->{$class} = $class->db->schema->get_table($class->TABLE_NAME)->primary_keys->[0] );
+  }
 
-    my $primary_keys = $class->db->schema->get_table($class->TABLE_NAME)->primary_keys;
-    my $table_name = $class->TABLE_NAME;
-    my $meta = $class->meta;
-   
-    if ($generate_list{get} || !@generate_list) {
-      $meta->add_method(get => sub {
-        my ($class, $primary_key) = @_;
-        return $class->db->single($table_name, {$primary_keys->[0] => $primary_key});
-      });
-    }
+  sub get {
+    my ($class, $primary_value) = @_;
+    return $class->db->single($class->TABLE_NAME, {$class->primary_key => $primary_value});
+  }
 
-    if ($generate_list{delete} || !@generate_list) {
-      $meta->add_method(delete => sub {
-        my ($class, $primary_key) = @_;
-        return $class->db->delete($table_name, {$primary_keys->[0] => $primary_key});
-      });
-    }
-
+  sub delete {
+    my ($class, $primary_value) = @_;
+    return $class->db->delete($class->TABLE_NAME, {$class->primary_key => $primary_value});
   }
 
 }

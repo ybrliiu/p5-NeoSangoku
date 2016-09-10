@@ -15,8 +15,6 @@ package Sangoku::Model::Town {
     $class->db->bulk_insert(TABLE_NAME, [values %$init_data]);
   };
 
-  __PACKAGE__->generate_methods();
-
   __PACKAGE__->meta->make_immutable();
 }
 

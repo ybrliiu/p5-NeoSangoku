@@ -35,8 +35,6 @@ package Sangoku::Model::IconUploader {
     return \@columns;
   }
 
-  __PACKAGE__->generate_methods('delete');
-
   __PACKAGE__->meta->make_immutable();
 }
 

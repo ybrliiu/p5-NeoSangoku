@@ -20,8 +20,6 @@ package Sangoku::Model::Unit {
     });
   }
 
-  __PACKAGE__->generate_methods();
-
   __PACKAGE__->meta->make_immutable();
 }
 
