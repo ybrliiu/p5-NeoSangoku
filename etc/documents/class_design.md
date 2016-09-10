@@ -56,6 +56,8 @@ Model/Player/
      /Role/DB
              /Parent
              /Letter
+             /Thread
+             /Reply
 
           /Config
           /Log
