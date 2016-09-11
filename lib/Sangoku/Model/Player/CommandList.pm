@@ -2,7 +2,7 @@ package Sangoku::Model::Player::CommandList {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::Record';
+  with 'Sangoku::Model::Role::RecordMultiple';
 
   use Carp qw/croak/;
   use Record::List::CommandList;

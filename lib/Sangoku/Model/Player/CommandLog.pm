@@ -2,7 +2,7 @@ package Sangoku::Model::Player::CommandLog {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::Record';
+  with 'Sangoku::Model::Role::RecordMultiple';
 
   use Record::List::Log;
   use Sangoku::API::Player::CommandLog;
