@@ -1,4 +1,4 @@
-package Sangoku::API::Player::CommandLog {
+package Sangoku::API::AdminLog {
 
   use Sangoku;
   use Mouse;
@@ -9,10 +9,7 @@ package Sangoku::API::Player::CommandLog {
     fallback => 1,
   );
 
-  sub file_path { 
-    my ($class, $id)  = @_;
-    return "etc/record/player/command_log/$id.dat";
-  }
+  sub file_path() { 'etc/record/admin_log.dat' }
 
   __PACKAGE__->meta->make_immutable();
 }
