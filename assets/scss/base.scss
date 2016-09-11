@@ -1,0 +1,400 @@
+@charset "utf-8";
+
+@import 'parts/color'; // 色一覧 etc/config/color.conf より出力
+
+/* サイト全体の外観 */
+body, tr, td, th, form {
+  font-family:"メイリオ", "Yu Gothic", "VL Gothic", "Ubuntu", "monospace";
+  font-size:9pt;
+  color: #222;
+}
+a {
+  text-decoration:none;
+  &:link { color:$link_blue; }
+  &:visited { color:$link_blue; }
+  &:hover { color:$yellow; }
+  &:active { color:$truegreen; }
+}
+
+/* レイアウト用ボックス */
+.box {
+  float:left;
+  box-sizing:border-box;
+  > * {
+    box-sizing:border-box;
+    text-align:center;
+  }
+}
+
+/* 中央揃えでhtml書くときの枠 */
+.centerbox {
+  @extend .box;
+  > * {
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+  }
+}
+
+/* Nカラムでhtml書くときの枠 */
+#wrapper {
+  $pad: 11px;
+  *              { box-sizing:border-box; }
+  .inner_around  { padding: $pad; }
+  .inner {
+    padding:0 0 $pad $pad;
+    float: left;
+  }
+  .inner_right {
+    padding:0 $pad $pad $pad;
+    float: left;
+  }
+  .adjust_bottom { margin-bottom: $pad; }
+  h2             { margin:0; }
+  > #title {
+    position: relative;
+    width: 100%;
+    padding: $pad 0 $pad 0; 
+    h1 {
+      $border: 3px;
+      $border_left: 20px;
+      $padding: 5px;
+      margin: 0px;
+      padding: $padding $padding $padding $border_left + 10px;
+      background-color: $white;
+      border-left: $border_left solid $darkred;
+      border-bottom: $border solid $darkred;
+      border-top: $border solid $darkred;
+      &:before {
+        content: '';
+        left: $border_left - 1px;
+        top: $pad + $border;
+        position: absolute;
+        border-top: $border_left solid transparent;
+        border-bottom: $border_left solid transparent;
+        border-left: $border_left solid $darkred;
+      }
+    }
+  }
+
+  #explain {
+    width: 100%;
+    > div {
+      width: 100%;
+      background-color: $lightorange;
+      border: solid $brown 5px;
+      border-radius: 4px;
+      padding: 5px;
+      font-size: 11pt;
+    }
+  }
+
+  #error {
+    $error-red: #E74C3C;
+    width: 100%;
+    > div {
+      width: 100%;
+      background-color: rgba(#E74C3C, 0.3);
+      border: solid $error-red 5px;
+      border-radius: 4px;
+      padding: 10px;
+      font-size: 11pt;
+      color: $error-red;
+      font-weight: bold;
+    }
+  }
+
+  #map {
+    $border:3px;
+    > #top {
+      background-color: $darkred;
+      color: $lightdarkred;
+      text-align: center;
+      padding: 6px;
+      @each $direction in -top, -right, -left { // 繰り返し
+        border#{$direction}:$border $white solid;
+      }
+    }
+    th { padding:0; }
+    table {
+      width: 100%;
+      background-color: $lightgreen;
+      border:$border $white solid;
+    }
+  }
+
+}
+
+/* タイルテーブル */
+.table-tile {
+  background-color:$white;
+  border-collapse:separate;
+  border-spacing:3px;
+  box-sizing:border-box;
+  th {
+    background-color:$darkred;
+    color:$lightorange;
+    padding:3px;
+  }
+  td {
+    text-align:left;
+    vertical-align:middle;
+    background-color:$lightorange;
+    padding:3px;
+  }
+}
+
+/* スクロール用ボックス */
+.scroll {
+  overflow:scroll;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* 見出し用 */
+h1 { font-size:17pt; }
+h2 {
+  font-size:12pt;
+  margin:3px;
+}
+
+/* 見出し1 */
+#midasi span {
+  padding:0 12px 0 12px;
+  border-right:8px $darkred solid;
+  border-left:8px $darkred solid;
+}
+
+/* アイコン用 */
+.icon {
+  width:64px;
+  height:64px;
+  margin:0;
+}
+
+/* 文字色 */
+@mixin charcter_color($color) {
+  color:$color;
+  font-weight:bold;
+}
+.blue { @include charcter_color($blue); }
+.lightblue { @include charcter_color($lightblue); }
+.darkblue { @include charcter_color($darkblue); }
+.red { @include charcter_color($red); }
+.green { @include charcter_color($green); }
+.white { @include charcter_color($white); }
+
+/* フォーム */
+
+$border_form:#888888; // フォームの外枠の色
+
+form { display:inline-block; }
+select {
+  display: inline-block;
+  min-width: 80px;
+  border: 1px $border_form solid;
+  margin: 2px;
+  padding : 7px 7px;
+  background-color: #EEEEEE;
+  border-radius:4px;
+  option {
+    padding : 0px;
+    background-color: #EEEEEE;
+  }
+}
+input[type="submit"], input[type="button"] {
+  display: inline-block;
+  min-width: 80px;
+  padding: 7px 20px;
+  vertical-align: middle;
+  background-color: #EEEEEE;
+  border: 1px $border_form solid;
+  margin: 4px;
+  color: #111111;
+  border-radius:4px;
+  &:hover{
+    background-color: #DDDDDD;
+    border: 1px $border_form solid;
+  }
+  &:active{
+    background-color: #BBBBBB;
+    border: 1px $border_form solid;
+  }
+}
+textarea, input[type="text"], input[type="number"], input[type="email"], input[type="password"]{
+  display: inline-block;
+  background-color:#F4F4F4;
+  border: 1px $border_form solid;
+  margin: 2px;
+  padding: 7px 7px;
+  border-radius:3px;
+  border-bottom-right-radius:10px;
+  &:hover{
+    background-color:$white;
+    border: 1px $blue solid;
+  }
+  &:focus{
+    background-color:$white;
+    border: 1px $blue solid;
+  }
+  &[disabled]{
+    background-color:$ash;
+    border: 1px $border_form solid;
+  }
+}
+
+/* エラーメッセージ用 */
+label {
+  display: inline-block;
+  margin-bottom: 0.25em;
+  line-height: 2.0em;
+  font-weight: bold;
+  &.error {
+    display: none;
+  }
+  &.field-with-error {
+    display: inline;
+    color: $red;
+    font-weight: bold;
+  }
+}
+
+input.field-with-error {
+  border: 1px $red solid;
+}
+
+/* おしゃれなラジオボタン&チェックボックス用 */
+.snazzy-radio, .snazzy-checkbox {
+  position: relative;
+  cursor: pointer;
+  input {
+    opacity: 0;
+    position: absolute;
+  }
+  span:before, span:after {
+    box-sizing: border-box;
+    content: '';
+    display: block;
+    position: absolute;
+    transition: all 0.25s;
+  }
+}
+
+.snazzy-radio {
+  padding-left: 25px;
+  span {
+    padding-right: 5px;
+    &:before {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 2px;
+      left: 0;
+      background: #fff;
+      border: 1px solid #c3c5c4;
+    }
+    &:after {
+      border-radius: 50%;
+      background: $black;
+      top: 12px;
+      left: 10px;
+      width: 0;
+      height: 0;
+    }
+  }
+  input:checked + span:after {
+    width: 10px;
+    height: 10px;
+    top: 7px;
+    left: 5px;
+  }
+  input:checked + span:before {
+    background: $white;
+  }
+  input:focus + span:before {
+    border: 2px solid $link_blue;
+  }
+  input:hover + span:before {
+    border: 2px solid $greenblue;
+  }
+}
+
+.snazzy-checkbox {
+  padding-left: 28px;
+  span {
+    &:before {
+      width: 20px;
+      height: 20px;
+      top: 2px;
+      left: 0;
+      background: #fff;
+      border: 1px solid #c3c5c4;
+    }
+    &:after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0.75em;
+      left: 0.55em;
+      width: 0px;
+      height: 0px;
+      border-left: 0px solid $black;
+      border-bottom: 0px solid $black;
+      transform: rotate(-45deg);
+    }
+  }
+  input:checked + span:after {
+    width: 12px;
+    height: 8px;
+    top: 7px;
+    left: 4px;
+    border-left: 3px solid $black;
+  	border-bottom: 3px solid $black;
+  }
+  input:checked + span:before {
+    background: #fff;
+    border: 2px solid $link_blue;
+  }
+  input:hover + span:before {
+    border: 2px solid $greenblue;
+  }
+}
+
+.snazzy-nopadding {
+  padding-left: 20px;
+  span {
+    padding-right: 1px;
+  }
+}
+
+/* ツールチップ */
+#tooltip {
+  position:relative;
+  span {
+    display:block;
+    position:absolute;
+    color:$white;
+    text-decoration:none;
+    visibility:hidden;
+    width:170px;
+    z-index:0;
+    top:20px;
+    left:10px;
+    padding:5px;
+    background:rgba(000,000,000,0.7);
+    border:solid 1px #a9987c;
+    border-radius:5px;
+  }
+  &:hover,&:hover span{
+    visibility:visible;
+    z-index:2;
+  }
+}
+
+/* 部品群 */
+
+/* ナビゲートボタン */
+@import 'parts/nav_button';
+/* プレイヤーメニュー */
+@import 'parts/player_menu';
+
+

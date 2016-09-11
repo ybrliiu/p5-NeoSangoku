@@ -1,0 +1,43 @@
+// 各国毎に異なる色のテーブルを作る際に使うひな形
+
+$country_white:#ffffff;
+
+@mixin country-table-base($color,$color2) {
+  background-color:$country_white;
+  border-collapse:separate;
+  border-spacing:3px;
+  box-sizing:border-box;
+  th {
+    background-color:rgba($color,0.75);
+    color:$color2;
+    padding:3px;
+  }
+  th.first {
+    background-color:rgba($color,1);
+    color:$color2;
+    padding:3px;
+    a {
+      color:$color2;
+    }
+  }
+  div.color {
+    @extend th.first;
+  }
+  td {
+    text-align:left;
+    vertical-align:middle;
+    background-color:$color2;
+    padding:3px;
+    border:1px rgba($color,0.4) solid;
+  }
+  td.color {
+    @extend td;
+    color:rgba($color,1);
+    font-weight:bold;
+  }
+  td.middle {
+    text-align:center;
+    font-weight:bold;
+  }
+  td.right { text-align:right; }
+}

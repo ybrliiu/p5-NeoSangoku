@@ -1,0 +1,539 @@
+@charset "UTF-8";
+/* サイト全体の外観 */
+body, tr, td, th, form {
+  font-family: "メイリオ", "Yu Gothic", "VL Gothic", "Ubuntu", "monospace";
+  font-size: 9pt;
+  color: #222; }
+
+a {
+  text-decoration: none; }
+  a:link {
+    color: #4682b4; }
+  a:visited {
+    color: #4682b4; }
+  a:hover {
+    color: #ffff00; }
+  a:active {
+    color: #00ff00; }
+
+/* レイアウト用ボックス */
+.box, .centerbox {
+  float: left;
+  box-sizing: border-box; }
+  .box > *, .centerbox > * {
+    box-sizing: border-box;
+    text-align: center; }
+
+/* 中央揃えでhtml書くときの枠 */
+.centerbox > * {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center; }
+
+/* Nカラムでhtml書くときの枠 */
+#wrapper * {
+  box-sizing: border-box; }
+
+#wrapper .inner_around {
+  padding: 11px; }
+
+#wrapper .inner {
+  padding: 0 0 11px 11px;
+  float: left; }
+
+#wrapper .inner_right {
+  padding: 0 11px 11px 11px;
+  float: left; }
+
+#wrapper .adjust_bottom {
+  margin-bottom: 11px; }
+
+#wrapper h2 {
+  margin: 0; }
+
+#wrapper > #title {
+  position: relative;
+  width: 100%;
+  padding: 11px 0 11px 0; }
+  #wrapper > #title h1 {
+    margin: 0px;
+    padding: 5px 5px 5px 30px;
+    background-color: #ffffff;
+    border-left: 20px solid #990000;
+    border-bottom: 3px solid #990000;
+    border-top: 3px solid #990000; }
+    #wrapper > #title h1:before {
+      content: '';
+      left: 19px;
+      top: 14px;
+      position: absolute;
+      border-top: 20px solid transparent;
+      border-bottom: 20px solid transparent;
+      border-left: 20px solid #990000; }
+
+#wrapper #explain {
+  width: 100%; }
+  #wrapper #explain > div {
+    width: 100%;
+    background-color: #ffcc99;
+    border: solid #cc6633 5px;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 11pt; }
+
+#wrapper #error {
+  width: 100%; }
+  #wrapper #error > div {
+    width: 100%;
+    background-color: rgba(231, 76, 60, 0.3);
+    border: solid #E74C3C 5px;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 11pt;
+    color: #E74C3C;
+    font-weight: bold; }
+
+#wrapper #map > #top {
+  background-color: #990000;
+  color: #ecdbbf;
+  text-align: center;
+  padding: 6px;
+  border-top: 3px #ffffff solid;
+  border-right: 3px #ffffff solid;
+  border-left: 3px #ffffff solid; }
+
+#wrapper #map th {
+  padding: 0; }
+
+#wrapper #map table {
+  width: 100%;
+  background-color: #719604;
+  border: 3px #ffffff solid; }
+
+/* タイルテーブル */
+.table-tile {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box; }
+  .table-tile th {
+    background-color: #990000;
+    color: #ffcc99;
+    padding: 3px; }
+  .table-tile td {
+    text-align: left;
+    vertical-align: middle;
+    background-color: #ffcc99;
+    padding: 3px; }
+
+/* スクロール用ボックス */
+.scroll {
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch; }
+
+/* 見出し用 */
+h1 {
+  font-size: 17pt; }
+
+h2 {
+  font-size: 12pt;
+  margin: 3px; }
+
+/* 見出し1 */
+#midasi span {
+  padding: 0 12px 0 12px;
+  border-right: 8px #990000 solid;
+  border-left: 8px #990000 solid; }
+
+/* アイコン用 */
+.icon {
+  width: 64px;
+  height: 64px;
+  margin: 0; }
+
+/* 文字色 */
+.blue {
+  color: #0000ff;
+  font-weight: bold; }
+
+.lightblue {
+  color: #87ceeb;
+  font-weight: bold; }
+
+.darkblue {
+  color: #00008b;
+  font-weight: bold; }
+
+.red {
+  color: #ff0000;
+  font-weight: bold; }
+
+.green {
+  color: #008000;
+  font-weight: bold; }
+
+.white {
+  color: #ffffff;
+  font-weight: bold; }
+
+/* フォーム */
+form {
+  display: inline-block; }
+
+select {
+  display: inline-block;
+  min-width: 80px;
+  border: 1px #888888 solid;
+  margin: 2px;
+  padding: 7px 7px;
+  background-color: #EEEEEE;
+  border-radius: 4px; }
+  select option {
+    padding: 0px;
+    background-color: #EEEEEE; }
+
+input[type="submit"], input[type="button"] {
+  display: inline-block;
+  min-width: 80px;
+  padding: 7px 20px;
+  vertical-align: middle;
+  background-color: #EEEEEE;
+  border: 1px #888888 solid;
+  margin: 4px;
+  color: #111111;
+  border-radius: 4px; }
+  input[type="submit"]:hover, input[type="button"]:hover {
+    background-color: #DDDDDD;
+    border: 1px #888888 solid; }
+  input[type="submit"]:active, input[type="button"]:active {
+    background-color: #BBBBBB;
+    border: 1px #888888 solid; }
+
+textarea, input[type="text"], input[type="number"], input[type="email"], input[type="password"] {
+  display: inline-block;
+  background-color: #F4F4F4;
+  border: 1px #888888 solid;
+  margin: 2px;
+  padding: 7px 7px;
+  border-radius: 3px;
+  border-bottom-right-radius: 10px; }
+  textarea:hover, input[type="text"]:hover, input[type="number"]:hover, input[type="email"]:hover, input[type="password"]:hover {
+    background-color: #ffffff;
+    border: 1px #0000ff solid; }
+  textarea:focus, input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    background-color: #ffffff;
+    border: 1px #0000ff solid; }
+  textarea[disabled], input[type="text"][disabled], input[type="number"][disabled], input[type="email"][disabled], input[type="password"][disabled] {
+    background-color: #cccccc;
+    border: 1px #888888 solid; }
+
+/* エラーメッセージ用 */
+label {
+  display: inline-block;
+  margin-bottom: 0.25em;
+  line-height: 2.0em;
+  font-weight: bold; }
+  label.error {
+    display: none; }
+  label.field-with-error {
+    display: inline;
+    color: #ff0000;
+    font-weight: bold; }
+
+input.field-with-error {
+  border: 1px #ff0000 solid; }
+
+/* おしゃれなラジオボタン&チェックボックス用 */
+.snazzy-radio, .snazzy-checkbox {
+  position: relative;
+  cursor: pointer; }
+  .snazzy-radio input, .snazzy-checkbox input {
+    opacity: 0;
+    position: absolute; }
+  .snazzy-radio span:before, .snazzy-radio span:after, .snazzy-checkbox span:before, .snazzy-checkbox span:after {
+    box-sizing: border-box;
+    content: '';
+    display: block;
+    position: absolute;
+    transition: all 0.25s; }
+
+.snazzy-radio {
+  padding-left: 25px; }
+  .snazzy-radio span {
+    padding-right: 5px; }
+    .snazzy-radio span:before {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 2px;
+      left: 0;
+      background: #fff;
+      border: 1px solid #c3c5c4; }
+    .snazzy-radio span:after {
+      border-radius: 50%;
+      background: #000000;
+      top: 12px;
+      left: 10px;
+      width: 0;
+      height: 0; }
+  .snazzy-radio input:checked + span:after {
+    width: 10px;
+    height: 10px;
+    top: 7px;
+    left: 5px; }
+  .snazzy-radio input:checked + span:before {
+    background: #ffffff; }
+  .snazzy-radio input:focus + span:before {
+    border: 2px solid #4682b4; }
+  .snazzy-radio input:hover + span:before {
+    border: 2px solid #00aaaa; }
+
+.snazzy-checkbox {
+  padding-left: 28px; }
+  .snazzy-checkbox span:before {
+    width: 20px;
+    height: 20px;
+    top: 2px;
+    left: 0;
+    background: #fff;
+    border: 1px solid #c3c5c4; }
+  .snazzy-checkbox span:after {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0.75em;
+    left: 0.55em;
+    width: 0px;
+    height: 0px;
+    border-left: 0px solid #000000;
+    border-bottom: 0px solid #000000;
+    transform: rotate(-45deg); }
+  .snazzy-checkbox input:checked + span:after {
+    width: 12px;
+    height: 8px;
+    top: 7px;
+    left: 4px;
+    border-left: 3px solid #000000;
+    border-bottom: 3px solid #000000; }
+  .snazzy-checkbox input:checked + span:before {
+    background: #fff;
+    border: 2px solid #4682b4; }
+  .snazzy-checkbox input:hover + span:before {
+    border: 2px solid #00aaaa; }
+
+.snazzy-nopadding {
+  padding-left: 20px; }
+  .snazzy-nopadding span {
+    padding-right: 1px; }
+
+/* ツールチップ */
+#tooltip {
+  position: relative; }
+  #tooltip span {
+    display: block;
+    position: absolute;
+    color: #ffffff;
+    text-decoration: none;
+    visibility: hidden;
+    width: 170px;
+    z-index: 0;
+    top: 20px;
+    left: 10px;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    border: solid 1px #a9987c;
+    border-radius: 5px; }
+  #tooltip:hover, #tooltip:hover span {
+    visibility: visible;
+    z-index: 2; }
+
+/* 部品群 */
+/* ナビゲートボタン */
+/* ZUKEI */
+#zukei {
+  position: fixed;
+  right: 0px;
+  bottom: 0px; }
+
+#botan {
+  position: relative;
+  float: left;
+  background-color: rgba(30, 30, 30, 0.7);
+  width: 60px;
+  height: 60px;
+  margin: 0 20px 10px 0;
+  border-radius: 8px;
+  border: none; }
+
+/* letter */
+#letter {
+  width: 39px;
+  height: 30px;
+  background-color: #ffffff;
+  position: absolute;
+  left: 18%;
+  bottom: 25%; }
+  #letter:before {
+    content: '';
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border-top: solid 20px rgba(30, 30, 30, 0.7);
+    border-right: solid 20px transparent;
+    border-bottom: solid 20px transparent;
+    border-left: solid 20px transparent;
+    left: 0px;
+    bottom: -10px; }
+  #letter:after {
+    content: '';
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border-top: solid 18px #ffffff;
+    border-right: solid 18px transparent;
+    border-bottom: solid 18px transparent;
+    border-left: solid 18px transparent;
+    left: 2px;
+    bottom: -7px; }
+
+/* Reload */
+#reload {
+  position: absolute;
+  width: 27px;
+  height: 13.5px;
+  top: 50%;
+  left: 20%;
+  border-style: solid;
+  border-width: 0px 6px 6px 6px;
+  border-color: #ffffff;
+  border-radius: 0 0 75px 75px; }
+  #reload:after {
+    content: '';
+    position: absolute;
+    width: 13.5px;
+    height: 13.5px;
+    border-style: solid;
+    border-width: 6px 0 0 6px;
+    border-color: #ffffff;
+    border-radius: 75px 0 0 0;
+    bottom: 13.5px;
+    left: -6px; }
+  #reload:before {
+    content: '';
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 9px;
+    border-color: transparent transparent transparent #ffffff;
+    bottom: 21px;
+    left: 13.5px; }
+
+/* up_arrow */
+#up_arrow {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  top: -5%;
+  left: 25%;
+  border: 16px solid transparent;
+  border-bottom-color: #ffffff; }
+  #up_arrow:after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 16px;
+    left: -8px;
+    background: #ffffff; }
+
+/* down_arrow */
+#down_arrow {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  top: 50%;
+  left: 25%;
+  border: 16px solid transparent;
+  border-top-color: #ffffff; }
+  #down_arrow:after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: -32px;
+    left: -8px;
+    background: #ffffff; }
+
+/* command_mark */
+#com_in {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  top: 12%;
+  left: 40%;
+  border-top: 36px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-radius: 6px; }
+  #com_in:after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    left: -4px;
+    top: 1px;
+    background-color: #ffffff;
+    border-radius: 4px; }
+
+/* プレイヤーメニュー */
+#playermenu {
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  background: -moz-linear-gradient(top, #ecdbbf, #990000);
+  background: -webkit-gradient(linear, left top, left bottom, from(#ecdbbf), to(#990000));
+  border: solid 1px #cccccc; }
+  #playermenu div {
+    width: 30px;
+    height: 30px;
+    float: left; }
+  #playermenu a {
+    display: inline-block;
+    width: 130px;
+    height: 20px;
+    color: #000000; }
+    #playermenu a:hover {
+      color: #ecdbbf; }
+  #playermenu li {
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 5px 0 5px 0;
+    width: 100px;
+    height: 20px;
+    top: 7px;
+    font-weight: bold;
+    font-size: 11pt;
+    text-align: center;
+    vertical-align: center;
+    list-style: none;
+    background: #ecdbbf;
+    border: solid 1px #990000; }
+    #playermenu li ul {
+      display: none;
+      position: absolute;
+      z-index: 1;
+      top: 16px;
+      left: -1px;
+      padding: 5px;
+      width: 140px;
+      background: #990000;
+      border: solid 1px #990000; }
+      #playermenu li ul li {
+        margin: 0;
+        padding: 5px;
+        top: 0px;
+        width: 130px;
+        text-align: left;
+        border: none; }

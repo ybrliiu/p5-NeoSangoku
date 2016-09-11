@@ -9,14 +9,24 @@ package Sangoku::Web {
   sub startup {
     my ($self) = @_;
 
-    $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/color hypnotoad NYTProf site template/;
+    $self->load_plugins();
 
     $self->setup_router();
 
-    $self->output_color_scss_files();
+    $self->generate_color_scss_files();
   }
 
-  sub output_color_scss_files {
+  sub load_plugins {
+    my ($self) = @_;
+
+    $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/color hypnotoad NYTProf site template/;
+
+    $self->plugin('AssetPack' => {pipes => [qw/Css Sass/]});
+    $self->asset->process('base.css' => ('scss/base.scss'));
+    $self->asset->process('country_table.css' => ('scss/country_table.scss'));
+  }
+
+  sub generate_color_scss_files {
     my ($self) = @_;
 
     my $color = encode('utf-8', "// サイト汎用色一覧\n");
