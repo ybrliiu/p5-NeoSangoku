@@ -5,14 +5,14 @@ package Sangoku::Web {
 
   use Sangoku::Util qw/project_root_dir/;
   use Mojo::Util qw/encode spurt/;
+  use Sangoku::Validator;
 
   sub startup {
     my ($self) = @_;
-
     $self->load_plugins();
-
+    $self->setup_items();
+    $self->regist_helpers();
     $self->setup_router();
-
     $self->generate_color_scss_files();
   }
 
@@ -24,6 +24,35 @@ package Sangoku::Web {
     $self->plugin('AssetPack' => {pipes => [qw/Css Sass/]});
     $self->asset->process('base.css' => ('scss/base.scss'));
     $self->asset->process('country_table.css' => ('scss/country_table.scss'));
+
+    # ベンチマークを取る、普段はOFF
+    $self->plugin(NYTProf => $self->config) if 0;
+  }
+
+  sub regist_helpers {
+    my ($self) = @_;
+
+    $self->helper(
+      # Mojo::EventEmitterのインスタンスを返すヘルパー 
+      events => sub { state $event = Mojo::EventEmitter->new() },
+
+      # テンプレートでも関数でcookieの値取得できるように 例:%= my_cookie('id');
+      get_cookie => sub {
+        my ($self, $key) = @_;
+        $self->cookie($key);
+      },
+    );
+    
+  }
+
+  sub setup_items {
+    my ($self) = @_;
+
+    $self->secrets(['session']);                   # セッション用のpassword
+    $self->sessions->cookie_name('Sangoku'); 
+    $self->sessions->default_expiration(36000);    # セッションの有効期限(分)
+
+    $self->inactivity_timeout(600);                # WebSocketのtimeoutにかかる時間
   }
 
   sub generate_color_scss_files {
