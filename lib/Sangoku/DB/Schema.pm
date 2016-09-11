@@ -404,6 +404,17 @@ package Sangoku::DB::Schema {
   };
 
   table {
+    name 'town_guards';
+    pk 'player_id';
+    columns (
+      {name => 'player_id', type => -1},
+      {name => 'town_name', type => -1},
+      {name => 'order', type => 4},
+    );
+    row_class 'Sangoku::DB::Row::Town::Guards';
+  };
+
+  table {
     name 'unit';
     pk 'id';
     columns (

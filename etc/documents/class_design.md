@@ -33,6 +33,7 @@ Model/Player/
           /Letter
      /Town/
           /Letter
+          /Guards
      /Site
 
      /LoginList       # Cache::ShareMemory
@@ -58,11 +59,12 @@ Model/Player/
              /Letter
              /Thread
              /Reply
-
+          /Cache
+          /Record
+          /RecordSingle/
+                       /Log
+          /RecordMultiple
           /Config
-          /Log
-          /Letter
-          /BBS
 ```
 
 # API層規約

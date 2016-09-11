@@ -244,6 +244,14 @@ CREATE TABLE "player_invite" (
 );
 
 
+--都市城の守備
+CREATE TABLE "town_guards" (
+  "player_id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
+  "town_name" text REFERENCES "town" ("name") ON DELETE CASCADE,
+  "order"     int DEFAULT 0
+);
+
+
 -- 部隊関連テーブル
 
 CREATE TABLE "unit" (
