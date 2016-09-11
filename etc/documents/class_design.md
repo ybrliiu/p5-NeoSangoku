@@ -9,7 +9,19 @@
 
 ## ディレクトリ構成
 ```
-Model/Player/
+Model/Role/DB/
+             /Parent
+             /Letter
+             /Thread
+             /Reply
+          /Cache
+          /Record
+          /RecordSingle/
+                       /Log
+          /RecordMultiple
+          /Config
+
+     /Player/
             /Config
             /Weapon
             /Guard
@@ -54,17 +66,6 @@ Model/Player/
      /Skill
      /InitTownData
 
-     /Role/DB
-             /Parent
-             /Letter
-             /Thread
-             /Reply
-          /Cache
-          /Record
-          /RecordSingle/
-                       /Log
-          /RecordMultiple
-          /Config
 ```
 
 # API層規約
@@ -94,12 +95,25 @@ sub root {
   my $player_id = '';
   my ($result, $error) = Sangoku::Service::Player->mypage($player_id);
 
-  $error->has_error() ? $self->stash(errors => $error->info) : $self->stash(errors => {});
+  $error->has_error() ? $self->stash(error => $error) : $self->stash(error => {});
   $self->stash(%$result);
 
   $self->render();
   # or
   $self->render(template => 'player/unit/root', variant => 'phone');
+}
+
+sub edit {
+  my $self = shift;
+
+  ...
+
+  if ($error->has_error) {
+    $self->input();
+  } else {
+    $self->redirect_to('/input');
+  }
+
 }
 ```
 

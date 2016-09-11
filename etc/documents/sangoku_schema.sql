@@ -248,7 +248,8 @@ CREATE TABLE "player_invite" (
 CREATE TABLE "town_guards" (
   "player_id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
   "town_name" text REFERENCES "town" ("name") ON DELETE CASCADE,
-  "order"     int DEFAULT 0
+  "order"     int DEFAULT 0,
+  UNIQUE("town_name", "order")
 );
 
 
