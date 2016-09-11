@@ -4,7 +4,7 @@ package Sangoku::Web {
   use Mojo::Base 'Mojolicious';
 
   sub startup {
-    my $self = shift;
+    my ($self) = @_;
 
     $self->setup_router();
   }

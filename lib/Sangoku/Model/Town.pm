@@ -12,7 +12,7 @@ package Sangoku::Model::Town {
     my ($class) = @_;
 
     my $init_data = load_config('etc/config/data/init_town.conf')->{'init_town'};
-    $class->db->bulk_insert(TABLE_NAME, [values %$init_data]);
+    $class->db->bulk_insert(TABLE_NAME, $init_data);
   };
 
   __PACKAGE__->meta->make_immutable();
