@@ -25,6 +25,8 @@ package Sangoku::Web {
     $self->asset->process('base.css' => ('scss/base.scss'));
     $self->asset->process('country_table.css' => ('scss/country_table.scss'));
 
+    $self->plugin('EmbeddedSass');
+
     # ベンチマークを取る、普段はOFF
     $self->plugin(NYTProf => $self->config) if 0;
   }
@@ -59,13 +61,13 @@ package Sangoku::Web {
     my ($self) = @_;
 
     my $color = encode('utf-8', "// サイト汎用色一覧\n");
-    for (sort(keys %{ $self->config->{'color'} })) {
+    for (sort keys(%{ $self->config->{'color'} })) {
       $color .= '$' . $_ . ':' . $self->config->{'color'}{$_} . ";\n";
     }
     spurt $color, project_root_dir() . '/assets/scss/parts/_color.scss';
   
     my $country_table = encode('utf-8',"/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country_table_base';\n");
-    for (sort(keys %{ $self->config->{'countrycolor'} })) {
+    for (sort keys(%{ $self->config->{'countrycolor'} })) {
       $country_table .= ".table-$_ { \@include country-table-base(@{[ $self->config->{'countrycolor'}{$_} ]},@{[ $self->config->{'countrycolor2'}{$_} ]}); }\n";
     }
     spurt $country_table, project_root_dir() . '/assets/scss/country_table.scss';
