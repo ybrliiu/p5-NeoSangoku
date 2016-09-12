@@ -19,17 +19,17 @@ package Sangoku::Model::Town::Guards {
       player_id => $player_id,
     );
 
-    if ($type eq 'head') {
-      my $max = $self->max('order', {town_name => $self->name});
-      $self->db->do_insert(TABLE_NAME, {%where, order => $max + 1});
-    }
-    elsif ($type eq 'tail') {
-      my $min = $self->min('order', {town_name => $self->name});
-      $self->db->do_insert(TABLE_NAME, {%where, order => $min - 1});
-    }
-    else {
-      croak "$type は無効なtypeです。";
-    }
+    my $order = do {
+      if ($type eq 'head') {
+        $self->max('order', {town_name => $self->name}) + 1;
+      } elsif ($type eq 'tail') {
+        $self->min('order', {town_name => $self->name}) - 1;
+      } else {
+        croak "$type は無効なtypeです。";
+      }
+    };
+
+    $self->db->do_insert(TABLE_NAME, {%where, order => $order});
 
   }
 
