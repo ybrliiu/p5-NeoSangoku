@@ -1,5 +1,8 @@
-<!DOCTYPE html>
-<html>
-  <head><title><%= title %></title></head>
-  <body><%= content %></body>
-</html>
+% # htmlの外側(default)
+% extends 'layouts/wrapper';
+% content container => begin
+</head>
+<body>
+  <%= content %>
+% end
+%= content 'container'

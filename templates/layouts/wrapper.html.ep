@@ -1,0 +1,27 @@
+% # サイト共通の外枠
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><%= $config->{'site'}{'name'} %></title>
+  <meta name="description" content="戦略シミュレーションゲーム、三国志NETです。国を作り仲間と協力して大陸の統一を目指します。" />
+  <meta name="keywords" content="NEO三国志NET,三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料,戦略シミュレーションゲーム" />
+  %= asset 'base.css'; # assetpackでscssをcssにコンパイルしたものを読み込み
+  %= asset 'country-table.css'; # country-tableのcssを読み込み
+% content container => begin
+    <%= content %>
+% end
+%= content 'container'
+  <footer class="centerbox" style="width:100%;">
+    <div style="width:100%;height:1px;background-color:<%= $config->{'color'}{'silver'} %>;"></div>
+    <div style="height:10px;"></div>
+    <div>
+      <span style="color:<%= $config->{'color'}{'darkred'} %>"><%= $config->{'site'}{'name'} %> <%= $config->{'site'}{'season'} %> Ver.<%= $Sangoku::VERSION %><br>
+      製作者&管理人 liiu <br>
+      <a href="/">GAME TOP</a><br>
+      Working on <a href="http://mojolicio.us">Mojolicious</a></span>
+    </div>
+    <div style="height:15px;"></div>
+  </footer>
+</body>
+</html>

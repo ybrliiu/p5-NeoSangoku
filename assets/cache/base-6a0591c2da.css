@@ -5,6 +5,11 @@ body, tr, td, th, form {
   font-size: 9pt;
   color: #222; }
 
+body {
+  background: #ffffff url("/images/background.png");
+  margin: 0;
+  padding: 0; }
+
 a {
   text-decoration: none; }
   a:link {
@@ -34,18 +39,18 @@ a {
 #wrapper * {
   box-sizing: border-box; }
 
-#wrapper .inner_around {
+#wrapper .inner-around {
   padding: 11px; }
 
 #wrapper .inner {
   padding: 0 0 11px 11px;
   float: left; }
 
-#wrapper .inner_right {
+#wrapper .inner-right {
   padding: 0 11px 11px 11px;
   float: left; }
 
-#wrapper .adjust_bottom {
+#wrapper .adjust-bottom {
   margin-bottom: 11px; }
 
 #wrapper h2 {

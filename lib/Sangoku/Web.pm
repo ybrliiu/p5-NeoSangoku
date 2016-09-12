@@ -9,21 +9,20 @@ package Sangoku::Web {
 
   sub startup {
     my ($self) = @_;
+    $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/color hypnotoad NYTProf site template/;
+    $self->generate_color_scss_files();
     $self->load_plugins();
     $self->setup_items();
     $self->regist_helpers();
     $self->setup_router();
-    $self->generate_color_scss_files();
   }
 
   sub load_plugins {
     my ($self) = @_;
 
-    $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/color hypnotoad NYTProf site template/;
-
     $self->plugin('AssetPack' => {pipes => [qw/Css Sass/]});
     $self->asset->process('base.css' => ('scss/base.scss'));
-    $self->asset->process('country_table.css' => ('scss/country_table.scss'));
+    $self->asset->process('country-table.css' => ('scss/country-table.scss'));
 
     $self->plugin('EmbeddedSass');
 
@@ -66,11 +65,11 @@ package Sangoku::Web {
     }
     spurt $color, project_root_dir() . '/assets/scss/parts/_color.scss';
   
-    my $country_table = encode('utf-8',"/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country_table_base';\n");
+    my $country_table = encode('utf-8',"/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country-table-base';\n");
     for (sort keys(%{ $self->config->{'countrycolor'} })) {
       $country_table .= ".table-$_ { \@include country-table-base(@{[ $self->config->{'countrycolor'}{$_} ]},@{[ $self->config->{'countrycolor2'}{$_} ]}); }\n";
     }
-    spurt $country_table, project_root_dir() . '/assets/scss/country_table.scss';
+    spurt $country_table, project_root_dir() . '/assets/scss/country-table.scss';
   }
 
   sub setup_router {
