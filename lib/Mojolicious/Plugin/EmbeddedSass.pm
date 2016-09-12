@@ -19,9 +19,9 @@ package Mojolicious::Plugin::EmbeddedSass {
         $app->log->debug('Loading cached scss data...');
         return $cache;
       }else{
-        $scss = $self->sass->compile($$scss);
-        $self->cache->set($route => $$scss) if $conf;
-        return $$scss;
+        my $compile = $self->sass->compile($$scss);
+        $self->cache->set($route => $compile) if $conf;
+        return $compile;
       }
     });
   }

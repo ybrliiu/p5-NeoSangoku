@@ -3,3 +3,6 @@ etc/config/db.conf
 
 # ログは要らない
 log/
+
+# scssからコンパイルしたcssは要らない
+assets/cache/

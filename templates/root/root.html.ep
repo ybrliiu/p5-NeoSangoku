@@ -1,1 +1,210 @@
 % layout 'default';
+
+%= stylesheet begin
+<% my $scss = '
+
+#wrapper {
+  $pad: 18px;
+  *              { box-sizing:border-box; }
+  .inner-around  { padding: $pad; }
+  .inner {
+    padding:0 0 $pad $pad;
+    float: left;
+  }
+  .inner-right {
+    padding:0 $pad $pad $pad;
+    float: left;
+  }
+  .adjust-bottom { margin-bottom: $pad; }
+}
+
+#header {
+  width: 80%;
+  border: 3px ' . $config->{color}{darkred} . ' solid;
+  border-radius: 4px;
+  background-color: ' . $config->{color}{lightorange} . ';
+  color: ' . $config->{color}{darkred} . ';
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#login-form {
+  width: 100%;
+  border: 3px ' . $config->{color}{darkred} . ' solid;
+  border-radius: 4px;
+  background-color: ' . $config->{color}{lightdarkred} . ';
+  text-align: center;
+  padding: 10px;
+}
+
+nav { width: 100% }
+#menu {
+  background-color: ' . $config->{color}{darkred} . ';
+  padding: 8px;
+  border-radius: 4px;
+
+  li {
+    list-style: none;
+    background-color: ' . $config->{color}{lightdarkred} . ';
+    padding: 3px;
+    margin: 5px;
+    border-radius: 3px;
+    text-align: left;
+  }
+
+  a {
+    color: ' . $config->{color}{black} . ';
+    &:hover { color: ' . $config->{color}{yellow} . ' }
+  }
+  
+  .not-list {
+    text-align: center;
+    padding: 0px;
+    margin: 8px;
+    background-color: ' . $config->{color}{darkred} . ';
+    font-weight: bold;
+  }
+}
+
+.subhead {
+  background: ' . $config->{color}{white} . ';
+  margin: 0px;
+  padding: 1px 1px 1px 8px;
+  border-top: 0px;
+  border-bottom: 2px  ' . $config->{color}{darkred} . ' solid;
+  border-right: 0px;
+  border-left: 8px  ' . $config->{color}{darkred} . ' solid;
+  text-align:left;
+
+  h2 { margin: 2px }
+}
+.show-log-wrapper {
+  width: 100%;
+  height: 220px;
+  border-radius: 5px;
+  border: 1px  ' . $config->{color}{darkred} . ' solid;
+  padding: 5px 5px 5px 5px;
+  margin: 3px 0 0 0;
+
+  table {
+    border-collapse: collapse;
+    border: 0px;
+  }
+  td {
+    vertical-align: top;
+  }
+}
+.show-log {
+  width: 100%;
+  height: 100%;
+  text-align:left;
+}
+.botted-line {
+  border-top: 0px;
+  border-right: 0px;
+  border-bottom: 1px  ' . $config->{color}{lightblack} . ' dotted;
+  border-left: 0px;
+}
+
+'; %>
+%== scss_to_css(\$scss, 1);
+% end
+
+<section>
+<div id="wrapper">
+  <header>
+    <div class="inner-around">
+      <div id="header">
+        <h1><%= $config->{site}{name} %></h1>
+        <h2>第<%= 0 %>期</h2>
+        <br>
+        <strong>[889年02月]</strong><br>
+        次回の更新まで <strong>0</strong> 分<br>
+        <br>
+      </div>
+    </div>
+  </header>
+
+  <div class="inner width-20pc">
+    <div id="login-form" class="adjust-bottom">
+      <form action="/mypage" method="post">
+        <h2>■ログイン■</h2>
+        <%= text_field id => get_cookie('id') // '', placeholder => 'ユーザーID' %><br>
+        <%= password_field 'pass', value => get_cookie('pass') // '', placeholder => 'パスワード' %><br>
+        <label class="snazzy-checkbox">
+          <%= check_box store => 1 %>
+          <span>ID、パスワードを保存する</span>
+        </label>
+        <br>
+        <input type="submit" value="ログイン">
+      </form>
+    </div>
+
+    <nav>
+      <ul id="menu" class="adjust-bottom">
+        <li class="not-list"><h2>■メニュー■</h2></li>
+        <a href="/"><li>●【HOME】</li></a>
+        <a href="/outer/entry"><li>●【新規登録】</li></a>
+        <a href="/bbs" target="_blank"><li>●【専用BBS】</li></a>
+        <a href="/outer/allplayer" target="_blank"><li>●【登録武将一覧】</li></a>
+        <a href="/outer/ranking" target="_blank"><li>●【名将ランキング】</li></a>
+        <a href="/outer/graph" target="_blank"><li>●【国力比較】</li></a>
+        <a href="/outer/map" target="_blank"><li>●【勢力図】</li></li></a>
+        <a href="/outer/manual" target="_blank"><li>●【説明書】</li></a>
+        <a href="/outer/rekisi" target="_blank"><li>●【歴代統一国】</li></a>
+        <a href="/outer/kaizou" target="_blank"><li>●【改造履歴】</li></a>
+        <li class="not-list">ログイン人数：0人</li>
+        <li class="not-list">最大登録人数(<%= $config->{site}{max_player} %>人)</li>
+        <li class="not-list"><span class="red">総アクセス数：<%= 0 %></span></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="inner-right width-80pc">
+
+    <div class="adjust-bottom">
+      <div class="subhead"><h2>お知らせ</h2></div>
+      <div class="show-log-wrapper white-background">
+        <div class="show-log scroll">
+        % for (0 .. 20) {
+          <table>
+            <tr>
+              <td>●2015/12/0<%= $_ %>　</td>
+              <td>
+                ・リセットしました。<br>
+                ・は？？？<br>
+              </td>
+            </tr>
+          </table>
+          <hr class="botted-line">
+        % }
+        </div>
+      </div>
+    </div>
+
+    <div class="adjust-bottom">
+      <div class="subhead"><h2>MAP LOG</h2></div>
+      <div class="show-log-wrapper lightdarkred-background">
+        <div class="show-log scroll">
+        % for (0 .. 20) {
+            <span class="green">●</span><%== $_ %><br>
+        % }
+        </div>
+      </div>
+    </div>
+
+    <div class="adjust-bottom">
+      <div class="subhead"><h2>HISTORY LOG</h2></div>
+      <div class="show-log-wrapper lightdarkred-background">
+        <div class="show-log scroll">
+        % for (0 .. 20) {
+            <span class="green">●</span><%== $_ %><br>
+        % }
+        </div>
+      </div>
+    </div>
+
+  <div>
+</div>
+</section>

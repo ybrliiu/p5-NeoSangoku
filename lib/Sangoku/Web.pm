@@ -35,8 +35,10 @@ package Sangoku::Web {
 
     $self->helper(
       # Mojo::EventEmitterのインスタンスを返すヘルパー 
-      events => sub { state $event = Mojo::EventEmitter->new() },
+      events => sub { state $event = Mojo::EventEmitter->new() }
+    );
 
+    $self->helper(
       # テンプレートでも関数でcookieの値取得できるように 例:%= my_cookie('id');
       get_cookie => sub {
         my ($self, $key) = @_;

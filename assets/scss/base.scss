@@ -57,7 +57,6 @@ a {
     float: left;
   }
   .adjust-bottom { margin-bottom: $pad; }
-  h2             { margin:0; }
   > #title {
     position: relative;
     width: 100%;
@@ -160,8 +159,8 @@ a {
 /* 見出し用 */
 h1 { font-size:17pt; }
 h2 {
-  font-size:12pt;
-  margin:3px;
+  font-size: 12pt;
+  margin: 5px;
 }
 
 /* 見出し1 */
@@ -178,17 +177,37 @@ h2 {
   margin:0;
 }
 
+
 /* 文字色 */
 @mixin charcter-color($color) {
   color:$color;
   font-weight:bold;
 }
+.black { @include charcter-color($black); }
 .blue { @include charcter-color($blue); }
 .lightblue { @include charcter-color($lightblue); }
 .darkblue { @include charcter-color($darkblue); }
 .red { @include charcter-color($red); }
 .green { @include charcter-color($green); }
 .white { @include charcter-color($white); }
+
+
+/* 背景 */
+@mixin background-color($color) { background-color: $color }
+.black-background { @include background-color($black) }
+.white-background { @include background-color($white) }
+.lightdarkred-background { @include background-color($lightdarkred) }
+
+
+/* 横の大きさ */
+$width-list: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90;
+@each $pc in $width-list {
+  .width-#{$pc}pc{
+    $a: %;
+    width: #{$pc}#{$a};
+  }
+}
+
 
 /* フォーム */
 
@@ -199,7 +218,7 @@ select {
   display: inline-block;
   min-width: 80px;
   border: 1px $border-form solid;
-  margin: 2px;
+  margin: 4px;
   padding : 7px 7px;
   background-color: #EEEEEE;
   border-radius:4px;
@@ -231,7 +250,7 @@ textarea, input[type="text"], input[type="number"], input[type="email"], input[t
   display: inline-block;
   background-color:#F4F4F4;
   border: 1px $border-form solid;
-  margin: 2px;
+  margin: 4px;
   padding: 7px 7px;
   border-radius:3px;
   border-bottom-right-radius:10px;
@@ -272,6 +291,7 @@ input.field-with-error {
 /* おしゃれなラジオボタン&チェックボックス用 */
 .snazzy-radio, .snazzy-checkbox {
   position: relative;
+  margin: 4px;
   cursor: pointer;
   input {
     opacity: 0;
