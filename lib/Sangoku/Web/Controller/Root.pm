@@ -3,9 +3,15 @@ package Sangoku::Web::Controller::Root {
   use Sangoku;
   use Mojo::Base 'Mojolicious::Controller';
 
+  use Sangoku::Service::Root;
+
   sub root {
     my ($self) = @_;
-    $self->render(msg => 'Welcome to the Mojolicious real-time web framework!');
+
+    my $result = Sangoku::Service::Root->root();
+    $self->stash(%$result);
+
+    $self->render();
   }
 
 }

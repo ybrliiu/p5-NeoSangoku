@@ -27,7 +27,7 @@ package Sangoku::Web {
     $self->plugin('EmbeddedSass');
 
     # ベンチマークを取る、普段はOFF
-    $self->plugin(NYTProf => $self->config) if 0;
+    $self->plugin(NYTProf => $self->config) if 1;
   }
 
   sub regist_helpers {

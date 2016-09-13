@@ -117,7 +117,7 @@ nav { width: 100% }
     <div class="inner-around">
       <div id="header">
         <h1><%= $config->{site}{name} %></h1>
-        <h2>第<%= 0 %>期</h2>
+        <h2>第<%= $term %>期</h2>
         <br>
         <strong>[889年02月]</strong><br>
         次回の更新まで <strong>0</strong> 分<br>
@@ -154,9 +154,9 @@ nav { width: 100% }
         <a href="/outer/manual" target="_blank"><li>●【説明書】</li></a>
         <a href="/outer/rekisi" target="_blank"><li>●【歴代統一国】</li></a>
         <a href="/outer/kaizou" target="_blank"><li>●【改造履歴】</li></a>
-        <li class="not-list">ログイン人数：0人</li>
+        <li class="not-list">ログイン人数：<%= $login_people %>人</li>
         <li class="not-list">最大登録人数(<%= $config->{site}{max_player} %>人)</li>
-        <li class="not-list"><span class="red">総アクセス数：<%= 0 %></span></li>
+        <li class="not-list"><span class="red">総アクセス数：<%= $access %></span></li>
       </ul>
     </nav>
   </div>
@@ -167,13 +167,12 @@ nav { width: 100% }
       <div class="subhead"><h2>お知らせ</h2></div>
       <div class="show-log-wrapper white-background">
         <div class="show-log scroll">
-        % for (0 .. 20) {
+        % for (@$announce) {
           <table>
             <tr>
-              <td>●2015/12/0<%= $_ %>　</td>
+              <td>●<%= $_->date %>　</td>
               <td>
-                ・リセットしました。<br>
-                ・は？？？<br>
+                <%= $_->message %>
               </td>
             </tr>
           </table>
@@ -187,7 +186,7 @@ nav { width: 100% }
       <div class="subhead"><h2>MAP LOG</h2></div>
       <div class="show-log-wrapper lightdarkred-background">
         <div class="show-log scroll">
-        % for (0 .. 20) {
+        % for (@$map_log) {
             <span class="green">●</span><%== $_ %><br>
         % }
         </div>
@@ -198,7 +197,7 @@ nav { width: 100% }
       <div class="subhead"><h2>HISTORY LOG</h2></div>
       <div class="show-log-wrapper lightdarkred-background">
         <div class="show-log scroll">
-        % for (0 .. 20) {
+        % for (@$history_log) {
             <span class="green">●</span><%== $_ %><br>
         % }
         </div>

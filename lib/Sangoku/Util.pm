@@ -4,7 +4,8 @@ package Sangoku::Util {
 
   use Carp qw/croak/;
   use Exporter 'import';
-  our @EXPORT_OK = qw/project_root_dir load_config validate_values minute_second daytime date datetime child_module_list load_child_module/;
+  our @EXPORT_OK = qw/project_root_dir load_config validate_values minute_second
+    daytime date datetime child_module_list load_child_module/;
 
   use Cwd 'getcwd';
   use Config::PL;

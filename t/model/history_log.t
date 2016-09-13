@@ -9,7 +9,7 @@ my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::HistoryLog';
 
 subtest 'init' => sub {
-  ok $TEST_CLASS->init();
+  $TEST_CLASS->init();
   my $list = $TEST_CLASS->get_all();
   ok !@$list;
 };
