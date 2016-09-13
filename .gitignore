@@ -1,6 +1,9 @@
 # etc/config/db.conf はパスワードとかも載せるのでとりあえず除外
 etc/config/db.conf
 
+# Recordも要らない
+etc/record/
+
 # ログは要らない
 log/
 

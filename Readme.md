@@ -3,12 +3,13 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-Row::Player
+・Model::CommandList のinit処理(ディレクトリ以下全部削除)
+・Service ヘルパー(そのコントローラに該当するserviseクラスの名前返すヘルパー)
+あってもよさよう
+・Model::Site はRecord.pmなりで作った方がいいね(おっそい)
+・書いてないテストも書きましょうね〜〜
 
-DBクラス定義
-Configクラス定義
-Recordクラス定義
-Townモデル定義
+Row::Player
 
 testのコード共通化進める?
 Test::Sangoku::Util::Model

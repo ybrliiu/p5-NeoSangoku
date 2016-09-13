@@ -23,6 +23,9 @@ package Sangoku::Model::Role::RecordMultiple {
     $self->record->remove();
   }
 
+  sub init {
+  }
+
 }
 
 1;
