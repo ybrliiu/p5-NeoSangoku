@@ -17,10 +17,10 @@ package Sangoku::Model::Player::CommandLog {
     );
   }
 
-  sub init {
-    my ($self) = @_;
-    $self->record->make();
-  }
+  around 'init' => sub {
+    my ($orig, $self) = @_;
+    ref $self ? $self->record->make() : $orig->($self);
+  };
 
   sub add {
     my ($self, $str) = @_;

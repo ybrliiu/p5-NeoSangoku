@@ -254,6 +254,7 @@ textarea, input[type="text"], input[type="number"], input[type="email"], input[t
   padding: 7px 7px;
   border-radius:3px;
   border-bottom-right-radius:10px;
+  width: 95%;
   &:hover{
     background-color:$white;
     border: 1px $blue solid;

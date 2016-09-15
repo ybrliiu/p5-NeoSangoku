@@ -8,4 +8,5 @@ etc/record/
 log/
 
 # scssからコンパイルしたcssは要らない
+assets/assetpack.db
 assets/cache/

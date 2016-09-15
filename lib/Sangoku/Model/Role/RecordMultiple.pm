@@ -5,6 +5,8 @@ package Sangoku::Model::Role::RecordMultiple {
   with 'Sangoku::Model::Role::Record';
   requires qw/_build_record init/;
 
+  use Path::Tiny;
+
   has 'id'     => (is => 'ro', isa => 'Str', required => 1);
   has 'record' => (is => 'ro', lazy => 1, builder => '_build_record');
 
@@ -24,6 +26,12 @@ package Sangoku::Model::Role::RecordMultiple {
   }
 
   sub init {
+    my ($class) = @_;
+    (my $dir = $class->CLASS->file_path('')) =~ s/\.dat//g;
+    my $iter = path($dir)->iterator();
+    while (my $path = $iter->()) {
+      $path->remove() if $path =~ /\.dat$/;
+    }
   }
 
 }

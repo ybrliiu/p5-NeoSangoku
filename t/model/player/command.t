@@ -1,5 +1,6 @@
 use Sangoku 'test';
 use Test::More;
+use Test::Exception;
 use Test::Sangoku;
 use Test::Record;
 
@@ -24,6 +25,8 @@ subtest 'init' => sub {
   
   my $max = $TEST_CLASS->CLASS->MAX();
   is($list->[$max - 1]->id, $none->{id});
+  
+
 };
 
 subtest 'input' => sub {
@@ -32,6 +35,18 @@ subtest 'input' => sub {
 
 subtest 'remove' => sub {
   ok $OBJ->remove();
+};
+
+# init classメソッドの場合
+subtest 'class_init' => sub {
+  my @record;
+  for (0 .. 9) {
+    $record[$_] = $TEST_CLASS->new(id => "test_$_");
+    $record[$_]->init();
+  }
+  ok $record[0]->remove();
+  lives_ok { $TEST_CLASS->init() };
+  dies_ok { $record[5]->remove() };
 };
 
 done_testing();

@@ -18,14 +18,20 @@ package Sangoku::Model::Player::CommandList {
     );
   }
 
-  sub init {
-    my ($self) = @_;
-    $self->record->make();
-    my $command_list = CLASS->new();
-    my $record = $self->record->open('LOCK_EX');
-    $record->save($_ => $command_list) for 0 .. CLASS->MAX() - 1;
-    $record->close();
-  }
+  around 'init' => sub {
+    my ($orig, $self) = @_;
+
+    if (ref $self) {
+      $self->record->make();
+      my $command_list = CLASS->new();
+      my $record = $self->record->open('LOCK_EX');
+      $record->save($_ => $command_list) for 0 .. CLASS->MAX() - 1;
+      $record->close();
+    } else {
+      my $class = $self;
+      $orig->($class);
+    }
+  };
 
   sub at {
     my ($self, $no) = @_;

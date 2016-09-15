@@ -127,6 +127,7 @@ nav { width: 100% }
   </header>
 
   <div class="inner width-20pc">
+
     <div id="login-form" class="adjust-bottom">
       <form action="/mypage" method="post">
         <h2>■ログイン■</h2>
