@@ -4,8 +4,8 @@ use Test::Sangoku;
 
 use Sangoku::Util qw/daytime/;
 
-use Sangoku::API::Player::CommandLog;
-my $TEST_CLASS = 'Sangoku::API::Player::CommandLog';
+use Sangoku::API::MapLog;
+my $TEST_CLASS = 'Sangoku::API::MapLog';
 
 subtest 'check' => sub {
   ok $TEST_CLASS->MAX();

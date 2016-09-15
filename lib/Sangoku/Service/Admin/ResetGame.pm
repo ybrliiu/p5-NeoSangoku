@@ -19,17 +19,10 @@ package Sangoku::Service::Admin::ResetGame {
     Sangoku::Model::Town->init();
 
     for my $module (@MODULES) {
-      my @is_db = grep { $_->name =~ /Sangoku::Model::Role::DB/ } @{ $module->meta->roles };
-      $module->init() if @is_db;
+      my @is_db     = grep { $_->name =~ /Sangoku::Model::Role::DB/ } @{ $module->meta->roles };
+      my @is_record = grep { $_->name =~ /Sangoku::Model::Role::Record/ } @{ $module->meta->roles };
+      $module->init() if @is_db || @is_record;
     }
-
-    $_->init() for qw/
-      Sangoku::Model::MapLog
-      Sangoku::Model::HistoryLog
-      Sangoku::Model::AdminLog
-    /;
-
-    # CommandList::init も実装する必要(ディレクトリ内の.datファイル全部削除)
 
   }
 
