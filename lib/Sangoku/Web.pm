@@ -33,18 +33,22 @@ package Sangoku::Web {
   sub regist_helpers {
     my ($self) = @_;
 
-    $self->helper(
-      # Mojo::EventEmitterのインスタンスを返すヘルパー 
-      events => sub { state $event = Mojo::EventEmitter->new() }
-    );
+    # Mojo::EventEmitterのインスタンスを返すヘルパー 
+    $self->helper(events => sub { state $event = Mojo::EventEmitter->new() });
 
-    $self->helper(
-      # テンプレートでも関数でcookieの値取得できるように 例:%= my_cookie('id');
-      get_cookie => sub {
-        my ($self, $key) = @_;
-        $self->cookie($key);
-      },
-    );
+    # テンプレートでも関数でcookieの値取得できるように 例:%= my_cookie('id');
+    $self->helper(get_cookie => sub {
+      my ($self, $key) = @_;
+      $self->cookie($key);
+    });
+
+    # そのコントローラクラスに対応するServiceクラスを返す
+    $self->helper(service => sub {
+      my ($self) = @_;
+      (my $class = ref $self) =~ s/Web::Controller/Service/g;
+      eval "require $class";
+      return $class;
+    });
     
   }
 
