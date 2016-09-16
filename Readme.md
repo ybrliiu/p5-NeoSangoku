@@ -3,9 +3,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-init と delete_all or remove_all 分割
-
-Resetがうまく行かない
 tableの依存関係に注意
 country_position ON DELETE SET NULL
 

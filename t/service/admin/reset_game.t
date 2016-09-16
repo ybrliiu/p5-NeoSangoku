@@ -1,5 +1,6 @@
 use Sangoku 'test';
 use Test::More;
+use Test::Exception;
 use Test::Sangoku;
 use Test::Record;
 use Test::Sangoku::PostgreSQL;
@@ -11,8 +12,8 @@ my $PSQL = Test::Sangoku::PostgreSQL->new();
 my $TR = Test::Record->new();
 
 subtest 'reset_game' => sub {
-  $TEST_CLASS->reset_game(1000000);
-  ok 1;
+  lives_ok { $TEST_CLASS->init_data_all(1000000) };
+  lives_ok { $TEST_CLASS->reset_game(1000000) };
 };
 
 done_testing();

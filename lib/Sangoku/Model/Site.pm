@@ -4,6 +4,7 @@ package Sangoku::Model::Site {
   use Mouse;
   with 'Sangoku::Model::Role::RecordSingle';
 
+  use Carp qw/croak/;
   use Try::Tiny;
   use Sangoku::API::Site;
 
@@ -11,6 +12,7 @@ package Sangoku::Model::Site {
 
   sub init {
     my ($class, $start_time) = @_;
+    croak '更新開始時間が指定されていません' unless $start_time;
 
     eval {
       my $record = $class->record->open('LOCK_EX');
