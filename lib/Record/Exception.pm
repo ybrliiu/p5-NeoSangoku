@@ -8,7 +8,8 @@ package Record::Exception {
 
   # 非Mouseクラス継承の際はアテリビュートを再宣言する必要がある(そもそも委譲を考慮した方がよいかも...)
   has [qw/message package file line/] => (is => 'ro', isa => 'Str', required => 1);
-  has [qw/call_package call_file call_line call_sub trace/] => (is => 'ro', isa => 'Str', required => 1);
+  has [qw/call_package call_file call_line call_sub trace/] => (is => 'ro', isa => 'Str');
+  has 'trace' => (is => 'ro', required => 1);
   has [qw/obj/] => (is => 'ro', required => 1);
 
   # 非Mouseクラスを継承するために必要な処理

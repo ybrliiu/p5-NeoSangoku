@@ -11,17 +11,19 @@ package Sangoku::Service::Root {
   sub root {
     my ($class) = @_;
 
+    my $record = Sangoku::Model::Site->record;
+    $record->open('LOCK_EX');
     my $site = Sangoku::Model::Site->get();
-    my $access = $site->access + 1;
-    $site->update({access => $access});
+    $site->access($site->access + 1);
+    $record->close();
 
     return {
       term         => $site->term,
-      access       => $access,
+      access       => $site->access,
       login_people => scalar @{ Sangoku::Model::LoginList->get_all },
       announce     => Sangoku::Model::Announce->get(15),
-      map_log      => Sangoku::Model::MapLog->get(50),
-      history_log  => Sangoku::Model::HistoryLog->get(50),
+      map_log      => 'Sangoku::Model::MapLog'->get(50),
+      history_log  => 'Sangoku::Model::HistoryLog'->get(50),
     };
   }
 

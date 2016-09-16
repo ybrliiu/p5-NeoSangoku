@@ -9,7 +9,7 @@ package Test::Record {
 
     state $default = {
       record_dir => 'etc/record/',
-      tmp_dir    => 'tmp/',
+      tmp_dir    => 'tmp',
     };
     my $self = {%$default, %args};
 

@@ -278,20 +278,6 @@ CREATE TABLE "unit_letter" (
 );
 
 
--- サイト関連情報のテーブル
-CREATE TABLE "site" (
-  "id" int PRIMARY KEY DEFAULT 0,
-  "term" int DEFAULT 0, -- 何期か
-  "game_year"  int DEFAULT 0,
-  "game_month" int DEFAULT 1,
-  "game_time"  bigint DEFAULT 0,
-  "access"     int DEFAULT 0,
-  "before_start" int DEFAULT 1,
-  "start_time"   bigint NOT NULL,
-  "unite_flag"   int DEFAULT 0
-);
-
-
 -- 運営からのお知らせ
 CREATE TABLE "announce" (
   "id" serial PRIMARY KEY,

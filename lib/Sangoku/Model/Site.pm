@@ -2,35 +2,40 @@ package Sangoku::Model::Site {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::DB';
+  with 'Sangoku::Model::Role::RecordSingle';
 
-  use constant TABLE_NAME => 'site';
+  use Try::Tiny;
+  use Sangoku::API::Site;
+
+  use constant CLASS => 'Sangoku::API::Site';
 
   sub init {
     my ($class, $start_time) = @_;
 
-    if (my $site = $class->get) {
-      $site->update({
-        term         => $site->term + 1,
-        game_year    => 0,
-        game_month   => 1,
-        game_time    => 0,
-        access       => 0,
-        before_start => 1,
-        start_time   => $start_time,
-        unite_flag   => 0
-      });
-    } else {
-      $class->db->do_insert(TABLE_NAME, {
-        id         => 0,
-        start_time => $start_time,
-      });
+    eval {
+      my $record = $class->record->open('LOCK_EX');
+      my $site = $record->at(0);
+      $site->term($site->term + 1);
+      $site->start_time($start_time);
+      $record->close();
+    };
+
+    if (my $e = $@) {
+      if (Record::Exception->caught($e)) {
+        my $record = $class->record;
+        $record->make();
+        my $site = CLASS->new(start_time => $start_time);
+        $record->open('LOCK_EX');
+        $record->add($site);
+        $record->close();
+      }
     }
+
   }
 
   sub get {
     my ($class) = @_;
-    return $class->db->single(TABLE_NAME, {id => 0});
+    return $class->record->open->at(0);
   }
 
 }

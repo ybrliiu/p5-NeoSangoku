@@ -1,12 +1,12 @@
 use Sangoku 'test';
 use Test::More;
 use Test::Sangoku;
-use Test::Sangoku::PostgreSQL;
+use Test::Record;
 
 use Sangoku::Model::Site;
 
+my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::Site';
-my $PSQL = Test::Sangoku::PostgreSQL->new();
 my $START_TIME = 1382987389;
 
 subtest 'init' => sub {
@@ -15,18 +15,17 @@ subtest 'init' => sub {
 
 subtest 'get' => sub {
   ok(my $site = $TEST_CLASS->get);
-  is $site->id, 0;
   is $site->term, 0;
   is $site->start_time, $START_TIME;
 };
 
 subtest 'init_2' => sub {
-  ok $TEST_CLASS->init($START_TIME + 10000);
+  $TEST_CLASS->init($START_TIME + 10000);
+  ok 1;
 };
 
 subtest 'get' => sub {
   ok(my $site = $TEST_CLASS->get);
-  is $site->id, 0;
   is $site->term, 1;
   is $site->start_time, $START_TIME + 10000;
 };

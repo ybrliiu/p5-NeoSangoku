@@ -9,6 +9,12 @@ package Record::List {
   has 'max' => (is => 'ro', isa => 'Int', required => 1);
   
   sub _build_data { [] }
+
+  sub at {
+    my ($self, $no) = @_;
+    my $result = $self->data->[$no];
+    defined $result ? $result : Record::Exception->throw("${no}番目の要素は存在してません。", $self);
+  }
   
   # データ取得
   sub get {

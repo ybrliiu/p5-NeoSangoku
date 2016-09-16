@@ -53,7 +53,8 @@ package Record::Base {
   # ファイル閉じる
   sub close {
     my $self = shift;
-    truncate($self->fh, 0) or Record::Exception->throw("ファイルを開いていないか2度ファイルを開いています:$!", $self);
+    Record::Exception->throw("file handle が存在していません。", $self) unless $self->fh;
+    truncate($self->fh, 0) or Record::Exception->throw("truncate error : $!", $self);
     seek($self->fh, 0, 0) or Record::Exception->throw("seek失敗:$!", $self);
     nstore_fd($self->data, $self->fh) or Record::Exception->throw("nstore_fd失敗:$!", $self);
     close($self->fh) or Record::Exception->throw("close失敗:$!", $self);

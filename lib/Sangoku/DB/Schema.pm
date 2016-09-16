@@ -346,22 +346,6 @@ package Sangoku::DB::Schema {
   };
 
   table {
-    name 'site';
-    pk 'id';
-    columns (
-      {name => 'id', type => 4},
-      {name => 'term', type => 4},
-      {name => 'game_year', type => 4},
-      {name => 'game_month', type => 4},
-      {name => 'game_time', type => -5},
-      {name => 'access', type => 4},
-      {name => 'before_start', type => 4},
-      {name => 'start_time', type => -5},
-      {name => 'unite_flag', type => 4},
-    );
-  };
-
-  table {
     name 'town';
     pk 'name';
     columns (
