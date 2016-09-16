@@ -46,7 +46,8 @@ Model/Role/DB/
      /Town/
           /Letter
           /Guards
-     /Site
+
+     /Site         # Record.pm
 
      /LoginList       # Cache::ShareMemory
      /Announce

@@ -14,6 +14,7 @@ my $PSQL = Test::Sangoku::PostgreSQL->new();
 prepare_country_model_tests();
 
 subtest 'create' => sub {
+  diag $NEUTRAL_DATA->{king_id};
   ok $TEST_CLASS->create({
     name    => $NEUTRAL_DATA->{name},
     king_id => $NEUTRAL_DATA->{king_id},

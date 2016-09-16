@@ -14,15 +14,15 @@ package Sangoku::Service::Admin::ResetGame {
   sub reset_game {
     my ($class, $start_time) = @_;
 
-    Sangoku::Model::Site->init($start_time);
-    Sangoku::Model::Country->init();
-    Sangoku::Model::Town->init();
-
     for my $module (@MODULES) {
       my @is_db     = grep { $_->name =~ /Sangoku::Model::Role::DB/ } @{ $module->meta->roles };
       my @is_record = grep { $_->name =~ /Sangoku::Model::Role::Record/ } @{ $module->meta->roles };
       $module->init() if @is_db || @is_record;
     }
+
+    Sangoku::Model::Site->init($start_time);
+    Sangoku::Model::Country->init();
+    Sangoku::Model::Town->init();
 
   }
 

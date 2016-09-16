@@ -79,7 +79,7 @@ CREATE TABLE "country_diplomacy" (
 -- 都市関連テーブル
 CREATE TABLE "town" (
   "name" text PRIMARY KEY,
-  "country_name" text REFERENCES "country" ("name"),
+  "country_name" text NOT NULL,
   "x" int NOT NULL,
   "y" int NOT NULL,
   "loyalty" int DEFAULT 50,
@@ -117,8 +117,8 @@ CREATE TABLE "player" (
   "name" text UNIQUE NOT NULL,
   "pass" text NOT NULL,
   "icon" int  NOT NULL,
-  "country_name" text NOT NULL REFERENCES "country" ("name"),
-  "town_name"    text NOT NULL REFERENCES "town" ("name"),
+  "country_name" text NOT NULL,
+  "town_name"    text NOT NULL,
   "force"      int NOT NULL,
   "intellect"  int NOT NULL,
   "leadership" int NOT NULL,
