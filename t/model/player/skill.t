@@ -14,11 +14,6 @@ my $PSQL = Test::Sangoku::PostgreSQL->new();
 
 prepare_player_model_tests();
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 subtest 'new' => sub {
   $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);
   isa_ok $OBJ, $TEST_CLASS;

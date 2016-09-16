@@ -50,9 +50,4 @@ subtest 'get' => sub {
   is $law->title, '同盟';
 };
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 done_testing();

@@ -8,12 +8,11 @@ package Sangoku::Model::Town {
 
   use constant TABLE_NAME => 'town';
 
-  after 'init' => sub {
+  sub init {
     my ($class) = @_;
-
     my $init_data = load_config('etc/config/data/init_town.conf')->{'init_town'};
     $class->db->bulk_insert(TABLE_NAME, $init_data);
-  };
+  }
 
   __PACKAGE__->meta->make_immutable();
 }

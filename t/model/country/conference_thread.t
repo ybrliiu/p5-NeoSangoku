@@ -62,9 +62,4 @@ subtest 'delete' => sub {
   ok $OBJ->delete($thread->id);
 };
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 done_testing();

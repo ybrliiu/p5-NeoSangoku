@@ -24,17 +24,11 @@ package Sangoku::Model::Player::Command {
     );
   }
 
-  around 'init' => sub {
-    my ($orig, $self) = @_;
-
-    if (ref $self) {
-      $self->record->make();
-      $self->input(undef, [0 .. CLASS->MAX()-1]);
-    } else {
-      my $class = $self;
-      $orig->($class);
-    }
-  };
+  sub init {
+    my ($self) = @_;
+    $self->record->make();
+    $self->input(undef, [0 .. CLASS->MAX()-1]);
+  }
 
   sub input {
     my ($self, $data, $numbers) = @_;

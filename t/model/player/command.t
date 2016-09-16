@@ -18,14 +18,14 @@ subtest 'new' => sub {
 
 subtest 'init' => sub {
   ok $OBJ->init($PLAYER_ID);
-  
+
   my $list = $OBJ->get_all();
   my $none = $OBJ->NONE_DATA;
   is($list->[0]->id, $none->{id});
-  
+
   my $max = $TEST_CLASS->CLASS->MAX();
   is($list->[$max - 1]->id, $none->{id});
-  
+
 
 };
 
@@ -37,15 +37,14 @@ subtest 'remove' => sub {
   ok $OBJ->remove();
 };
 
-# init classメソッドの場合
-subtest 'class_init' => sub {
+subtest 'remove_all' => sub {
   my @record;
   for (0 .. 9) {
     $record[$_] = $TEST_CLASS->new(id => "test_$_");
     $record[$_]->init();
   }
   ok $record[0]->remove();
-  lives_ok { $TEST_CLASS->init() };
+  lives_ok { $TEST_CLASS->remove_all() };
   dies_ok { $record[5]->remove() };
 };
 

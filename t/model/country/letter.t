@@ -60,9 +60,4 @@ subtest 'get' => sub {
 
 };
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 done_testing();

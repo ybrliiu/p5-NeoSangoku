@@ -8,8 +8,6 @@ package Sangoku::Model::IconUploader {
 
   use constant TABLE_NAME => 'icon_uploader';
 
-  sub init {}
-
   sub get {
     my ($class, $limit, $offset) = @_;
 

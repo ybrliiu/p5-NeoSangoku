@@ -26,9 +26,4 @@ subtest 'get' => sub {
   is $position->king_id, '';
 };
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 done_testing();

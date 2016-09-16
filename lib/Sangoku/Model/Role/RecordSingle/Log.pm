@@ -8,14 +8,7 @@ package Sangoku::Model::Role::RecordSingle::Log {
 
   sub init {
     my ($class) = @_;
-
-    eval { $class->record->make() };
-    if ($@) {
-      my $record = $class->record->open('LOCK_EX');
-      $record->data([]);
-      $record->close();
-    }
-
+    $class->record->make();
   }
 
   sub add {

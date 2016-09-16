@@ -13,11 +13,6 @@ my $PSQL = Test::Sangoku::PostgreSQL->new();
 
 prepare_player_model_tests();
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 subtest 'create' => sub {
   ok $TEST_CLASS->create({player_id => $PLAYER_ID, power => 0});
 };

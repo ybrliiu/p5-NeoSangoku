@@ -19,11 +19,6 @@ my $TR = Test::Record->new();
 
 my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 subtest 'create' => sub {
   my $leader = Sangoku::Model::Player->get($PLAYER_ID);
 

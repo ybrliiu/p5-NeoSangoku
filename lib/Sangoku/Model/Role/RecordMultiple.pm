@@ -25,7 +25,7 @@ package Sangoku::Model::Role::RecordMultiple {
     $self->record->remove();
   }
 
-  sub init {
+  sub remove_all {
     my ($class) = @_;
     (my $dir = $class->CLASS->file_path('')) =~ s/\.dat//g;
     my $iter = path($dir)->iterator();

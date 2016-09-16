@@ -34,6 +34,10 @@ subtest 'init&get' => sub {
   get_id_and_check_name();
 };
 
+subtest 'delete_all' => sub {
+  ok $TEST_CLASS->delete_all();
+};
+
 sub get_id_and_check_name {
   ok( my $player = $TEST_CLASS->get($PLAYER_DATA->{id}) );
   is $player->name, $PLAYER_DATA->{name};

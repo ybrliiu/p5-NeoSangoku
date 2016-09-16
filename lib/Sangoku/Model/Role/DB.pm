@@ -34,11 +34,6 @@ package Sangoku::Model::Role::DB {
     $class->db->delete($class->TABLE_NAME => {});
   }
 
-  sub init {
-    my ($class) = @_;
-    $class->delete_all();
-  }
-
   sub primary_key {
     my ($class) = @_;
     state $primary_keys = {};

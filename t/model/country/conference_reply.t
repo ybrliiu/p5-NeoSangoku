@@ -67,9 +67,4 @@ subtest 'delete' => sub {
   is @$list, 0;
 };
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 done_testing();

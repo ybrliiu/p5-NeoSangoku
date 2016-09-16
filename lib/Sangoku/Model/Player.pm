@@ -41,12 +41,11 @@ package Sangoku::Model::Player {
     };
   }
 
-  after 'init' => sub {
+  sub init {
     my ($class) = @_;
-
     # 管理人を登録
     $class->regist(ADMINISTARTOR_DATA);
-  };
+  }
 
   sub create {
     my ($class, $args) = @_;

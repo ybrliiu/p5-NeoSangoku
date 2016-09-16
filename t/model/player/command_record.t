@@ -15,11 +15,6 @@ my $PSQL = Test::Sangoku::PostgreSQL->new();
 prepare_player_model_tests();
 create_test_player();
 
-subtest 'init' => sub {
-  $TEST_CLASS->init();
-  ok 1;
-};
-
 subtest 'new' => sub {
   $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);
   isa_ok $OBJ, $TEST_CLASS;
@@ -50,4 +45,3 @@ subtest 'get_from_command_name' => sub {
 };
 
 done_testing();
-

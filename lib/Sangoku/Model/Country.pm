@@ -16,10 +16,10 @@ package Sangoku::Model::Country {
     },
   };
 
-  after 'init' => sub {
+  sub init {
     my ($class) = @_;
     $class->regist({name => '無所属', color => 'gray', king_id => ''});
-  };
+  }
 
   sub create {
     my ($class, $args) = @_;

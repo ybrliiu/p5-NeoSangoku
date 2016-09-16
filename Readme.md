@@ -3,12 +3,11 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
+init と delete_all or remove_all 分割
+
 Resetがうまく行かない
 tableの依存関係に注意
-ON DELETE CASCEDE 以外のオプションは
-
-remove -> delete ?
-delete_all と init 分割？
+country_position ON DELETE SET NULL
 
 Row::Player
 SQLのチューニング
