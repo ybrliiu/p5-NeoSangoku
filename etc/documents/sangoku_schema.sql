@@ -11,18 +11,6 @@ CREATE TABLE "country" (
   "invitation_message"  text DEFAULT ''
 );
 
-CREATE TABLE "country_position" (
-  "country_name" text PRIMARY KEY REFERENCES "country" ("name") ON DELETE CASCADE,
-  "king_id"      text UNIQUE NOT NULL,
-  "premier_id"          text DEFAULT '',
-  "strategist_id"       text DEFAULT '',
-  "great_general_id"    text DEFAULT '',
-  "cavalry_general_id"  text DEFAULT '',
-  "guard_general_id"    text DEFAULT '',
-  "archery_general_id"  text DEFAULT '',
-  "infantry_general_id" text DEFAULT ''  -- infantry = 歩兵
-);
-
 CREATE TABLE "country_law" (
   "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE,
   "id"    serial PRIMARY KEY,
@@ -244,7 +232,7 @@ CREATE TABLE "player_invite" (
 );
 
 
---都市城の守備
+-- 都市城の守備
 CREATE TABLE "town_guards" (
   "player_id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
   "town_name" text REFERENCES "town" ("name") ON DELETE CASCADE,
@@ -253,8 +241,22 @@ CREATE TABLE "town_guards" (
 );
 
 
--- 部隊関連テーブル
+-- 国役職一覧
+CREATE TABLE "country_position" (
+  "country_name" text PRIMARY KEY REFERENCES "country" ("name") ON DELETE CASCADE,
+  "king_id"      text UNIQUE REFERENCES "player" ("id") ON DELETE SET NULL,
+  "premier_id"          text REFERENCES "player" ("id") ON DELETE SET NULL,
+  "strategist_id"       text REFERENCES "player" ("id") ON DELETE SET NULL,
+  "great_general_id"    text REFERENCES "player" ("id") ON DELETE SET NULL,
+  "cavalry_general_id"  text REFERENCES "player" ("id") ON DELETE SET NULL,
+  "guard_general_id"    text REFERENCES "player" ("id") ON DELETE SET NULL,
+  "archery_general_id"  text REFERENCES "player" ("id") ON DELETE SET NULL,
+  -- infantry = 歩兵
+  "infantry_general_id" text REFERENCES "player" ("id") ON DELETE SET NULL
+);
 
+
+-- 部隊関連テーブル
 CREATE TABLE "unit" (
   "id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
   "name" text,

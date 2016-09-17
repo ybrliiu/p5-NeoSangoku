@@ -4,9 +4,21 @@ package Sangoku::Model::Country::Position {
   use Mouse;
   with 'Sangoku::Model::Role::DB';
 
+  use Sangoku::Model::Country;
   use Sangoku::Util qw/validate_values/;
   
-  use constant TABLE_NAME => 'country_position';
+  use constant {
+    TABLE_NAME => 'country_position',
+    NEUTRAL_POSITION_DATA => {
+      name    => Sangoku::Model::Country->NEUTRAL_DATA->{name},
+      king_id => undef,
+    },
+  };
+
+  sub init {
+    my ($class) = @_;
+    $class->create(NEUTRAL_POSITION_DATA);
+  }
 
   sub create {
     my ($class, $args) = @_;

@@ -20,7 +20,7 @@ package Sangoku::Service::Admin::ResetGame {
 
   sub init_data_all {
     my ($class, $start_time) = @_;
-    "Sangoku::Model::$_"->init() for qw/Country Town Player MapLog HistoryLog AdminLog/;
+    "Sangoku::Model::$_"->init() for qw/Country Town Player Country::Position MapLog HistoryLog AdminLog/;
     Sangoku::Model::Site->init($start_time);
   }
 

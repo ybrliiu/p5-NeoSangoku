@@ -2,7 +2,7 @@ package Sangoku::Model::Player {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::DB::Parent';
+  with 'Sangoku::Model::Role::DB';
 
   use Sangoku::Util qw/load_child_module validate_values load_config/;
   load_child_module(__PACKAGE__);

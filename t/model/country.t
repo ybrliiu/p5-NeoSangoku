@@ -18,12 +18,6 @@ subtest 'create&delete' => sub {
   $TEST_CLASS->delete($NEUTRAL_DATA->{name});
 };
 
-subtest 'regist&erase' => sub {
-  $TEST_CLASS->regist($NEUTRAL_DATA);
-  get_and_check_name();
-  $TEST_CLASS->delete($NEUTRAL_DATA->{name});
-};
-
 subtest 'init' => sub {
   $TEST_CLASS->init();
   get_and_check_name();
