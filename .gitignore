@@ -2,11 +2,12 @@
 etc/config/db.conf
 
 # Recordも要らない
-etc/record/
+etc/record/*
 
 # ログは要らない
-log/
+log/*
+!.gitkeep
 
 # scssからコンパイルしたcssは要らない
 assets/assetpack.db
-assets/cache/
+assets/cache/*

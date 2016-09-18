@@ -7,6 +7,7 @@ package Sangoku::Model::Site {
   use Carp qw/croak/;
   use Try::Tiny;
   use Sangoku::API::Site;
+  use Time::Piece;
 
   use constant CLASS => 'Sangoku::API::Site';
 
@@ -14,11 +15,23 @@ package Sangoku::Model::Site {
     my ($class, $start_time) = @_;
     croak '更新開始時間が指定されていません' unless $start_time;
 
+    my $epoch_time = eval {
+      my $now = localtime;
+      # Time::Pieceからインスタンス生成すると、タイムゾーンがずれるので,localtimeの中でする必要がある
+      # see also http://d.hatena.ne.jp/hirose31/20110210/1297341952
+      my $time = localtime( Time::Piece->strptime(
+        "@{[ $now->year ]}年@{[ $now->mon ]}月${start_time}00分00秒",
+        "%Y年%m月%d日%H時%M分%S秒"
+      ));
+      $time->epoch();
+    };
+    croak "時刻指定の書式が間違っています(書式:xx日xx時)" if $@;
+
     eval {
       my $record = $class->record->open('LOCK_EX');
       my $site = $record->at(0);
       $site->term($site->term + 1);
-      $site->start_time($start_time);
+      $site->start_time($epoch_time);
       $record->close();
     };
 
@@ -26,7 +39,7 @@ package Sangoku::Model::Site {
       if (Record::Exception->caught($e)) {
         my $record = $class->record;
         $record->make();
-        my $site = CLASS->new(start_time => $start_time);
+        my $site = CLASS->new(start_time => $epoch_time);
         $record->open('LOCK_EX');
         $record->add($site);
         $record->close();
