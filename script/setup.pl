@@ -45,7 +45,9 @@ sub prepare_tables {
 
 sub prepare_dir {
   for my $tmp ('', 'tmp/') {
-    path("etc/record/${tmp}player/$_/.gitkeep")->touchpath for qw/command command_log command_list/;
+    for my $dir (qw/command command_log command_list/) {
+      path("etc/record/${tmp}player/${dir}/.gitkeep")->touchpath;
+    }
   }
 }
 

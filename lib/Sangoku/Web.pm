@@ -9,10 +9,10 @@ package Sangoku::Web {
 
   sub startup {
     my ($self) = @_;
-    $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/color hypnotoad NYTProf site template/;
+    $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/app color hypnotoad NYTProf site template/;
     $self->generate_color_scss_files();
     $self->load_plugins();
-    $self->setup_items();
+    $self->setup();
     $self->regist_helpers();
     $self->setup_router();
   }
@@ -24,10 +24,9 @@ package Sangoku::Web {
     $self->asset->process('base.css' => ('scss/base.scss'));
     $self->asset->process('country-table.css' => ('scss/country-table.scss'));
 
-    $self->plugin('EmbeddedSass');
-
-    # ベンチマークを取る、普段はOFF
-    $self->plugin(NYTProf => $self->config) if 0;
+    my $plugin_config = $self->config->{app}{plugin};
+    $self->plugin('EmbeddedSass') if $plugin_config->{EmbeddedSass};
+    $self->plugin(NYTProf => $self->config) if $plugin_config->{NYTProf};
   }
 
   sub regist_helpers {
@@ -52,14 +51,15 @@ package Sangoku::Web {
     
   }
 
-  sub setup_items {
+  sub setup {
     my ($self) = @_;
 
-    $self->secrets(['session']);                   # セッション用のpassword
-    $self->sessions->cookie_name('Sangoku'); 
-    $self->sessions->default_expiration(36000);    # セッションの有効期限(分)
+    my $session_config = $self->config->{app}{session};
+    $self->secrets([ $session_config->{password} ]);                               # セッション用のpassword
+    $self->sessions->cookie_name( $session_config->{cookie_name} ); 
+    $self->sessions->default_expiration( $session_config->{default_expiration} );  # セッションの有効期限(分)
 
-    $self->inactivity_timeout(600);                # WebSocketのtimeoutにかかる時間
+    $self->inactivity_timeout( $self->config->{app}{inactivity_timeout} );         # WebSocketのtimeoutにかかる時間
   }
 
   sub generate_color_scss_files {
@@ -71,9 +71,13 @@ package Sangoku::Web {
     }
     spurt $color, project_root_dir() . '/assets/scss/parts/_color.scss';
   
-    my $country_table = encode('utf-8',"/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country-table-base';\n");
+    my $country_table = encode(
+      'utf-8',
+      "/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country-table-base';\n"
+    );
     for (sort keys(%{ $self->config->{'countrycolor'} })) {
-      $country_table .= ".table-$_ { \@include country-table-base(@{[ $self->config->{'countrycolor'}{$_} ]},@{[ $self->config->{'countrycolor2'}{$_} ]}); }\n";
+      $country_table .=
+        ".table-$_ { \@include country-table-base(@{[ $self->config->{'countrycolor'}{$_} ]},@{[ $self->config->{'countrycolor2'}{$_} ]}); }\n";
     }
     spurt $country_table, project_root_dir() . '/assets/scss/country-table.scss';
   }
