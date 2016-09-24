@@ -21,25 +21,45 @@ subtest 'model' => sub {
 };
 
 subtest 'txn' => sub {
-  my $model = $TEST_CLASS->model('Player');
+
   ok(my $txn = $TEST_CLASS->txn);
+
+  my $model = $TEST_CLASS->model('Player');
   my $player = $model->get($model->ADMINISTARTOR_DATA->{player}{id});
   $player->update({name => '一般プレイヤー'});
+
+  my $country = $TEST_CLASS->model('Country')->get( $model->ADMINISTARTOR_DATA->{player}{country_name} );
+  $country->update({color => 'red'});
+
   ok $txn->commit();
 
   my $update_player = $player->refetch();
   is $update_player->name, '一般プレイヤー';
+
+  my $update_country = $country->refetch();
+  is $update_country->color, 'red';
+
 };
 
 subtest 'txn_rollback' => sub {
-  my $model = $TEST_CLASS->model('Player');
+
   my $txn = $TEST_CLASS->txn();
+
+  my $model = $TEST_CLASS->model('Player');
   my $player = $model->get($model->ADMINISTARTOR_DATA->{player}{id});
   $player->update({name => 'hoge'});
+
+  my $country = $TEST_CLASS->model('Country')->get( $model->ADMINISTARTOR_DATA->{player}{country_name} );
+  $country->update({color => 'blue'});
+
   ok $txn->rollback();
 
   my $update_player = $player->refetch();
   is $update_player->name, '一般プレイヤー';
+
+  my $update_country = $country->refetch();
+  is $update_country->color , 'red';
+
 };
 
 done_testing();
