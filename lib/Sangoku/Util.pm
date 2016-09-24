@@ -5,13 +5,14 @@ package Sangoku::Util {
   use Carp qw/croak/;
   use Exporter 'import';
   our @EXPORT_OK = qw/project_root_dir load_config validate_values minute_second
-    daytime date datetime child_module_list load_child_module/;
+    daytime date datetime child_module_list load_child_module load/;
 
   use Cwd 'getcwd';
   use Config::PL;
   use Time::Piece;
   use Encode 'decode';
   use Path::Tiny;
+  use Module::Load;
 
   # プロジェクトルートディレクトリ取得
   sub project_root_dir {
@@ -98,7 +99,7 @@ package Sangoku::Util {
     my $list = child_module_list($pkg);
     for (0 .. @$list-1) {
       my $module = $list->[$_];
-      eval "require $module";
+      load $module;
     }
     return $list;
   }

@@ -58,6 +58,7 @@ package Record::Base {
     seek($self->fh, 0, 0) or Record::Exception->throw("seek失敗:$!", $self);
     nstore_fd($self->data, $self->fh) or Record::Exception->throw("nstore_fd失敗:$!", $self);
     close($self->fh) or Record::Exception->throw("close失敗:$!", $self);
+    $self->{fh} = undef;
     return 1;
   }
 

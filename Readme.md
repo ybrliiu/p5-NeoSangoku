@@ -3,7 +3,9 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-NYTProf管理から外す
+
+テスト
+Test::More, Test::Exception, Test::Sangokuはまとめてロードするようにする
 
 Row::Player
 SQLのチューニング

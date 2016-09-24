@@ -3,7 +3,7 @@ package Sangoku::Web {
   use Sangoku;
   use Mojo::Base 'Mojolicious';
 
-  use Sangoku::Util qw/project_root_dir/;
+  use Sangoku::Util qw/project_root_dir load/;
   use Mojo::Util qw/encode spurt/;
   use Sangoku::Validator;
 
@@ -45,7 +45,7 @@ package Sangoku::Web {
     $self->helper(service => sub {
       my ($self) = @_;
       (my $class = ref $self) =~ s/Web::Controller/Service/g;
-      eval "require $class";
+      load $class;
       return $class;
     });
     
