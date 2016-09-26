@@ -7,6 +7,9 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 テスト
 Test::More, Test::Exception, Test::Sangokuはまとめてロードするようにする
 
+アイコンリストデザイン(default)
+JAvascript
+
 Row::Player
 SQLのチューニング
 

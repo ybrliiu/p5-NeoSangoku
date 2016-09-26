@@ -1,0 +1,241 @@
+【さくらのVPSで環境を整える方法】
+・OSはubuntuserver
+・perl環境を整え、Jikkoku_web(Mojoliciousアプリケーション)を動かせるようにする
+・ポートの解放はcentOSより楽(ufwがいきなり使える)
+・perlのインストールにcentOSより少し手間かかる(build-dep perl,curlのインストール必要)
+
+1.VPSコントロールパネルからubuntuserver14.04インストール
+https://help.sakura.ad.jp/app/answers/detail/a_id/2403/~/%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0os%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%82%AC%E3%82%A4%E3%83%89---ubuntu-12.04%2F14.04
+参照
+※DNSはプライマリDNSを入力
+
+2.VPSコントロールパネルのコンソールから1で作成した管理ユーザにログイン、ポート開放
+ポート開放:
+$ sudo ufw default deny # 最初に全て拒否にする
+$ sudo ufw allow 22 # SSH接続用ポート解放
+$ sudo ufw allow 80 # http用ポート開放
+$ sudo ufw allow 443 # https用(必要なら)
+$ sudo ufw allow 25 # SMTP(メール)用(必要なら)
+$ sudo ufw allow 110 # POP3(メール)用(必要なら)
+$ sudo ufw enable # ポート開放を有効にする
+$ sudo ufw status # 現在の状況
+
+3.webサービス公開に使うユーザー追加
+$ sudo adduser ユーザー名
+※パスワードも設定
+
+4.SSH接続の設定-暗号化の準備(鍵の生成)
+SSHを操作する側のPCで(not server)
+$ mkdir ssh
+$ cd ssh
+$ ssh-keygen -t rsa
+↓
+鍵の名前を聞かれるので id_rsa と入力
+↓
+パスワードを設定
+↓
+カレントディレクトリに
+id_rsa
+id_rsa.pub
+ができる
+
+5.SSH接続の設定-サーバー側に公開鍵を設置
+ftpで接続する。
+ホスト:サーバーのIPアドレス,ユーザー名:サーバーのwebサービス公開に使うユーザー名,パスワード,ポート番号:22
+↓
+homeディレクトリに.sshディレクトリ作成
+↓
+.sshに入り4で生成した id_rsa.pub を転送、authorized_keysに名前変更
+(サーバーじゃない側のid_rsa.pubは削除して良い)
+↓
+id_rsaを転送(id_rsaの位置はhomeディレクトリないならどこでも良い)
+↓
+authorized_keys,id_rsaのパーミッションを600に
+↓
+ftp接続切断
+
+6.SSHで接続
+ssh -l サーバーのwebサービス公開に使うユーザー名 -i 秘密鍵があるパス サーバーのIPアドレス
+※4の通りにしていれば秘密鍵があるパスは ~/ssh/id_rsa
+例)$ ssh -l jikkoku -i ~/ssh/id_rsa 160.16.229.245
+↓
+秘密鍵のパスとwebサービス公開に使うユーザーのパス聞かれるので入力
+↓
+接続成功
+
+7.perl環境の構築-perlbrew,perlのインストールの準備
+まず、管理者ユーザにログイン
+$ su 最初に作った管理者ユーザ名
+↓
+(多分インストール時に最新状態にされてると思うが、一応OSアップデート)
+$ sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade && sudo apt-get -y autoremove && sudo apt-get -y autoclean
+↓
+curlのインストール
+$ sudo apt-get install curl
+↓
+perlのビルドに必要なパッケージインスト
+$ sudo apt-get install build-dep perl
+※一応、違うのも１つ先にインストールしてた(build-dep perlない状態でperlインストールした時のログでないっていわれてるものの2番目の)...多分関係ないけど一応
+↓
+管理者ユーザーログアウト
+$ exit
+
+8.perlbrewのインストール
+perlbrewのインストール
+$ curl -kL http://install.perlbrew.pl | bash
+↓
+パス通す(プロファイル編集)
+$ vi ~/.bashrc
+そして最終行に追加
+source ~/perl5/perlbrew/etc/bashrc
+
+9.最新安定版perlをインストール(特別な事情があれば他のver)
+インストール可能なバージョン一覧
+$ perlbrew available
+↓
+バージョン 5.xx.x 2番目のxが偶数で一番上のが最新安定版
+それをインストール
+$ perlbrew install 5.22.1
+※時間がかかる、tail -f ~/perl5/perlbrew/build.perl-5.22.1.log で現在状況がわかる
+↓
+完了したら,perlのバージョン切り替え
+$ perlbrew switch 5.22.1
+$ perl -v
+バージョン5.22.1とでてきてたら成功
+↓
+備考
+・インストール済みバージョン一覧
+$ perlbrew list
+・perlコマンドのフルパス
+$ which perl
+
+10.cpanm,Mojolicious,perlで使うモジュールのインストール
+cpanmをインストール
+$ perlbrew install-cpanm
+↓
+必要なperlのモジュールをインストール
+Mojolicious(WAF),Mojolicious::Plugin::NYTProf(Mojoliciousでベンチマークするためのプラグイン)
+Class::Accessor::Lite(アクセッサ作成用のモジュール)をインストール
+$ cpanm Mojolicious
+$ cpanm Mojolicious::Plugin::NYTProf
+$ cpanm Class::Accessor::Lite
+($ cpanm MojoX::Renderer::Xslate (高速なテンプレートエンジン) )
+
+11.nginx(Mainline Ver)のインストール(参考:http://www.atmarkit.co.jp/ait/articles/1407/24/news003_2.html)
+$ su 管理ユーザ
+↓
+PGP鍵取得
+$ wget -O - http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+↓
+次にパッケージをどこから取得するかを記した「/etc/apt/sources.list」に、Nginxのリポジトリを追記
+$ sudo sh -c 'echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" >> /etc/apt/sources.list'
+$ sudo sh -c 'echo "deb-src http://nginx.org/packages/mainline/ubuntu/ trusty nginx" >> /etc/apt/sources.list'
+↓
+インストール&起動
+$ sudo apt-get update	←パッケージリスト更新
+$ sudo apt-get install nginx	←Nginxのインストール
+$ sudo service nginx start	←サービス開始
+↓
+サーバー起動時に同時に起動する設定
+$ sudo update-rc.d nginx defaults
+
+12.nginxの設定、立ち上げ
+nginxの設定($ sudo vi /etc/nginx/nginx.conf)
+変更箇所:
+worker_processes 2;	←CPUのコア数と同じに
+pid /run/nginx.pid;
+events {
+	worker_connections 1024;	←1つのworkerプロセスが同時に処理できる最大接続数を指定
+}
+http {
+...省略
+        server_tokens off;	←「off」でバージョン非表示に
+↓
+nginxの設定2($ sudo vi /etc/nginx/conf.d/default.conf)
+追記:
+upstream Mojoliciousアプリ名 {
+  server 127.0.0.1:8080;
+}
+server {
+  listen 80;
+  server_name サーバーのアドレスorIPアドレス;
+  location / {
+    proxy_pass http://Mojoliciousアプリ名;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+}
+↓
+設定ファイルのテスト
+$ sudo nginx -t
+↓
+設定再読み込み
+$ sudo nginx –s reload
+
+13.Mojoliciousアプリ本体を配置
+ftpクライアントで接続、アップロード
+↓
+Mojoliciousベンチマーク用プラグインの設定
+# ベンチマーク用のプラグイン設定ファイル
+{
+  nytprof => {
+    # nytprofhtmlの実行ファイルがある場所
+    nytprofhtml_path => '/home/jikkoku/perl5/perlbrew/perls/perl-5.22.1/bin/hypnotoad',
+    # profileを置いていくディレクトリ(Mojoliciousアプリのルートディレクトリ以下)
+    profiles_dir => '/log/NYTProf/',
+    # 本番環境で動作させるか
+    allow_production => 0,
+    # nytprofの設定(Devel::NYTProfを参照...)
+    env => {
+      trace => 1,
+      # ログファイルの場所(Mojoliciousアプリのルートディレクトリ以下)
+      log   => "/log/NYTProf/NYTProf.log",
+    },
+    pre_hook  => 'before_routes',
+    post_hook => 'around_dispatch',
+  },
+}
+
+14.hypnotoad起動!
+$ sudo /home/jikkoku/perl5/perlbrew/perls/perl-5.22.1/bin/hypnotoad script/jikkoku_web
+↓
+サーバーのアドレスにアクセスすると表示されている！！！
+
+
+
+
+-----------------------------
+もういらない
+-----------------------------
+
+11.KyotoCabinetのインストール
+作業ディレクトリ作成
+$ mkdir KC
+$ cd KC
+↓
+KyotoCabinet,KyotoCabinet-perlのダウンロード
+(バージョンアップしてたらファイル名変わるのでKyotoCabinetのHP(http://fallabs.com/kyotocabinet/)で確認すること)
+$ wget http://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.76.tar.gz
+$ wget http://fallabs.com/kyotocabinet/perlpkg/kyotocabinet-perl-1.20.tar.gz
+↓
+展開
+$ tar -xf kyotocabinet-1.2.76.tar.gz
+$ tar -xf kyotocabinet-perl-1.20.tar.gz
+↓
+kyotocabinetをインストール
+$ cd kyotocabinet-1.2.76
+$ ./congifure
+$ make
+$ su 管理者ユーザー
+$ sudo make install
+$ exit
+↓
+kyotocabinet-perlをインストール(perlbrewのおかげでちゃんとユーザー環境にインストールされるっぽい)
+$ cd ../kyotocabinet-perl-1.20
+$ perl Makefile.PL
+$ make
+$ make install

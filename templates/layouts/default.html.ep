@@ -3,6 +3,8 @@
 % content container => begin
 </head>
 <body>
+<section>
+<div id="wrapper">
   <%= content %>
 % end
 %= content 'container'

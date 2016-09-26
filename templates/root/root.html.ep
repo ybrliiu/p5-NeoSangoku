@@ -5,17 +5,30 @@
 
 #wrapper {
   $pad: 18px;
-  *              { box-sizing:border-box; }
-  .inner-around  { padding: $pad; }
-  .inner {
+
+  %content {
+    > * {
+      margin-bottom: $pad;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .grid-around  {
+    padding: $pad;
+    @extend %content;
+  }
+
+  .grid {
     padding:0 0 $pad $pad;
     float: left;
+    @extend %content;
   }
-  .inner-right {
+
+  .grid-right {
     padding:0 $pad $pad $pad;
     float: left;
+    @extend %content;
   }
-  .adjust-bottom { margin-bottom: $pad; }
 }
 
 #header {
@@ -38,7 +51,6 @@
   padding: 10px;
 }
 
-nav { width: 100% }
 #menu {
   background-color: ' . $config->{color}{darkred} . ';
   padding: 8px;
@@ -57,7 +69,7 @@ nav { width: 100% }
     color: ' . $config->{color}{black} . ';
     &:hover { color: ' . $config->{color}{yellow} . ' }
   }
-  
+
   .not-list {
     text-align: center;
     padding: 0px;
@@ -76,9 +88,8 @@ nav { width: 100% }
   border-right: 0px;
   border-left: 8px  ' . $config->{color}{darkred} . ' solid;
   text-align:left;
-
-  h2 { margin: 2px }
 }
+
 .show-log-wrapper {
   width: 100%;
   height: 220px;
@@ -95,11 +106,13 @@ nav { width: 100% }
     vertical-align: top;
   }
 }
+
 .show-log {
   width: 100%;
   height: 100%;
   text-align:left;
 }
+
 .botted-line {
   border-top: 0px;
   border-right: 0px;
@@ -111,22 +124,22 @@ nav { width: 100% }
 %== scss_to_css(\$scss, 1);
 % end
 
-<section>
-<div id="wrapper">
+  <div class="grid-around">
   <header>
-    <div class="inner-around">
-      <div id="header">
-        <h1><%= $config->{site}{name} %></h1>
-        <h2>第<%= $term %>期</h2>
-        <br>
-        <strong>[889年02月]</strong><br>
-        次回の更新まで <strong>0</strong> 分<br>
-        <br>
-      </div>
-    </div>
-  </header>
 
-  <div class="inner width-20pc">
+    <div id="header">
+      <h1><%= $config->{site}{name} %></h1>
+      <h2>第<%= $term %>期</h2>
+      <br>
+      <strong>[889年02月]</strong><br>
+      次回の更新まで <strong>0</strong> 分<br>
+      <br>
+    </div>
+
+  </header>
+  </div>
+
+  <div class="grid width-20pc">
 
     <div id="login-form" class="adjust-bottom">
       <form action="/mypage" method="post">
@@ -143,26 +156,27 @@ nav { width: 100% }
     </div>
 
     <nav>
-      <ul id="menu" class="adjust-bottom">
-        <li class="not-list"><h2>■メニュー■</h2></li>
-        <a href="/"><li>●【HOME】</li></a>
-        <a href="/outer/entry"><li>●【新規登録】</li></a>
-        <a href="/bbs" target="_blank"><li>●【専用BBS】</li></a>
-        <a href="/outer/allplayer" target="_blank"><li>●【登録武将一覧】</li></a>
-        <a href="/outer/ranking" target="_blank"><li>●【名将ランキング】</li></a>
-        <a href="/outer/graph" target="_blank"><li>●【国力比較】</li></a>
-        <a href="/outer/map" target="_blank"><li>●【勢力図】</li></li></a>
-        <a href="/outer/manual" target="_blank"><li>●【説明書】</li></a>
-        <a href="/outer/rekisi" target="_blank"><li>●【歴代統一国】</li></a>
-        <a href="/outer/kaizou" target="_blank"><li>●【改造履歴】</li></a>
-        <li class="not-list">ログイン人数：<%= $login_people %>人</li>
-        <li class="not-list">最大登録人数(<%= $config->{site}{max_player} %>人)</li>
-        <li class="not-list"><span class="red">総アクセス数：<%= $access %></span></li>
-      </ul>
+    <ul id="menu" class="adjust-bottom">
+      <li class="not-list"><h2>■メニュー■</h2></li>
+      <a href="/"><li>●【HOME】</li></a>
+      <a href="/outer/entry"><li>●【新規登録】</li></a>
+      <a href="/bbs" target="_blank"><li>●【専用BBS】</li></a>
+      <a href="/outer/allplayer" target="_blank"><li>●【登録武将一覧】</li></a>
+      <a href="/outer/ranking" target="_blank"><li>●【名将ランキング】</li></a>
+      <a href="/outer/graph" target="_blank"><li>●【国力比較】</li></a>
+      <a href="/outer/map" target="_blank"><li>●【勢力図】</li></li></a>
+      <a href="/outer/manual" target="_blank"><li>●【説明書】</li></a>
+      <a href="/outer/rekisi" target="_blank"><li>●【歴代統一国】</li></a>
+      <a href="/outer/kaizou" target="_blank"><li>●【改造履歴】</li></a>
+      <li class="not-list">ログイン人数：<%= $login_people %>人</li>
+      <li class="not-list">最大登録人数(<%= $config->{site}{max_player} %>人)</li>
+      <li class="not-list"><span class="red">総アクセス数：<%= $access %></span></li>
+    </ul>
     </nav>
+
   </div>
 
-  <div class="inner-right width-80pc">
+  <div class="grid-right width-80pc">
 
     <div class="adjust-bottom">
       <div class="subhead"><h2>お知らせ</h2></div>
@@ -194,7 +208,7 @@ nav { width: 100% }
       </div>
     </div>
 
-    <div class="adjust-bottom">
+    <div>
       <div class="subhead"><h2>HISTORY LOG</h2></div>
       <div class="show-log-wrapper lightdarkred-background">
         <div class="show-log scroll">
@@ -205,6 +219,4 @@ nav { width: 100% }
       </div>
     </div>
 
-  <div>
-</div>
-</section>
+  </div>

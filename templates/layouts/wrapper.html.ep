@@ -12,15 +12,17 @@
   <%= content %>
 % end
 %= content 'container'
+  <div class="footer">
   <footer>
-    <div>
-      <span>
-        <%= $config->{site}{name} %> Ver.<%= $Sangoku::VERSION %><br>
-        製作者&管理人 liiu <br>
-        <a href="/">GAME TOP</a><br>
-        Working on <a href="http://mojolicio.us">Mojolicious</a>
-      </span>
-    </div>
+    <span>
+      <%= $config->{site}{name} %> Ver.<%= $Sangoku::VERSION %><br>
+      製作者&管理人 liiu <br>
+      <a href="/">GAME TOP</a><br>
+      Working on <a href="http://mojolicio.us">Mojolicious</a>
+    </span>
   </footer>
+  </div>
+</div>
+</section>
 </body>
 </html>

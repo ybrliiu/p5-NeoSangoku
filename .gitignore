@@ -11,3 +11,6 @@ log/*
 # scssからコンパイルしたcssは要らない
 assets/assetpack.db
 assets/cache/*
+
+# icon除く
+public/images/icons/*

@@ -24,43 +24,69 @@ a {
 }
 
 /* レイアウト用ボックス */
-.box {
-  float:left;
-  box-sizing:border-box;
-  > * {
-    box-sizing:border-box;
-    text-align:center;
-  }
+%base {
+  width: 100%;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* 中央揃えでhtml書くときの枠 */
 .centering {
-  @extend .box;
+  @extend %base;
+  float: left;
+
   > * {
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-sizing:border-box;
     text-align:center;
   }
 }
 
 /* Nカラムでhtml書くときの枠 */
 #wrapper {
+  @extend %base;
   $pad: 11px;
-  *              { box-sizing:border-box; }
-  .inner-around  { padding: $pad; }
-  .inner {
+
+  * { box-sizing:border-box }
+
+  %content {
+    > * {
+      margin-bottom: $pad;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .grid-around {
+    @extend %content;
+    padding: $pad;
+  }
+
+  .grid {
+    @extend %content;
     padding:0 0 $pad $pad;
     float: left;
   }
-  .inner-right {
+
+  .grid-right {
+    @extend %content;
     padding:0 $pad $pad $pad;
     float: left;
   }
-  .adjust-bottom { margin-bottom: $pad; }
-  > #title {
+
+  .footer {
+    @extend .centering;
+    border-top: solid 1px $silver;
+    padding: 0;
+    span { color: $darkred; }
+  }
+
+  #title {
     position: relative;
     width: 100%;
-    padding: $pad 0 $pad 0; 
+    padding: $pad 0 $pad 0;
     h1 {
       $border: 3px;
       $border-left: 20px;
@@ -125,28 +151,29 @@ a {
     table {
       width: 100%;
       background-color: $lightgreen;
-      border:$border $white solid;
+      border: $border $white solid;
     }
   }
 
 }
 
 /* タイルテーブル */
-.table-tile {
-  background-color:$white;
-  border-collapse:separate;
-  border-spacing:3px;
-  box-sizing:border-box;
+.tile-table {
+  background-color: $white;
+  border-collapse: separate;
+  border-spacing: 3px;
+  box-sizing: border-box;
   th {
-    background-color:$darkred;
-    color:$lightorange;
-    padding:3px;
+    background-color: $darkred;
+    color: $lightorange;
+    padding: 3px;
   }
   td {
-    text-align:left;
-    vertical-align:middle;
-    background-color:$lightorange;
-    padding:3px;
+    text-align: left;
+    vertical-align: middle;
+    border: 1px #ff9966 solid;
+    background-color: $lightorange;
+    padding: 3px;
   }
 }
 
@@ -160,11 +187,11 @@ a {
 h1 { font-size:17pt; }
 h2 {
   font-size: 12pt;
-  margin: 5px;
+  margin: 2px;
 }
 
 /* 見出し1 */
-#midasi span {
+#headline span {
   padding:0 12px 0 12px;
   border-right:8px $darkred solid;
   border-left:8px $darkred solid;
@@ -200,7 +227,7 @@ h2 {
 
 
 /* 横の大きさ */
-$width-list: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90;
+$width-list: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
 @each $pc in $width-list {
   .width-#{$pc}pc{
     $a: %;
@@ -213,38 +240,57 @@ $width-list: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90;
 
 $border-form:#888888; // フォームの外枠の色
 
-form { display:inline-block; }
-select {
+/* ページ番号一覧 */
+.pagination {
+  display: inline-block;
+  margin-top: 6px;
+  height: 22px;
+  li {
+    display: inline;
+    a {
+      position: relative;
+      left: -22px;
+      padding: 6px 9px;
+      background-color: #FFF;
+      border: 1px $border-form solid;
+      border-radius: 4px;
+      &:hover{
+        color: $darkblue;
+        background-color: #DDDDDD;
+      }
+      &:active{
+        color: $darkblue;
+        background-color: #BBBBBB;
+      }
+    }
+  }
+}
+
+%form-base {
   display: inline-block;
   min-width: 80px;
+  background-color: #EEEEEE;
   border: 1px $border-form solid;
   margin: 4px;
-  padding : 7px 7px;
-  background-color: #EEEEEE;
   border-radius:4px;
+}
+
+form { display:inline-block; }
+select {
+  @extend %form-base;
+  padding: 7px 7px;
   option {
-    padding : 0px;
+    padding: 0px;
     background-color: #EEEEEE;
   }
 }
 input[type="submit"], input[type="button"] {
-  display: inline-block;
-  min-width: 80px;
+  @extend %form-base;
   padding: 7px 20px;
   vertical-align: middle;
-  background-color: #EEEEEE;
-  border: 1px $border-form solid;
-  margin: 4px;
   color: #111111;
-  border-radius:4px;
-  &:hover{
-    background-color: #DDDDDD;
-    border: 1px $border-form solid;
-  }
-  &:active{
-    background-color: #BBBBBB;
-    border: 1px $border-form solid;
-  }
+  &:hover{ background-color: #DDDDDD }
+  &:active{ background-color: #BBBBBB }
 }
 textarea, input[type="text"], input[type="number"], input[type="email"], input[type="password"]{
   display: inline-block;
@@ -418,20 +464,6 @@ input.field-with-error {
   }
 }
 
-/* フッター */
-footer {
-  width: 100%;
-  @extend .centering;
-  border-top: solid 1px $silver;
-  padding: 10px 0 10px 0;
-
-  div {
-    @extend .centering;
-    width: 100%;
-  }
-  span { color: $darkred }
-}
-
 
 /* 部品群 */
 
@@ -439,5 +471,3 @@ footer {
 @import 'parts/nav-button';
 /* プレイヤーメニュー */
 @import 'parts/player-menu';
-
-
