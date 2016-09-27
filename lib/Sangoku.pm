@@ -3,7 +3,7 @@ package Sangoku 0.01 {
   use strict;
   use warnings;
   use utf8;
-  use feature ':5.18';
+  use feature qw/:5.20 signatures/;
 
   sub import {
     my ($class, $option) = @_;
@@ -20,7 +20,8 @@ package Sangoku 0.01 {
   sub import_pragma {
     my ($class) = @_;
     $_->import for qw/strict warnings utf8/;
-    feature->import(':5.18');
+    feature->import(qw/:5.20 signatures/);
+    warnings->unimport('experimental::signatures');
   }
   
 }
