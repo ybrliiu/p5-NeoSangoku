@@ -243,7 +243,7 @@ $border-form:#888888; // フォームの外枠の色
 /* ページ番号一覧 */
 .pagination {
   display: inline-block;
-  margin-top: 6px;
+  margin-top: 7px;
   height: 22px;
   li {
     display: inline;
@@ -251,17 +251,20 @@ $border-form:#888888; // フォームの外枠の色
       position: relative;
       left: -22px;
       padding: 6px 9px;
-      background-color: #FFF;
-      border: 1px $border-form solid;
-      border-radius: 4px;
-      &:hover{
-        color: $darkblue;
-        background-color: #DDDDDD;
+      color: $darkred;
+      background-color: $white;
+      border: 1px $darkred solid;
+
+      &.current {
+        color: $white;
+        background-color: $darkred;
       }
-      &:active{
-        color: $darkblue;
-        background-color: #BBBBBB;
+
+      &:hover {
+        color: $white;
+        background-color: $darkred;
       }
+
     }
   }
 }
@@ -438,6 +441,19 @@ input.field-with-error {
   span {
     padding-right: 1px;
   }
+}
+
+
+/* アイコンリストテーブル */
+#icon-table {
+  width: 764px;
+  td {
+    font-weight: bold;
+    text-align: center;
+    transition: 0.5s;
+    &:hover { background-color: rgba(255, 255, 255, 0.1); }
+  }
+  img { margin-bottom: 3px; }
 }
 
 /* ツールチップ */

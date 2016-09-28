@@ -93,7 +93,7 @@ package Sangoku::Web {
 
     # /outer
     {
-      my $outer = $r->any('/outer'        )->to(controller => 'Outer');
+      my $outer = $r->any('/outer')->to(controller => 'Outer');
       $outer->get('/player-list'          )->to(action => 'player_list');
       $outer->get('/map'                  )->to(action => 'map');
       $outer->get('/ranking'              )->to(action => 'ranking');
@@ -101,7 +101,8 @@ package Sangoku::Web {
       $outer->get('/manual'               )->to(action => 'manual');
       $outer->get('/change-log'           )->to(action => 'change_log');
       $outer->get('/history'              )->to(action => 'history');
-      $outer->get('/icon-list'            )->to(action => 'icon_list'); # JSでアイコン指定できるようにする(at regist, config-change-icon)
+      $outer->get('/icon-list'            )->to(action => 'icon_list');
+      $outer->get('/icon-list/*page'      )->to(action => 'icon_list'); # JSでアイコン指定できるよう(at regist, config-change-icon)
 
       # /outer/regist
       {

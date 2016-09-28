@@ -1,0 +1,89 @@
+% layout 'default';
+
+<style>
+
+<% my $scss = '
+
+  #invatation-message {
+    th {
+      background-color: ' . $config->{color}{brown} . ';
+      color: ' . $config->{color}{white} . ';
+    }
+  }
+
+'; %>
+
+%== scss_to_css(\$scss, 1);
+</style>
+
+<div class="centering">
+
+  <h1 id="headline"><span>武将新規登録</span></h1>
+
+  <table id="invatation-message" class="tile-table width-80pc">
+    <tr>
+      <th colspan="2">
+        <h2>各国からの勧誘メッセージ</h2>
+      </th>
+    </tr>
+    <tr>
+      <td class="width-20pc">
+      </td>
+      <td class="width-80pc">
+      </td>
+    </tr>
+  </table>
+
+  <table class="tile-table width-80pc">
+    <tr>
+      <th>
+        <h2>注意事項</h2>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        ・ゲーム説明をよく読んでから参加してください。<br>
+        ・ルールをよく読んでください。ルールを守れない方は登録しないで下さい。<br>
+        ・多重登録は出来ません。<br>
+        ・最大登録人数は<%= $config->{site}{max_player} %>名です。（現在登録者名）<br>
+        ・途中参加者にはボーナスがあります。<br> 
+      </td>
+    </tr>
+  </table>
+
+  <table class="tile-table width-70pc">
+    <tr>
+      <th colspan="2">
+        <h2>武将情報入力</h2>
+      </th>
+    </tr>
+    <tr>
+    </tr>
+  </table>
+
+  <table class="tile-table width-80pc">
+    <tr>
+      <th colspan="2">
+        <h2>建国</h2>
+      </th>
+    </tr>
+    <tr>
+    </tr>
+  </table>
+  
+  <table class="tile-table width-10pc">
+    <tr>
+      <th>
+        <h2>規約の確認</h2>
+      </th>
+    </tr>
+    <tr>
+      <td>
+      </td>
+    </tr>
+  </table>
+
+  </form>
+
+</div>
+

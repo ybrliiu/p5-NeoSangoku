@@ -159,8 +159,8 @@
     <ul id="menu" class="adjust-bottom">
       <li class="not-list"><h2>■メニュー■</h2></li>
       <a href="/"><li>●【HOME】</li></a>
-      <a href="/outer/entry"><li>●【新規登録】</li></a>
-      <a href="/bbs" target="_blank"><li>●【専用BBS】</li></a>
+      <a href="/outer/regist"><li>●【新規登録】</li></a>
+      <a href="/outer/bbs" target="_blank"><li>●【専用BBS】</li></a>
       <a href="/outer/allplayer" target="_blank"><li>●【登録武将一覧】</li></a>
       <a href="/outer/ranking" target="_blank"><li>●【名将ランキング】</li></a>
       <a href="/outer/graph" target="_blank"><li>●【国力比較】</li></a>

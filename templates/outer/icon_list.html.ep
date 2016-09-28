@@ -1,0 +1,28 @@
+% layout 'default';
+
+<div class="centering">
+  <h1 id="headline"><span>アイコン一覧</span></h1>
+  <table id="icon-table" class="tile-table">
+  % for (0 .. 4) {
+    <tr>
+    % for (0 .. 9) {
+      <td class="icon">
+      % my $icon = $icons_iter->();
+        <img class="icon" src="<%= $icon->{path} %>">
+        <%= $icon->{no} %>
+      </td>
+    % }
+    </tr>
+  % }
+  </table>
+
+  <ul class="centering pagination">
+  % for (0 .. $max_page) {
+    <li>
+      <a <%== $_ eq $current_page ? 'class="current"' : '' %> href="/outer/icon-list/<%= $_ %>"><%= $_ %></a>
+    </li>
+  % }
+  </ul>
+
+</div>
+
