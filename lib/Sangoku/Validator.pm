@@ -18,6 +18,16 @@ package Sangoku::Validator {
     return $self->is_error($key) ? 'field-with-error' : '';
   }
 
+  # Mojo::Validator と互換性をもたせる
+  sub has_error {
+    my ($self, $key) = @_;
+    if (defined $key) {
+      $self->is_error($key);
+    } else {
+      $self->SUPER::has_error();
+    }
+  }
+
 }
 
 1;

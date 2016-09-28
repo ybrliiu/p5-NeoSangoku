@@ -7,6 +7,9 @@ package Sangoku::Web {
   use Mojo::Util qw/encode spurt/;
   use Sangoku::Validator;
 
+  # instance of Sangoku::Validator
+  has 'error';
+
   sub startup {
     my ($self) = @_;
     $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/app color hypnotoad NYTProf site template/;
@@ -20,6 +23,7 @@ package Sangoku::Web {
   sub load_plugins {
     my ($self) = @_;
 
+    $self->plugin('SangokuTagHelpers');
     $self->plugin('AssetPack' => {pipes => [qw/Css Sass/]});
     $self->asset->process('base.css' => ('scss/base.scss'));
     $self->asset->process('country-table.css' => ('scss/country-table.scss'));
@@ -107,8 +111,8 @@ package Sangoku::Web {
       # /outer/regist
       {
         my $regist = $outer->any('/regist')->to(controller => 'Outer::Regist');
-        $regist->get( '/'      )->to(action => 'root');
-        $regist->post('/regist')->to(action => 'regist');
+        $regist->get( '/'               )->to(action => 'root');
+        $regist->post('/complete-regist')->to(action => 'complete_regist');
       }
 
       # /outer/forum

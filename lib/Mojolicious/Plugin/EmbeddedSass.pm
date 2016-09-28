@@ -14,7 +14,7 @@ package Mojolicious::Plugin::EmbeddedSass {
     $app->helper(scss_to_css => sub {
       my ($c, $scss, $conf) = @_;
       my $route = $c->current_route();
-      my $cache = $self->cache->get($route) // '';
+      my $cache = $self->cache->get($route);
       if ($cache) {
         $app->log->debug('Loading cached scss data...');
         return $cache;

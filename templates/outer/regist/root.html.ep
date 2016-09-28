@@ -16,7 +16,7 @@
 %== scss_to_css(\$scss, 1);
 </style>
 
-<div class="centering">
+<form class="centering" method="post" action="/outer/regist/complete-regist">
 
   <h1 id="headline"><span>武将新規登録</span></h1>
 
@@ -58,6 +58,13 @@
       </th>
     </tr>
     <tr>
+      <td>
+        キャラクター名<br>
+      </td>
+      <td>
+        <%= text_field 'name', size => 30, placeholder => '全角or半角で1〜15文字' %><br>
+        ・既に登録しているプレーヤーが使用している名前は使用できません。<br>
+      </td>
     </tr>
   </table>
 
@@ -83,7 +90,4 @@
     </tr>
   </table>
 
-  </form>
-
-</div>
-
+</form>

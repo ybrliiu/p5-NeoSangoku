@@ -5,6 +5,7 @@ package Sangoku::Web::Controller::Outer::Regist {
 
   sub root {
     my ($self) = @_;
+
     $self->render();
   }
 
