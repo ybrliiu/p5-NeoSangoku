@@ -18,7 +18,7 @@ package Sangoku::Validator {
     return $self->is_error($key) ? 'field-with-error' : '';
   }
 
-  # $self->{query} の中を覗く
+  # $self->{query} の中を無理やり覗く
   sub param {
     my ($self, $key) = @_;
     my $query = $self->{query};
