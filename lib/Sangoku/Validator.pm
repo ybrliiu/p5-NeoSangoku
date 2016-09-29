@@ -18,14 +18,19 @@ package Sangoku::Validator {
     return $self->is_error($key) ? 'field-with-error' : '';
   }
 
-  # Mojo::Validator と互換性をもたせる
-  sub has_error {
+  # $self->{query} の中を覗く
+  sub param {
     my ($self, $key) = @_;
-    if (defined $key) {
-      $self->is_error($key);
-    } else {
-      $self->SUPER::has_error();
-    }
+    my $query = $self->{query};
+    my $values = $query->{$key};
+    return '' unless defined $values;
+    return @$values == 1 ? $query->{$key}[0] : $query->{$key};
+  }
+
+  # json -> perl hash -> object
+  sub rebless {
+    my ($class, $self) = @_;
+    return bless $self, $class;
   }
 
 }

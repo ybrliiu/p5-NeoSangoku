@@ -16,7 +16,7 @@
 %== scss_to_css(\$scss, 1);
 </style>
 
-<form class="centering" method="post" action="/outer/regist/complete-regist">
+<form class="centering" method="post" action="/outer/regist/regist">
 
   <h1 id="headline"><span>武将新規登録</span></h1>
 
@@ -52,20 +52,75 @@
   </table>
 
   <table class="tile-table width-70pc">
+
     <tr>
       <th colspan="2">
         <h2>武将情報入力</h2>
       </th>
     </tr>
+
     <tr>
       <td>
         キャラクター名<br>
       </td>
       <td>
-        <%= text_field 'name', size => 30, placeholder => '全角or半角で1〜15文字' %><br>
+        <%= text_field('name', size => 30, placeholder => '全角or半角で1〜15文字', value => $error->param('name')) %><br>
         ・既に登録しているプレーヤーが使用している名前は使用できません。<br>
       </td>
     </tr>
+
+    <tr>
+      <td>
+        キャラクターアイコン<br>
+      </td>
+      <td>
+        ・登録後に変更可能です。<br>
+        ・登録後に使いたい画像をアップロードして使用する事もできます。 <br>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        所属国＆開始都市<br>
+      </td>
+      <td>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        ID<br>
+      </td>
+      <td>
+        <%= text_field('id', size => 25, placeholder => '半角英数字で6〜16文字、記号不可') %><br>
+        ・既に登録しているプレーヤーが使用しているIDは使用できません。<br>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        パスワード<br>
+      </td>
+      <td>
+        <%= password_field('pass', size => 25, placeholder => '半角英数字で6〜16文字、記号不可') %><br>
+        ・IDと同じにして登録することはできません。<br>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        能力<br>
+      </td>
+      <td>
+        <table>
+          <tr>
+            <td>武力</td>
+            <td><%= number_field(force => '', min => 1, max => 100, placeholder => '1〜100') %></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
   </table>
 
   <table class="tile-table width-80pc">
@@ -89,5 +144,9 @@
       </td>
     </tr>
   </table>
+
+  <div>
+    <input type="submit" value="登録">
+  </div>
 
 </form>

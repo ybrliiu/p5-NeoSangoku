@@ -5,8 +5,16 @@ package Sangoku::Web::Controller::Outer::Regist {
 
   sub root {
     my ($self) = @_;
-
+    $self->flash_error();
     $self->render();
+  }
+
+  sub regist {
+    my ($self) = @_;
+    my $param = $self->req->params->to_hash();
+    my $validator = Sangoku::Validator->new($param);
+    $self->flash_error($validator);
+    $self->redirect_to('/outer/regist');
   }
 
 }
