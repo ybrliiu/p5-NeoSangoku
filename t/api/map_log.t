@@ -1,7 +1,4 @@
 use Sangoku 'test';
-use Test::More;
-use Test::Sangoku;
-
 use Sangoku::Util qw/daytime/;
 
 use Sangoku::API::MapLog;

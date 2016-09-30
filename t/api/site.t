@@ -1,6 +1,4 @@
 use Sangoku 'test';
-use Test::More;
-use Test::Sangoku;
 
 use Sangoku::API::Site;
 my $TEST_CLASS = 'Sangoku::API::Site';

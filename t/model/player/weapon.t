@@ -1,6 +1,4 @@
 use Sangoku 'test';
-use Test::More;
-use Test::Sangoku;
 use Test::Sangoku::PostgreSQL;
 use Test::Sangoku::Util qw/prepare_player_model_tests/;
 

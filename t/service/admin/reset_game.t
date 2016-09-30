@@ -1,7 +1,4 @@
 use Sangoku 'test';
-use Test::More;
-use Test::Exception;
-use Test::Sangoku;
 use Test::Record;
 use Test::Sangoku::PostgreSQL;
 

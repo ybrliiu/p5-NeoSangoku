@@ -1,7 +1,4 @@
 use Sangoku 'test';
-use Test::More;
-use Test::Sangoku;
-use Test::Exception;
 
 use Sangoku::DB::Exception::Duplicate;
 my $TEST_CLASS = 'Sangoku::DB::Exception::Duplicate';

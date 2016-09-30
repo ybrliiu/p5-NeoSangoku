@@ -1,8 +1,4 @@
 use Sangoku 'test';
-use Test::More;
-use Test::Sangoku;
-use Test::Exception;
-
 use Sangoku::Util;
 
 sub test_sub {
@@ -12,7 +8,7 @@ sub test_sub {
 
 subtest 'validate_values' => sub {
   dies_ok(sub { test_sub({}) }, 'few argments');
-  is($@, "somethingの キーが足りません(name, id) at t/util.t line 14\n");
+  is($@, "somethingの キーが足りません(name, id) at t/util.t line 10\n");
   lives_ok(sub { test_sub({name => 'people', id => '7777'}) }, 'all ok');
 };
 

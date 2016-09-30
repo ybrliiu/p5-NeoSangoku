@@ -1,6 +1,4 @@
 use Sangoku 'test';
-use Test::More;
-use Test::Sangoku;
 use Test::Sangoku::PostgreSQL;
 
 use Sangoku::Model::IdleTalk;

@@ -2,8 +2,6 @@ package Test::Sangoku {
   
   use Sangoku;
   
-  use Exporter qw/import/;
-  our @EXPORT = qw/dump_yaml/;
   use YAML::Dumper;
   use Data::Dumper;
   # Data::Dumperで無理やりutf8文字を表示させる
@@ -12,8 +10,10 @@ package Test::Sangoku {
     *Data::Dumper::qquote = sub { shift };
   }
   $Data::Dumper::Useperl = 1;
-
   use Test::Name::FromLine;
+  use Module::Load;
+  use Exporter qw/import/;
+  our @EXPORT = qw/dump_yaml load/;
 
   sub dump_yaml {
     my $data = shift;

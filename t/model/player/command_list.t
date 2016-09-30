@@ -1,8 +1,5 @@
 use Sangoku 'test';
-use Test::More;
-use Test::Sangoku;
 use Test::Record;
-use Test::Exception;
 
 use Sangoku::Model::Player::CommandList;
 

@@ -1,7 +1,4 @@
 use Sangoku 'test';
-use Test::More; # テストモジュール
-use Test::Sangoku;
-use Test::Exception; # 例外を伴うテスト
 
 use Sangoku::DB::Exception;
 my $TEST_CLASS = 'Sangoku::DB::Exception';
