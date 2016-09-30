@@ -8,8 +8,6 @@ package Mojolicious::Plugin::FlashError {
   use Data::Structure::Util qw/unbless/;
   use HTML::FillInForm::Lite;
 
-  has 'fill_in_form' => sub { HTML::FillInForm::Lite->new() };
-  
   sub register {
     my ($self, $app, $conf) = @_;
 
@@ -18,6 +16,7 @@ package Mojolicious::Plugin::FlashError {
     load $validator_class;
     croak "You need to define rebless method to $validator_class" unless $validator_class->can('rebless');
     
+    # flash に json でエラーオブジェクトを保存
     $app->helper(flash_error => sub {
       my ($c, $error) = @_;
 
@@ -30,6 +29,19 @@ package Mojolicious::Plugin::FlashError {
         $c->stash(error => $error);
       }
 
+    });
+
+    # flash に validator情報を格納した場合、フォームの値の充填は行われないので
+    # FillInForm::Lite で行う
+    my $fill_in_form = HTML::FillInForm::Lite->new(fill_password => 1);
+  
+    $app->helper(render_fill_error => sub {
+      my ($c, $file) = @_;
+      $file //= '';
+      my $html = $c->render_to_string();
+      my $error = $c->stash->{error};
+      my $fill = $fill_in_form->fill(\$html, $error);
+      $c->render(text => $fill);
     });
 
   }

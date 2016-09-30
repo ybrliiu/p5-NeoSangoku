@@ -4,6 +4,7 @@ package Sangoku 0.01 {
   use warnings;
   use utf8;
   use feature qw/:5.20/;
+  use Module::Load qw/autoload_remote/;
 
   sub import {
     my ($class, $option) = @_;
@@ -11,6 +12,9 @@ package Sangoku 0.01 {
 
     if ($option eq 'test') {
       unshift @INC, './t/lib'; # テストの時パス追加
+      my $pkg = caller;
+      my @load = qw/Test::More Test::Exception Test::Sangoku/;
+      autoload_remote($pkg, $_) for @load;
     }
 
     $class->import_pragma;

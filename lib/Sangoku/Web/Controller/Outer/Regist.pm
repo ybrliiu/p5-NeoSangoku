@@ -6,7 +6,7 @@ package Sangoku::Web::Controller::Outer::Regist {
   sub root {
     my ($self) = @_;
     $self->flash_error();
-    $self->render();
+    $self->render_fill_error();
   }
 
   sub regist {

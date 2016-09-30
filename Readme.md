@@ -3,12 +3,8 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-
 アイコンリストデザイン(default)
 JAvascript
-
-テスト
-Test::More, Test::Exception, Test::Sangokuはまとめてロードするようにする
 
 player, town, country, unit table -> 複数形
 

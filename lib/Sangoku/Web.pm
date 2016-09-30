@@ -19,8 +19,6 @@ package Sangoku::Web {
   sub load_plugins {
     my ($self) = @_;
 
-    $self->plugin('TagHelpers::ForFlashError');
-
     $self->plugin(AssetPack => {pipes => [qw/Css Sass/]});
     $self->asset->process('base.css' => ('scss/base.scss'));
     $self->asset->process('country-table.css' => ('scss/country-table.scss'));
