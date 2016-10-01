@@ -7,6 +7,7 @@ requires qw/constant/;
 requires qw/Encode 2.72/
 requires qw/Cwd 3.56_01/;
 requires qw/Time::Piece 1.29/;
+requires qw/Module::Load/;
 
 requires qw/Mojolicious 7.0/;
 requires qw/Mojolicious::Plugin::AssetPack 1.18/;
@@ -16,6 +17,9 @@ requires qw/Teng 0.28/;
 requires qw/Exception::Tiny 0.2.1/;
 requires qw/Cache::SharedMemoryBackend/;
 requires qw/IPC::ShareLite/;
+
+requires qw/HTML::FillInForm::Lite/;
+requires qw/Data::Structure::Util/;
 
 requires qw/Path::Tiny 0.096/
 requires qw/Config::PL 0.02/;

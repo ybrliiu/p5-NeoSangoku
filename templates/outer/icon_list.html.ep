@@ -6,10 +6,10 @@
   % for (0 .. 4) {
     <tr>
     % for (0 .. 9) {
-      <td class="icon">
+      <td class="icon choose-icon">
       % my $icon = $icons_iter->();
         <img class="icon" src="<%= $icon->{path} %>">
-        <%= $icon->{no} %>
+        <span><%= $icon->{no} %></span>
       </td>
     % }
     </tr>
@@ -25,4 +25,64 @@
   </ul>
 
 </div>
+
+<script>
+  
+  'use strict';
+
+  (function () {
+
+    Sangoku.namespace('IconList');
+
+    Sangoku.IconList = function () {
+      this.opener = window.opener;
+    };
+
+    var PROTOTYPE = Sangoku.IconList.prototype;
+
+    PROTOTYPE.showExplain = function () {
+      if (this.opener) {
+        var div = document.getElementsByClassName('centering')[0];
+        var message = document.createElement('p');
+        message.innerHTML = '選びたいアイコンをクリックしてください';
+        var h1 = document.getElementsByTagName('h1')[0];
+        div.insertBefore(message, h1.nextSibling);
+      }
+    };
+
+    PROTOTYPE.genChooseFunction = function (icon) {
+      return function () {
+        var opener = window.opener.document;
+        var iconNumber = icon.childNodes[3].innerHTML;
+        opener.getElementById('choosed-icon').innerHTML = iconNumber;
+        opener.getElementsByName('icon')[0].value = iconNumber;
+        var img = opener.getElementById('choosed-icon-frame').childNodes[1];
+        img.src = '/images/icons/' + iconNumber + '.gif';
+        window.close();
+      };
+    };
+
+    PROTOTYPE.registFunctionToIcons = function () {
+      if (this.opener) {
+        var self = this;
+        var icons = document.getElementsByClassName('choose-icon');
+        Array.filter(icons, function (icon) {
+          icon.addEventListener('click', self.genChooseFunction(icon), false);
+        });
+      }
+    };
+
+  }());
+
+
+  // init
+  (function () {
+
+    var c = new Sangoku.IconList();
+    c.showExplain();
+    c.registFunctionToIcons();
+
+  }());
+
+</script>
 

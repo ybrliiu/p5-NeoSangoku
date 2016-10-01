@@ -24,6 +24,21 @@
     }
   }
 
+  #choosed-icon-frame {
+    width: 82px;
+    background-color: ' . $config->{color}{white} . ';
+    border: 3px ' . $config->{color}{darkred} . ' inset;
+    border-radius: 3px;
+    margin: 4px;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    img {
+      background-color: ' . $config->{color}{lightblack} . ';
+      margin-bottom: 3px;
+    }
+  }
+
   .layout {
     td, th {
       border: 0;
@@ -58,6 +73,7 @@
   }
 
   #confilm-rule {
+    width: 20%;
     td {
       padding-top: 10px;
       text-align: center;
@@ -128,6 +144,16 @@
         キャラクターアイコン<br>
       </td>
       <td>
+        <div>
+          <div id="choosed-icon-frame">
+            <img class="icon" src="/images/icons/<%= $error->param('icon') // 0 %>.gif">
+            <span id="choosed-icon">
+              <%= $error->param('icon') // 0 %><br>
+            </span>
+          </div>
+        </div>
+        <input type="hidden" name="icon" value="0">
+        <input type="button" id="open-icon-list" value="アイコンを選択する..."><br>
         ・登録後に変更可能です。<br>
         ・登録後に使いたい画像をアップロードして使用する事もできます。 <br>
       </td>
@@ -138,6 +164,17 @@
         所属国＆開始都市<br>
       </td>
       <td>
+        <select name="town">
+      % for my $town (@$towns) {
+          <option value="<%= $town->name %>">
+            <%= $town->name %> 【支配国 : <%= $town->country_name %>】
+          </option>
+      % }
+        </select>
+        <br>
+        ・開始都市の支配国に所属します。<br>
+        ・無所属の都市を選択してゲームを開始すると、自分で建国できます。<br>
+        ・ゲームの開始から48時間（ゲーム内で36ヶ月間）は、1つの国に8人以上仕官できません。<br> 
       </td>
     </tr>
 
@@ -197,7 +234,7 @@
           </tr>
         </table>
         ・能力を指定して下さい。1つの能力に特化させることをお勧めします。　【各能力の説明】　【能力振り分けの例】<br>
-        ・全能力の合計が<span class="red">160</span>になるようにして下さい！［現在の合計値：NaN］<br>
+        ・全能力の合計が<span class="red">160</span>になるようにして下さい！［現在の合計値：<strong id="ability-sum"></strong>］<br>
       </td>
     </tr>
 
@@ -218,7 +255,8 @@
         プロフィール(任意)<br>
       </td>
       <td>
-        <textarea name="profile" placeholder="プロフィールを入力してください(任意)" rows="5" cols="50"></textarea><br>
+        <textarea name="profile" class="<%= $error->emphasis('profile') %>"
+          placeholder="プロフィールを入力してください(任意)" rows="5" cols="50"></textarea><br>
         ・プロフィールを入力してください。<br>
         ・登録後変更可能、全角10000文字までです。<br>
       </td>
@@ -283,7 +321,7 @@
 
   </table>
   
-  <table id="confilm-rule" class="tile-table width-20pc">
+  <table id="confilm-rule" class="tile-table">
     <tr>
       <th>
         <h2>規約の確認</h2>
@@ -307,3 +345,45 @@
   </div>
 
 </form>
+
+
+<script>
+  
+  'use strict';
+
+  (function () {
+
+    var abilityFormNames = ['force', 'intellect', 'leadership', 'popular'];
+
+    var abilityForms = abilityFormNames.map(function (formName) {
+      return document.getElementsByName(formName)[0];
+    });
+
+    function abilitySum() {
+      var sum = 0;
+      abilityForms.forEach(function (form) {
+        sum += Number(form.value);
+      });
+      document.getElementById('ability-sum').innerHTML = sum;
+    }
+
+    abilityForms.forEach(function (form) {
+      form.addEventListener('change', abilitySum, false);
+    });
+
+    abilitySum();
+
+  }());
+
+  (function () {
+
+    var btn = document.getElementById('open-icon-list');
+
+    btn.addEventListener('click', function () {
+      window.open('/outer/icon-list', 'child');
+    }, false);
+
+  }());
+
+</script>
+

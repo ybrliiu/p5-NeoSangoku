@@ -25,7 +25,7 @@ package Mojolicious::Plugin::FlashError {
         $c->flash(_error => $json);
       } else {
         my $json = $c->flash('_error');
-        my $error = $json ? $validator_class->rebless(decode_json $json) : $validator_class->new($c);
+        my $error = $json ? $validator_class->rebless(decode_json $json) : $validator_class->new({});
         $c->stash(error => $error);
       }
 
