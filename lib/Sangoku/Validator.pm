@@ -13,7 +13,7 @@ package Sangoku::Validator {
   # エラー強調
   # <input type="text" class="<%= $error->emphasis_error() %>">
   # => <input type="text" class="field-with-error">
-  sub emphasis_error {
+  sub emphasis {
     my ($self, $key) = @_;
     return $self->is_error($key) ? 'field-with-error' : '';
   }
@@ -23,7 +23,10 @@ package Sangoku::Validator {
     my ($self, $key) = @_;
     my $query = $self->{query};
     my $values = $query->{$key};
-    return '' unless defined $values;
+
+    # ここで undef を返すとCGI.pmと挙動が違うせいかHTML::FillInForm::Liteでフォームの値を充填した時
+    # フォームのデフォルト値を無視して空文字列が勝手に充填されることになります。
+    return () unless defined $values;
     return @$values == 1 ? $query->{$key}[0] : $query->{$key};
   }
 
@@ -49,7 +52,7 @@ package Sangoku::Validator {
   for my $msg ( $validator->get_error_messages() ) {
     <li><%= $msg %></li>
   }
-  <input name="name" type="text" class="<%= $validator->emphasis_error('name') %>">
+  <input name="name" type="text" class="<%= $validator->emphasis('name') %>">
   for my $msg ( $validator->get_error_message_from_param('name') ) {
     <li>※<%= $msg %></li>
   }

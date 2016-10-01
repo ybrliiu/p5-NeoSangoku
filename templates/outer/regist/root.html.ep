@@ -5,9 +5,62 @@
 <% my $scss = '
 
   #invatation-message {
+    width: 80%;
     th {
       background-color: ' . $config->{color}{brown} . ';
       color: ' . $config->{color}{white} . ';
+    }
+  }
+
+  %gray-td {
+    border: 1px ' . $config->{color}{'border-gray'} . ' solid;
+    background-color: ' . $config->{color}{gray} . ';
+  }
+
+  #form-of-player-info {
+    width: 70%;
+    > tbody > tr > td {
+      &:nth-child(2n+1) { @extend %gray-td; }
+    }
+  }
+
+  .layout {
+    td, th {
+      border: 0;
+      margin: 0;
+      padding: 0 5px;
+    }
+    input {
+      width: 100px;
+    }
+  }
+
+  #form-of-country-info {
+    width: 80%;
+    > tbody > tr > td {
+      &:nth-child(2n+1) {
+        width: 15%;
+        @extend %gray-td;
+      }
+    }
+    #annotation {
+      border: 1px ' . $config->{color}{'border-orange'} . ' solid;
+      background-color: ' . $config->{color}{lightorange} . ';
+    }
+    #input-country-name {
+      border: 1px ' . $config->{color}{'border-darkred'} . ' solid;
+      background-color: ' . $config->{color}{lightdarkred} . ';
+    }
+    #select-color {
+      border: 1px ' . $config->{color}{gray} . ' solid;
+      background-color: ' . $config->{color}{white} . ';
+    }
+  }
+
+  #confilm-rule {
+    td {
+      padding-top: 10px;
+      text-align: center;
     }
   }
 
@@ -20,7 +73,7 @@
 
   <h1 id="headline"><span>武将新規登録</span></h1>
 
-  <table id="invatation-message" class="tile-table width-80pc">
+  <table id="invatation-message" class="tile-table">
     <tr>
       <th colspan="2">
         <h2>各国からの勧誘メッセージ</h2>
@@ -51,7 +104,8 @@
     </tr>
   </table>
 
-  <table class="tile-table width-70pc">
+  <table id="form-of-player-info" class="tile-table">
+  <tbody>
 
     <tr>
       <th colspan="2">
@@ -64,7 +118,7 @@
         キャラクター名<br>
       </td>
       <td>
-        <%= text_field('name', size => 30, placeholder => '全角or半角で1〜15文字', value => $error->param('name')) %><br>
+        <%= text_field('name', size => 25, placeholder => '全角or半角で1〜15文字', class => $error->emphasis('name')) %><br>
         ・既に登録しているプレーヤーが使用している名前は使用できません。<br>
       </td>
     </tr>
@@ -92,7 +146,7 @@
         ID<br>
       </td>
       <td>
-        <%= text_field('id', size => 25, placeholder => '半角英数字で6〜16文字、記号不可') %><br>
+        <%= text_field('id', size => 25, placeholder => "半角英数字で6〜16文字、記号不可", class => $error->emphasis('id')) %><br>
         ・既に登録しているプレーヤーが使用しているIDは使用できません。<br>
       </td>
     </tr>
@@ -102,7 +156,7 @@
         パスワード<br>
       </td>
       <td>
-        <%= password_field('pass', size => 25, placeholder => '半角英数字で6〜16文字、記号不可') %><br>
+        <%= password_field('pass', size => 25, placeholder => "半角英数字で6〜16文字、記号不可", class => $error->emphasis('pass')) %><br>
         ・IDと同じにして登録することはできません。<br>
       </td>
     </tr>
@@ -112,28 +166,124 @@
         能力<br>
       </td>
       <td>
-        <table>
+        <table class="layout">
           <tr>
             <td>武力</td>
-            <td><%= number_field(force => '', min => 1, max => 100, placeholder => '1〜100') %></td>
+            <td>
+              <%= number_field(force => '', min => 1, max => 100, placeholder => '1〜100', class => $error->emphasis('force')) %>
+              ・主に攻撃力に影響します。
+            </td>
+          </tr>
+          <tr>
+            <td>知力</td>
+            <td>
+              <%= number_field(intellect => '', min => 1, max => 100, placeholder => '1〜100', class => $error->emphasis('intellect')) %>
+              ・主に内政の効果に影響します。
+            </td>
+          </tr>
+          <tr>
+            <td>統率力</td>
+            <td>
+              <%= number_field(leadership => '', min => 1, max => 100, placeholder => '1〜100', class => $error->emphasis('leadership')) %>
+              ・雇うことができる兵士数の最大値になります。
+            </td>
+          </tr>
+          <tr>
+            <td>人望</td>
+            <td>
+              <%= number_field(popular => '', min => 1, max => 100, placeholder => '1〜100', class => $error->emphasis('popular')) %>
+              ・主に農民関係の内政の効果に影響します。
+            </td>
           </tr>
         </table>
+        ・能力を指定して下さい。1つの能力に特化させることをお勧めします。　【各能力の説明】　【能力振り分けの例】<br>
+        ・全能力の合計が<span class="red">160</span>になるようにして下さい！［現在の合計値：NaN］<br>
       </td>
     </tr>
 
+    <tr>
+      <td>
+        忠誠度<br>
+      </td>
+      <td>
+        <%= number_field(loyalty => 75, min => 0, max => 100, class => $error->emphasis('loyalty')) %>［0〜100］<br>
+        ・所属国への忠誠度を設定してください。（登録後変更可能）<br>
+        ・忠誠度が低い武将が多い国の武将は、君主の位を奪えたり反乱を起こせたりするようになります。（詳しくはこちら）<br>
+        国に忠誠を誓おうと考えている方はこの値をなるべく高くして登録しましょう。<br>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        プロフィール(任意)<br>
+      </td>
+      <td>
+        <textarea name="profile" placeholder="プロフィールを入力してください(任意)" rows="5" cols="50"></textarea><br>
+        ・プロフィールを入力してください。<br>
+        ・登録後変更可能、全角10000文字までです。<br>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        メールアドレス(任意)<br>
+      </td>
+      <td>
+        <%= text_field mail => '@', size => 35, class => $error->emphasis('mail') %><br>
+        ・入力すると、パスワードを忘れた時や管理人と連絡を取る時に役立ちます。<br>
+      </td>
+    </tr>
+
+  </tbody>
   </table>
 
-  <table class="tile-table width-80pc">
+  <table id="form-of-country-info" class="tile-table">
+
     <tr>
       <th colspan="2">
         <h2>建国</h2>
       </th>
     </tr>
+
     <tr>
+      <td colspan="2" id="annotation">
+        ・所属国＆開始都市でどの国の支配を受けていない都市を選択した場合は、
+        あなたが君主となり建国することとなりますのでこちらも入力してください。<br>
+      </td>
     </tr>
+
+    <tr>
+      <td>
+        国名<br>
+      </td>
+      <td id="input-country-name">
+        <%= text_field('country_name', size => 25, placeholder => '全角or半角で1〜15文字', class => $error->emphasis('country_name')) %><br>
+        ・既に建国されている国の国名は使用できません。<br>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        国色<br>
+      </td>
+      <td id="select-color">
+    % my $countrycolor = $config->{countrycolor};
+    % for (sort(keys %$countrycolor)) {
+        <label class="snazzy-radio">
+          <%= radio_button 'country_color' => $_ %>
+          <span style="color:<%= $config->{'countrycolor'}{$_} %>;">■</span>
+        </label>
+    % }
+        <label class="snazzy-radio">
+          <%= radio_button 'country_color' => '' %>
+          <span>選択解除</span>
+        </label>
+      </td>
+    </tr>
+
   </table>
   
-  <table class="tile-table width-10pc">
+  <table id="confilm-rule" class="tile-table width-20pc">
     <tr>
       <th>
         <h2>規約の確認</h2>
@@ -141,6 +291,13 @@
     </tr>
     <tr>
       <td>
+        <strong>
+          ・<a href="/outer/maunal" target="_blank">規約（ルール）</a><br>
+        </strong>
+        <label class="snazzy-checkbox">
+          <%= check_box ok => 1 %>
+          <span>規約（ルール）に同意する</span>
+        </label>
       </td>
     </tr>
   </table>
