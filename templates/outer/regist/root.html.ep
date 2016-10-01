@@ -353,35 +353,58 @@
 
   (function () {
 
-    var abilityFormNames = ['force', 'intellect', 'leadership', 'popular'];
+    Sangoku.namespace('Regist');
 
-    var abilityForms = abilityFormNames.map(function (formName) {
+    var ABILITY_FORM_NAMES = ['force', 'intellect', 'leadership', 'popular'];
+
+    var ABILITY_FORMS = ABILITY_FORM_NAMES.map(function (formName) {
       return document.getElementsByName(formName)[0];
     });
+    
+    Sangoku.Regist = function () {};
 
-    function abilitySum() {
-      var sum = 0;
-      abilityForms.forEach(function (form) {
-        sum += Number(form.value);
+    var PROTOTYPE = Sangoku.Regist.prototype;
+
+    (function () {
+
+      var abilityValues = [];
+
+      PROTOTYPE.updateValues = function () {
+        abilityValues = ABILITY_FORMS.map(function (form) { return form.value });
+      };
+
+      PROTOTYPE.setSumValue = function () {
+        var sum = 0;
+        abilityValues.forEach(function (value) { sum += Number(value) });
+        document.getElementById('ability-sum').innerHTML = sum;
+      };
+
+    }());
+
+    PROTOTYPE.registEvents = function () {
+      var self = this;
+
+      ABILITY_FORMS.forEach(function (form) {
+        form.addEventListener('keyup', self.updateValues, false);
+        form.addEventListener('keyup', self.setSumValue, false);
       });
-      document.getElementById('ability-sum').innerHTML = sum;
-    }
 
-    abilityForms.forEach(function (form) {
-      form.addEventListener('change', abilitySum, false);
-    });
+      var btn = document.getElementById('open-icon-list');
+      btn.addEventListener('click', function () {
+        window.open('/outer/icon-list', 'child');
+      }, false);
 
-    abilitySum();
+    };
 
   }());
 
+  // init
   (function () {
 
-    var btn = document.getElementById('open-icon-list');
-
-    btn.addEventListener('click', function () {
-      window.open('/outer/icon-list', 'child');
-    }, false);
+    var c = new Sangoku.Regist;
+    c.registEvents();
+    c.updateValues();
+    c.setSumValue();
 
   }());
 

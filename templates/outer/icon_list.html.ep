@@ -45,6 +45,7 @@
         var div = document.getElementsByClassName('centering')[0];
         var message = document.createElement('p');
         message.innerHTML = '選びたいアイコンをクリックしてください';
+        message.setAttribute('class', 'red');
         var h1 = document.getElementsByTagName('h1')[0];
         div.insertBefore(message, h1.nextSibling);
       }
@@ -57,18 +58,18 @@
         opener.getElementById('choosed-icon').innerHTML = iconNumber;
         opener.getElementsByName('icon')[0].value = iconNumber;
         var img = opener.getElementById('choosed-icon-frame').childNodes[1];
-        img.src = '/images/icons/' + iconNumber + '.gif';
+        img.src = '<%= $ICONS_DIR_PATH %>' + iconNumber + '.gif';
         window.close();
       };
     };
 
     PROTOTYPE.registFunctionToIcons = function () {
       if (this.opener) {
-        var self = this;
         var icons = document.getElementsByClassName('choose-icon');
-        Array.filter(icons, function (icon) {
-          icon.addEventListener('click', self.genChooseFunction(icon), false);
-        });
+        var iconsLength = icons.length;
+        for (var i = 0; i < iconsLength; i++) {
+          icons[i].addEventListener('click', this.genChooseFunction(icons[i]), false);
+        }
       }
     };
 

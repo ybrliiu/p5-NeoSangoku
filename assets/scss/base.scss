@@ -279,6 +279,7 @@ $border-form:#888888; // フォームの外枠の色
 }
 
 form { display:inline-block; }
+
 select {
   @extend %form-base;
   padding: 7px 7px;
@@ -287,6 +288,7 @@ select {
     background-color: #EEEEEE;
   }
 }
+
 input[type="submit"], input[type="button"] {
   @extend %form-base;
   padding: 7px 20px;
@@ -295,6 +297,11 @@ input[type="submit"], input[type="button"] {
   &:hover{ background-color: #DDDDDD }
   &:active{ background-color: #BBBBBB }
 }
+
+input[type="number"] {
+  width: 100px;
+}
+
 textarea, input[type="text"], input[type="number"], input[type="email"], input[type="password"]{
   display: inline-block;
   background-color:#F4F4F4;
