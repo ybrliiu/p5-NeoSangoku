@@ -17,6 +17,8 @@ package Sangoku::Web::Controller::Outer::Regist {
     my ($self) = @_;
 
     my $param = $self->req->params->to_hash();
+    # checkbox が選択されていない場合、undefになってserviceを呼び出せなくなるのを防ぐ
+    $param->{confirm_rule} //= 0;
     my $error = $self->service->regist($param);
 
     if ($error->has_error) {

@@ -220,7 +220,7 @@
     <tr>
       <td>
         能力
-      %= show_error(@$ABILITY_LISTS, 'ability');
+      %= show_error(@$ABILITY_LIST, 'ability');
       </td>
       <td>
         <table class="layout">
@@ -343,11 +343,10 @@
       %= show_error('country_color');
       </td>
       <td id="select-color">
-    % my $countrycolor = $config->{countrycolor};
-    % for (sort(keys %$countrycolor)) {
+    % for (sort(keys %$COUNTRY_COLOR)) {
         <label class="snazzy-radio">
           <%= radio_button(country_color => $_) %>
-          <span style="color:<%= $config->{countrycolor}{$_} %>;">■</span>
+          <span style="color:<%= $COUNTRY_COLOR->{$_} %>;">■</span>
         </label>
     % }
         <label class="snazzy-radio">

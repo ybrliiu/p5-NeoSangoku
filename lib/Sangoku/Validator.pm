@@ -3,8 +3,13 @@ package Sangoku::Validator {
   use Sangoku;
   use parent 'FormValidator::Lite';
 
-  use Sangoku::Validator::Params;
-  use Sangoku::Validator::Messages;
+  use Sangoku::Util qw/load_config/;
+
+  # json -> perl hash -> object
+  sub rebless {
+    my ($class, $self) = @_;
+    return bless $self, $class;
+  }
 
   # $param をエラーにして message に $msg をセット
   sub set_error_and_message {
@@ -33,17 +38,11 @@ package Sangoku::Validator {
     return @$values == 1 ? $query->{$key}[0] : $query->{$key};
   }
 
-  # json -> perl hash -> object
-  sub rebless {
-    my ($class, $self) = @_;
-    return bless $self, $class;
-  }
-
   sub load_default_messages {
     my ($self) = @_;
     $self->set_message_data({
-      param    => Sangoku::Validator::Params->default_params,
-      function => Sangoku::Validator::Messages->default_messages,
+      param    => load_config('etc/config/validator/params.conf')->{params},
+      function => load_config('etc/config/validator/messages.conf')->{messages},
     });
   }
 

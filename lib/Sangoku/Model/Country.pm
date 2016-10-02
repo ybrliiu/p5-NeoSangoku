@@ -10,8 +10,8 @@ package Sangoku::Model::Country {
   use constant {
     TABLE_NAME   => 'country',
     NEUTRAL_DATA => {
-      name    => '無所属',
-      color   => 'gray',
+      name  => '無所属',
+      color => 'gray',
     },
   };
 
