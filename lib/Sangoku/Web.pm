@@ -23,6 +23,7 @@ package Sangoku::Web {
     $self->asset->process('base.css' => ('scss/base.scss'));
     $self->asset->process('country-table.css' => ('scss/country-table.scss'));
 
+    $self->plugin('Sangoku::TemplateFunctions');
     $self->plugin(FlashError => {validator_class => 'Sangoku::Validator'});
 
     my $plugin_config = $self->config->{app}{plugin};
@@ -35,12 +36,6 @@ package Sangoku::Web {
 
     # Mojo::EventEmitterのインスタンスを返すヘルパー 
     $self->helper(events => sub { state $event = Mojo::EventEmitter->new() });
-
-    # テンプレートでも関数でcookieの値取得できるように 例:%= my_cookie('id');
-    $self->helper(get_cookie => sub {
-      my ($self, $key) = @_;
-      $self->cookie($key);
-    });
 
     # そのコントローラクラスに対応するServiceクラスを返す
     $self->helper(service => sub {
@@ -246,7 +241,7 @@ package Sangoku::Web {
       $auth->any( '/choose-edit-player'           )->to(action => 'choose_edit_player');
       $auth->any( '/input-edit-player'            )->to(action => 'input_edit_player');
       $auth->post('/edit-player'                  )->to(action => 'edit_player');
-      $auth->any( '/comfirm-detect-illegal-player')->to(action => 'comfirm_detect_illegal_player');
+      $auth->any( '/confirm-detect-illegal-player')->to(action => 'confirm_detect_illegal_player');
       $auth->post('/detect-illegal-player'        )->to(action => 'detect_illegal_player');
       $auth->any( '/input-delete-icon'            )->to(action => 'input_delete_icon');
       $auth->post('/delete-icon'                  )->to(action => 'delete_icon');

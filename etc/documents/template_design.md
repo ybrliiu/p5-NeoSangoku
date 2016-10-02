@@ -24,14 +24,16 @@
 
 # htmlの基本構成(中央寄せタイプ)
 ``` html
-<div id="centering">
-  <div>
-    中央
+<div id="wrapper">
+  <div class="centering">
+    <div>
+      中央
+    </div>
+    <table class="table-tile">
+      <tr><th></th></tr>
+      <tr><td></td></td>
+    </table>
   </div>
-  <table class="table-tile">
-    <tr><th></th></tr>
-    <tr><td></td></td>
-  </table>
 </div>
 ```
 

@@ -107,12 +107,13 @@ sub root {
 sub edit {
   my $self = shift;
 
-  ...
+  my ($result, $error) = Sangoku::Service::Player->mypage($player_id);
 
   if ($error->has_error) {
-    $self->input();
-  } else {
+    $self->flash_error($error);
     $self->redirect_to('/input');
+  } else {
+    $self->redirect_to('/complete-input');
   }
 
 }

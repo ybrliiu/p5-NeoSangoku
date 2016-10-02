@@ -3,6 +3,9 @@ package Sangoku::Validator {
   use Sangoku;
   use parent 'FormValidator::Lite';
 
+  use Sangoku::Validator::Params;
+  use Sangoku::Validator::Messages;
+
   # $param をエラーにして message に $msg をセット
   sub set_error_and_message {
     my ($self, $param, $rule_name, $msg) = @_;
@@ -34,6 +37,14 @@ package Sangoku::Validator {
   sub rebless {
     my ($class, $self) = @_;
     return bless $self, $class;
+  }
+
+  sub load_default_messages {
+    my ($self) = @_;
+    $self->set_message_data({
+      param    => Sangoku::Validator::Params->default_params,
+      function => Sangoku::Validator::Messages->default_messages,
+    });
   }
 
 }

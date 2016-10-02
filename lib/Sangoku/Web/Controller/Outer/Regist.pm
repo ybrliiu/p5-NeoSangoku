@@ -15,10 +15,17 @@ package Sangoku::Web::Controller::Outer::Regist {
 
   sub regist {
     my ($self) = @_;
+
     my $param = $self->req->params->to_hash();
-    my $validator = Sangoku::Validator->new($param);
-    $self->flash_error($validator);
-    $self->redirect_to('/outer/regist');
+    my $error = $self->service->regist($param);
+
+    if ($error->has_error) {
+      $self->flash_error($error);
+      $self->redirect_to('/outer/regist');
+    } else {
+      $self->redirect_to('/outer/regist/complete-regist');
+    }
+
   }
 
 }
