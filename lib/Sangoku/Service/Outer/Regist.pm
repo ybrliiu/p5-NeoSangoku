@@ -149,7 +149,7 @@ package Sangoku::Service::Outer::Regist {
 
     $class->model('Country::Position')->create({
       name    => $param->{country_name},
-      king_id => $param->{name},
+      king_id => $param->{id},
     });
   }
 
@@ -173,18 +173,32 @@ package Sangoku::Service::Outer::Regist {
     return () if $validator->has_error();
 
     my $player_info = {
-      id   => $param->{id},
-      name => $param->{name},
-      pass => $param->{pass},
-      icon => $param->{icon},
-      country_name => $town->country_name,
-      town_name    => $town->name,
-      force      => $param->{force},
-      intellect  => $param->{intellect},
-      leadership => $param->{leadershi},
-      popular    => $param->{popular},
-      loyalty    => $param->{loyalty},
-      update_time => time,
+      player => {
+        id   => $param->{id},
+        name => $param->{name},
+        pass => $param->{pass},
+        icon => $param->{icon},
+        country_name => $town->country_name,
+        town_name    => $town->name,
+        force      => $param->{force},
+        intellect  => $param->{intellect},
+        leadership => $param->{leadership},
+        popular    => $param->{popular},
+        loyalty    => $param->{loyalty},
+        update_time => time,
+      },
+      weapon => {
+        player_id => $param->{id},
+        power     => 0,
+      },
+      guard  => {
+        player_id => $param->{id},
+        power     => 0,
+      },
+      book   => {
+        player_id => $param->{id},,
+        power     => 0,
+      },
     };
 
     $class->model('Player')->regist($player_info);
