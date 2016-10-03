@@ -5,9 +5,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 ```
 regist
 
-Model::Country 無所属のデータ DB::Rowに移す
-DB::Row::Town に 無所属支配かどうか調べるメソッド追加
-
 Player profile
 
 Row::Player

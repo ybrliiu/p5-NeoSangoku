@@ -1,0 +1,17 @@
+% layout 'default';
+
+<div class="centering">
+  
+  <h1 id="headline"><span>登録完了</span></h1>
+
+  <p>
+    NEO三国志NETへの登録が完了しました！<br>
+    ID、パスワードは大切に保管してください。
+  </p>
+
+  <table class="tile-table">
+  <tbody>
+  </tbody>
+  </table>
+
+</div>

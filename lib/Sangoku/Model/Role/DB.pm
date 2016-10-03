@@ -52,6 +52,12 @@ package Sangoku::Model::Role::DB {
     return $class->db->delete($class->TABLE_NAME, {$class->primary_key => $primary_value});
   }
 
+  sub search {
+    my ($class, $name, $value) = @_;
+    my @rows = $class->db->search($class->TABLE_NAME, {$name => $value});
+    return \@rows;
+  }
+
 }
 
 1;

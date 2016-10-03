@@ -13,6 +13,14 @@ package Sangoku::Web::Controller::Outer::Regist {
     $self->render_fill_error();
   }
 
+  sub complete_regist {
+    my ($self) = @_;
+    my $id = $self->flash('id');
+    my $result = $self->service->complete_regist($id);
+    $self->stash(%$result);
+    $self->render();
+  }
+
   sub regist {
     my ($self) = @_;
 
@@ -25,6 +33,7 @@ package Sangoku::Web::Controller::Outer::Regist {
       $self->flash_error($error);
       $self->redirect_to('/outer/regist');
     } else {
+      $self->flash(id => $self->param('id'));
       $self->redirect_to('/outer/regist/complete-regist');
     }
 

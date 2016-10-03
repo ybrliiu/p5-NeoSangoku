@@ -25,6 +25,11 @@ package Sangoku::Service::Outer::Regist {
     };
   }
 
+  sub complete_regist {
+    my ($class, $id) = @_;
+    return {player => $class->model('Player')->get($id)};
+  }
+
   sub regist {
     my ($class, $args) = @_;
     validate_values($args => [qw/name icon town id pass
@@ -70,8 +75,10 @@ package Sangoku::Service::Outer::Regist {
     }
 
     my $town = $class->model('Town')->get($args->{town});
+    $town->refetch({for_update => 1});
+
     my @is_input_country_form = grep { $args->{"country_$_"} } qw/name color/;
-    if ($town->country_name eq '無所属' || @is_input_country_form) {
+    if ($town->can_establish_nation || @is_input_country_form) {
 
       # validate country info
       {
@@ -83,18 +90,33 @@ package Sangoku::Service::Outer::Regist {
         $validator->set_message('country_color.not_null' => '[_1]を選択してください。');
 
         $validator->check(
-          country_name  => ['NOT_NULL', [LENGTH => (1, 15)]],
+          country_name  => ['NOT_NULL', [LENGTH => ($nfv->{NAME_LEN_MIN}, $nfv->{NAME_LEN_MAX})]],
           country_color => ['NOT_NULL', [CHOICE => (keys %$country_color)]],
         );
 
-        $validator->set_error_and_message(town => (cant_build => 'その都市は既に他の国が支配しています。'))
-          if $town->country_name ne '無所属';
+        $validator->set_error_and_message(town => (cant_establish => 'その都市は既に他の国が支配しています。'))
+          unless $town->can_establish_nation;
       }
 
-      $class->_regist_player();
+      $class->_create_country({
+        param     => $args,
+        validator => $validator,
+        town      => $town,
+      });
+      $class->_regist_player({
+        param     => $args,
+        validator => $validator,
+        town      => $town,
+      });
+      $class->_create_country_position($args, $validator);
 
     } else {
 
+      $class->_regist_player({
+        param     => $args,
+        validator => $validator,
+        town      => $town,
+      });
 
     }
 
@@ -102,8 +124,70 @@ package Sangoku::Service::Outer::Regist {
     return $validator;
   }
 
+  sub _create_country {
+    my ($class, $args) = @_;
+    state $keys = [qw/param validator town/];
+    validate_values($args => $keys);
+    my ($param, $validator, $town) = map { $args->{$_} } @$keys;
+
+    my $country = $class->model('Country')->get($param->{country_name});
+    $validator->set_error(country_name => 'already_exist') if defined $country;
+
+    return () if $validator->has_error();
+
+    $class->model('Country')->create({
+      name  => $param->{country_name},
+      color => $param->{country_color},
+    });
+    $town->update({country_name => $param->{country_name}});
+  }
+
+  sub _create_country_position {
+    my ($class, $param, $validator) = @_;
+
+    return () if $validator->has_error;
+
+    $class->model('Country::Position')->create({
+      name    => $param->{country_name},
+      king_id => $param->{name},
+    });
+  }
+
   sub _regist_player {
     my ($class, $args) = @_;
+    state $keys = [qw/param validator town/];
+    validate_values($args => $keys);
+    my ($param, $validator, $town) = map { $args->{$_} } @$keys;
+    $town->refetch();
+   
+    {
+      my $player = $class->model('Player')->get($param->{id});
+      $validator->set_error_and_message(id => 'already_exist') if defined $player;
+    } 
+    
+    {
+      my $rows = $class->model('Player')->search(name => $param->{name});
+      $validator->set_error(name => 'already_exist') if @$rows;
+    }
+
+    return () if $validator->has_error();
+
+    my $player_info = {
+      id   => $param->{id},
+      name => $param->{name},
+      pass => $param->{pass},
+      icon => $param->{icon},
+      country_name => $town->country_name,
+      town_name    => $town->name,
+      force      => $param->{force},
+      intellect  => $param->{intellect},
+      leadership => $param->{leadershi},
+      popular    => $param->{popular},
+      loyalty    => $param->{loyalty},
+      update_time => time,
+    };
+
+    $class->model('Player')->regist($player_info);
   }
 
 }
