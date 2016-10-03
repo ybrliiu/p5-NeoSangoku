@@ -18,10 +18,20 @@ package Sangoku::Service::Outer::Regist {
     return {
       %{ Sangoku::DB::Row::Player->CONSTANTS },
       ABILITY_LIST  => Sangoku::DB::Row::Player->ABILITY_LIST,
+      %{ $class->_calc_ability_limits },
       COUNTRY_COLOR => Sangoku::DB::Row::Country->COLOR,
       COUNTRY_NAME_LEN_MIN => Sangoku::DB::Row::Country->CONSTANTS->{NAME_LEN_MIN},
       COUNTRY_NAME_LEN_MAX => Sangoku::DB::Row::Country->CONSTANTS->{NAME_LEN_MAX},
+      current_player => $class->model('Player')->count_all,
       towns => $towns,
+    };
+  }
+
+  sub _calc_ability_limits {
+    return {
+      ABILITY_MAX => 100,
+      ABILITY_MIN => 1,
+      ABILITY_SUM => 160,
     };
   }
 
@@ -41,27 +51,28 @@ package Sangoku::Service::Outer::Regist {
     # validate player info
     {
       # number_for_validation -> nfv
-      my $nfv = Sangoku::DB::Row::Player->CONSTANTS;
-      $nfv->{ABILITY_MAX} = 100;
-      $nfv->{ABILITY_MIN} = 1;
-      $nfv->{ABILITY_SUM} = 160;
+      state $nfv = {
+        %{ Sangoku::DB::Row::Player->CONSTANTS },
+        %{ $class->_calc_ability_limits },
+      };
+      my %nfv = %$nfv;
       my $ability_list = Sangoku::DB::Row::Player->ABILITY_LIST;
 
-      $validator->set_message('id.length' => "[_1]は$nfv->{ID_LEN_MIN}文字以上$nfv->{ID_LEN_MAX}文字以下で入力してください。");
-      $validator->set_message('pass.length' => "[_1]は$nfv->{PASS_LEN_MIN}文字以上$nfv->{PASS_LEN_MAX}文字以下で入力してください。");
+      $validator->set_message('id.length' => "[_1]は$nfv{ID_LEN_MIN}文字以上$nfv{ID_LEN_MAX}文字以下で入力してください。");
+      $validator->set_message('pass.length' => "[_1]は$nfv{PASS_LEN_MIN}文字以上$nfv{PASS_LEN_MAX}文字以下で入力してください。");
       $validator->set_message('confirm_rule.equal' => '規約に同意できない場合は登録できません。');
 
-      my %ability_check = map { $_ => ['NOT_NULL', [BETWEEN => ($nfv->{ABILITY_MIN}, $nfv->{ABILITY_MAX})]] } @$ability_list;
+      my %ability_check = map { $_ => ['NOT_NULL', [BETWEEN => ($nfv{ABILITY_MIN}, $nfv{ABILITY_MAX})]] } @$ability_list;
       $validator->check(
-        name => ['NOT_NULL', [LENGTH => ($nfv->{NAME_LEN_MIN}, $nfv->{NAME_LEN_MAX})]],
+        name => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
         icon => ['NOT_NULL', [BETWEEN => (0, Sangoku::Model::IconList->MAX)]],
         town => ['NOT_NULL'],
-        id   => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv->{ID_LEN_MIN}, $nfv->{ID_LEN_MAX})]],
-        pass => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv->{PASS_LEN_MIN}, $nfv->{PASS_LEN_MAX})]],
+        id   => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv{ID_LEN_MIN}, $nfv{ID_LEN_MAX})]],
+        pass => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv{PASS_LEN_MIN}, $nfv{PASS_LEN_MAX})]],
         %ability_check,
-        loyalty => ['NOT_NULL', [LENGTH => ($nfv->{LOYALTY_MIN}, $nfv->{LOYALTY_MAX})]],
-        profile => [[LENGTH => (0, $nfv->{PROFILE_LEN_MAX})]],
-        mail    => ['ASCII', [LENGTH => (0, $nfv->{MAIL_LEN_MAX})]],
+        loyalty => ['NOT_NULL', [LENGTH => ($nfv{LOYALTY_MIN}, $nfv{LOYALTY_MAX})]],
+        profile => [[LENGTH => (0, $nfv{PROFILE_LEN_MAX})]],
+        mail    => ['ASCII', [LENGTH => (0, $nfv{MAIL_LEN_MAX})]],
         confirm_rule => ['NOT_NULL', [EQUAL => 1]],
       );
 
@@ -69,8 +80,8 @@ package Sangoku::Service::Outer::Regist {
         if $args->{pass} eq $args->{id};
 
       my $ability_sum = sum map { $args->{$_} || 0 } @$ability_list;
-      $validator->set_error_and_message('ability' => (sum => "能力の合計値は$nfv->{ABILITY_SUM}になるようにしてください！"))
-        unless $ability_sum == $nfv->{ABILITY_SUM};
+      $validator->set_error_and_message('ability' => (sum => "能力の合計値は$nfv{ABILITY_SUM}になるようにしてください！"))
+        unless $ability_sum == $nfv{ABILITY_SUM};
 
     }
 
@@ -83,14 +94,15 @@ package Sangoku::Service::Outer::Regist {
       # validate country info
       {
         # number_for_validation -> nfv
-        my $nfv = Sangoku::DB::Row::Country->CONSTANTS;
+        state $nfv = Sangoku::DB::Row::Country->CONSTANTS;
+        my %nfv = %$nfv;
         my $country_color = Sangoku::DB::Row::Country->COLOR;
 
-        $validator->set_message('country_name.length' => "[_1]は$nfv->{NAME_LEN_MIN}文字以上$nfv->{NAME_LEN_MAX}文字以下で入力してください。");
+        $validator->set_message('country_name.length' => "[_1]は$nfv{NAME_LEN_MIN}文字以上$nfv{NAME_LEN_MAX}文字以下で入力してください。");
         $validator->set_message('country_color.not_null' => '[_1]を選択してください。');
 
         $validator->check(
-          country_name  => ['NOT_NULL', [LENGTH => ($nfv->{NAME_LEN_MIN}, $nfv->{NAME_LEN_MAX})]],
+          country_name  => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
           country_color => ['NOT_NULL', [CHOICE => (keys %$country_color)]],
         );
 
@@ -98,25 +110,21 @@ package Sangoku::Service::Outer::Regist {
           unless $town->can_establish_nation;
       }
 
-      $class->_create_country({
-        param     => $args,
-        validator => $validator,
-        town      => $town,
-      });
-      $class->_regist_player({
-        param     => $args,
-        validator => $validator,
-        town      => $town,
-      });
+      # 下3つのメソッド呼び出しを以下のようにしてもいいかも
+      # $class->_regist_country({
+      #   params => $args,
+      #   validator => $validator,
+      #   town => $town,
+      #   regist_player => sub { $class->_regist_player(...) },
+      # });
+
+      $class->_create_country($args, $validator, $town);
+      $class->_regist_player($args, $validator, $town);
       $class->_create_country_position($args, $validator);
 
     } else {
 
-      $class->_regist_player({
-        param     => $args,
-        validator => $validator,
-        town      => $town,
-      });
+      $class->_regist_player($args, $validator, $town);
 
     }
 
@@ -125,10 +133,7 @@ package Sangoku::Service::Outer::Regist {
   }
 
   sub _create_country {
-    my ($class, $args) = @_;
-    state $keys = [qw/param validator town/];
-    validate_values($args => $keys);
-    my ($param, $validator, $town) = map { $args->{$_} } @$keys;
+    my ($class, $param, $validator, $town) = @_;
 
     my $country = $class->model('Country')->get($param->{country_name});
     $validator->set_error(country_name => 'already_exist') if defined $country;
@@ -154,23 +159,21 @@ package Sangoku::Service::Outer::Regist {
   }
 
   sub _regist_player {
-    my ($class, $args) = @_;
-    state $keys = [qw/param validator town/];
-    validate_values($args => $keys);
-    my ($param, $validator, $town) = map { $args->{$_} } @$keys;
+    my ($class, $param, $validator, $town) = @_;
     $town->refetch();
    
-    {
-      my $player = $class->model('Player')->get($param->{id});
-      $validator->set_error_and_message(id => 'already_exist') if defined $player;
-    } 
+    my $player = $class->model('Player')->get($param->{id});
+    $validator->set_error_and_message(id => 'already_exist') if defined $player;
     
-    {
-      my $rows = $class->model('Player')->search(name => $param->{name});
-      $validator->set_error(name => 'already_exist') if @$rows;
-    }
+    my $rows = $class->model('Player')->search(name => $param->{name});
+    $validator->set_error(name => 'already_exist') if @$rows;
 
     return () if $validator->has_error();
+
+    my $equipments_status = {
+      player_id => $param->{id},
+      power     => 0,
+    };
 
     my $player_info = {
       player => {
@@ -187,18 +190,9 @@ package Sangoku::Service::Outer::Regist {
         loyalty    => $param->{loyalty},
         update_time => time,
       },
-      weapon => {
-        player_id => $param->{id},
-        power     => 0,
-      },
-      guard  => {
-        player_id => $param->{id},
-        power     => 0,
-      },
-      book   => {
-        player_id => $param->{id},,
-        power     => 0,
-      },
+      weapon => $equipments_status,
+      guard  => $equipments_status,
+      book   => $equipments_status,
     };
 
     $class->model('Player')->regist($player_info);

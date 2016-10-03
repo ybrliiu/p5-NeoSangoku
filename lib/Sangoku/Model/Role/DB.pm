@@ -29,9 +29,14 @@ package Sangoku::Model::Role::DB {
     return \@rows;
   }
 
+  sub count_all {
+    my ($class) = @_;
+    return $class->db->count($class->TABLE_NAME, '*');
+  }
+
   sub delete_all {
     my ($class) = @_;
-    $class->db->delete($class->TABLE_NAME => {});
+    $class->db->delete($class->TABLE_NAME, {});
   }
 
   sub primary_key {

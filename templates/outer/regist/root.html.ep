@@ -91,6 +91,17 @@
 
   <h1 id="headline"><span>武将新規登録</span></h1>
 
+% if ($error->has_error) {
+  <div id="error">
+    <h2>ERROR!!</h2>
+    <ul class="error-list">
+    % for ($error->get_error_messages) {
+      <li><%= $_ %></li>
+    % }
+    </ul>
+  </div>
+% }
+
   <table id="invatation-message" class="tile-table">
     <tr>
       <th colspan="2">
@@ -117,7 +128,7 @@
           <li>ゲーム説明をよく読んでから参加してください。</li>
           <li>ルールをよく読んでください。ルールを守れない方は登録しないで下さい。</li>
           <li>多重登録は出来ません。</li>
-          <li>最大登録人数は<%= $config->{site}{max_player} %>名です。（現在登録者名）</li>
+          <li>最大登録人数は<%= $config->{site}{max_player} %>名です。（現在登録者<%= $current_player %>名）</li>
           <li>途中参加者にはボーナスがあります。</li>
         </ul>
       </td>
@@ -139,7 +150,11 @@
       %= show_error('name');
       </td>
       <td>
-        <%= text_field('name', size => 25, placeholder => '全角or半角で1〜15文字', class => $error->emphasis('name')) %><br>
+        <%= text_field('name',
+          size        => 25,
+          placeholder => "全角or半角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字",
+          class       => $error->emphasis('name')
+        ) %><br>
         <ul>
           <li>既に登録しているプレーヤーが使用している名前は使用できません。</li>
         </ul>
@@ -185,7 +200,11 @@
         <ul>
           <li>開始都市の支配国に所属します。</li>
           <li>無所属の都市を選択してゲームを開始すると、自分で建国できます。</li>
-          <li>ゲームの開始から48時間（ゲーム内で36ヶ月間）は、1つの国に8人以上仕官できません。</li>
+          <li>
+            ゲームの開始から<%= $config->{site}{nowar_term} %>時間
+            （ゲーム内で<%= $config->{site}{nowar_month} %>ヶ月間）は、
+            1つの国に<%= $config->{site}{max_people_in_nower} %>人以上仕官できません。
+          </li>
         </ul>
       </td>
     </tr>
@@ -196,7 +215,11 @@
       %= show_error('id');
       </td>
       <td>
-        <%= text_field('id', size => 25, placeholder => "半角英数字で6〜16文字、記号不可", class => $error->emphasis('id')) %><br>
+        <%= text_field('id',
+          size        => 25,
+          placeholder => "半角英数字で${ID_LEN_MIN}〜${ID_LEN_MAX}文字、記号不可",
+          class       => $error->emphasis('id')
+        ) %><br>
         <ul>
           <li>既に登録しているプレーヤーが使用しているIDは使用できません。</li>
         </ul>
@@ -209,7 +232,11 @@
       %= show_error('pass');
       </td>
       <td>
-        <%= password_field('pass', size => 25, placeholder => "半角英数字で6〜16文字、記号不可", class => $error->emphasis('pass')) %><br>
+        <%= password_field('pass',
+          size        => 25,
+          placeholder => "半角英数字で${PASS_LEN_MIN}〜${PASS_LEN_MAX}文字",
+          class       => $error->emphasis('pass')
+        ) %><br>
         <ul>
           <li>IDと同じにして登録することはできません。</li>
         </ul>
@@ -226,35 +253,42 @@
           <tr>
             <td>武力</td>
             <td>
-              <%= number_field(force => '', min => 1, max => 100, placeholder => '1〜100', class => $error->emphasis('ability')) %>
+              <%= number_field(force => '', min => $ABILITY_MIN, max => $ABILITY_MAX,
+                placeholder => "${ABILITY_MIN}〜${ABILITY_MAX}", class => $error->emphasis('ability')) %>
               ・主に攻撃力に影響します。
             </td>
           </tr>
           <tr>
             <td>知力</td>
             <td>
-              <%= number_field(intellect => '', min => 1, max => 100, placeholder => '1〜100', class => $error->emphasis('ability')) %>
+              <%= number_field(intellect => '', min => $ABILITY_MIN, max => $ABILITY_MAX,
+                placeholder => "${ABILITY_MIN}〜${ABILITY_MAX}", class => $error->emphasis('ability')) %>
               ・主に内政の効果に影響します。
             </td>
           </tr>
           <tr>
             <td>統率力</td>
             <td>
-              <%= number_field(leadership => '', min => 1, max => 100, placeholder => '1〜100', class => $error->emphasis('ability')) %>
+              <%= number_field(leadership => '', min => $ABILITY_MIN, max => $ABILITY_MAX,
+                placeholder => "${ABILITY_MIN}〜${ABILITY_MAX}", class => $error->emphasis('ability')) %>
               ・雇うことができる兵士数の最大値になります。
             </td>
           </tr>
           <tr>
             <td>人望</td>
             <td>
-              <%= number_field(popular => '', min => 1, max => 100, placeholder => '1〜100', class => $error->emphasis('ability')) %>
+              <%= number_field(popular => '', min => $ABILITY_MIN, max => $ABILITY_MAX,
+                placeholder => "${ABILITY_MIN}〜${ABILITY_MAX}", class => $error->emphasis('ability')) %>
               ・主に農民関係の内政の効果に影響します。
             </td>
           </tr>
         </table>
         <ul>
           <li>能力を指定して下さい。1つの能力に特化させることをお勧めします。　【各能力の説明】　【能力振り分けの例】</li>
-          <li>全能力の合計が<span class="red">160</span>になるようにして下さい！［現在の合計値：<strong id="ability-sum"></strong>］</li>
+          <li>
+            全能力の合計が<span class="red"><%= $ABILITY_SUM %></span>になるようにして下さい！
+            ［現在の合計値：<strong id="ability-sum"></strong>］
+          </li>
         </ul>
       </td>
     </tr>
@@ -265,7 +299,8 @@
       %= show_error('loyalty');
       </td>
       <td>
-        <%= number_field(loyalty => 75, min => 0, max => 100, class => $error->emphasis('loyalty')) %>［0〜100］<br>
+        <%= number_field(loyalty => 75, min => $LOYALTY_MIN, max => $LOYALTY_MAX,
+          class => $error->emphasis('loyalty')) %>［<%= $LOYALTY_MIN  %>〜<%= $LOYALTY_MAX %>］<br>
         <ul>
           <li>所属国への忠誠度を設定してください。（登録後変更可能）</li>
           <li>忠誠度が低い武将が多い国の武将は、君主の位を奪えたり反乱を起こせたりするようになります。（詳しくはこちら）<br>
@@ -284,7 +319,7 @@
           placeholder="プロフィールを入力してください(任意)" rows="5" cols="50"></textarea><br>
         <ul>
          <li>プロフィールを入力してください。</li>
-         <li>登録後変更可能、全角10000文字までです。</li>
+         <li>登録後変更可能、全角<%= $PROFILE_LEN_MAX %>文字までです。</li>
         </ul>
       </td>
     </tr>
@@ -329,7 +364,11 @@
       %= show_error('country_name');
       </td>
       <td id="input-country-name">
-        <%= text_field('country_name', size => 25, placeholder => '全角or半角で1〜15文字', class => $error->emphasis('country_name')) %>
+        <%= text_field('country_name',
+          size        => 25,
+          placeholder => "全角or半角で${COUNTRY_NAME_LEN_MIN}〜${COUNTRY_NAME_LEN_MAX}文字",
+          class       => $error->emphasis('country_name')
+        ) %>
         <ul>
           <li>既に建国されている国の国名は使用できません。</li>
         </ul>

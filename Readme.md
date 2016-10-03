@@ -4,6 +4,8 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```
 regist
+- 登録時のログ出力
+- complete-regist のオブジェクト指向化(Player)
 
 Player profile
 

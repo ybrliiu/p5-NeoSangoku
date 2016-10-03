@@ -138,16 +138,18 @@ ul {
 
   #error {
     $error-red: #E74C3C;
-    width: 100%;
-    > div {
-      width: 100%;
-      background-color: rgba(#E74C3C, 0.3);
-      border: solid $error-red 5px;
-      border-radius: 4px;
-      padding: 10px;
-      font-size: 11pt;
-      color: $error-red;
-      font-weight: bold;
+    width: 90%;
+    background-color: rgba(#E74C3C, 0.3);
+    border: solid $error-red 4px;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 9pt;
+    color: $error-red;
+    font-weight: bold;
+    text-align: left;
+    h2 {
+      color: $red;
+      margin: 3px;
     }
   }
 
