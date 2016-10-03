@@ -1,5 +1,8 @@
 package Mojolicious::Plugin::FlashError {
 
+  # WARNING
+  # 新しいエラーがない場合、以前の情報は1秒間持続します
+
   use Mojo::Base 'Mojolicious::Plugin';
 
   use Carp qw/croak/;
@@ -16,17 +19,39 @@ package Mojolicious::Plugin::FlashError {
     load $validator_class;
     croak "You need to define rebless method to $validator_class" unless $validator_class->can('rebless');
     
+    # validator object の key
+    my @error_keys = qw/_error _msg _error_ary query/;
+
     # flash に json でエラーオブジェクトを保存
     $app->helper(flash_error => sub {
       my ($c, $error) = @_;
 
       if ($error) {
-        my $json = encode_json(unbless $error);
-        $c->flash(_error => $json);
+
+        my $error_hash = unbless $error;
+        for (@error_keys) {
+          my $json = encode_json $error_hash->{$_};
+          $c->cookie("_ERROR-$_" => $json, {max_age => 1});
+        }
+
       } else {
-        my $json = $c->flash('_error');
-        my $error = $json ? $validator_class->rebless(decode_json $json) : $validator_class->new({});
+
+        my @jsons = map {
+          my $flash = $c->cookie("_ERROR-$_");
+          $flash ? decode_json $flash : ();
+        } @error_keys;
+
+        my $error = do {
+          if (@jsons) {
+            my %error_hash;
+            @error_hash{@error_keys} = @jsons;
+            $validator_class->rebless(\%error_hash);
+          } else {
+            $validator_class->new({});
+          }
+        };
         $c->stash(error => $error);
+
       }
 
     });
@@ -39,7 +64,7 @@ package Mojolicious::Plugin::FlashError {
       my ($c, $file) = @_;
       $file //= '';
       my $html = $c->render_to_string();
-      my $error = $c->stash->{error};
+      my $error = $c->stash('error');
       my $fill = $fill_in_form->fill(\$html, $error);
       $c->render(text => $fill);
     });
