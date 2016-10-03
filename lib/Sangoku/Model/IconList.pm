@@ -5,7 +5,7 @@ package Sangoku::Model::IconList {
 
   use constant {
     ICONS_DIR_PATH => '/images/icons/',
-    MAX            => 500,
+    MAX            => 499,
   };
 
   has 'limit' => (is => 'ro', isa => 'Int', default => 50);
@@ -36,7 +36,7 @@ package Sangoku::Model::IconList {
 
   sub max_page {
     my ($self) = @_;
-    return int(MAX / $self->limit - 0.9);
+    return int((MAX + 1) / $self->limit - 0.9);
   }
 
   __PACKAGE__->meta->make_immutable();

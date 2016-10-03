@@ -181,7 +181,7 @@
 
     <div class="adjust-bottom">
       <div class="subhead"><h2>お知らせ</h2></div>
-      <div class="show-log-wrapper white-background">
+      <div class="show-log-wrapper background-white">
         <div class="show-log scroll">
         % for (@$announce) {
           <table>
@@ -200,7 +200,7 @@
 
     <div class="adjust-bottom">
       <div class="subhead"><h2>MAP LOG</h2></div>
-      <div class="show-log-wrapper lightdarkred-background">
+      <div class="show-log-wrapper background-lightdarkred">
         <div class="show-log scroll">
         % for (@$map_log) {
             <span class="green">●</span><%== $_ %><br>
@@ -211,7 +211,7 @@
 
     <div>
       <div class="subhead"><h2>HISTORY LOG</h2></div>
-      <div class="show-log-wrapper lightdarkred-background">
+      <div class="show-log-wrapper background-lightdarkred">
         <div class="show-log scroll">
         % for (@$history_log) {
             <span class="green">●</span><%== $_ %><br>

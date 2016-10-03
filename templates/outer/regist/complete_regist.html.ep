@@ -12,37 +12,37 @@
   <table class="tile-table">
   <tbody>
     <tr>
-      <th colspan="4"><%= $player->name %></th>
+      <th colspan="4"><h2><%= $player->name %></h2></th>
     </tr>
     <tr>
       <td rowspan="4" colspan="2">
-        <img src="/images/icons/<%= $player->icon %>.gif">
+        <img src="<%= $player->icon_path %>">
       </td>
-      <td>ID</td>
+      <td class="background-lightdarkred">ID</td>
       <td><%= $player->id %></td>
     </tr>
     <tr>
-      <td>パスワード</td>
+      <td class="background-lightdarkred">パスワード</td>
       <td><%= $player->pass %></td>
     </tr>
     <tr>
-      <td>所属国</td>
+      <td class="backround-lightdarkred">所属国</td>
       <td><%= $player->country_name %></td>
     </tr>
     <tr>
-      <td>開始都市</td>
+      <td class="backround-lightdarkred">開始都市</td>
       <td><%= $player->town_name %></td>
     </tr>
     <tr>
-      <td>武力</td>
+      <td class="backround-lightdarkred">武力</td>
       <td><%= $player->force %></td>
-      <td>知力</td>
+      <td class="backround-lightdarkred">知力</td>
       <td><%= $player->intellect %></td>
     </tr>
     <tr>
-      <td>統率力</td>
+      <td class="backround-lightdarkred">統率力</td>
       <td><%= $player->leadership %></td>
-      <td>人望</td>
+      <td class="backround-lightdarkred">人望</td>
       <td><%= $player->popular %></td>
     </tr>
   </tbody>

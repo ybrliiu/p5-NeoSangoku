@@ -3,6 +3,8 @@ package Sangoku::DB::Row::Player {
   use Sangoku;
   use parent 'Teng::Row';
 
+  use Sangoku::Model::IconList;
+
   use constant {
     CONSTANTS => {
       NAME_LEN_MIN => 1,
@@ -14,10 +16,15 @@ package Sangoku::DB::Row::Player {
       LOYALTY_MIN  => 0,
       LOYALTY_MAX  => 100,
       PROFILE_LEN_MAX => 1000,
-      MAIL_LEN_MAX    => 20,
+      MAIL_LEN_MAX    => 40,
     },
     ABILITY_LIST => [qw/force intellect leadership popular/],
   };
+
+  sub icon_path {
+    my ($self) = @_;
+    return Sangoku::Model::IconList->ICONS_DIR_PATH . $self->icon . '.gif';
+  }
 
 }
 

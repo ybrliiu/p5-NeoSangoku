@@ -238,9 +238,9 @@ h2 {
 
 /* 背景 */
 @mixin background-color($color) { background-color: $color }
-.black-background { @include background-color($black) }
-.white-background { @include background-color($white) }
-.lightdarkred-background { @include background-color($lightdarkred) }
+.background-black { @include background-color($black) }
+.background-white { @include background-color($white) }
+.background-lightdarkred { @include background-color($lightdarkred) }
 
 
 /* 横の大きさ */

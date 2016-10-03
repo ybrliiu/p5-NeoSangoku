@@ -3,17 +3,12 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-regist
-- 登録時のログ出力
-- complete-regist のオブジェクト指向化(Player)
+* complete_regist リロードされた時どうするか
+* create Player profile
 
-Player profile
-
-Row::Player
-SQLのチューニング
-
-・書いてないテストも書きましょうね〜〜
-testのコード共通化進める?
+* SQLのチューニング
+* 書いてないテストも書きましょうね〜〜
+* testのコード共通化進める?
 ```
 
 # 環境設定方法

@@ -8,7 +8,6 @@ package Sangoku::Service::Outer::Regist {
   use Sangoku::Util qw/validate_values/;
   use Sangoku::DB::Row::Player;
   use Sangoku::DB::Row::Country;
-  use Sangoku::Model::IconList;
 
   sub root {
     my ($class) = @_;
@@ -17,13 +16,14 @@ package Sangoku::Service::Outer::Regist {
 
     return {
       %{ Sangoku::DB::Row::Player->CONSTANTS },
-      ABILITY_LIST  => Sangoku::DB::Row::Player->ABILITY_LIST,
       %{ $class->_calc_ability_limits },
-      COUNTRY_COLOR => Sangoku::DB::Row::Country->COLOR,
+      ABILITY_LIST         => Sangoku::DB::Row::Player->ABILITY_LIST,
+      COUNTRY_COLOR        => Sangoku::DB::Row::Country->COLOR,
       COUNTRY_NAME_LEN_MIN => Sangoku::DB::Row::Country->CONSTANTS->{NAME_LEN_MIN},
       COUNTRY_NAME_LEN_MAX => Sangoku::DB::Row::Country->CONSTANTS->{NAME_LEN_MAX},
-      current_player => $class->model('Player')->count_all,
-      towns => $towns,
+      ICONS_DIR_PATH       => $class->model('IconList')->ICONS_DIR_PATH,
+      current_player       => $class->model('Player')->count_all,
+      towns                => $towns,
     };
   }
 
@@ -59,15 +59,16 @@ package Sangoku::Service::Outer::Regist {
       my $ability_list = Sangoku::DB::Row::Player->ABILITY_LIST;
 
       $validator->set_message('id.length' => "[_1]は$nfv{ID_LEN_MIN}文字以上$nfv{ID_LEN_MAX}文字以下で入力してください。");
+      $validator->set_message('id.regex' => "[_1]で使用可能な文字は半角英数字及び'_'だけです。");
       $validator->set_message('pass.length' => "[_1]は$nfv{PASS_LEN_MIN}文字以上$nfv{PASS_LEN_MAX}文字以下で入力してください。");
       $validator->set_message('confirm_rule.equal' => '規約に同意できない場合は登録できません。');
 
       my %ability_check = map { $_ => ['NOT_NULL', [BETWEEN => ($nfv{ABILITY_MIN}, $nfv{ABILITY_MAX})]] } @$ability_list;
       $validator->check(
         name => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
-        icon => ['NOT_NULL', [BETWEEN => (0, Sangoku::Model::IconList->MAX)]],
+        icon => ['NOT_NULL', [BETWEEN => (0, $class->model('IconList')->MAX)]],
         town => ['NOT_NULL'],
-        id   => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv{ID_LEN_MIN}, $nfv{ID_LEN_MAX})]],
+        id   => ['NOT_NULL', [REGEX => qr/^+[a-zA-Z0-9_]+$/], [LENGTH => ($nfv{ID_LEN_MIN}, $nfv{ID_LEN_MAX})]],
         pass => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv{PASS_LEN_MIN}, $nfv{PASS_LEN_MAX})]],
         %ability_check,
         loyalty => ['NOT_NULL', [LENGTH => ($nfv{LOYALTY_MIN}, $nfv{LOYALTY_MAX})]],
@@ -122,9 +123,17 @@ package Sangoku::Service::Outer::Regist {
       $class->_regist_player($args, $validator, $town);
       $class->_create_country_position($args, $validator);
 
+      unless ($validator->has_error) {
+        my $log = "<darkblue>【建国】</darkblue>新しく$args->{name}が$args->{town}に$args->{country_name}'を建国しました！";
+        $class->model($_)->add($log) for qw/MapLog HistoryLog/;
+      }
+
     } else {
 
       $class->_regist_player($args, $validator, $town);
+
+      $class->model('MapLog')->add("<lightblue>［仕官］</lightblue>新しく$args->{name}が@{[ $town->country_name ]}に仕官しました。")
+        unless $validator->has_error();
 
     }
 
