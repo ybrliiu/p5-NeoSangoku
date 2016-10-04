@@ -3,6 +3,13 @@ package Sangoku::Web::Controller::Outer {
   use Sangoku;
   use Mojo::Base 'Mojolicious::Controller';
 
+  sub map {
+    my ($self) = @_;
+    my $result = $self->service->map();
+    $self->stash(%$result);
+    $self->render();
+  }
+
   sub icon_list {
     my ($self) = @_;
 

@@ -3,7 +3,17 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
+* reset_game delete_all model::player::を model::player::erase_allに
+* API ディレクトリの場所を定数で指定
 * create Player profile
+
+* map log
+- design
+- 前回のをベースに、上部はmax-width指定
+- 全体的にマージンをとってrootのパーツを流用する
+
+" player-list
+- 前回のをほぼそのまま踏襲
 
 * SQLのチューニング
 * 書いてないテストも書きましょうね〜〜

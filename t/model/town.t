@@ -22,9 +22,4 @@ subtest 'get' => sub {
   is $town->name, '金陵';
 };
 
-subtest 'get_all_for_map' => sub {
-  ok(my $map_data = $TEST_CLASS->get_all_for_map);
-  diag explain $map_data;
-};
-
 done_testing();

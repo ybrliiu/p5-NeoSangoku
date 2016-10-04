@@ -153,25 +153,6 @@ ul {
     }
   }
 
-  #map {
-    $border:3px;
-    > #top {
-      background-color: $darkred;
-      color: $lightdarkred;
-      text-align: center;
-      padding: 6px;
-      @each $direction in -top, -right, -left { // 繰り返し
-        border#{$direction}:$border $white solid;
-      }
-    }
-    th { padding:0; }
-    table {
-      width: 100%;
-      background-color: $lightgreen;
-      border: $border $white solid;
-    }
-  }
-
 }
 
 /* タイルテーブル */

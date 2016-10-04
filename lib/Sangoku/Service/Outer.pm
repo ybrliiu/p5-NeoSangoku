@@ -4,6 +4,15 @@ package Sangoku::Service::Outer {
   use Sangoku;
   with 'Sangoku::Service::Role::Base';
 
+  sub map {
+    my ($class) = @_;
+    return {
+      map_data    => $class->model('Town')->get_all_for_map(),
+      history_log => $class->model('HistoryLog')->get_all(),
+      map_log     => $class->model('MapLog')->get_all(),
+    };
+  }
+
   sub icon_list {
     my ($class, $page) = @_;
     $page //= 0;

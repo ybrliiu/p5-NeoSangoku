@@ -2,8 +2,17 @@ package Sangoku::DB::Row::Town {
 
   use Sangoku;
   use parent 'Teng::Row';
+  use Class::Accessor::Lite (
+    new => 0,
+    rw  => ['country_color'],
+  );
 
   use Sangoku::Model::Country;
+
+  sub country {
+    my ($self, $country) = @_;
+    Sangoku::Model::Country->get($self->country_name);
+  }
 
   sub can_establish_nation {
     my ($self) = @_;

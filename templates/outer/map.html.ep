@@ -1,0 +1,46 @@
+% layout 'default';
+
+<style>
+<% my $sccc = '
+
+#map {
+  background-color: ' . $config->{color}{lightgreen} . ';
+  padding: 3px;
+  border: 4px ' . $config->{color}{darkred} . ' solid;
+  th {
+    font-size: 10pt;
+  }
+}
+
+'; %>
+%= scss_to_css(\$sccc, 1);
+</style>
+
+<div class="centering">
+  
+  <h1 id="headline"><span><%= $config->{site}{name} %> 大陸地図</span></h1>
+
+  <table id="map">
+% for my $i (0 .. 9) {
+    <tr>
+  % for my $j (0 .. 9) {
+    % my $town = $map_data->[$i][$j];
+    % if (defined $town) {
+      <td style="background-color: <%= $config->{countrycolor}{$town->country->color} %>">
+        <%= $town->name %>
+      </td>
+    % } else {
+      <td></td>
+    % }
+  % }
+    </tr>
+% }
+  </table>
+
+</div>
+
+<div class="grid width-50pc">
+</div>
+
+<div class="grid-right width-50pc">
+</div>
