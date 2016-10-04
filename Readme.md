@@ -3,12 +3,12 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-* complete_regist リロードされた時どうするか
 * create Player profile
 
 * SQLのチューニング
 * 書いてないテストも書きましょうね〜〜
 * testのコード共通化進める?
+* complete_regist リロードされた時どうするか
 ```
 
 # 環境設定方法

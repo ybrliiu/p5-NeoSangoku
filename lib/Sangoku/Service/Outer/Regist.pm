@@ -68,7 +68,7 @@ package Sangoku::Service::Outer::Regist {
         name => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
         icon => ['NOT_NULL', [BETWEEN => (0, $class->model('IconList')->MAX)]],
         town => ['NOT_NULL'],
-        id   => ['NOT_NULL', [REGEX => qr/^+[a-zA-Z0-9_]+$/], [LENGTH => ($nfv{ID_LEN_MIN}, $nfv{ID_LEN_MAX})]],
+        id   => ['NOT_NULL', [REGEX => qr/^[a-zA-Z0-9_]+$/], [LENGTH => ($nfv{ID_LEN_MIN}, $nfv{ID_LEN_MAX})]],
         pass => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv{PASS_LEN_MIN}, $nfv{PASS_LEN_MAX})]],
         %ability_check,
         loyalty => ['NOT_NULL', [LENGTH => ($nfv{LOYALTY_MIN}, $nfv{LOYALTY_MAX})]],
@@ -86,8 +86,7 @@ package Sangoku::Service::Outer::Regist {
 
     }
 
-    my $town = $class->model('Town')->get($args->{town});
-    $town->refetch({for_update => 1});
+    my $town = $class->model('Town')->get($args->{town})->refetch({for_update => 1});
 
     my @is_input_country_form = grep { $args->{"country_$_"} } qw/name color/;
     if ($town->can_establish_nation || @is_input_country_form) {
@@ -124,7 +123,7 @@ package Sangoku::Service::Outer::Regist {
       $class->_create_country_position($args, $validator);
 
       unless ($validator->has_error) {
-        my $log = "<darkblue>【建国】</darkblue>新しく$args->{name}が$args->{town}に$args->{country_name}'を建国しました！";
+        my $log = qq{<span class="darkblue">【建国】</span>新しく$args->{name}が$args->{town}に$args->{country_name}を建国しました！};
         $class->model($_)->add($log) for qw/MapLog HistoryLog/;
       }
 
@@ -132,8 +131,9 @@ package Sangoku::Service::Outer::Regist {
 
       $class->_regist_player($args, $validator, $town);
 
-      $class->model('MapLog')->add("<lightblue>［仕官］</lightblue>新しく$args->{name}が@{[ $town->country_name ]}に仕官しました。")
-        unless $validator->has_error();
+      unless ($validator->has_error) {
+        $class->model('MapLog')->add(qq{<span class="lightblue">［仕官］</span>新しく$args->{name}が@{[ $town->country_name ]}に仕官しました。})
+      }
 
     }
 

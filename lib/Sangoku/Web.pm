@@ -94,11 +94,11 @@ package Sangoku::Web {
       $outer->get('/map'                  )->to(action => 'map');
       $outer->get('/ranking'              )->to(action => 'ranking');
       $outer->get('/compare-country-power')->to(action => 'compare_country_power');     # グラフ
-      $outer->get('/manual'               )->to(action => 'manual');
+      $outer->get('/document'             )->to(action => 'document');
       $outer->get('/change-log'           )->to(action => 'change_log');
-      $outer->get('/history'              )->to(action => 'history');
+      $outer->get('/unified-history'      )->to(action => 'unified_history');
       $outer->get('/icon-list'            )->to(action => 'icon_list');
-      $outer->get('/icon-list/*page'      )->to(action => 'icon_list'); # JSでアイコン指定できるよう(at regist, config-change-icon)
+      $outer->get('/icon-list/:page'      )->to(action => 'icon_list'); # JSでアイコン指定できるよう(at regist, config-change-icon)
 
       # /outer/regist
       {

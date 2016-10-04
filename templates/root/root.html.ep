@@ -64,6 +64,11 @@
     margin: 5px;
     border-radius: 3px;
     text-align: left;
+
+    &:before {
+      content: "●";
+      margin: 0;
+    }
   }
 
   a {
@@ -77,6 +82,11 @@
     margin: 8px;
     background-color: ' . $config->{color}{darkred} . ';
     font-weight: bold;
+
+    &:before {
+      content: "";
+      margin: 0;
+    }
   }
 }
 
@@ -159,16 +169,16 @@
     <nav>
     <ul id="menu" class="adjust-bottom">
       <li class="not-list"><h2>■メニュー■</h2></li>
-      <a href="/"><li>●【HOME】</li></a>
-      <a href="/outer/regist"><li>●【新規登録】</li></a>
-      <a href="/outer/bbs" target="_blank"><li>●【専用BBS】</li></a>
-      <a href="/outer/allplayer" target="_blank"><li>●【登録武将一覧】</li></a>
-      <a href="/outer/ranking" target="_blank"><li>●【名将ランキング】</li></a>
-      <a href="/outer/graph" target="_blank"><li>●【国力比較】</li></a>
-      <a href="/outer/map" target="_blank"><li>●【勢力図】</li></li></a>
-      <a href="/outer/manual" target="_blank"><li>●【説明書】</li></a>
-      <a href="/outer/rekisi" target="_blank"><li>●【歴代統一国】</li></a>
-      <a href="/outer/kaizou" target="_blank"><li>●【改造履歴】</li></a>
+      <a href="/"><li>【HOME】</li></a>
+      <a href="/outer/regist"><li>【新規登録】</li></a>
+      <a href="/outer/forum" target="_blank"><li>【専用BBS】</li></a>
+      <a href="/outer/player-list" target="_blank"><li>【登録武将一覧】</li></a>
+      <a href="/outer/ranking" target="_blank"><li>【名将ランキング】</li></a>
+      <a href="/outer/compere-country-power" target="_blank"><li>【国力比較】</li></a>
+      <a href="/outer/map" target="_blank"><li>【勢力図】</li></li></a>
+      <a href="/outer/document" target="_blank"><li>【説明書】</li></a>
+      <a href="/outer/unified-history" target="_blank"><li>【歴代統一国】</li></a>
+      <a href="/outer/change-log" target="_blank"><li>【改造履歴】</li></a>
       <li class="not-list">ログイン人数：<%= $login_people %>人</li>
       <li class="not-list">最大登録人数(<%= $config->{site}{max_player} %>人)</li>
       <li class="not-list"><span class="red">総アクセス数：<%= $access %></span></li>

@@ -23,6 +23,14 @@ package Sangoku::Service::Admin::ResetGame {
     $class->model('Site')->init($start_time);
   }
 
+  # this method is very dangerous.
+  # Only use if you want to erase every data.
+  sub erase_game_data_all {
+    my ($class) = @_;
+    $class->delete_data_all();
+    $class->model($_)->remove() for qw/Site/;
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 

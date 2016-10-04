@@ -23,7 +23,7 @@ package Sangoku::API::Role::Record::Log {
 
   sub BUILD {
     my ($self) = @_;
-    $self->{log} = $self->log . daytime();
+    $self->{log} = $self->log . '(' . daytime() . ')';
   }
 
   # $self->log のエイリアス(overloadのため)

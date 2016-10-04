@@ -1,5 +1,19 @@
 % layout 'default';
 
+<style>
+
+table .left-td {
+  background-color: <%= $config->{color}{lightdarkred} %>;
+  border: 1px <%= $config->{color}{'border-darkred'} %> solid;
+}
+
+table .icon-td {
+  background-color: <%= $config->{color}{white} %>;
+  border: 1px <%= $config->{color}{'border-gray'} %> solid;
+}
+
+</style>
+
 <div class="centering">
   
   <h1 id="headline"><span>登録完了</span></h1>
@@ -15,34 +29,34 @@
       <th colspan="4"><h2><%= $player->name %></h2></th>
     </tr>
     <tr>
-      <td rowspan="4" colspan="2">
+      <td class="icon-td" rowspan="4" colspan="2">
         <img src="<%= $player->icon_path %>">
       </td>
-      <td class="background-lightdarkred">ID</td>
+      <td class="left-td">ID</td>
       <td><%= $player->id %></td>
     </tr>
     <tr>
-      <td class="background-lightdarkred">パスワード</td>
+      <td class="left-td">パスワード</td>
       <td><%= $player->pass %></td>
     </tr>
     <tr>
-      <td class="backround-lightdarkred">所属国</td>
+      <td class="left-td">所属国</td>
       <td><%= $player->country_name %></td>
     </tr>
     <tr>
-      <td class="backround-lightdarkred">開始都市</td>
+      <td class="left-td">開始都市</td>
       <td><%= $player->town_name %></td>
     </tr>
     <tr>
-      <td class="backround-lightdarkred">武力</td>
+      <td class="left-td">武力</td>
       <td><%= $player->force %></td>
-      <td class="backround-lightdarkred">知力</td>
+      <td class="left-td">知力</td>
       <td><%= $player->intellect %></td>
     </tr>
     <tr>
-      <td class="backround-lightdarkred">統率力</td>
+      <td class="left-td">統率力</td>
       <td><%= $player->leadership %></td>
-      <td class="backround-lightdarkred">人望</td>
+      <td class="left-td">人望</td>
       <td><%= $player->popular %></td>
     </tr>
   </tbody>
