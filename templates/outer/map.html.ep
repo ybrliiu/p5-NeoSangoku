@@ -26,7 +26,8 @@
   % for my $j (0 .. 9) {
     % my $town = $map_data->[$i][$j];
     % if (defined $town) {
-      <td style="background-color: <%= $config->{countrycolor}{$town->country->color} %>">
+      % my $country = $countries_hash->{$town->country_name};
+      <td style="background-color: <%= $config->{countrycolor}{$country->color} %>">
         <%= $town->name %>
       </td>
     % } else {

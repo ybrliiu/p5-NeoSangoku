@@ -76,10 +76,17 @@ package Sangoku::Model::Player {
     my ($class, $id) = @_;
 
     $class->delete($id);
+
     for (qw/Command CommandList CommandLog/) {
       my $model = "$class::$_"->new(id => $id);
       $model->remove();
     }
+  }
+
+  sub erase_all {
+    my ($class) = @_;
+    $class->delete_all();
+    "$class::$_"->remove_all() for qw/Command CommandList CommandLog/;
   }
   
   __PACKAGE__->meta->make_immutable();

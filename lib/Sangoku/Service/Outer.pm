@@ -7,9 +7,10 @@ package Sangoku::Service::Outer {
   sub map {
     my ($class) = @_;
     return {
-      map_data    => $class->model('Town')->get_all_for_map(),
-      history_log => $class->model('HistoryLog')->get_all(),
-      map_log     => $class->model('MapLog')->get_all(),
+      map_data       => $class->model('Town')->get_all_for_map(),
+      countries_hash => $class->model('Country')->get_all_to_hash(),
+      history_log    => $class->model('HistoryLog')->get_all(),
+      map_log        => $class->model('MapLog')->get_all(),
     };
   }
 

@@ -2,10 +2,6 @@ package Sangoku::DB::Row::Town {
 
   use Sangoku;
   use parent 'Teng::Row';
-  use Class::Accessor::Lite (
-    new => 0,
-    rw  => ['country_color'],
-  );
 
   use Sangoku::Model::Country;
 
