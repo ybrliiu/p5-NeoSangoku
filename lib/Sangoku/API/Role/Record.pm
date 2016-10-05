@@ -3,6 +3,8 @@ package Sangoku::API::Role::Record {
   use Sangoku;
   use Mouse::Role;
 
+  use constant DIR_PATH => 'etc/record/';
+
   around 'file_path' => sub {
     my ($orig, $class, $id) = @_;
 

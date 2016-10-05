@@ -9,7 +9,10 @@ package Sangoku::API::AdminLog {
     fallback => 1,
   );
 
-  sub file_path() { 'etc/record/admin_log.dat' }
+  sub file_path {
+    my ($class) = @_;
+    $class->DIR_PATH . 'admin_log.dat';
+  }
 
   __PACKAGE__->meta->make_immutable();
 }

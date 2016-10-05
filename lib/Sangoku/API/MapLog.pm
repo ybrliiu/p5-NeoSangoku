@@ -9,7 +9,10 @@ package Sangoku::API::MapLog {
     fallback => 1,
   );
 
-  sub file_path() { 'etc/record/map_log.dat' }
+  sub file_path {
+    my ($class) = @_;
+    $class->DIR_PATH . 'map_log.dat';
+  }
 
   __PACKAGE__->meta->make_immutable();
 }

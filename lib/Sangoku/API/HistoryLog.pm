@@ -9,7 +9,10 @@ package Sangoku::API::HistoryLog {
     fallback => 1,
   );
 
-  sub file_path() { 'etc/record/history_log.dat' }
+  sub file_path {
+    my ($class) = @_;
+    $class->DIR_PATH . 'history_log.dat';
+  }
 
   __PACKAGE__->meta->make_immutable();
 }

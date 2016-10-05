@@ -12,8 +12,8 @@ package Sangoku::Service::Admin::ResetGame {
 
   sub delete_data_all {
     my ($class) = @_;
-    $class->model($_)->delete_all() for qw/Unit Player Town Country/;
-    $class->model("Player::$_")->remove_all() for qw/Command CommandLog CommandList/;
+    $class->model($_)->delete_all() for qw/Unit Town Country/;
+    $class->model('Player')->erase_all();
     $class->model($_)->remove() for qw/MapLog HistoryLog AdminLog/;
   }
 

@@ -7,7 +7,8 @@ my $TEST_CLASS = 'Sangoku::API::Player::CommandLog';
 
 subtest 'check' => sub {
   ok $TEST_CLASS->MAX();
-  ok $TEST_CLASS->file_path('id');
+  # このテストはちょっとまずい(パスの確認をもっと良くする方法があれば。。)
+  is $TEST_CLASS->file_path('id'), 'etc/record/player/command_log/id.dat';
 };
 
 subtest 'new' => sub {

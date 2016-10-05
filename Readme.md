@@ -3,8 +3,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-* reset_game delete_all model::player::を model::player::erase_allに
-* API ディレクトリの場所を定数で指定
 * create Player profile
 
 * map log

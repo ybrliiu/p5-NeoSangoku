@@ -2,21 +2,16 @@ package Sangoku::API::Player::CommandList {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::API::Role::Record';
+  with 'Sangoku::API::Role::Record::Player';
 
   use constant {
-    MAX          => 15, # コマンド最大件数
+    DIR_PATH     => 'command_list/',
+    MAX          => 15,
     DEFAULT_NAME => '-',
   };
 
   has 'name'    => (is => 'rw', isa => 'Str', default => DEFAULT_NAME);
   has 'command' => (is => 'rw', isa => 'ArrayRef', default => sub { [] });
-
-  # ファイルの場所
-  sub file_path { 
-    my ($class, $id)  = @_;
-    return "etc/record/player/command_list/$id.dat";
-  }
 
   sub set {
     my ($self, $args) = @_;
