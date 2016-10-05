@@ -29,6 +29,8 @@ package Test::Record {
     my ($self) = @_;
 
     $ENV{TEST_RECORD} = 0;
+    $ENV{TEST_RECORD_DIR}     = '';
+    $ENV{TEST_RECORD_TMP_DIR} = '';
 
     # テスト用ディレクトリ内の *.dat ファイルを全て削除
     my $iter = path($self->test_dir)->iterator({recurse => 1});

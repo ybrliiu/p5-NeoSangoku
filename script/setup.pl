@@ -6,7 +6,7 @@ use lib "$FindBin::Bin/../lib";
 use Sangoku;
 
 use DBI;
-use Sangoku::Util qw/load_config/;
+use Sangoku::Util qw/load_config load/;
 use SQL::SplitStatement;
 use Path::Tiny;
 use Sangoku::Service::Admin::ResetGame;
@@ -44,10 +44,26 @@ sub prepare_tables {
 }
 
 sub prepare_dir {
-  for my $tmp ('', 'tmp/') {
-    for my $dir (qw/command command_log command_list/) {
-      path("etc/record/${tmp}player/${dir}/.gitkeep")->touchpath;
-    }
+
+  my @modules = map { "Sangoku::API::Player::$_" } qw/Command CommandLog CommandList Profile/;
+  load $_ for @modules;
+  _touchpath(\@modules);
+
+  # dir for test (create tmp/). see also Test::Record
+  {
+    push @INC, "$FindBin::Bin/../t/lib";
+    load "Test::Record";
+    my $tr = Test::Record->new();
+    _touchpath(\@modules);
+  }
+
+}
+
+sub _touchpath {
+  my ($modules) = @_;
+  for my $module (@$modules) {
+    (my $file_path = $module->file_path('')) =~ s/\.dat/\.gitkeep/g;
+    path($file_path)->touchpath();
   }
 }
 

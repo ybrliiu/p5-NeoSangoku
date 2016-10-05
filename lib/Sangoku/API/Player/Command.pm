@@ -1,7 +1,7 @@
 package Sangoku::API::Player::Command {
 
-  use Sangoku;
   use Mouse;
+  use Sangoku;
   with 'Sangoku::API::Role::Record::Player';
 
   use constant {
