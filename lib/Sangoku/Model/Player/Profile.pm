@@ -2,12 +2,20 @@ package Sangoku::Model::Player::Profile {
 
   use Mouse;
   use Sangoku;
-  with 'Sangoku::Model::Role::RecordSingle';
+  with 'Sangoku::Model::Role::RecordMultiple';
 
   use Record::List::Log;
   use Sangoku::API::Player::Profile;
 
   use constant CLASS => 'Sangoku::API::Player::Profile';
+
+  sub _build_record {
+    my ($self) = @_;
+    return Record::List->new(
+      file => CLASS->file_path( $self->id ),
+      max  => CLASS->MAX(),
+    );
+  }
 
   sub init {
     my ($self) = @_;
