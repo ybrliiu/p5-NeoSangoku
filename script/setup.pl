@@ -45,7 +45,9 @@ sub prepare_tables {
 
 sub prepare_dir {
 
-  my @modules = map { "Sangoku::API::Player::$_" } qw/Command CommandLog CommandList Profile/;
+  my $player_model = Sangoku::Model::Player;
+  load $player_model;
+  my @modules = map { "Sangoku::API::Player::$_" } @{ $player_model->CHILD_RECORD_MODULES };
   load $_ for @modules;
   _touchpath(\@modules);
 

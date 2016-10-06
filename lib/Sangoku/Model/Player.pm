@@ -7,10 +7,17 @@ package Sangoku::Model::Player {
   use Sangoku::Util qw/load_child_module validate_values load_config/;
   load_child_module(__PACKAGE__);
 
-  use constant TABLE_NAME => 'player';
+  use constant {
+    TABLE_NAME           => 'player',
+    CHILD_RECORD_MODULES => [qw/Command CommandList CommandLog Profile/],
+  };
 
   sub ADMINISTARTOR_DATA() {
     my $site = load_config('etc/config/site.conf')->{'site'};
+    my $equipments_status = {
+      player_id => $site->{admin_id},
+      power     => 0,
+    };
     state $data = {
       player => {
         id   => $site->{admin_id},
@@ -26,18 +33,9 @@ package Sangoku::Model::Player {
         loyalty      => 10,
         update_time  => time,
       },
-      weapon => {
-        player_id => $site->{admin_id},
-        power     => 0,
-      },
-      guard  => {
-        player_id => $site->{admin_id},
-        power     => 0,
-      },
-      book   => {
-        player_id => $site->{admin_id},
-        power     => 0,
-      },
+      weapon => $equipments_status,
+      guard  => $equipments_status,
+      book   => $equipments_status,
     };
   }
 
@@ -59,7 +57,7 @@ package Sangoku::Model::Player {
 
     $class->create($args->{player});
 
-    for (qw/Command CommandList CommandLog/) {
+    for (@{ CHILD_RECORD_MODULES() }) {
       my $model = "$class::$_"->new(id => $args->{player}{id});
       $model->init();
     }
@@ -77,7 +75,7 @@ package Sangoku::Model::Player {
 
     $class->delete($id);
 
-    for (qw/Command CommandList CommandLog/) {
+    for (@{ CHILD_RECORD_MODULES() }) {
       my $model = "$class::$_"->new(id => $id);
       $model->remove();
     }
@@ -86,7 +84,7 @@ package Sangoku::Model::Player {
   sub erase_all {
     my ($class) = @_;
     $class->delete_all();
-    "$class::$_"->remove_all() for qw/Command CommandList CommandLog/;
+    "$class::$_"->remove_all() for @{ CHILD_RECORD_MODULES() };
   }
   
   __PACKAGE__->meta->make_immutable();

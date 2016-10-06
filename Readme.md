@@ -3,12 +3,14 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-* create Player profile
 
 * map log
 - design
 - 前回のをベースに、上部はmax-width指定
 - 全体的にマージンをとってrootのパーツを流用する
+
+* country_position, town country_name
+SQL見なおすべきか？
 
 " player-list
 - 前回のをほぼそのまま踏襲
