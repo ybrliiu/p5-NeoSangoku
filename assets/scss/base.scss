@@ -175,14 +175,43 @@ ul {
   }
 }
 
-/* スクロール用ボックス */
+/* map */
+#map {
+  max-width: 750px;
+
+  td {
+    background-color: initial;
+    border: initial;
+    padding: initial;
+  }
+
+  table {
+    width: 100%;
+    background-color: $lightgreen;
+    padding: 7px;
+    border: 3px $darkred solid;
+    border-radius: 5px;
+
+    td {
+      width: 50px;
+      text-align: center;
+      border: 0px;
+      padding: 4px 0 0 0;
+      font-size: 10pt;
+      font-weight: bold;
+    }
+  }
+
+}
+
+/* スクロール */
 .scroll {
-  overflow:scroll;
-  -webkit-overflow-scrolling:touch;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* 見出し用 */
-h1 { font-size:17pt; }
+h1 { font-size: 17pt; }
 h2 {
   font-size: 12pt;
   margin: 2px;
@@ -200,6 +229,14 @@ h2 {
   width:64px;
   height:64px;
   margin:0;
+}
+
+/* ---- 横線 */
+.botted-line {
+  border-top: 0px;
+  border-right: 0px;
+  border-bottom: 1px $lightblack dotted;
+  border-left: 0px;
 }
 
 
@@ -222,6 +259,7 @@ h2 {
 .background-black { @include background-color($black) }
 .background-white { @include background-color($white) }
 .background-lightdarkred { @include background-color($lightdarkred) }
+.background-lightorange { @include background-color($lightorange) }
 
 
 /* 横の大きさ */

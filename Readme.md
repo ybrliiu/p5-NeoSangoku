@@ -4,11 +4,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```
 
-* map log
-- design
-- 前回のをベースに、上部はmax-width指定
-- 全体的にマージンをとってrootのパーツを流用する
-
 * country_position, town country_name
 SQL見なおすべきか？
 

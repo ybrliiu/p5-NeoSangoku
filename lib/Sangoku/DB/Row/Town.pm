@@ -5,6 +5,13 @@ package Sangoku::DB::Row::Town {
 
   use Sangoku::Model::Country;
 
+  use constant ICONS_DIR_PATH => '/images/map_icon/';
+
+  sub icon_path {
+    my ($self) = @_;
+    return ICONS_DIR_PATH . '1.png';
+  }
+
   sub country {
     my ($self, $country) = @_;
     Sangoku::Model::Country->get($self->country_name);
