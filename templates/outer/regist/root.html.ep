@@ -200,8 +200,7 @@
         <ul>
           <li>開始都市の支配国に所属します。</li>
           <li>無所属の都市を選択してゲームを開始すると、自分で建国できます。</li>
-          <li>
-            ゲームの開始から<%= $config->{site}{nowar_term} %>時間
+          <li>ゲームの開始から<%= $config->{site}{nowar_term} %>時間
             （ゲーム内で<%= $config->{site}{nowar_month} %>ヶ月間）は、
             1つの国に<%= $config->{site}{max_people_in_nower} %>人以上仕官できません。
           </li>
@@ -285,8 +284,7 @@
         </table>
         <ul>
           <li>能力を指定して下さい。1つの能力に特化させることをお勧めします。　【各能力の説明】　【能力振り分けの例】</li>
-          <li>
-            全能力の合計が<span class="red"><%= $ABILITY_SUM %></span>になるようにして下さい！
+          <li>全能力の合計が<span class="red"><%= $ABILITY_SUM %></span>になるようにして下さい！
             ［現在の合計値：<strong id="ability-sum"></strong>］
           </li>
         </ul>

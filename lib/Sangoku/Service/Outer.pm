@@ -4,6 +4,25 @@ package Sangoku::Service::Outer {
   use Sangoku;
   with 'Sangoku::Service::Role::Base';
 
+  sub player_list {
+    my ($class, $country_name) = @_;
+
+    my $countreis = defined $country_name
+      ? [$class->model('Country')->get($country_name)]
+      : $class->model('Country')->get_all();
+
+    return {
+      countries         => $countreis,
+      positions_hash    => $class->model('Country::Position')->get_all_to_hash(),
+      players_hash      => $class->model('Player')->get_all_to_hash(),
+      towns_hash        => $class->model('Town')->get_all_to_hash(),
+      (map {
+        my $class_name = ucfirst $_;
+        $_ . 's_hash'   => $class->model("Player::$class_name")->get_all_to_hash()
+      } qw/book weapon guard/),
+    };
+  }
+
   sub map {
     my ($class) = @_;
     return {

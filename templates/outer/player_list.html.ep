@@ -1,0 +1,136 @@
+% layout 'default';
+
+<style>
+
+#country-list {
+  width: 70%;
+  border: 3px <%= $config->{color}{darkred} %> solid;
+}
+
+#country-list td {
+  background-color: <%= $config->{color}{white} %>;
+  border: 1px <%= $config->{color}{white} %>;
+}
+
+#country-list a {
+  text-decoration: underline;
+}
+
+</style>
+
+<!-- ナビゲートボタン -->
+<div id="zukei">
+  <div id="botan" onClick='window.scrollTo(0,0);'>
+    <div id="up_arrow"></div>
+  </div>
+</div>
+
+<section>
+<div class="centering">
+
+  <h1 id="headline"><span>登録武将一覧</span></h1>
+
+% # 1国表示
+% my @countries = @$countries;
+% if (@countries == 1) { 
+  <a href="/outer/player-list">
+    <h2>【全国武将一覧に戻る】</h2>
+  </a>
+% }
+% # 全国表示
+% else {
+  <table id="country-list" class="tile-table">
+    <tr><th><h2>国一覧</h2></th></tr>
+    <tr>
+      <td>
+      % for my $country (@countries) {
+        <strong>
+          <a style="color: <%= $country->color %>" href="#<%= $country->name %>"><%= $country->name %></a>　
+        </strong>
+      % }
+        <br>
+        <br>※各国のタイトル部分をクリックするとその国の全所属武将の情報が見れます。
+      </td>
+    </tr>
+  </table>
+% }
+
+% for my $country (@countries) {
+  % my @members = @{ $country->members($players_hash) };
+  <table class="table-<%= $country->color %> width-70pc">
+    <tr><th class="first" colspan="6">
+      <a href="/outer/player-list/<%= $country->name %>" id="<%= $country->name %>">
+        <h2><%= $country->name %></h2>
+      </a>
+    </th></tr>
+
+    <tr>
+      <th>君主</th>
+      <td class="color"><%= $country->position($positions_hash)->king_name($players_hash) %></td>
+      <th>宰相</th>
+      <td class="color"><%= $country->position($positions_hash)->premier_name($players_hash) %></td>
+      <th>軍師</th>
+      <td class="color"><%= $country->position($positions_hash)->strategist_name($players_hash) %></td>
+    </tr>
+
+    <tr>
+      <th>武将数</th>
+      <td class="color"><%= @members %>名</td>
+      <th>支配都市</th>
+    % my @towns = @{ $country->towns($towns_hash) };
+      <td class="color" colspan="3"><%= @towns %>都市(<%= $_->name . ' ' for @towns %>)</td>
+    </tr>
+
+    <tr>
+      <th>外交状況</th>
+      <td class="color" colspan="5"></td>
+    </tr>
+  </table>
+
+  <table class="table-<%= $country->color %> width-70pc touch-top">
+
+  % # 全国家表示で人数が10人より多い時
+  % my $limit = @$countries != 1 && @members > 10 ? 10 : $#members;
+  % for (0 .. $limit) {
+    % my $player = $members[$_];
+    <tr>
+      <td class="icon">
+        <img class="icon" src="<%= $player->icon_path %>">
+      </td>
+      <td><%= $player->name %></td>
+      <td>
+        武力：<%= $player->force %><br>
+        知力：<%= $player->intellect %><br>
+        統率力：<%= $player->leadership %><br>
+        人望：<%= $player->popular %>
+      </td>
+      <td>Lv.<%= $player->lank %> <%= $player->lank_name %></td>
+      <td>
+        武器：<%= $player->weapon($weapons_hash)->name %>：威力：<%= $player->weapon($weapons_hash)->power %><br>
+        防具：<%= $player->guard($guards_hash)->name %>：威力：<%= $player->guard($guards_hash)->power %><br>
+        書物：<%= $player->book($books_hash)->name %>：威力：<%= $player->book($books_hash)->power %>
+      </td>
+      <td>削除まで<span class="blue"><%= $player->delete_until %></span>ターン</td>
+    </tr>
+  % }
+
+  % # 全国家表示で人数が10人より多い時
+  % if (@countries != 1 && $limit != $#members) { 
+    <tr>
+      <td colspan="6">
+    % for ($limit + 1 .. $#members) {
+      % my $player = $members[$_];
+        <%= $player->name %>
+        <span style="color: <%= $country->color %>;">
+          (Lv.<%= $player->lank %><%= $player->lank_name %>)
+        </span> 
+    % }
+      </td>
+    </tr>
+  % }
+
+  </table>
+% }
+
+</div>
+</section>

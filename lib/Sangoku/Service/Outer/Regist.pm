@@ -63,14 +63,15 @@ package Sangoku::Service::Outer::Regist {
       $validator->set_message('pass.length' => "[_1]は$nfv{PASS_LEN_MIN}文字以上$nfv{PASS_LEN_MAX}文字以下で入力してください。");
       $validator->set_message('confirm_rule.equal' => '規約に同意できない場合は登録できません。');
 
-      my %ability_check = map { $_ => ['NOT_NULL', [BETWEEN => ($nfv{ABILITY_MIN}, $nfv{ABILITY_MAX})]] } @$ability_list;
       $validator->check(
         name => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
         icon => ['NOT_NULL', [BETWEEN => (0, $class->model('IconList')->MAX)]],
         town => ['NOT_NULL'],
         id   => ['NOT_NULL', [REGEX => qr/^[a-zA-Z0-9_]+$/], [LENGTH => ($nfv{ID_LEN_MIN}, $nfv{ID_LEN_MAX})]],
         pass => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv{PASS_LEN_MIN}, $nfv{PASS_LEN_MAX})]],
-        %ability_check,
+        (map {
+          $_ => ['NOT_NULL', [BETWEEN => ($nfv{ABILITY_MIN}, $nfv{ABILITY_MAX})]]
+        } @$ability_list),
         loyalty => ['NOT_NULL', [LENGTH => ($nfv{LOYALTY_MIN}, $nfv{LOYALTY_MAX})]],
         profile => [[LENGTH => (0, $nfv{PROFILE_LEN_MAX})]],
         mail    => ['ASCII', [LENGTH => (0, $nfv{MAIL_LEN_MAX})]],

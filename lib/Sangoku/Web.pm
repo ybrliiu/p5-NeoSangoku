@@ -90,15 +90,16 @@ package Sangoku::Web {
     # /outer
     {
       my $outer = $r->any('/outer')->to(controller => 'Outer');
-      $outer->get('/player-list'          )->to(action => 'player_list');
-      $outer->get('/map'                  )->to(action => 'map');
-      $outer->get('/ranking'              )->to(action => 'ranking');
-      $outer->get('/compare-country-power')->to(action => 'compare_country_power');     # グラフ
-      $outer->get('/document'             )->to(action => 'document');
-      $outer->get('/change-log'           )->to(action => 'change_log');
-      $outer->get('/unified-history'      )->to(action => 'unified_history');
-      $outer->get('/icon-list'            )->to(action => 'icon_list');
-      $outer->get('/icon-list/:page'      )->to(action => 'icon_list'); # JSでアイコン指定できるよう(at regist, config-change-icon)
+      $outer->get('/player-list'              )->to(action => 'player_list');
+      $outer->get('/player-list/:country_name')->to(action => 'player_list');
+      $outer->get('/map'                      )->to(action => 'map');
+      $outer->get('/ranking'                  )->to(action => 'ranking');
+      $outer->get('/compare-country-power'    )->to(action => 'compare_country_power');     # グラフ
+      $outer->get('/document'                 )->to(action => 'document');
+      $outer->get('/change-log'               )->to(action => 'change_log');
+      $outer->get('/unified-history'          )->to(action => 'unified_history');
+      $outer->get('/icon-list'                )->to(action => 'icon_list');
+      $outer->get('/icon-list/:page'          )->to(action => 'icon_list'); # JSでアイコン指定できるよう(at regist, config-change-icon)
 
       # /outer/regist
       {
