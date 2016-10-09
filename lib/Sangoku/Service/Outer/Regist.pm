@@ -6,8 +6,6 @@ package Sangoku::Service::Outer::Regist {
 
   use List::Util qw/sum/;
   use Sangoku::Util qw/validate_values/;
-  use Sangoku::DB::Row::Player;
-  use Sangoku::DB::Row::Country;
 
   sub root {
     my ($class) = @_;

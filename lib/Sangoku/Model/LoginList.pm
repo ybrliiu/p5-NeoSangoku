@@ -12,16 +12,16 @@ package Sangoku::Model::LoginList {
     my ($class, $player) = @_;
     croak '引数にplayerが指定されていません' unless defined $player;
 
-    my @login_list = grep { $_->{country_name} eq $player->country_name } values %{ $class->_update_login_list($player) };
+    my @login_list = grep { $_->{country_name} eq $player->country_name } values %{ $class->update_login_list($player) };
     return \@login_list;
   }
 
   sub get_all {
     my ($class) = @_;
-    return [values %{ $class->_update_login_list() }];
+    return [values %{ $class->update_login_list() }];
   }
 
-  sub _update_login_list {
+  sub update_login_list {
     my ($class, $player) = @_;
 
     my $time = time;

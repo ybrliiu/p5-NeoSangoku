@@ -13,8 +13,10 @@ package Sangoku::DB::Row::Town {
   }
 
   sub country {
-    my ($self, $country) = @_;
-    Sangoku::Model::Country->get($self->country_name);
+    my ($self, $countreis_hash) = @_;
+    return defined $countreis_hash
+      ? $countreis_hash->{$self->country_name}
+      : Sangoku::Model::Country->get($self->country_name);
   }
 
   sub can_establish_nation {

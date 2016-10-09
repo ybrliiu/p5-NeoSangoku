@@ -77,7 +77,7 @@
       <th>武将数</th>
       <td class="color"><%= @members %>名</td>
       <th>支配都市</th>
-    % my @towns = @{ $country->towns($towns_hash) };
+    % my @towns = @{ $country->towns($towns) };
       <td class="color" colspan="3"><%= @towns %>都市(<%= $_->name . ' ' for @towns %>)</td>
     </tr>
 
@@ -90,7 +90,7 @@
   <table class="table-<%= $country->color %> width-70pc touch-top">
 
   % # 全国家表示で人数が10人より多い時
-  % my $limit = @$countries != 1 && @members > 10 ? 10 : $#members;
+  % my $limit = @countries != 1 && @members > 10 ? 10 : $#members;
   % for (0 .. $limit) {
     % my $player = $members[$_];
     <tr>

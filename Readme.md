@@ -7,10 +7,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 * country_position, town country_name
 SQL見なおすべきか？
 
-* Player EQUIPMENT_LIST に置換
-* service, DB::Row のローダ加える
-* DB::Row にもModelローダ加える？
-
 * SQLのチューニング
 * 書いてないテストも書きましょうね〜〜
 * testのコード共通化進める?

@@ -4,7 +4,8 @@ package Sangoku::Service::Role::Base {
   use Mouse::Role;
   
   use Sangoku::DB;
-  use Sangoku::Util qw/load/;
+  # model, row, api is method
+  use Sangoku::Util qw/load model row api/;
   use Sangoku::Model::Role::DB;
 
   use Sangoku::Validator;
@@ -13,17 +14,6 @@ package Sangoku::Service::Role::Base {
   sub txn {
     my ($class) = @_;
     return Sangoku::Model::Role::DB->db->txn_scope();
-  }
-
-  sub model {
-    my ($class, $name) = @_;
-
-    state $module_names = {};
-    return $module_names->{$name} if exists $module_names->{$name};
-
-    my $pkg = "Sangoku::Model::$name";
-    load $pkg;
-    $module_names->{$name} = $pkg;
   }
 
   sub validator {

@@ -15,7 +15,7 @@ package Sangoku::Service::Outer {
       countries         => $countreis,
       positions_hash    => $class->model('Country::Position')->get_all_to_hash(),
       players_hash      => $class->model('Player')->get_all_to_hash(),
-      towns_hash        => $class->model('Town')->get_all_to_hash(),
+      towns             => $class->model('Town')->get_all(),
       (map {
         my $class_name = ucfirst $_;
         $_ . 's_hash'   => $class->model("Player::$class_name")->get_all_to_hash()

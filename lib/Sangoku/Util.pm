@@ -2,11 +2,17 @@ package Sangoku::Util {
 
   use Sangoku;
 
-  use Carp qw/croak/;
   use Exporter 'import';
-  our @EXPORT_OK = qw/project_root_dir load_config validate_values minute_second
-    daytime date datetime child_module_list load_child_module load/;
+  my @LOADER_METHODS = qw/model row api/;
+  our @EXPORT_OK = (
+    qw/
+      project_root_dir load_config validate_values minute_second
+      daytime date datetime child_module_list load_child_module load
+    /,
+    @LOADER_METHODS,
+  );
 
+  use Carp qw/croak/;
   use Cwd 'getcwd';
   use Config::PL;
   use Time::Piece;
@@ -103,7 +109,33 @@ package Sangoku::Util {
     }
     return $list;
   }
-  
+
+  __PACKAGE__->_generate_loader_method();
+
+  sub _generate_loader_method {
+
+    my %pkg_name;
+    @pkg_name{@LOADER_METHODS} = qw/Model DB::Row API/;
+    
+    for my $method (@LOADER_METHODS) {
+
+      no strict 'refs';
+      *$method = sub {
+        use strict 'refs';
+        my ($class, $name) = @_;
+
+        state $module_names = {};
+        return $module_names->{$name} if exists $module_names->{$name};
+
+        my $pkg = "Sangoku::$pkg_name{$method}::$name";
+        load $pkg;
+        $module_names->{$name} = $pkg;
+      };
+
+    }
+
+  }
+
 }
 
 1;

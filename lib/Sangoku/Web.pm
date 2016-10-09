@@ -127,13 +127,13 @@ package Sangoku::Web {
 
       # /player/mypage
       {
-        my $mypage = $auth->any('/mypage')->to(controller => 'Player::Mypage');
+        my $mypage = $auth->any('/mypage')->to(controller => 'Player::MyPage');
         $mypage->any( '/'       )->to(action => 'root');
         $mypage->post('/channel')->to(action => 'channel');
 
         # /player/mypage/command
         {
-          my $command = $mypage->any('/command')->to(controller => 'Player::Mypage::Command');
+          my $command = $mypage->any('/command')->to(controller => 'Player::MyPage::Command');
           $command->any( '/'      )->to(action => 'root');
           $command->post('/input ')->to(action => 'input');
           $command->post('/select')->to(action => 'select');

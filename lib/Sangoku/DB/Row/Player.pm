@@ -53,6 +53,11 @@ package Sangoku::DB::Row::Player {
     return DELETE_TURN - $self->delete_turn;
   }
 
+  sub check_pass {
+    my ($self, $pass) = @_;
+    return $self->pass eq $pass;
+  }
+
   __PACKAGE__->_generate_methods();
 
   sub _generate_methods {

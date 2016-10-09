@@ -21,7 +21,7 @@
           % for my $j (0 .. 9) {
             % my $town = $map_data->[$i][$j];
             % if (defined $town) {
-              % my $country = $countries_hash->{$town->country_name};
+              % my $country = $town->country($countries_hash);
               <td style="background-color: <%= $config->{countrycolor}{$country->color} %>">
                 <span id="tooltip">
                   <span id="tooltip_in"><%= $town->country_name %></span>

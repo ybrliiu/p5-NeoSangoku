@@ -25,17 +25,17 @@ package Sangoku::DB::Row::Country {
   sub members {
     my ($self, $players_hash) = @_;
     my $members = defined($players_hash)
-      ? [sort { $a->class <=> $b->class } grep { $_->country_name eq $self->name } values %$players_hash]
+      ? [sort { $b->class <=> $a->class } grep { $_->country_name eq $self->name } values %$players_hash]
       : Sangoku::Model::Player->search(country_name => $self->name);
     return $members;
   }
 
   sub towns {
-    my ($self, $towns_hash) = @_;
-    my $towns = defined($towns_hash)
-      ? [sort { $a->name cmp $b->name } grep { $_->country_name eq $self->name } values %$towns_hash]
+    my ($self, $towns) = @_;
+    my $country_towns = defined($towns)
+      ? [grep { $_->country_name eq $self->name } @$towns]
       : Sangoku::Model::Town->search(country_name => $self->name);
-    return $towns;
+    return $country_towns;
   }
 
 }

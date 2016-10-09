@@ -21,4 +21,11 @@ subtest 'child_module_list' => sub {
   ok(my @exists = grep { $_ eq 'Sangoku::Model::Player::Command' } @$list);
 };
 
+subtest 'loader' => sub {
+  ok(my $model = Sangoku::Util->model('Player'));
+  is $model, 'Sangoku::Model::Player';
+  ok(my $row = Sangoku::Util->row('Player'));
+  is $row, 'Sangoku::DB::Row::Player';
+};
+
 done_testing();
