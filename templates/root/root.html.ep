@@ -146,15 +146,18 @@
   <div class="grid width-20pc">
 
     <div id="login-form" class="adjust-bottom">
-      <form action="/mypage" method="post">
+      <form action="/player/mypage" method="post">
         <h2>■ログイン■</h2>
-        <%= text_field id => get_cookie('id') // '', placeholder => 'ユーザーID' %><br>
-        <%= password_field 'pass', value => get_cookie('pass') // '', placeholder => 'パスワード' %><br>
+        <%= text_field(id => get_cookie('id') // '', placeholder => 'ユーザーID') %><br>
+        <%= password_field('pass', value => get_cookie('pass') // '', placeholder => 'パスワード') %><br>
         <label class="snazzy-checkbox">
           <%= check_box store => 1 %>
           <span>ID、パスワードを保存する</span>
         </label>
-        <br>
+        %= show_error(qw/id pass/);
+        % if(my $logout = Encode::decode_utf8(get_cookie('logout'))) {
+          <p class="red"><%= $logout %></p>
+        % }
         <input type="submit" value="ログイン">
       </form>
     </div>

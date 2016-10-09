@@ -15,9 +15,11 @@ package Sangoku::Service::Player {
 
     my $player = $class->model('Player')->get($id);
     if (defined $player) {
-      $validator->set_error(pass => 'equal') unless $player->check_pass($pass);
+      $validator->set_error(pass => 'equal')
+        unless $player->check_pass($pass);
     } else {
-      $validator->set_error_and_message(id => (not_find => 'IDが正しくありません！'));
+      $validator->set_error_and_message(id => (not_find => 'IDが正しくありません！'))
+        unless $validator->is_error('id');
     }
 
     $class->model('LoginList')->update_login_list($player)

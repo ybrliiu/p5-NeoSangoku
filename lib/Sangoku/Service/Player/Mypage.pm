@@ -1,4 +1,4 @@
-package Sangoku::Service::Player::MyPage {
+package Sangoku::Service::Player::Mypage {
 
   use Mouse;
   use Sangoku;

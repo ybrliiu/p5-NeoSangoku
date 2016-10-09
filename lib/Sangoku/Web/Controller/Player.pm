@@ -14,7 +14,8 @@ package Sangoku::Web::Controller::Player {
 
     my $error = $self->service->auth($id, $pass);
     if ($error->has_error) {
-      $self->flash_error($error);
+      $self->flash_error($error, {path => '/'});
+      $self->redirect_to('/');
       return ();
     } else {
       $self->session(id => $id);
@@ -29,9 +30,11 @@ package Sangoku::Web::Controller::Player {
 
   sub logout {
     my ($self) = @_;
+    # encode_utf8 しないと Mojo::Reactor::EV でエラーが起きる
+    $self->cookie(logout => Encode::encode_utf8('ログアウトしました。'), {max_age => 1, path => '/'});
     $self->session(expires => 1);
     $self->redirect_to('/');
-    return ();
+    return 1;
   }
 
 }

@@ -2,15 +2,15 @@
 
 'use strict';
 
-var Sangoku = Sangoku || {};
+var sangoku = sangoku || {};
 
 // なぜかnameSpaceだと上手く行かない...(予約語？)
-Sangoku.namespace = function(pkgName) {
+sangoku.namespace = function(pkgName) {
 
   var parts = pkgName.split('.');
-  var parent = Sangoku;
+  var parent = sangoku;
 
-  if (parts[0] === 'Sangoku') {
+  if (parts[0] === 'sangoku') {
     parts = parts.slice(1);
   }
 

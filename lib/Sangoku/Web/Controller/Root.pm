@@ -6,8 +6,8 @@ package Sangoku::Web::Controller::Root {
   sub root {
     my ($self) = @_;
     my $result = $self->service->root();
-    $self->stash(%$result);
     $self->flash_error();
+    $self->stash(%$result);
     $self->render_fill_error();
   }
 

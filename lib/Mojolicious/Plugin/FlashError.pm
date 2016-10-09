@@ -24,14 +24,16 @@ package Mojolicious::Plugin::FlashError {
 
     # flash に json でエラーオブジェクトを保存
     $app->helper(flash_error => sub {
-      my ($c, $error) = @_;
+      my ($c, $error, $options) = @_;
+
+      use Data::Dumper;
 
       if ($error) {
-
+        $options //= {};
         my $error_hash = unbless $error;
         for (@error_keys) {
           my $json = encode_json $error_hash->{$_};
-          $c->cookie("_ERROR-$_" => $json, {max_age => 1});
+          $c->cookie("_ERROR-$_" => $json, {%$options, max_age => 1});
         }
 
       } else {

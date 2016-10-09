@@ -2,88 +2,82 @@
 % extends 'layouts/wrapper';
 % content container => begin
   %= javascript '/js/jquery-3.1.0.min.js';
-   % if ($javascript) {
-    %= javascript '/js/'.$javascript.'.js';
-   % }
+  %= javascript '/js/sangoku/player.js';
 
 </head>
 <body>
-<div id="playermenu">
-<div style="width:30px;height:30px;float:left;">
-</div>
-<li>▼ゲーム関連
-  <ul>
-  <li><a href="/" target="_blank">・ゲームトップ</a></li>
-  <li><a href="/" target="_blank">・専用BBS</a></li>
-  <li><a href="/" target="_blank">・説明書</a></li>
-  <li><a href="/" target="_blank">・雑談BBS</a></li>
-  <li><a href="/" target="_blank">・歴代統一国</a></li>
-  <li><a href="/" target="_blank">・アイコン一覧</a></li>
-  <li><a href="/" target="_blank">・改造履歴</a></li>
-  <li><a href="/" target="_blank">・困った時は</a></li>
-  </ul>
-</li>
-<li><a href="/player/mypage" style="width:100px">マイページ</a></li>
-<li>▼武将情報
-  <ul>
-  <li><a href="/">・設定&戦績</a></li>
-  <li><a href="/player/unit">・部隊編成</a></li>
-  <li><a href="/">・行動ログ</a></li>
-  <li><a href="/player/logout">・ログアウト</a></li>
-  </ul>
-</li>
-<li>▼手紙
-  <ul>
-  <li><a href="/">・個人宛手紙</a></li>
-  <li><a href="/">・手紙ログ</a></li>
-  </ul>
-</li>
-<li>▼国家情報
-  <ul>
-  <li><a href="/">・会議室</a></li>
-  <li><a href="/">・国法</a></li>
-  <li><a href="/">・国データ</a></li>
-  <li><a href="/">・国の武将データ</a></li>
-  <li><a href="/">・司令部</a></li>
-  </ul>
-</li>
-<li>▼都市情報
-  <ul>
-  <li><a href="/">・滞在武将一覧</a></li>
-  </ul>
-</li>
-<li>▼ゲーム情報
-  <ul>
-  <li><a href="/outer/map" target="_blank">・勢力図</a></li>
-  <li><a href="/outer/allplayer" target="_blank">・登録武将一覧</a></li>
-  <li><a href="/" target="_blank">・名将一覧</a></li>
-  <li><a href="/" target="_blank">・国力比較</a></li>
-  </ul>
-</li>
+<div id="player-menu">
+  <div></div>
+  <li>▼ゲーム関連
+    <ul>
+      <li><a href="/" target="_blank">・ゲームトップ</a></li>
+      <li><a href="/" target="_blank">・専用BBS</a></li>
+      <li><a href="/" target="_blank">・説明書</a></li>
+      <li><a href="/" target="_blank">・雑談BBS</a></li>
+      <li><a href="/" target="_blank">・歴代統一国</a></li>
+      <li><a href="/" target="_blank">・アイコン一覧</a></li>
+      <li><a href="/" target="_blank">・改造履歴</a></li>
+      <li><a href="/" target="_blank">・困った時は</a></li>
+    </ul>
+  </li>
+  <li><a href="/player/mypage" style="width:100px">マイページ</a></li>
+  <li>▼武将情報
+    <ul>
+      <li><a href="/">・設定&戦績</a></li>
+      <li><a href="/player/unit">・部隊編成</a></li>
+      <li><a href="/">・行動ログ</a></li>
+      <li><a href="/player/logout">・ログアウト</a></li>
+    </ul>
+  </li>
+  <li>▼手紙
+    <ul>
+      <li><a href="/">・個人宛手紙</a></li>
+      <li><a href="/">・手紙ログ</a></li>
+    </ul>
+  </li>
+  <li>▼国家情報
+    <ul>
+      <li><a href="/">・会議室</a></li>
+      <li><a href="/">・国法</a></li>
+      <li><a href="/">・国データ</a></li>
+      <li><a href="/">・国の武将データ</a></li>
+      <li><a href="/">・司令部</a></li>
+    </ul>
+  </li>
+  <li>▼都市情報
+    <ul>
+      <li><a href="/">・滞在武将一覧</a></li>
+    </ul>
+  </li>
+  <li>▼ゲーム情報
+    <ul>
+      <li><a href="/outer/map" target="_blank">・勢力図</a></li>
+      <li><a href="/outer/allplayer" target="_blank">・登録武将一覧</a></li>
+      <li><a href="/" target="_blank">・名将一覧</a></li>
+      <li><a href="/" target="_blank">・国力比較</a></li>
+    </ul>
+  </li>
 </div>
 
 % # 中身を表示
 <%= content %>
 
-%= javascript begin
+<script>
 
-/* メニュー部分 */
-$(document).ready(function(){
-  
-  $("#playermenu li").hover(
-    function () {
-      this.style.backgroundColor = "#333333";
-      this.style.color = "<%= $config->{'color'}{'lightdarkred'} %>";
-      $(this).children('ul').animate({height: "show", opacity: "show"},{duration: "fast", easing: "swing"});
-    },function () {
-      this.style.backgroundColor = "<%= $config->{'color'}{'lightdarkred'} %>";
-      this.style.color = "<%= $config->{'color'}{'black'} %>";
-      $(this).children('ul').animate({height: "toggle", opacity: "toggle"},{duration: "fast", easing: "linear"});
-    }
-  );
-  
-});
-% end
+  'use strict';
+
+  // init
+  (function () {
+    
+    var c = new sangoku.Player;
+    c.registFunctionToList();
+
+  }());
+
+</script>
+
+<section>
+<div id="wrapper">
 
 % end
 %= content 'container'

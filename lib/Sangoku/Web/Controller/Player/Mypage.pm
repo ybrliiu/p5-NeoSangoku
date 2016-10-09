@@ -1,4 +1,4 @@
-package Sangoku::Web::Controller::Player::MyPage {
+package Sangoku::Web::Controller::Player::Mypage {
 
   use Mojo::Base 'Mojolicious::Controller';
   use Sangoku;
@@ -6,7 +6,7 @@ package Sangoku::Web::Controller::Player::MyPage {
   sub root {
     my ($self) = @_;
     my $player_id = $self->session('id');
-    my $result = $self->service->root();
+    my $result = $self->service->root($player_id);
     $self->stash(%$result);
     $self->render();
   }

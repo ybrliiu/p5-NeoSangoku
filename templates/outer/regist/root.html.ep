@@ -429,7 +429,7 @@
 
   (function () {
 
-    Sangoku.namespace('Regist');
+    sangoku.namespace('Regist');
 
     var ABILITY_FORM_NAMES = ['force', 'intellect', 'leadership', 'popular'];
 
@@ -437,9 +437,9 @@
       return document.getElementsByName(formName)[0];
     });
     
-    Sangoku.Regist = function () {};
+    sangoku.Regist = function () {};
 
-    var PROTOTYPE = Sangoku.Regist.prototype;
+    var PROTOTYPE = sangoku.Regist.prototype;
 
     (function () {
 
@@ -477,7 +477,7 @@
   // init
   (function () {
 
-    var c = new Sangoku.Regist;
+    var c = new sangoku.Regist;
     c.registEvents();
     c.updateValues();
     c.setSumValue();
