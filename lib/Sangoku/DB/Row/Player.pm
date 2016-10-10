@@ -4,6 +4,7 @@ package Sangoku::DB::Row::Player {
   use parent 'Teng::Row';
 
   use Sangoku::Util qw/load_config/;
+  use Sangoku::Model::Country;
   use Sangoku::Model::IconList;
 
   use constant {
@@ -25,6 +26,44 @@ package Sangoku::DB::Row::Player {
 		DELETE_TURN       => 72,    # 放置削除にかかるターン数
 		PLAYER_UPDATETIME => 3600,  # 更新時間(分)
   };
+
+  __PACKAGE__->_generate_methods();
+
+  sub _generate_methods {
+    no strict 'refs';
+    for my $method_name (@{ EQUIPMENT_LIST() }, 'soldier') {
+      my $class_name = ucfirst $method_name;
+      *{$method_name} = sub {
+        use strict 'refs';
+        my ($self, $hash) = @_;
+        return defined $hash
+          ? $hash->{$self->id}
+          : "Sangoku::Model::Player::$class_name"->get($self->id);
+      };
+    }
+  }
+
+  sub command_log {
+    my ($self) = @_;
+    return Sangoku::Model::Player::CommandLog->new(id => $self->id);
+  }
+
+  sub country {
+    my ($self, $countreis_hash) = @_;
+    return defined($countreis_hash)
+      ? $countreis_hash->{$self->country_name}
+      : Sangoku::Model::Country->get($self->country_name);
+  }
+
+  sub check_pass {
+    my ($self, $pass) = @_;
+    return $self->pass eq $pass;
+  }
+
+  sub delete_until {
+    my ($self) = @_;
+    return DELETE_TURN - $self->delete_turn;
+  }
 
   sub icon_path {
     my ($self) = @_;
@@ -48,30 +87,23 @@ package Sangoku::DB::Row::Player {
 
   }
 
-  sub delete_until {
-    my ($self) = @_;
-    return DELETE_TURN - $self->delete_turn;
+  sub town {
+    my ($self, $towns_hash) = @_;
+    return defined($towns_hash)
+      ? $towns_hash->{$self->town_name}
+      : Sangoku::Model::Town->get($self->town_name);
   }
 
-  sub check_pass {
-    my ($self, $pass) = @_;
-    return $self->pass eq $pass;
+  sub unit {
+    my ($self, $units_hash) = @_;
+    return defined($units_hash)
+      ? $units_hash->{$self->unit_id}
+      : Sangoku::Model::Unit->get($self->unit_id);
   }
 
-  __PACKAGE__->_generate_methods();
-
-  sub _generate_methods {
-    no strict 'refs';
-    for my $method_name (@{ EQUIPMENT_LIST() }) {
-      my $class_name = ucfirst $method_name;
-      *{$method_name} = sub {
-        use strict 'refs';
-        my ($self, $hash) = @_;
-        return defined $hash
-          ? $hash->{$self->id}
-          : "Sangoku::Model::Player::$class_name"->get($self->id);
-      };
-    }
+  sub unit_name {
+    my ($self, $units_hash) = @_;
+    return $self->unit_id ? $self->unit($units_hash)->name : '';
   }
 
 }

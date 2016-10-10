@@ -10,36 +10,11 @@
   
   <h1 id="headline"><span><%= $config->{site}{name} %> 大陸地図</span></h1>
 
-  <table id="map" class="tile-table width-80pc">
-    <tr><th><h2>大陸地図</h2></th></tr>
-    <tr>
-      <td id="wrap-map">
-        <table>
-          <tbody>
-        % for my $i (0 .. 9) {
-            <tr>
-          % for my $j (0 .. 9) {
-            % my $town = $map_data->[$i][$j];
-            % if (defined $town) {
-              % my $country = $town->country($countries_hash);
-              <td style="background-color: <%= $config->{countrycolor}{$country->color} %>">
-                <span id="tooltip">
-                  <span id="tooltip_in"><%= $town->country_name %></span>
-                  <%= $town->name %><br>
-                  <img src="<%= $town->icon_path %>">
-                </span>
-              </td>
-            % } else {
-              <td></td>
-            % }
-          % }
-            </tr>
-        % }
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </table>
+<%= include('parts/map', (
+  map_data       => $map_data, 
+  countries_hash => $countries_hash, 
+  width          => 80,
+)); %>
 
 </div>
 

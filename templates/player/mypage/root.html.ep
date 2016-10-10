@@ -1,5 +1,310 @@
 % layout 'player';
 
-<div>
-  マイページです
+<script src="/js/sangoku/player/mypage/controll-command.js"></script>
+
+<style>
+<% my $scss = '
+
+#country-command {
+  background-color: ' . $config->{countrycolor}{$country->color} . ';
+  color: ' . $config->{countrycolor2}{$country->color} . ';
+  font-size: 13pt;
+  line-height: 1.2em;
+  padding: 4px;
+  border: 4px ' . $config->{color}{white} . ' solid;
+}
+
+#town-info {
+  line-height: 1em;
+  div { height: 6px; }
+  .center {
+    text-align: initial;
+    text-align: center;
+    font-weight: bold;
+  }
+  td:nth-child(2n) { text-align: right; }
+  #town-name {
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+#log {
+  width: 100%;
+  th { width: 50%; }
+  td {
+    width: 50%;
+    background-color: ' . $config->{color}{beige} . ';
+  }
+}
+
+#command {
+  #command-result { width: 65% }
+  #command-list {
+    width: 50%;
+    text-align: center;
+  }
+}
+
+'; %>
+%= scss_to_css(\$scss, 1);
+</style>
+
+<div class="grid-around">
+  <div id="country-command" class="width-100pc">
+    <strong><h2><%= $country->name %>指令:</h2></strong><%= $country->command_message %>
+  </div>
 </div>
+
+<div class="grid width-40pc">
+<%= include('parts/map', (
+  map_data       => $map_data,
+  countries_hash => $countries_hash,
+  width          => 100,
+)); %>
+</div>
+
+<div class="grid width-30pc">
+  <table id="town-info" class="table-<%= $country->color %> width-100pc">
+
+    <%# グラフ描画関数 %>
+    <% my $graph = begin %>
+      % my ($val1, $val2) = @_;
+      % my $color = $val1 / $val2 < 0.2 ? '#FFD733' : '#5555FF';
+      <div style="background-color: <%= $color %>; width: <%= ($val1 / $val2) * 100 %>%; float: left;"></div>
+      <div style="background-color: #FF5555; width: <%= (1 - ($val1 / $val2)) * 100 %>%; float: right;"></div>
+    <% end %>
+
+    <tr><th colspan="2"><h2><%= $town->name %></h2></th></tr>
+    <tr>
+      <td>支配</td>
+      <td id="town-name"><%= $town->country_name %></td>
+    </tr>
+    <tr>
+      <td>農民</td>
+      <td>
+        <%= $graph->($town->farmer, $town->farmer_max) %>
+        <%= $town->farmer %>/<%= $town->farmer_max %>
+      </td>
+    </tr>
+    <tr>
+      <td>民忠</td>
+      <td>
+        <%= $graph->($town->loyalty, 100) %>
+        <%= $town->loyalty %>/100
+      </td>
+    </tr>
+    <tr>
+      <td>農業</td>
+      <td>
+        <%= $graph->($town->farm, $town->farm_max) %>
+        <%= $town->farm %>/<%= $town->farm_max %>
+      </td>
+    </tr>
+    <tr>
+      <td>商業</td>
+      <td>
+        <%= $graph->($town->business, $town->business_max) %>
+        <%= $town->business %>/<%= $town->business_max %>
+      </td>
+    </tr>
+    <tr>
+      <td>技術</td>
+      <td>
+        <%= $graph->($town->technology, $town->technology_max) %>
+        <%= $town->technology %>/<%= $town->technology_max %>
+      </td>
+    </tr>
+    <tr>
+      <td>城壁</td>
+      <td>
+        <%= $graph->($town->wall, $town->wall_max) %>
+        <%= $town->wall %>/<%= $town->wall_max %>
+      </td>
+    </tr>
+    <tr>
+      <td>城壁耐久力</td>
+      <td>
+        <%= $graph->($town->wall_power, $town->wall_power_max($site->game_year)) %>
+        <%= $town->wall_power %>/<%= $town->wall_power_max($site->game_year) %>
+      </td>
+    </tr>
+    <tr>
+      <td>相場</td>
+      <td><%= $town->price %></td>
+    </tr>
+  % my @guards = @{ $town->guards };
+    <tr>
+      <td><%= $town->name %>の守備(<%= @guards %>人)</td>
+      <td>
+    % for my $player (@guards) {
+        <%= $player->name %>($player->soldier->num)
+    % }
+      </td>
+    </tr>
+    <tr><td class="middle" colspan="2">滞在武将</td></tr>
+    <tr><td class="right" colspan="2">[都市データの説明]</td></tr>
+  </table>
+</div>
+
+<div class="grid-right width-30pc">
+  <table class="table-<%= $country->color %> width-100pc">
+    <tr><th colspan="4"><h2><%= $country->name %></h2></th></tr>
+    <tr>
+      <td>君主</td>
+      <td class="middle"><%= $country->position->king_name %></td>
+      <td>宰相</td>
+      <td class="middle"><%= $country->position->premier_name %></td>
+    </tr>
+    <tr>
+      <td>軍師</td><td class="middle">
+      <%= $country->position->strategist %></td>
+      <td>大将軍</td>
+      <td class="middle"><%= $country->position->great_general %></td>
+    </tr>
+    <tr>
+      <td>支配都市数</td>
+    % my @towns = @{ $country->towns($towns) };
+      <td colspan="3"><%= @towns %>都市(<%= $_->name . " " for @towns %>)</td>
+    </tr>
+    <tr>
+      <td>税金</td>
+      <td></td>
+      <td>収穫</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>online</td>
+      <td colspan="3"></td>
+    </tr>
+    <tr>
+      <td>外交状況</td>
+      <td colspan="3"></td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td colspan="2"></td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td colspan="2"></td>
+    </tr>
+    <tr><td colspan="4"></td></tr>
+  </table>
+</div>
+
+<div class="grid-right width-100pc">
+  <table class="table-<%= $country->color %> width-100pc">
+    <tr><th colspan="18"><h2><%= $player->name %></h2></th></tr>
+    <tr>
+      <td rowspan="5" class="icon"><img class="icon" src="<%= $player->icon_path %>"></td>
+      <td>武力</td><td class="middle"><%= $player->force %> (exp:<%= $player->force_exp %>)</td>
+      <td>知力</td><td class="middle"><%= $player->intellect %> (exp:<%= $player->intellect_exp %>)</td>
+      <td>統率力</td><td class="middle"><%= $player->leadership %> (exp:<%= $player->leadership_exp %>)</td>
+      <td>人望</td><td class="middle"><%= $player->popular %> (exp:<%= $player->popular_exp %>)</td>
+    % my $weapon = $player->weapon;
+      <td>武器</td><td class="middle"><%= $weapon->name %></td><td class="middle"><%= $weapon->power %></td>
+    </tr>
+    <tr>
+      <td>所属</td><td class="middle"><%= $player->country_name %></td>
+      <td>忠誠度</td><td class="middle"><%= $player->loyalty %></td>
+      <td>金</td><td class="middle"><%= $player->money %></td>
+      <td>米</td><td class="middle"><%= $player->rice %></td>
+    % my $book = $player->book;
+      <td>書物</td><td class="middle"><%= $book->name %></td><td class="middle"><%= $book->power %></td>
+    </tr>
+    <tr>
+      <td>部隊</td><td class="middle"><%= $player->unit_name %></td>
+      <td>階級</td><td class="middle">Lv.<%= $player->lank %> <%= $player->lank_name %></td>
+      <td>階級値</td><td class="middle"><%= $player->class %></td>
+      <td>貢献値</td><td class="middle"><%= $player->contribute %></td>
+    % my $guard = $player->guard;
+      <td>防具</td><td class="middle"><%= $guard->name %></td><td class="middle"><%= $guard->power %></td>
+    </tr>
+    <tr>
+    % my $soldier = $player->soldier;
+      <td>兵種</td><td class="middle"><%= $soldier->name %></td>
+      <td>兵士</td><td class="middle"><%= $soldier->num  %></td>
+      <td>訓練</td><td class="middle"><%= $soldier->training %></td>
+      <td>攻撃力</td><td class="middle"><%= $soldier->attack_power($player) %></td>
+      <td>守備力</td><td class="middle" colspan="2"><%= $soldier->defense_power($player) %></td>
+    </tr>
+  </table>
+</div>
+
+<div class="grid-right" id="command">
+  <table class="table-<%= $country->color %>">
+    <tr>
+      <th colspan="2"><h2>コマンド入力</h2></th>
+    </tr>
+    <tr>
+      <td id="command-result">
+        <%# ここにajaxで/player/commandの内容が表示される #%>
+      </td>
+      <td id="command-list" rowspan="2">
+        <form name="send">
+          <select name="mode" size="10">
+          % for (0 .. 10) {
+            % if (ref $_) {
+              % if ( $_->{permit}->($player) ) {
+              <option value="<%= $_->{id} %>"><%= $_->{name} %></option>
+              % }
+            % }else{
+              <optgroup label="== <%= $_ %> ==">
+            % }
+          % }
+          </select>
+          <br>
+          <input id="submit" type="button" value="送信">
+        </form>
+      </td>
+    </tr>
+    <tr><td>
+      <form name="select">
+      <select name="start">
+      % for (1 .. 48) {
+        <option value="<%= $_ %>"><%= $_ %></option>
+      % }
+      </select>
+      から
+      <select name="interval">
+      % for (1 .. 24) {
+        <option value="<%= $_ %>"><%= $_ %></option>
+      % }
+      </select>
+      の倍数毎に
+      <input id="select" type="button" value="選択">
+      </form>
+      <input id="remove_allcheck" type="button" value="選択全解除">
+      <input id="user-select-text" type="button" value="コマンドリストのテキストを選択可能にする">
+      <input id="user-select-none" type="button" value="コマンドリストのテキストを選択不可能にする">
+    </td></tr>
+  </table>
+</div>
+
+<div class="grid-right width-100pc">
+  <table id="log" class="table-<%= $country->color %>">
+    <tr>
+      <th><h2>コマンドログ</h2></th>
+      <th><h2>マップログ</h2></th>
+    </tr>
+    <tr>
+      <td>
+        <ul>
+        % for (@$command_log) {
+          <li><%== $_ %></li>
+        % }
+        </ul>
+      </td>
+      <td>
+        <ul>
+        % for (@$map_log) {
+          <li><%== $_ %></li>
+        % }
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>
+
+

@@ -324,7 +324,7 @@ package Sangoku::DB::Schema {
     columns (
       {name => 'player_id', type => -1},
       {name => 'name', type => -1},
-      {name => 'people', type => 4},
+      {name => 'num', type => 4},
       {name => 'training', type => 4},
     );
     row_class 'Sangoku::DB::Row::Player::Soldier';

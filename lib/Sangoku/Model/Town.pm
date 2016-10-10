@@ -15,9 +15,9 @@ package Sangoku::Model::Town {
   }
 
   sub get_all_for_map {
-    my ($class) = @_;
+    my ($class, $towns) = @_;
 
-    my $towns = Sangoku::Model::Town->get_all();
+    $towns //= Sangoku::Model::Town->get_all();
     my $map_data = [];
     for my $i (0 .. 9) {
       for my $j (0 .. 9) {

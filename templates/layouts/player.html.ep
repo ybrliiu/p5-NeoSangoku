@@ -59,6 +59,9 @@
   </li>
 </div>
 
+<section>
+<div id="wrapper">
+
 % # 中身を表示
 <%= content %>
 
@@ -75,9 +78,6 @@
   }());
 
 </script>
-
-<section>
-<div id="wrapper">
 
 % end
 %= content 'container'

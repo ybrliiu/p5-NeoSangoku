@@ -195,7 +195,7 @@ CREATE TABLE "player_soldier" (
   "player_id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
   "name"      text DEFAULT '雑兵',
   -- Rowクラス側では兵士オブジェクトを委譲する
-  "people"    int DEFAULT 0,
+  "num"       int DEFAULT 0,
   "training"  int DEFAULT 0
 );
 
