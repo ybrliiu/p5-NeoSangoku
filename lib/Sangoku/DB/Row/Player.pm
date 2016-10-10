@@ -1,11 +1,10 @@
 package Sangoku::DB::Row::Player {
 
   use Sangoku;
-  use parent 'Teng::Row';
+  use parent 'Sangoku::DB::Row';
 
+  use Carp qw/croak/;
   use Sangoku::Util qw/load_config/;
-  use Sangoku::Model::Country;
-  use Sangoku::Model::IconList;
 
   use constant {
     CONSTANTS => {
@@ -38,21 +37,21 @@ package Sangoku::DB::Row::Player {
         my ($self, $hash) = @_;
         return defined $hash
           ? $hash->{$self->id}
-          : "Sangoku::Model::Player::$class_name"->get($self->id);
+          : $self->model("Player::$class_name")->get($self->id);
       };
     }
   }
 
   sub command_log {
     my ($self) = @_;
-    return Sangoku::Model::Player::CommandLog->new(id => $self->id);
+    return $self->model('Player::CommandLog')->new(id => $self->id);
   }
 
   sub country {
     my ($self, $countreis_hash) = @_;
     return defined($countreis_hash)
       ? $countreis_hash->{$self->country_name}
-      : Sangoku::Model::Country->get($self->country_name);
+      : $self->model('Country')->get($self->country_name);
   }
 
   sub check_pass {
@@ -67,7 +66,12 @@ package Sangoku::DB::Row::Player {
 
   sub icon_path {
     my ($self) = @_;
-    return Sangoku::Model::IconList->ICONS_DIR_PATH . $self->icon . '.gif';
+    return $self->model('IconList')->ICONS_DIR_PATH . $self->icon . '.gif';
+  }
+
+  sub invite {
+    my ($self) = @_;
+    return $self->model('Player::Invite')->new(id => $self->id);
   }
 
   {
@@ -87,23 +91,33 @@ package Sangoku::DB::Row::Player {
 
   }
 
+  sub letter {
+    my ($self) = @_;
+    return $self->model('Player::Letter')->new(id => $self->id);
+  }
+
   sub town {
     my ($self, $towns_hash) = @_;
     return defined($towns_hash)
       ? $towns_hash->{$self->town_name}
-      : Sangoku::Model::Town->get($self->town_name);
+      : $self->model('Town')->get($self->town_name);
+  }
+
+  sub is_delong_unit {
+    my ($self) = @_;
+    return $self->unit_id ? 1 : 0;
   }
 
   sub unit {
     my ($self, $units_hash) = @_;
     return defined($units_hash)
       ? $units_hash->{$self->unit_id}
-      : Sangoku::Model::Unit->get($self->unit_id);
+      : $self->model('Unit')->get($self->unit_id);
   }
 
   sub unit_name {
     my ($self, $units_hash) = @_;
-    return $self->unit_id ? $self->unit($units_hash)->name : '';
+    return $self->is_delong_unit ? $self->unit($units_hash)->name : '無所属';
   }
 
 }

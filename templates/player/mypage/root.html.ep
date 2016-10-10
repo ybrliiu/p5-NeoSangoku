@@ -1,6 +1,8 @@
 % layout 'player';
 
 <script src="/js/sangoku/player/mypage/controll-command.js"></script>
+<script src="/js/sangoku/player/mypage/input-command.js"></script>
+<script src="/js/sangoku/player/mypage/send-letter.js"></script>
 
 <style>
 <% my $scss = '
@@ -38,16 +40,119 @@
   }
 }
 
-#command {
+#controll-command {
+  width: 100%;
+
   #command-result { width: 65% }
   #command-list {
     width: 50%;
     text-align: center;
   }
+  #user-select-text { display: none; }
+
+  // to command/root.html.ep
+  #wrap-command {
+    height: 350px;
+    width: 100%;
+  }
+  #command {
+    width: 100%;
+    background-color: '. $config->{'color'}{'black'} .';
+    border-collapse: separate;
+    border-spacing: 1px;
+
+ // user-select: none;
+ // @each $prefix in -webkit-, -moz-, -ms-, "" {
+ //   #{$prefix}user-select: none;
+ // }
+
+    input { display: none; }
+    td {
+      text-align: center;
+      padding: 3px;
+      background-color: rgba(0,0,0,0);
+    }
+    th {
+      @extend td;
+      background-color: ' . $config->{color}{black} . ';
+      color: ' . $config->{color}{white} . ';
+      &:nth-first { width: 0; }
+    }
+    tr { background-color: ' . $config->{color}{white} . '; }
+  }
 }
 
+/* 手紙送信部 */
+#letter-send { width: 100%; }
+
+// 手紙の関数
+$letter-radius: 5px;
+@mixin letter-title($color) {
+  background-color: $color;
+  padding: 7px;
+  color: '. $config->{color}{white} .';
+  border-top-left-radius: $letter-radius;
+  border-top-right-radius: $letter-radius;
+  margin-bottom: 0px !important;
+}
+@mixin letter($color) {
+  width: 100%;
+  background-color: '. $config->{color}{white} .';
+  border: solid 3px $color;
+  border-bottom-right-radius: $letter-radius;
+  border-bottom-left-radius: $letter-radius;
+  border-collapse: separate;
+  border-spacing: 2px;
+  .line { background-color: $color; }
+}
+
+/* 手紙共通部品群 */
+$letter-padding: 5px;
+.letter-icon {
+  padding: $letter-padding 0px $letter-padding $letter-padding;
+  vertical-align: top;
+  width: 1px;
+}
+.letter-message {
+  padding: $letter-padding;
+  vertical-align: top;
+  font-weight: bold;
+}
+.thin {
+  position: relative;
+  top: 0;
+  color: #444444;
+  font-weight: lighter;
+}
+
+/* 手紙表示外郭 */
+.letter-wrapper {
+  width: 50%;
+  float: left;
+}
+
+/* 個宛 */
+#player-letter-title { @include letter-title('. $config->{color}{green} .'); }
+#player-letter { @include letter('. $config->{color}{green} .'); }
+
+/* 部隊宛 */
+#unit-letter-title { @include letter-title('. $config->{color}{orange} .'); }
+#unit-letter { @include letter('. $config->{color}{orange} .'); }
+
+/* 密書 */
+#invite-letter-title { @include letter-title('. $config->{color}{purple} .'); }
+#invite-letter { @include letter('. $config->{color}{purple} .'); }
+
+/* 国宛 */
+#country-letter-title { @include letter-title('. $config->{color}{blue} .'); }
+#country-letter { @include letter('. $config->{color}{blue} .'); }
+
+/* 都市宛 */
+#town-letter-title { @include letter-title('. $config->{color}{darkred} .'); }
+#town-letter { @include letter('. $config->{color}{darkred} .'); }
+
 '; %>
-%= scss_to_css(\$scss, 1);
+%== scss_to_css(\$scss, 1);
 </style>
 
 <div class="grid-around">
@@ -232,8 +337,8 @@
   </table>
 </div>
 
-<div class="grid-right" id="command">
-  <table class="table-<%= $country->color %>">
+<div class="grid-right" id="controll-command">
+  <table class="table-<%= $country->color %> width-100pc">
     <tr>
       <th colspan="2"><h2>コマンド入力</h2></th>
     </tr>
@@ -255,7 +360,7 @@
           % }
           </select>
           <br>
-          <input id="submit" type="button" value="送信">
+          <input id="submit-command" type="button" value="送信">
         </form>
       </td>
     </tr>
@@ -275,9 +380,11 @@
       の倍数毎に
       <input id="select" type="button" value="選択">
       </form>
-      <input id="remove_allcheck" type="button" value="選択全解除">
+      <input id="remove-allcheck" type="button" value="選択全解除">
+    <!-- 
       <input id="user-select-text" type="button" value="コマンドリストのテキストを選択可能にする">
       <input id="user-select-none" type="button" value="コマンドリストのテキストを選択不可能にする">
+    -->
     </td></tr>
   </table>
 </div>
@@ -307,4 +414,78 @@
   </table>
 </div>
 
+<div class="grid-right width-100pc">
+  <table class="table-<%= $country->color %> width-100pc">
+    <tr>
+      <th>
+        <a id="letter-link"></a><h2>手紙送信</h2>
+      </th>
+    </tr>
+    <tr><td>
+      <%= text_area(profile => '', cols => 70, rows => 4, id => 'letter-message') %>
+      <select id="letter-to">
+        <option class="country" value="<%= $player->country_name %>"><%= $player->country_name %>へ
+        <option class="town" value="<%= $player->town_name %>"><%= $player->town_name %>へ
+      % if ($player->unit_id) {
+        <option class="unit" value="<%= $player->unit_id %>"><%= $player->unit_name %>へ
+      % }
+      </select>
+      <input type="button" id="letter-submit" value="送信">
+    </td></tr>
+  </table>
+</div>
 
+<%# 手紙のリストを表示する関数 #%>
+<% my $letter_list = begin %>
+ % my ($type, $title, $options) = @_;
+  <div id="<%= $type %>-letter-title">
+    <strong><%= $title %></strong>（<%= $config->{template}{player}{letter}{$type} %>件）
+  </div>
+  <table <%== 'class="adjust-bottom"' if $options->{adjust_bottom} %> id="<%= $type %>-letter">
+  <tbody>
+  % for (@{ $letter->{$type} }) {
+    <tr>
+      <td class="letter_icon">
+        <img class="icon" src="/images/icons/<%= $_->seder_icon %>.gif">
+      </td>
+      <td class="letter_message">
+        <%= $_->sender_name %>@<span class="thin"><%= $_->sender_town_name %>@<%= $_->sender_country_name %>から<%= $_->receiver_name %>へ</span><br>
+『<%== $_->message %>』<br>
+        <div class="thin"><%= $_->time %></div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="line"></td>
+    </tr>
+  % }
+  </tbody>
+  </table>
+<% end %>
+
+<div class="grid letter-wrapper">
+  <%= $letter_list->(player => $player->name . '宛') %>
+  <%= $letter_list->(unit   => $player->unit_name . '部隊宛') %>
+  <%= $letter_list->(invite => $player->name . '宛密書') %>
+</div>
+
+<div class="grid-right letter-wrapper">
+  <%= $letter_list->(country => $player->country_name . '宛') %>
+  <%= $letter_list->(town    => $player->town_name . '宛') %>
+</div>
+
+<script>
+  
+  'use strict';
+
+  (function () {
+
+    var input = new sangoku.player.mypage.inputCommand;
+    input.registFunctions();
+    input.send();
+
+    var controll = new sangoku.player.mypage.controllCommand;
+    controll.registFunctions();
+
+  }());
+
+</script>

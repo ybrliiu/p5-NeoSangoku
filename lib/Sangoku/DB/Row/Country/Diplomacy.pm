@@ -1,7 +1,7 @@
 package Sangoku::DB::Row::Country::Diplomacy {
 
   use Sangoku;
-  use parent 'Teng::Row';
+  use parent 'Sangoku::DB::Row';
 
   sub start_month_and_years_num {
     my ($self) = @_;

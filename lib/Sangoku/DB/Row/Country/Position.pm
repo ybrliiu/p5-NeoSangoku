@@ -1,7 +1,7 @@
 package Sangoku::DB::Row::Country::Position {
 
   use Sangoku;
-  use parent 'Teng::Row';
+  use parent 'Sangoku::DB::Row';
 
   use Sangoku::Model::Player;
 

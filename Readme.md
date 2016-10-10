@@ -3,10 +3,11 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-* Rowオブジェクトの処理共通化
 * Rowオブジェクトモデルローダ作ったほうがいい？
-* API, Rowローダは別に必要なさそう？
 * template設定ファイルは必要なさそう(serviceで定数化)
+* js 名前空間全て先頭小文字に
+* API, Rowローダは別に必要なさそう？
+* Rowオブジェクトの処理共通化
 
 * country_position, town country_name
 SQL見なおすべきか？

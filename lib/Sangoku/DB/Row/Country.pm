@@ -1,7 +1,7 @@
 package Sangoku::DB::Row::Country {
 
   use Sangoku;
-  use parent 'Teng::Row';
+  use parent 'Sangoku::DB::Row';
 
   use Sangoku::Util qw/load_config/;
   use Sangoku::Model::Country::Position;
@@ -36,6 +36,11 @@ package Sangoku::DB::Row::Country {
       ? [grep { $_->country_name eq $self->name } @$towns]
       : Sangoku::Model::Town->search(country_name => $self->name);
     return $country_towns;
+  }
+
+  sub letter {
+    my ($self) = @_;
+    return $self->model('Country::Letter')->new(name => $self->name);
   }
 
 }

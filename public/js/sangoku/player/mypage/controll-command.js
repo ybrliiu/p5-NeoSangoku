@@ -18,36 +18,33 @@
   PROTOTYPE.changeUserSelect = function (type) {
     $("#user-select-text").toggle();
     $("#user-select-none").toggle();
-    $("#commandlist").css("user-select", type).css("-moz-user-select", type).css("-webkit-user-select", type).css("-ms-user-select", type);
+    $("#command").css("user-select", type).css("-moz-user-select", type).css("-webkit-user-select", type).css("-ms-user-select", type);
   };
   
-  PROTOTYPE.addCheck = function () {
-    var box = document.getElementById(this.checkId);
+  PROTOTYPE.addCheck = function (checkId) {
+    var box = document.getElementById(checkId);
     box.style.backgroundColor = "#4682B4";
     box.style.color = "#ffffff";
-    $("#commandlist input[value=" + this.checkId + "]").prop('checked', true);
+    $("#command input[value=" + checkId + "]").prop('checked', true);
   };
   
-  PROTOTYPE.removeCheck = function () {
-    var box = document.getElementById(this.checkId);
+  PROTOTYPE.removeCheck = function (checkId) {
+    var box = document.getElementById(checkId);
     box.style.backgroundColor = "#ffffff";
     box.style.color = "#000000";
-    $("#commandlist input[value=" + this.checkId + "]").prop('checked', false); 
+    $("#command input[value=" + checkId + "]").prop('checked', false); 
   };
   
   PROTOTYPE.pushShiftSelect = function (checkFunc) {
     if (this.keyHit) {
-      if (this.beforeId > this.checkId) {
-        if (!this.beforeId < this.checkId) {
-          var tmp = this.beforeId;
-          this.beforeId = this.checkId;
-          this.checkId = tmp;
+      if (this.checkId > this.beforeId) {
+        for (var i = this.beforeId; i <= this.checkId; i++) {
+          checkFunc(i);
         }
-      }
-      var n = 0;
-      for (var i = this.beforeId; i <= this.checkId ;i++) {
-        checkFunc(i);
-        n++;
+      } else {
+        for (var j = this.beforeId; j >= this.checkId; j--) {
+          checkFunc(j);
+        }
       }
     }
   };
@@ -75,9 +72,9 @@
   PROTOTYPE.registFunctions = function () {
     var self = this;
 
-    $("#remove_allcheck").mouseup(function(){
-      $("#commandlist input").prop('checked', false);
-      $("#commandlist tr").css("background", "#FFFFFF").css("color", "#000000");
+    $("#remove-allcheck").mouseup(function(){
+      $("#command input").prop('checked', false);
+      $("#command tr").css("background", "#FFFFFF").css("color", "#000000");
     });
   
     $("#user-select-text").mouseup(function () { self.changeUserSelect("text"); });
@@ -90,9 +87,9 @@
       if (e.keyCode === 16) { self.keyHit = 0; }
     });
 
-    $("#result").on('mousedown', '#commandlist tr', function () {
-      self.checkId = $(this).attr("id");
-      if (!$("#commandlist input[value=" + self.checkId + "]").prop('checked')) {
+    $("#command-result").on('mousedown', '#command tr', function () {
+      self.checkId = Number( $(this).attr("id") );
+      if (!$("#command input[value=" + self.checkId + "]").prop('checked')) {
         self.addCheck(self.checkId);
         self.pushShiftSelect(self.addCheck);
       } else {
@@ -103,12 +100,12 @@
       self.beforeId = self.checkId;
     });
   
-    $("#result").on('mousedown', '#commandlist', function () { self.mouseHit = 1; });
-    $("#result").on('mouseup', '#commandlist', function () { self.mouseHit = 0; });
-    $("#result").on('mouseover', '#commandlist tr', function () {
+    $("#command-result").on('mousedown', '#command', function () { self.mouseHit = 1; });
+    $("#command-result").on('mouseup', '#command', function () { self.mouseHit = 0; });
+    $("#command-result").on('mouseover', '#command tr', function () {
       if (self.mouseHit) {
         self.checkId = $(this).attr("id");
-        !$("#commandlist input[value=" + self.checkId + "]").prop('checked') ? self.addCheck(self.checkId) : self.removeCheck(self.checkId);
+        !$("#command input[value=" + self.checkId + "]").prop('checked') ? self.addCheck(self.checkId) : self.removeCheck(self.checkId);
       }
     });
     
