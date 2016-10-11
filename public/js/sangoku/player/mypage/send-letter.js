@@ -10,7 +10,7 @@
      args.player = {
        name : ,
        icon : ,
-       town : ,
+       townName : ,
        countryName : ,
      }
 
@@ -46,11 +46,11 @@
     if (!message.value) { return false; }
     var json = {
       'type' : to.children[to.selectedIndex].className,
-      'from' : this.player.name,
-      'icon' : this.player.icon,
-      'town' : this.player.town,
-      'country' : this.player.countryName,
-      'to' : to.children[to.selectedIndex].value,
+      'sender_name' : this.player.name,
+      'sender_icon' : this.player.icon,
+      'sender_town_name' : this.player.townName,
+      'sender_country_name' : this.player.countryName,
+      'receiver_name' : to.children[to.selectedIndex].value,
       'message' : message.value,
     };
     this.ws.send(JSON.stringify(json));
@@ -80,9 +80,9 @@
   // 手紙追加
   PROTOTYPE.createNewLetter = function (parentDom, json) {
     var newDom = document.createElement('tr');
-    newDom.innerHTML = '<td class="letter_icon"><img src="/image/player_icon/' + json.icon + '.gif"></td>'
-      + '<td class="letter_message">' + json.from + '@<span class="thin">' + json.town + 'から' + json.to + 'へ</span><br>『'
-      + json.message + '』<br><div class="thin">' + json.datetime + '</div></td>';
+    newDom.innerHTML = '<td class="letter-icon"><img src="/images/icons/' + json.sender_icon + '.gif"></td>'
+      + '<td class="letter-message">' + json.sender_name + '@<span class="thin">' + json.sender_town_name + 'から' + json.receiver_name + 'へ</span><br>『'
+      + json.message + '』<br><div class="thin">' + json.time + '</div></td>';
     parentDom.insertBefore(newDom, parentDom.firstChild);
   };
 

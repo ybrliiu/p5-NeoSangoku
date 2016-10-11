@@ -5,6 +5,7 @@ package Sangoku::Model::Role::DB::Letter {
   with 'Sangoku::Model::Role::DB';
 
   use Sangoku::Util qw/validate_values datetime/;
+  use Sangoku::Model::Player::Letter;
 
   has 'where' => (is => 'rw', isa => 'HashRef', lazy => 1, builder => '_build_where');
 
@@ -52,9 +53,9 @@ package Sangoku::Model::Role::DB::Letter {
     );
 
     $self->db->do_insert($self->TABLE_NAME, {%{ $self->where }, %letter_data});
-
-    require Sangoku::Model::Player::Letter;
     Sangoku::Model::Player::Letter->new(id => $args->{sender}->id)->add_sended(\%letter_data);
+
+    return \%letter_data;
   }
 
 }

@@ -439,7 +439,7 @@ $letter-padding: 5px;
 <% my $letter_list = begin %>
  % my ($type, $title, $options) = @_;
   <div id="<%= $type %>-letter-title">
-    <strong><%= $title %></strong>（<%= $config->{template}{player}{letter}{$type} %>件）
+    <strong><%= $title %></strong>（<%= $view_config->{LETTER}{uc $type} %>件）
   </div>
   <table <%== 'class="adjust-bottom"' if $options->{adjust_bottom} %> id="<%= $type %>-letter">
   <tbody>

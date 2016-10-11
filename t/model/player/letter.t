@@ -3,10 +3,10 @@ use Test::Sangoku::PostgreSQL;
 use Test::Sangoku::Util qw/prepare_player_model_tests create_test_player TEST_PLAYER_DATA/;
 
 use Sangoku::Model::Player;
-use Sangoku::Model::Player::Letter;
 
 my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
 my $TEST_CLASS = 'Sangoku::Model::Player::Letter';
+load $TEST_CLASS;
 my $OBJ;
 my $PSQL = Test::Sangoku::PostgreSQL->new();
 

@@ -29,6 +29,8 @@ package Sangoku::Model::Player::Invite {
       {player_id => $self->id, %letter_data},
       {player_id => $args->{receiver}->id, %letter_data},
     ]);
+
+    return \%letter_data;
   }
 
   __PACKAGE__->meta->make_immutable();

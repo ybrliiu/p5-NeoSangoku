@@ -28,6 +28,8 @@ package Sangoku::Model::Player::Letter {
       {player_id => $self->id, %letter_data},
       {player_id => $args->{receiver}->id, %letter_data},
     ]);
+
+    return \%letter_data;
   }
 
   # 国宛などで自分が送った手紙を自分宛にも保存するためのメソッド

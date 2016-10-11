@@ -3,11 +3,13 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-* Rowオブジェクトモデルローダ作ったほうがいい？
+* Letter model 仕様変更, 国宛他国へも送信できるように
+* Rowオブジェクと modelローダ化
+* Rowオブジェクトの処理共通化
 * template設定ファイルは必要なさそう(serviceで定数化)
 * js 名前空間全て先頭小文字に
 * API, Rowローダは別に必要なさそう？
-* Rowオブジェクトの処理共通化
+* test の eval "require ..." を load に
 
 * country_position, town country_name
 SQL見なおすべきか？
