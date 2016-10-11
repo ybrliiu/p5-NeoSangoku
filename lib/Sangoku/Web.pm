@@ -128,8 +128,8 @@ package Sangoku::Web {
       # /player/mypage
       {
         my $mypage = $auth->any('/mypage')->to(controller => 'Player::Mypage');
-        $mypage->any( '/'       )->to(action => 'root');
-        $mypage->post('/channel')->to(action => 'channel');
+        $mypage->any('/'       )->to(action => 'root');
+        $mypage->get('/channel')->to(action => 'channel');
 
         # /player/mypage/command
         {

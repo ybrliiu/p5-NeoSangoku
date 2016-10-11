@@ -48,21 +48,21 @@ subtest 'add, add_sended' => sub {
 
 subtest 'get_all' => sub {
   ok(my $list = $OBJ->get_all);
-  is @$list, 3;
+  is @$list, 4;
 };
 
 subtest 'get' => sub {
 
   {
     ok(my $list = $OBJ->get);
-    is @$list, 2;
+    is @$list, 3;
     my $letter = $list->[0];
     is $letter->message, 'テスト2';
   }
 
   {
     ok(my $list = Sangoku::Model::Player::Letter->new(id => $PLAYER_ID)->get());
-    is @$list, 2;
+    is @$list, 3;
     my $letter = $list->[0];
     is $letter->message, 'テスト2';
   }

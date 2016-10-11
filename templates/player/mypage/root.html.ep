@@ -445,10 +445,10 @@ $letter-padding: 5px;
   <tbody>
   % for (@{ $letter->{$type} }) {
     <tr>
-      <td class="letter_icon">
-        <img class="icon" src="/images/icons/<%= $_->seder_icon %>.gif">
+      <td class="letter-icon">
+        <img class="icon" src="/images/icons/<%= $_->sender_icon %>.gif">
       </td>
-      <td class="letter_message">
+      <td class="letter-message">
         <%= $_->sender_name %>@<span class="thin"><%= $_->sender_town_name %>@<%= $_->sender_country_name %>から<%= $_->receiver_name %>へ</span><br>
 『<%== $_->message %>』<br>
         <div class="thin"><%= $_->time %></div>
@@ -485,6 +485,20 @@ $letter-padding: 5px;
 
     var controll = new sangoku.player.mypage.controllCommand;
     controll.registFunctions();
+
+    var limit = {
+    % my $LETTER_LIMIT = $view_config->{LETTER};
+    % for (keys %$LETTER_LIMIT) {
+      '<%= lc $_ %>' : <%= $LETTER_LIMIT->{$_} %>,
+    % }
+    };
+
+    var sendLetter = new sangoku.player.mypage.sendLetter({
+      'uri' : '<%= url_for('/player/mypage/channel')->to_abs->scheme('ws') %>',
+      'playerId' : '<%= $player->id %>',
+      'limit' : limit,
+    });
+    sendLetter.registFunctions();
 
   }());
 

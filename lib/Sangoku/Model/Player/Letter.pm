@@ -10,6 +10,23 @@ package Sangoku::Model::Player::Letter {
 
   has 'id' => (is => 'ro', isa => 'Str', required => 1);
 
+  sub get_without_same_letter {
+    my ($self, $player, $num) = @_;
+    $num //= 'ALL';
+
+    my @columns = $self->db->search_by_sql(
+      qq{SELECT * FROM @{[ TABLE_NAME() ]}
+        WHERE player_id = ?
+        AND receiver_name <> ?
+        AND receiver_name <> ?
+        ORDER BY id DESC
+        LIMIT $num},
+      [$player->id, $player->town_name, $player->country_name],
+      TABLE_NAME,
+    );
+    return \@columns;
+  }
+
   sub add {
     my ($self, $args) = @_;
     validate_values($args => [qw/sender receiver message/]);

@@ -14,21 +14,21 @@ package Sangoku::Web::Controller::Player::Mypage {
   sub channel {
     my ($self) = @_;
 
+    $self->inactivity_timeout(600);
+
     # JSONオブジェクトをWebSocketを通して受ける
     $self->on(json => sub {
       my ($c, $json) = @_;
-      my $result = $c->service->input_letter($json);
-      my %new_json = (
-        type => $json->{type},
-      );
-      $c->events->emit(chat => \%new_json); # イベントを発行
+      $json->{message} =~ s/(\n|\r\n|\r)/<br>/g;
+      my $letter_data = $c->service->write_letter($json);
+      $c->events->emit(chat => $letter_data); # イベントを発行
     });
 
     # jsonをブラウザ側に送る
     my $cb = $self->events->on(
       chat => sub {
-        my ($event, $json) = @_;
-        $self->send({json => $json});
+        my ($event, $letter_data) = @_;
+        $self->send({json => $letter_data});
       }
     );
     
