@@ -4,9 +4,6 @@ package Sangoku::DB::Row::Country {
   use parent 'Sangoku::DB::Row';
 
   use Sangoku::Util qw/load_config/;
-  use Sangoku::Model::Country::Position;
-  use Sangoku::Model::Player;
-  use Sangoku::Model::Town;
 
   use constant {
     CONSTANTS => {
@@ -19,14 +16,14 @@ package Sangoku::DB::Row::Country {
   sub position {
     my ($self, $hash) = @_;
     return $hash->{$self->name} if defined $hash;
-    return Sangoku::Model::Country::Position->get($self->name);
+    return $self->model('Country::Position')->get($self->name);
   }
 
   sub members {
     my ($self, $players_hash) = @_;
     my $members = defined($players_hash)
       ? [sort { $b->class <=> $a->class } grep { $_->country_name eq $self->name } values %$players_hash]
-      : Sangoku::Model::Player->search(country_name => $self->name);
+      : $self->model('Player')->search(country_name => $self->name);
     return $members;
   }
 
@@ -34,7 +31,7 @@ package Sangoku::DB::Row::Country {
     my ($self, $towns) = @_;
     my $country_towns = defined($towns)
       ? [grep { $_->country_name eq $self->name } @$towns]
-      : Sangoku::Model::Town->search(country_name => $self->name);
+      : $self->model('Town')->search(country_name => $self->name);
     return $country_towns;
   }
 

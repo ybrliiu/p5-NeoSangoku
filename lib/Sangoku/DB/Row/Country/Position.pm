@@ -18,7 +18,7 @@ package Sangoku::DB::Row::Country::Position {
         my ($self, $players_hash) = @_;
         return defined $players_hash
           ? $players_hash->{$self->$_id // ''}
-          : Sangoku::Model::Player->get($self->$_id);
+          : $self->model('Player')->get($self->$_id);
       };
 
       *{$method_name . '_name'} = sub {

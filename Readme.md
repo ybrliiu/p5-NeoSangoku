@@ -3,7 +3,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-* Letter model 仕様変更, 国宛他国へも送信できるように
 * Rowオブジェクと modelローダ化
 * Rowオブジェクトの処理共通化
 * template設定ファイルは必要なさそう(serviceで定数化)
