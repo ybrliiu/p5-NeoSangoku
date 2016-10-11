@@ -72,7 +72,7 @@
   // init
   (function () {
     
-    var c = new sangoku.Player;
+    var c = new sangoku.player;
     c.registFunctionToList();
 
   }());

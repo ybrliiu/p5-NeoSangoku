@@ -2,11 +2,11 @@
 
 (function () {
 
-  sangoku.namespace('Player');
+  sangoku.namespace('player');
 
-  sangoku.Player = function () {};
+  sangoku.player = function () {};
 
-  var PROTOTYPE = sangoku.Player.prototype;
+  var PROTOTYPE = sangoku.player.prototype;
 
   PROTOTYPE.genMouseOverFunction = function (li) {
     // childNodes[1] = <ul>
@@ -24,7 +24,7 @@
       var li = playerMenu[i];
       li.addEventListener('mouseover', this.genMouseOverFunction(li), false);
       li.addEventListener('mouseout', this.genMouseOutFunction(li), false);
-      // remove mypage link.
+      // without mypage link.
       if (i === 3) {
         i += 2;
       }

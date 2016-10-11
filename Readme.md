@@ -3,12 +3,11 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-* Rowオブジェクと modelローダ化
+* test の eval "require ..." を load に
 * Rowオブジェクトの処理共通化
 * template設定ファイルは必要なさそう(serviceで定数化)
-* js 名前空間全て先頭小文字に
 * API, Rowローダは別に必要なさそう？
-* test の eval "require ..." を load に
+* js, scss 外部ファイル化
 
 * country_position, town country_name
 SQL見なおすべきか？
