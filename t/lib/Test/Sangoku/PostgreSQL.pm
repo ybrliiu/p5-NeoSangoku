@@ -104,7 +104,7 @@ __END__
 
   # テストするために必要な環境を構築する
   {
-    eval "require $model";
+    load $model;
     $model->init;
   }
 

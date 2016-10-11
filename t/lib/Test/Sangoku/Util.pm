@@ -1,6 +1,6 @@
 package Test::Sangoku::Util {
 
-  use Sangoku;
+  use Sangoku 'test';
 
   use Exporter 'import';
   our @EXPORT_OK = qw/TEST_PLAYER_DATA create_test_player prepare_player_model_tests prepare_country_model_tests/;
@@ -43,7 +43,7 @@ package Test::Sangoku::Util {
   }
 
   sub prepare_player_model_tests {
-    eval "require Sangoku::Model::$_" for qw/Country Town Player/;
+    load "Sangoku::Model::$_" for qw/Country Town Player/;
     "Sangoku::Model::$_"->init() for qw/Country Town/;
     my $klass = 'Sangoku::Model::Player';
     $klass->create($klass->ADMINISTARTOR_DATA->{player});
@@ -51,7 +51,7 @@ package Test::Sangoku::Util {
 
   sub prepare_country_model_tests {
     my $klass = 'Sangoku::Model::Country';
-    eval "require $klass";
+    load $klass;
     my $neutral_data = $klass->NEUTRAL_DATA;
     $klass->create({
       name  => $neutral_data->{name},

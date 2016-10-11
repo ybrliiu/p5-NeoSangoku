@@ -11,7 +11,7 @@ my $TR = Test::Record->new();
 
 # テストの下準備
 {
-  eval "require Sangoku::Model::$_" for qw/Country Town Player/;
+  load "Sangoku::Model::$_" for qw/Country Town Player/;
   "Sangoku::Model::$_"->init() for qw/Country Town Player/;
 }
 

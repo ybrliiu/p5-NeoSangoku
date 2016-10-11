@@ -11,7 +11,7 @@ my $PLAYER_DATA = $TEST_CLASS->ADMINISTARTOR_DATA->{player};
 
 # テストの下準備
 {
-  eval "require Sangoku::Model::$_" for qw/Country Town/;
+  load "Sangoku::Model::$_" for qw/Country Town/;
   "Sangoku::Model::$_"->init() for qw/Country Town/;
 }
 
