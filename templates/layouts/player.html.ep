@@ -1,8 +1,9 @@
 % # playerのhtmlの外枠
 % extends 'layouts/wrapper';
 % content container => begin
-  %= javascript '/js/jquery-3.1.0.min.js';
-  %= javascript '/js/sangoku/player.js';
+
+%= javascript '/js/jquery-3.1.0.min.js';
+%= javascript '/js/sangoku/player.js';
 
 </head>
 <body>
@@ -15,7 +16,7 @@
       <li><a href="/" target="_blank">・説明書</a></li>
       <li><a href="/" target="_blank">・雑談BBS</a></li>
       <li><a href="/" target="_blank">・歴代統一国</a></li>
-      <li><a href="/" target="_blank">・アイコン一覧</a></li>
+      <li><a href="/outer/icon-list" target="_blank">・アイコン一覧</a></li>
       <li><a href="/" target="_blank">・改造履歴</a></li>
       <li><a href="/" target="_blank">・困った時は</a></li>
     </ul>
@@ -52,7 +53,7 @@
   <li>▼ゲーム情報
     <ul>
       <li><a href="/outer/map" target="_blank">・勢力図</a></li>
-      <li><a href="/outer/allplayer" target="_blank">・登録武将一覧</a></li>
+      <li><a href="/outer/player-list" target="_blank">・登録武将一覧</a></li>
       <li><a href="/" target="_blank">・名将一覧</a></li>
       <li><a href="/" target="_blank">・国力比較</a></li>
     </ul>

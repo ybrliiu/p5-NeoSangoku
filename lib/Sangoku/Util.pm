@@ -20,6 +20,8 @@ package Sangoku::Util {
   use Path::Tiny;
   use Module::Load;
 
+  use constant CONFIG_DIR_PATH => 'etc/config/';
+
   # プロジェクトルートディレクトリ取得
   sub project_root_dir {
     state $dir;
@@ -31,7 +33,9 @@ package Sangoku::Util {
   # 設定ファイル読み込み
   sub load_config {
     my ($path) = @_;
-    config_do(project_root_dir() . $path);
+    state $config_dir_path = CONFIG_DIR_PATH;
+    $path =~ s/$config_dir_path// if $path =~ /$config_dir_path/;
+    config_do(project_root_dir() . $config_dir_path . $path);
   }
 
   # 引数ハッシュのチェック
@@ -88,7 +92,7 @@ package Sangoku::Util {
     my $iter = path($dir)->iterator({recurse => 1});
     my @list;
     while (my $path = $iter->()) {
-      if ($path !~ /^Base/ && $path =~ /\.pm$/) {
+      if ($path !~ /Base/ && $path =~ /\.pm$/) {
         $path =~ s!$root!!g;
         $path =~ s!.pm$!!;
         $path =~ s!/!::!g;

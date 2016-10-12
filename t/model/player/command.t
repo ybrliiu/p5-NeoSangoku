@@ -1,10 +1,9 @@
 use Sangoku 'test';
 use Test::Record;
 
-use Sangoku::Model::Player::Command;
-
 my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::Player::Command';
+load $TEST_CLASS;
 my $OBJ;
 my $PLAYER_ID = 'test_player';
 
@@ -22,7 +21,6 @@ subtest 'init' => sub {
 
   my $max = $TEST_CLASS->CLASS->MAX();
   is($list->[$max - 1]->id, $none->{id});
-
 
 };
 

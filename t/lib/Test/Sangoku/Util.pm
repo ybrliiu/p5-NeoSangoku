@@ -1,6 +1,7 @@
 package Test::Sangoku::Util {
 
-  use Sangoku 'test';
+  use Sangoku;
+  use Module::Load;
 
   use Exporter 'import';
   our @EXPORT_OK = qw/TEST_PLAYER_DATA create_test_player prepare_player_model_tests prepare_country_model_tests/;

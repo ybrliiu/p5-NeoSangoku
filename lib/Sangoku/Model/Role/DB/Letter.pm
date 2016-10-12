@@ -32,8 +32,15 @@ package Sangoku::Model::Role::DB::Letter {
   }
 
   sub get {
-    my ($self) = @_;
-    my @columns = $self->db->search($self->TABLE_NAME, $self->where, {order_by => 'id DESC'});
+    my ($self, $limit) = @_;
+    my @columns = $self->db->search(
+      $self->TABLE_NAME,
+      $self->where,
+      {
+        order_by => 'id DESC',
+        defined $limit ? (limit => $limit) : (),
+      },
+    );
     return \@columns;
   }
 
