@@ -3,7 +3,7 @@ package Sangoku::Model::Command {
   use Mouse;
   use Sangoku;
 
-  use Sangoku::Util qw/load_child_module load_config/;
+  use Sangoku::Util qw/load_child_module load_config load validate_values/;
 
   sub get_list {
     my ($class) = @_;
@@ -33,12 +33,14 @@ package Sangoku::Model::Command {
     state $instances = {};
     return $instances->{$command_name} if exists $instances->{$command_name};
     (my $module  = "$class::$command_name") =~ s/Model/API/g;
+    load $module;
     $instances->{$command_name} = $module->new();
   }
 
   sub input {
-    my ($class, $command_name, $args) = @_;
-    my $command = $class->_instances($command_name);
+    my ($class, $args) = @_;
+    validate_values($args => [qw/player_id command_name/]);
+    my $command = $class->_instances($args->{command_name});
     $command->input($args);
   }
 

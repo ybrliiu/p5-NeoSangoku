@@ -47,6 +47,7 @@ package Sangoku::Service::Player::Mypage {
       towns          => $towns,
       map_data       => $class->model('Town')->get_all_for_map($towns),
       town           => $player->town,
+      command_list   => $class->model('Command')->get_list(),
       site           => $class->model('Site')->get(),
       map_log        => $class->model('MapLog')->get($config->{LOG}{MAP_LOG}),
       letter         => $letter,

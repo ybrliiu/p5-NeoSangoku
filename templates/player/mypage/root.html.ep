@@ -349,15 +349,15 @@ $letter-padding: 5px;
       <td id="command-list" rowspan="2">
         <form name="send">
           <select name="mode" size="10">
-          % for (0 .. 10) {
-            % if (ref $_) {
-              % if ( $_->{permit}->($player) ) {
-              <option value="<%= $_->{id} %>"><%= $_->{name} %></option>
-              % }
-            % }else{
-              <optgroup label="== <%= $_ %> ==">
-            % }
+        % for my $command (@$command_list) {
+          % if (ref $command && $command->permit($player)) {
+            <option value="<%= $command->id %>" select-page="<%= $command->select_page %>">
+              <%= $command->name %>
+            </option>
+          % } else {
+            <optgroup label="== <%= $command %> ==">
           % }
+        % }
           </select>
           <br>
           <input id="submit-command" type="button" value="送信">
@@ -481,7 +481,7 @@ $letter-padding: 5px;
 
     var input = new sangoku.player.mypage.inputCommand;
     input.registFunctions();
-    input.send();
+    input.send('get');
 
     var controll = new sangoku.player.mypage.controllCommand;
     controll.registFunctions();

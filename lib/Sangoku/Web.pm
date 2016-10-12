@@ -135,7 +135,7 @@ package Sangoku::Web {
         {
           my $command = $mypage->any('/command')->to(controller => 'Player::Mypage::Command');
           $command->any( '/'      )->to(action => 'root');
-          $command->post('/input ')->to(action => 'input');
+          $command->post('/input' )->to(action => 'input');
           $command->post('/select')->to(action => 'select');
         }
       }

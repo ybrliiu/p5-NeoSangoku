@@ -10,6 +10,14 @@ package Sangoku::Web::Controller::Player::Mypage::Command {
     $self->render(%$result);
   }
 
+  sub input {
+    my ($self) = @_;
+    my ($player_id, $json) = ($self->session('id'), $self->req->json);
+    $json->{player_id} = $player_id;
+    $self->service->input($json);
+    $self->redirect_to('/player/mypage/command');
+  }
+
 }
 
 1;

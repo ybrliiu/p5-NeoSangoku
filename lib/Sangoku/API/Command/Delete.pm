@@ -1,19 +1,19 @@
-package Sangoku::API::Command::Insert {
+package Sangoku::API::Command::Delete {
 
   use Mouse;
   use Sangoku;
   use Carp qw/croak/;
 
-  has 'name' => (is => 'ro', isa => 'Str', default => '空白を入れる');
+  has 'name' => (is => 'ro', isa => 'Str', default => 'コマンドを削除');
 
   with 'Sangoku::API::Command::Base';
 
-  # method name is input but this module is insert command.
+  # method name input but this module delete command.
   sub input {
     my ($self, $args) = @_;
-    validate_values($args => [qw/player_id insert_numbers num/]);
+    validate_values($args => [qw/player_id numbers/]);
     my $model = $self->model('Player::Command')->new(id => $args->{player_id});
-    $model->insert($args->{insert_numbers}, $args->{num});
+    $model->delete($args->{numbers});
   }
 
   sub execute { croak 'Insert Command cant execute!!' }
