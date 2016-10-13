@@ -18,9 +18,10 @@ subtest 'input' => sub {
   my $model = Sangoku::Model::Player::Command->new(id => $player_id);
   $model->init();
 
-  ok $TEST_CLASS->input('FarmDev', {
-    player_id => $player_id,
-    numbers   => [0 .. 3],
+  ok $TEST_CLASS->input({
+    command_name => 'FarmDev',
+    player_id    => $player_id,
+    numbers      => [0 .. 3],
   });
 
   my $command_list = $model->get(10);

@@ -10,7 +10,7 @@ package Sangoku::Model::Town {
 
   sub init {
     my ($class) = @_;
-    my $init_data = load_config('etc/config/data/init_town.conf')->{'init_town'};
+    my $init_data = load_config('data/init_town.conf')->{'init_town'};
     $class->db->bulk_insert(TABLE_NAME, $init_data);
   }
 

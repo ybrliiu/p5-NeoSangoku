@@ -249,8 +249,8 @@ h2 {
 
 /* 文字色 */
 @mixin charcter-color($color) {
-  color:$color;
-  font-weight:bold;
+  color: $color;
+  font-weight: bold;
 }
 .black { @include charcter-color($black); }
 .blue { @include charcter-color($blue); }

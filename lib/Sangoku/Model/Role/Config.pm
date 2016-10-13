@@ -8,7 +8,7 @@ package Sangoku::Model::Role::Config {
 
   sub config {
     my ($class) = @_;
-    state $config = load_config('etc/config/data/' . $class->FILE . '.conf')->{$class->FILE};
+    state $config = load_config('data/' . $class->FILE . '.conf')->{$class->FILE};
   }
 
   sub to_hash {

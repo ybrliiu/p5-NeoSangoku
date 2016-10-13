@@ -18,7 +18,7 @@ package Sangoku::Model::Role::DB {
       my ($dsn, $user) = ($ENV{TEST_POSTGRESQL}, $ENV{TEST_POSTGRESQL_USER});
       $db = Sangoku::DB->new(connect_info => [$dsn, $user]);
     } else {
-      my $config = load_config('etc/config/db.conf');
+      my $config = load_config('db.conf');
       $db = Sangoku::DB->new(%$config);
     }
   }

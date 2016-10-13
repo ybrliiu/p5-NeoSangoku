@@ -1,10 +1,9 @@
 use Sangoku 'test';
 use Test::Record;
 
-use Sangoku::Model::AdminLog;
-
 my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::AdminLog';
+load $TEST_CLASS;
 
 subtest 'init' => sub {
   $TEST_CLASS->init();

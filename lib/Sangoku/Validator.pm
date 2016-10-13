@@ -41,8 +41,8 @@ package Sangoku::Validator {
   sub load_default_messages {
     my ($self) = @_;
     $self->set_message_data({
-      param    => load_config('etc/config/validator/params.conf')->{params},
-      function => load_config('etc/config/validator/messages.conf')->{messages},
+      param    => load_config('validator/params.conf')->{params},
+      function => load_config('validator/messages.conf')->{messages},
     });
   }
 

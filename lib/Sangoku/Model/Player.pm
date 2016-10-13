@@ -13,7 +13,7 @@ package Sangoku::Model::Player {
   };
 
   sub ADMINISTARTOR_DATA() {
-    my $site = load_config('etc/config/site.conf')->{'site'};
+    my $site = load_config('site.conf')->{'site'};
     my $equipments_status = {
       player_id => $site->{admin_id},
       power     => 0,
@@ -47,7 +47,8 @@ package Sangoku::Model::Player {
 
   sub create {
     my ($class, $args) = @_;
-    validate_values($args => [qw/id name pass icon country_name town_name force intellect leadership popular loyalty update_time/]);
+    validate_values($args => [qw/id name pass icon country_name town_name
+      force intellect leadership popular loyalty update_time/]);
     $class->db->do_insert(TABLE_NAME, $args);
   }
 

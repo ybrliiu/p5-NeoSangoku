@@ -16,7 +16,7 @@ package Sangoku::API::Site {
   has 'start_time' => (is => 'rw', isa => 'Int', required => 1);
 
   sub _build_game_year {
-    my $game_year = load_config('etc/config/site.conf')->{site}{start_year};
+    my $game_year = load_config('site.conf')->{site}{start_year};
     return $game_year;
   }
 

@@ -76,7 +76,7 @@ package Sangoku::DB::Row::Player {
 
   {
 
-    my $lank = load_config('etc/config/data/lank.conf')->{lank};
+    my $lank = load_config('data/lank.conf')->{lank};
     my $LANK_MAX = @$lank;
 
     sub lank {

@@ -6,7 +6,6 @@
   
   /* 
      args.uri = websocket url
-     args.playerId = <%= $player->id %>
      args.limit = {
        country : 15,
        invite  : 5,
@@ -18,10 +17,10 @@
 
   sangoku.player.mypage.sendLetter = function (args) {
     var self = this;
-    this.playerId = args.playerId;
     this.limit = args.limit;
 
     this.ws = new WebSocket(args.uri);
+
     this.ws.onmessage = function (eve) {
       var json = JSON.parse(eve.data);
       var parentDom = document.getElementById(json.type + '-letter').children[0];
@@ -29,6 +28,7 @@
       self.createNewLetter(parentDom, json);
       self.removeLastChild(parentDom, json.type);
     };
+
     this.ws.close = function() {
       // 接続閉じた後少し間隔を入れないとページ遷移の時にも接続閉じたことに反応する
       var count = 0;
@@ -59,7 +59,6 @@
        if (!message.value) { return false; }
        var json = {
          'type' : to.children[to.selectedIndex].className,
-         'sender_id' : this.playerId,
          'message' : message.value,
        };
        dispatchFunction[json.type](json, to.children[to.selectedIndex].value);

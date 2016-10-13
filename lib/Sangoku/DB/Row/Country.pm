@@ -10,7 +10,7 @@ package Sangoku::DB::Row::Country {
       NAME_LEN_MIN => 1,
       NAME_LEN_MAX => 16,
     },
-    COLOR => load_config('etc/config/color.conf')->{countrycolor},
+    COLOR => load_config('color.conf')->{countrycolor},
   };
 
   sub position {

@@ -19,6 +19,8 @@ package Sangoku::Web::Controller::Player::Mypage {
     # JSONオブジェクトをWebSocketを通して受ける
     $self->on(json => sub {
       my ($c, $json) = @_;
+      my $player_id = $self->session('id');
+      $json->{sender_id} = $player_id;
       $json->{message} =~ s/(\n|\r\n|\r)/<br>/g;
       my $letter_data = $c->service->write_letter($json);
       $c->events->emit(chat => $letter_data); # イベントを発行

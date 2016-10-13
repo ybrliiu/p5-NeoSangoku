@@ -3,7 +3,7 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```
-* Util config_load etc/config の部分は省略できるように
+* t/ テストするモジュールのload部分をload関数に
 * Rowオブジェクトの処理共通化
 * template設定ファイルをどうするか
 * API, Rowローダは別に必要なさそう？

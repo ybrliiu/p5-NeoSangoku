@@ -1,12 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="../assets/cache/base-6a0591c2da.css">
     <title>Welcome to the Mojolicious real-time web framework!</title>
-  </head>
-  <body>
+
+<style>
+
+.command-select {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+}
+
+.content-small {
+  position: absolute;
+  background-color: #F8F8F8;
+  border: 1px #666 solid;
+  min-height: 200px;
+  min-width: 200px;
+  width: 20%;
+  height: 20%;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+</style>
+
+</head>
+<body>
 <section>
+
 <div id="wrapper">
+
+  <div class="command-select">
+    <div class="content-small">
+      <p>注入する空白の数を指定してください:</p>
+      <select name="insert">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+      <br>
+      <input type="button" value="決定">
+    </div>
+  </div>
+
   <div class="inner_around">見出し</div>
   <!-- 2カラムレイアウト -->
   <div class="inner">

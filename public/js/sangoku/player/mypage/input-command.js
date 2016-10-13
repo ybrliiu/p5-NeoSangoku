@@ -41,8 +41,8 @@
       var e = document.getElementsByName("no");
       var array = new Array();
       var num = 0;
-      for(var i = 0 ; i < e.length; i++){
-        if(e[i].checked){
+      for (var i = 0 ; i < e.length; i++) {
+        if (e[i].checked) {
           array[num] = e[i].value;
           num++;
         }

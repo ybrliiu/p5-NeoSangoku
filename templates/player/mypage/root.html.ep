@@ -82,6 +82,40 @@
   }
 }
 
+/* コマンド付加情報選択部 */
+#select-command-result {
+  display: none;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+@mixin select-command($width, $height) {
+  position: absolute;
+  background-color: #F8F8F8;
+  border: 1px #666 solid;
+  min-height: 200px;
+  min-width: 200px;
+  $p: %;
+  width: #{$width}#{$p};
+  height: #{$height}#{$p};
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.select-command-narrow { @include select-command(20, 20); }
+.select-command-nomal { @include select-command(50, 50); }
+.select-command-wide { @include select-command(80, 80); }
+
+
 /* 手紙送信部 */
 #letter-send { width: 100%; }
 
@@ -337,6 +371,11 @@ $letter-padding: 5px;
   </table>
 </div>
 
+<!-- コマンド選択部分 -->
+<div id="select-command-result">
+  <!-- ここに結果が -->
+</div>
+
 <div class="grid-right" id="controll-command">
   <table class="table-<%= $country->color %> width-100pc">
     <tr>
@@ -351,7 +390,7 @@ $letter-padding: 5px;
           <select name="mode" size="10">
         % for my $command (@$command_list) {
           % if (ref $command && $command->permit($player)) {
-            <option value="<%= $command->id %>" select-page="<%= $command->select_page %>">
+            <option value="<%= $command->id %>" class="select-page-<%= $command->select_page %>">
               <%= $command->name %>
             </option>
           % } else {
@@ -381,7 +420,7 @@ $letter-padding: 5px;
       <input id="select" type="button" value="選択">
       </form>
       <input id="remove-allcheck" type="button" value="選択全解除">
-    <!-- 
+    <!--
       <input id="user-select-text" type="button" value="コマンドリストのテキストを選択可能にする">
       <input id="user-select-none" type="button" value="コマンドリストのテキストを選択不可能にする">
     -->
@@ -474,7 +513,7 @@ $letter-padding: 5px;
 </div>
 
 <script>
-  
+
   'use strict';
 
   (function () {
@@ -495,7 +534,6 @@ $letter-padding: 5px;
 
     var sendLetter = new sangoku.player.mypage.sendLetter({
       'uri' : '<%= url_for('/player/mypage/channel')->to_abs->scheme('ws') %>',
-      'playerId' : '<%= $player->id %>',
       'limit' : limit,
     });
     sendLetter.registFunctions();

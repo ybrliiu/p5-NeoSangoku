@@ -16,7 +16,6 @@ package Sangoku::Service::Player::Mypage::Command {
   sub input {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id command_name/]);
-
     my $model = $class->model('Command');
     $model->input($args);
   }

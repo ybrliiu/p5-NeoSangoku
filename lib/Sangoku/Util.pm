@@ -33,9 +33,7 @@ package Sangoku::Util {
   # 設定ファイル読み込み
   sub load_config {
     my ($path) = @_;
-    state $config_dir_path = CONFIG_DIR_PATH;
-    $path =~ s/$config_dir_path// if $path =~ /$config_dir_path/;
-    config_do(project_root_dir() . $config_dir_path . $path);
+    config_do(CONFIG_DIR_PATH . $path);
   }
 
   # 引数ハッシュのチェック
