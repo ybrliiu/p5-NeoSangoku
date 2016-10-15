@@ -90,7 +90,7 @@ package Sangoku::Util {
     my $iter = path($dir)->iterator({recurse => 1});
     my @list;
     while (my $path = $iter->()) {
-      if ($path !~ /Base/ && $path =~ /\.pm$/) {
+      if ($path !~ /(Base|Role)/ && $path =~ /\.pm$/) {
         $path =~ s!$root!!g;
         $path =~ s!.pm$!!;
         $path =~ s!/!::!g;

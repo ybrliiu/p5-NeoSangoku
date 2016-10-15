@@ -5,7 +5,7 @@ package Sangoku::API::Command::BusinessDev {
 
   has 'name' => (is => 'ro', isa => 'Str', default => '商業開発');
 
-  with 'Sangoku::API::Command::Base';
+  with 'Sangoku::API::Command::Role::Base';
 
   sub execute {
     my ($self, $player) = @_;

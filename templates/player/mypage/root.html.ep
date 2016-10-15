@@ -399,7 +399,7 @@ $letter-padding: 5px;
           <select name="commandId" size="10">
         % for my $command (@$command_list) {
           % if (ref $command && $command->permit($player)) {
-            <option value="<%= $command->id %>,<%= $command->select_page %>">
+            <option value="<%= $command->id %>,<%= $command->has_option %>">
               <%= $command->name %>
             </option>
           % } else {

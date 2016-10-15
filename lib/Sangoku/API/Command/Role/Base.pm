@@ -1,4 +1,4 @@
-package Sangoku::API::Command::Base {
+package Sangoku::API::Command::Role::Base {
 
   use Mouse::Role;
   use Sangoku;
@@ -7,15 +7,12 @@ package Sangoku::API::Command::Base {
   use Sangoku::Util qw/validate_values model/;
   use Carp qw/croak/;
 
-  # name => attr, execute => method
-  requires qw/
-    name
-    execute
-  /;
+  # name => attr
+  requires qw/name/;
 
-  has 'id'          => (is => 'ro', isa => 'Str', builder => '_build_id');
-  has 'select_page' => (is => 'ro', isa => 'Int', default => 0);
-  has 'input_data'  => (is => 'rw', isa => 'HashRef', lazy => 1, builder => '_build_input_data');
+  has 'id'         => (is => 'ro', isa => 'Str', builder => '_build_id');
+  has 'has_option' => (is => 'ro', isa => 'Int', default => 0);
+  has 'input_data' => (is => 'rw', isa => 'HashRef', lazy => 1, builder => '_build_input_data');
 
   sub _build_id {
     my ($self) = @_;
@@ -38,11 +35,6 @@ package Sangoku::API::Command::Base {
     validate_values($args => [qw/player_id numbers/]);
     my $model = $self->model('Player::Command')->new(id => $args->{player_id});
     $model->input($self->input_data, $args->{numbers});
-  }
-
-  sub select {
-    my ($self) = @_;
-    croak $self->name . 'コマンドは select method を実行できません.' if $self->select_page == 0;
   }
 
   sub execute {

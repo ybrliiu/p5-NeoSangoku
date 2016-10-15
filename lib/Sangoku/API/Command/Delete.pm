@@ -6,7 +6,7 @@ package Sangoku::API::Command::Delete {
 
   has 'name' => (is => 'ro', isa => 'Str', default => 'コマンドを削除');
 
-  with 'Sangoku::API::Command::Base';
+  with 'Sangoku::API::Command::Role::Base';
 
   # method name input but this module delete command.
   sub input {

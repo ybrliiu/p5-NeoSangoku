@@ -5,7 +5,7 @@ package Sangoku::API::Command::None {
 
   has 'name' => (is => 'ro', isa => 'Str', default => '何もしない');
 
-  with 'Sangoku::API::Command::Base';
+  with 'Sangoku::API::Command::Role::Base';
 
   sub execute {
     my ($self, $player) = @_;

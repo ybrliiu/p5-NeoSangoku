@@ -3,13 +3,15 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
-* API::Command select role 作成, base role 場所変更
+* API::Command choose_option validate
 
 * t/ テストするモジュールのload部分をload関数に
 * Rowオブジェクトの処理共通化
 * template設定ファイルをどうするか
 * API, Rowローダは別に必要なさそう？
 * js, scss 外部ファイル化, head読み込みシステム
+
+* 部隊操作
 
 * plugin -> web 名前空間へ？
 * web.pm の処理 外部ファイルに切り出し

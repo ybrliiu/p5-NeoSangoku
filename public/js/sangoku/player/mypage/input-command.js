@@ -81,13 +81,13 @@
     var selectCommandId = document.inputCommand.commandId.value;
     var splits = selectCommandId.split(',');
     var commandId = splits[0];
-    var selectPage = Number(splits[1]);
+    var hasOption = Number(splits[1]);
     var json = {
       'numbers' : array,
       'command_id' : commandId,
     };
 
-    if (selectPage === 0) {
+    if (!hasOption) {
       this.send('input', json);
     } else {
       chooseField.style.display = 'block';

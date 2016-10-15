@@ -1,6 +1,6 @@
 use Sangoku 'test';
 
-my $TEST_CLASS = 'Sangoku::API::Command::Base';
+my $TEST_CLASS = 'Sangoku::API::Command::Role::Base';
 
 lives_ok {
   package Sangoku::API::Command::TestCommand {

@@ -19,9 +19,9 @@ subtest 'input' => sub {
   $model->init();
 
   ok $TEST_CLASS->input({
-    command_name => 'FarmDev',
-    player_id    => $player_id,
-    numbers      => [0 .. 3],
+    command_id => 'FarmDev',
+    player_id  => $player_id,
+    numbers    => [0 .. 3],
   });
 
   my $command_list = $model->get(10);
