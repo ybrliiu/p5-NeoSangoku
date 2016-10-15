@@ -44,11 +44,11 @@ package Sangoku::Model::Command {
     $command->input($args);
   }
 
-  sub select {
+  sub choose_option {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id command_id/]);
     my $command = $class->_instances($args->{command_id});
-    $command->select($args);
+    $command->choose_option($args);
   }
 
   sub execute {

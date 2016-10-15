@@ -45,7 +45,7 @@ sub prepare_tables {
 
 sub prepare_dir {
 
-  my $player_model = Sangoku::Model::Player;
+  my $player_model = 'Sangoku::Model::Player';
   load $player_model;
   my @modules = map { "Sangoku::API::Player::$_" } @{ $player_model->CHILD_RECORD_MODULES };
   load $_ for @modules;

@@ -23,7 +23,8 @@ package Sangoku::API::Command::Insert {
     $model->insert($args->{numbers}, $args->{insert_number});
   }
 
-  sub select {
+  # choose option 
+  sub choose_option {
     my ($self, $args) = @_;
     validate_values($args => [qw/player_id current_page numbers/]);
 

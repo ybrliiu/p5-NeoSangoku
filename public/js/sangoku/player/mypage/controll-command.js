@@ -16,8 +16,8 @@
   var PROTOTYPE = sangoku.player.mypage.controllCommand.prototype;
 
   PROTOTYPE.changeUserSelect = function (type) {
-    $("#user-select-text").toggle();
-    $("#user-select-none").toggle();
+    $("#can-select-command-text").toggle();
+    $("#cant-select-command-text").toggle();
     $("#command td span").css("user-select", type).css("-moz-user-select", type).css("-webkit-user-select", type).css("-ms-user-select", type);
   };
   
@@ -49,36 +49,29 @@
     }
   };
 
-  PROTOTYPE.selectList = function () {
+  PROTOTYPE.selectNumbers = function () {
     var select;
-    var dom = document.getElementsByName("no");
-    var start = parseInt(document.select.start.value) - 1;
-    var interval = parseInt(document.select.interval.value);
-    var domLength = dom.length;
-    for (select = 0; select < domLength; select++) {
-      dom[select].checked = false;
-      var box = document.getElementById(select);
-      box.style.backgroundColor = "#ffffff"; 
-      box.style.color = "#000000"; 
+    var no = document.getElementsByName("no");
+    var selectForm = document.selectCommandNumber;
+    var start = Number(selectForm.start.value) - 1;
+    var interval = Number(selectForm.interval.value);
+    var noLength = no.length;
+    for (select = 0; select < noLength; select++) {
+      no[select].checked = false;
+      var tr = document.getElementById(select);
+      tr.style.backgroundColor = "#ffffff"; 
+      tr.style.color = "#000000"; 
     }
-    for (select = start; select < domLength; select += interval) {
-      dom[select].checked = true;
-      var box = document.getElementById(select);
-      box.style.backgroundColor = "#4682B4"; 
-      box.style.color = "#ffffff"; 
+    for (select = start; select < noLength; select += interval) {
+      no[select].checked = true;
+      var tr = document.getElementById(select);
+      tr.style.backgroundColor = "#4682B4"; 
+      tr.style.color = "#ffffff"; 
     }
   };
 
   PROTOTYPE.registFunctions = function () {
     var self = this;
-
-    $("#remove-allcheck").mouseup(function(){
-      $("#command input").prop('checked', false);
-      $("#command tr").css("background", "#FFFFFF").css("color", "#000000");
-    });
-  
-    $("#user-select-text").mouseup(function () { self.changeUserSelect("text"); });
-    $("#user-select-none").mouseup(function () { self.changeUserSelect("none"); });
   
     $(window).keydown(function (e) {
       if (e.keyCode === 16) { self.keyHit = 1; }
@@ -109,7 +102,15 @@
       }
     });
     
-    document.getElementById('select').addEventListener('click', self.selectList, false);
+    document.selectCommandNumber.select.addEventListener('click', self.selectNumbers, false);
+
+    $(document.selectCommandNumber.unCheckAll).mouseup(function () {
+      $("#command input").prop('checked', false);
+      $("#command tr").css("background", "#FFFFFF").css("color", "#000000");
+    });
+  
+    $("#can-select-command-text").mouseup(function () { self.changeUserSelect("text"); });
+    $("#cant-select-command-text").mouseup(function () { self.changeUserSelect("none"); });
   
   };
 

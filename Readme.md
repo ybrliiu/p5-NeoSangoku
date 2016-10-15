@@ -3,7 +3,7 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
-* API::Command select role 作成, base role 場所変更 & select って名前はふさわしくないよね
+* API::Command select role 作成, base role 場所変更
 
 * t/ テストするモジュールのload部分をload関数に
 * Rowオブジェクトの処理共通化

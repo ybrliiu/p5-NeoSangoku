@@ -1,5 +1,5 @@
 %# 空白注入数選択画面
-<div class="select-command-narrow">
+<div class="command-option-narrow">
   <p>挿入する空白の数を選択してください：</p>
   <select name="insert_number">
 % for (1 .. 24) {
@@ -7,5 +7,5 @@
 % }
   </select>
   <br>
-  <input id="select-command-submit" type="button" value="送信">
+  <input id="submit-command-option" type="button" value="送信">
 </div>

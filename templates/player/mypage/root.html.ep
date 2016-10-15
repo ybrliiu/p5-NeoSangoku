@@ -40,6 +40,7 @@
   }
 }
 
+/* コマンド操作部 */
 #controll-command {
   width: 100%;
 
@@ -48,7 +49,7 @@
     width: 50%;
     text-align: center;
   }
-  #user-select-none { display: none; }
+  #cant-select-command-text { display: none; }
 
   // to command/root.html.ep
   #wrap-command {
@@ -90,7 +91,7 @@
 }
 
 /* コマンド付加情報選択部 */
-#select-command {
+#choose-command-option {
   display: none;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
@@ -99,7 +100,7 @@
   top: 0;
 }
 
-@mixin select-command($width, $height) {
+@mixin command-option($width, $height) {
   position: absolute;
   background-color: #F8F8F8;
   border: 1px #666 solid;
@@ -118,9 +119,9 @@
   right: 0;
 }
 
-.select-command-narrow { @include select-command(20, 20); }
-.select-command-nomal { @include select-command(50, 50); }
-.select-command-wide { @include select-command(80, 80); }
+.command-option-narrow { @include command-option(20, 20); }
+.command-option-nomal { @include command-option(50, 50); }
+.command-option-wide { @include command-option(80, 80); }
 
 
 /* 手紙送信部 */
@@ -379,8 +380,8 @@ $letter-padding: 5px;
 </div>
 
 <!-- コマンドオプション選択画面がここで表示される -->
-<div id="select-command">
-  <div id="select-command-result">
+<div id="choose-command-option">
+  <div id="command-option-result">
   </div>
 </div>
 
@@ -394,8 +395,8 @@ $letter-padding: 5px;
         <%# ここにajaxで/player/commandの内容が表示される #%>
       </td>
       <td id="command-list" rowspan="2">
-        <form name="send">
-          <select name="command" size="10">
+        <form name="inputCommand">
+          <select name="commandId" size="10">
         % for my $command (@$command_list) {
           % if (ref $command && $command->permit($player)) {
             <option value="<%= $command->id %>,<%= $command->select_page %>">
@@ -407,29 +408,29 @@ $letter-padding: 5px;
         % }
           </select>
           <br>
-          <input id="submit-command" type="button" value="送信">
+          <input name="input" type="button" value="送信">
         </form>
       </td>
     </tr>
     <tr><td>
-      <form name="select">
-      <select name="start">
-      % for (1 .. 48) {
-        <option value="<%= $_ %>"><%= $_ %></option>
-      % }
-      </select>
-      から
-      <select name="interval">
-      % for (1 .. 24) {
-        <option value="<%= $_ %>"><%= $_ %></option>
-      % }
-      </select>
-      の倍数毎に
-      <input id="select" type="button" value="選択">
+      <form name="selectCommandNumber">
+        <select name="start">
+        % for (1 .. 48) {
+          <option value="<%= $_ %>"><%= $_ %></option>
+        % }
+        </select>
+        から
+        <select name="interval">
+        % for (1 .. 24) {
+          <option value="<%= $_ %>"><%= $_ %></option>
+        % }
+        </select>
+        の倍数毎に
+        <input name="select" type="button" value="選択">
+        <input name="unCheckAll" type="button" value="選択全解除">
       </form>
-      <input id="remove-allcheck" type="button" value="選択全解除">
-      <input id="user-select-text" type="button" value="コマンドリストのテキストを選択可能にする">
-      <input id="user-select-none" type="button" value="コマンドリストのテキストを選択不可能にする">
+      <input id="can-select-command-text" type="button" value="コマンドリストのテキストを選択可能にする">
+      <input id="cant-select-command-text" type="button" value="コマンドリストのテキストを選択不可能にする">
     </td></tr>
   </table>
 </div>

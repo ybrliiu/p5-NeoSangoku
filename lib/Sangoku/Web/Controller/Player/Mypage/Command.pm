@@ -20,11 +20,11 @@ package Sangoku::Web::Controller::Player::Mypage::Command {
     $self->redirect_to('/player/mypage/command');
   }
 
-  sub select {
+  sub choose_option {
     my ($self) = @_;
     my ($player_id, $json) = ($self->session('id'), $self->req->json);
     $json->{player_id} = $player_id;
-    my $result = $self->service->select($json);
+    my $result = $self->service->choose_option($json);
     my $html = $self->render_to_string($result->{next_page_name});
     $result->{render_html} = $html;
     $self->render(json => $result);
