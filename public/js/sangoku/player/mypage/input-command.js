@@ -29,19 +29,27 @@
         type : 'post',
       }).done( function(data, textStatus, jqXHR) {
 
+        // commandのオプションを選択するとき
         if (typeof data === 'object') {
 
           document.getElementById('select-command-result').innerHTML = data.render_html;
           var selectForm = document.getElementsByName(data.form_name)[0];
 
           document.getElementById('select-command-submit').addEventListener('click', function () {
+
             var json = {
+              'current_page' : data.next_page,
               'numbers' : data.numbers,
               'command_id' : data.command_id,
             };
             json[data.form_name] = selectForm.value;
-            self.send('input', json);
-            document.getElementById('select-command').style.display = 'none';
+
+            if (data.max_page === data.next_page) {
+              self.send('input', json);
+              document.getElementById('select-command').style.display = 'none';
+            } else {
+              self.send('select', json);
+            }
           }, false);
 
         } else {
@@ -71,22 +79,25 @@
 
     document.getElementById('submit-command').addEventListener('click', function (eve) {
 
-      var e = document.getElementsByName("no");
-      var array = new Array();
+      var numbers = document.getElementsByName("no");
+      var numbersLength = numbers.length;
+
+      var array = [];
       var num = 0;
-      for (var i = 0 ; i < e.length; i++) {
-        if (e[i].checked) {
-          array[num] = e[i].value;
+      for (var i = 0 ; i < numbersLength; i++) {
+        if (numbers[i].checked) {
+          array[num] = numbers[i].value;
           num++;
         }
       }
+      if (num === 0) { return false; }
 
-      var selectCommand = document.forms.send.mode.value;
+      var selectCommand = document.forms.send.command.value;
       var splits = selectCommand.split(',');
       var commandId = splits[0];
       var selectPage = Number(splits[1]);
       var json = {
-        'numbers' : [].concat(array),
+        'numbers' : array,
         'command_id' : commandId,
       };
 

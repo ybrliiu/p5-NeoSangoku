@@ -70,19 +70,18 @@
 
   // 手紙リストの区切り要素を作成
   PROTOTYPE.createNewLine = function (parentDom) {
-    var newLine = document.createElement('tr');
-    newLine.innerHTML = '<td colspan="2" class="line"></td>';
-    parentDom.insertBefore(newLine, parentDom.firstChild);
+    parentDom.insertAdjacentHTML('afterbegin', '<tr><td colspan="2" class="line"></td></tr>');
   };
 
   // 手紙追加
   PROTOTYPE.createNewLetter = function (parentDom, json) {
-    var newDom = document.createElement('tr');
-    newDom.innerHTML = '<td class="letter-icon"><img src="/images/icons/' + json.sender_icon + '.gif"></td>'
-      + '<td class="letter-message">' + json.sender_name + '@<span class="thin">' + json.sender_town_name
-      + '@' + json.receiver_name + 'から' + json.receiver_name + 'へ</span><br>『'
-      + json.message + '』<br><div class="thin">' + json.time + '</div></td>';
-    parentDom.insertBefore(newDom, parentDom.firstChild);
+    parentDom.insertAdjacentHTML(
+      'afterbegin',
+      '<td class="letter-icon"><img src="/images/icons/' + json.sender_icon + '.gif"></td>'
+        + '<td class="letter-message">' + json.sender_name + '@<span class="thin">' + json.sender_town_name
+        + '@' + json.receiver_name + 'から' + json.receiver_name + 'へ</span><br>『'
+        + json.message + '』<br><div class="thin">' + json.time + '</div></td>'
+    );
   };
 
   // 表示数上限を超えたDOMを削除

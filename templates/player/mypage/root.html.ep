@@ -395,7 +395,7 @@ $letter-padding: 5px;
       </td>
       <td id="command-list" rowspan="2">
         <form name="send">
-          <select name="mode" size="10">
+          <select name="command" size="10">
         % for my $command (@$command_list) {
           % if (ref $command && $command->permit($player)) {
             <option value="<%= $command->id %>,<%= $command->select_page %>">
