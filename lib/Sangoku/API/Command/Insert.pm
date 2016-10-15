@@ -29,7 +29,7 @@ package Sangoku::API::Command::Insert {
 
     $args->{current_page}++;
     return {
-      command_name   => $self->id,
+      command_id     => $self->id,
       numbers        => $args->{numbers},
       next_page      => $args->{current_page},
       next_page_name => "/player/mypage/command/@{[ lc $self->id ]}_$args->{current_page}",

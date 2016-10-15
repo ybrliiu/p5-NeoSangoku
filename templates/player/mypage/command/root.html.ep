@@ -2,15 +2,21 @@
 <div id="wrap-command" class="scroll">
   <table id="command">
     <tr>
-      <th colspan="3">コマンド入力</th>
+      <th colspan="3">
+        <span>コマンド入力</span>
+      </th>
     </tr>
     % for (0 .. @$command - 1) {
     <tr id="<%= $_ %>">
       <td>
-        <input type="checkbox" name="no" value="<%= $_ %>"><%= $_ + 1 %>
+        <input type="checkbox" name="no" value="<%= $_ %>">
+        <span><%= $_ + 1 %></span>
       </td>
       <td>
-        <%= $command->[$_]->id %></td><td><%= $command->[$_]->detail %>
+        <span><%= $command->[$_]->id %></span>
+      </td>
+      <td>
+        <span><%= $command->[$_]->detail %></span>
       </td>
     </tr>
     % }

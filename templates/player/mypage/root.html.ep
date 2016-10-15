@@ -48,7 +48,7 @@
     width: 50%;
     text-align: center;
   }
-  #user-select-text { display: none; }
+  #user-select-none { display: none; }
 
   // to command/root.html.ep
   #wrap-command {
@@ -61,24 +61,31 @@
     border-collapse: separate;
     border-spacing: 1px;
 
- // user-select: none;
- // @each $prefix in -webkit-, -moz-, -ms-, "" {
- //   #{$prefix}user-select: none;
- // }
+    %select-none {
+      span {
+        user-select: none;
+        @each $prefix in -webkit-, -moz-, -ms-, "" {
+          #{$prefix}user-select: none;
+        }
+      }
+    }
 
     input { display: none; }
+    tr {
+      background-color: ' . $config->{color}{white} . ';
+    }
     td {
       text-align: center;
       padding: 3px;
       background-color: rgba(0,0,0,0);
+      @extend %select-none;
+      &:nth-child(1) { width: 10px; }
     }
     th {
       @extend td;
       background-color: ' . $config->{color}{black} . ';
       color: ' . $config->{color}{white} . ';
-      &:nth-first { width: 0; }
     }
-    tr { background-color: ' . $config->{color}{white} . '; }
   }
 }
 
@@ -371,6 +378,7 @@ $letter-padding: 5px;
   </table>
 </div>
 
+<!-- コマンドオプション選択画面がここで表示される -->
 <div id="select-command">
   <div id="select-command-result">
   </div>
@@ -420,10 +428,8 @@ $letter-padding: 5px;
       <input id="select" type="button" value="選択">
       </form>
       <input id="remove-allcheck" type="button" value="選択全解除">
-    <!--
       <input id="user-select-text" type="button" value="コマンドリストのテキストを選択可能にする">
       <input id="user-select-none" type="button" value="コマンドリストのテキストを選択不可能にする">
-    -->
     </td></tr>
   </table>
 </div>
@@ -476,11 +482,11 @@ $letter-padding: 5px;
 
 <%# 手紙のリストを表示する関数 #%>
 <% my $letter_list = begin %>
- % my ($type, $title, $options) = @_;
+ % my ($type, $title) = @_;
   <div id="<%= $type %>-letter-title">
     <strong><%= $title %></strong>（<%= $view_config->{LETTER}{uc $type} %>件）
   </div>
-  <table <%== 'class="adjust-bottom"' if $options->{adjust_bottom} %> id="<%= $type %>-letter">
+  <table id="<%= $type %>-letter">
   <tbody>
   % for (@{ $letter->{$type} }) {
     <tr>

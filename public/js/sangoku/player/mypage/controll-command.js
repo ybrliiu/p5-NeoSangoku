@@ -18,7 +18,7 @@
   PROTOTYPE.changeUserSelect = function (type) {
     $("#user-select-text").toggle();
     $("#user-select-none").toggle();
-    $("#command").css("user-select", type).css("-moz-user-select", type).css("-webkit-user-select", type).css("-ms-user-select", type);
+    $("#command td span").css("user-select", type).css("-moz-user-select", type).css("-webkit-user-select", type).css("-ms-user-select", type);
   };
   
   PROTOTYPE.addCheck = function (checkId) {

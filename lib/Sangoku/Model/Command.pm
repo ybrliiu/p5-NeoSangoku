@@ -29,31 +29,31 @@ package Sangoku::Model::Command {
   }
 
   sub _instances {
-    my ($class, $command_name) = @_;
+    my ($class, $command_id) = @_;
     state $instances = {};
-    return $instances->{$command_name} if exists $instances->{$command_name};
-    (my $module  = "$class::$command_name") =~ s/Model/API/g;
+    return $instances->{$command_id} if exists $instances->{$command_id};
+    (my $module  = "$class::$command_id") =~ s/Model/API/g;
     load $module;
-    $instances->{$command_name} = $module->new();
+    $instances->{$command_id} = $module->new();
   }
 
   sub input {
     my ($class, $args) = @_;
-    validate_values($args => [qw/player_id command_name/]);
-    my $command = $class->_instances($args->{command_name});
+    validate_values($args => [qw/player_id command_id/]);
+    my $command = $class->_instances($args->{command_id});
     $command->input($args);
   }
 
   sub select {
     my ($class, $args) = @_;
-    validate_values($args => [qw/player_id command_name/]);
-    my $command = $class->_instances($args->{command_name});
+    validate_values($args => [qw/player_id command_id/]);
+    my $command = $class->_instances($args->{command_id});
     $command->select($args);
   }
 
   sub execute {
-    my ($class, $command_name, $args) = @_;
-    my $command = $class->_instances($command_name);
+    my ($class, $command_id, $args) = @_;
+    my $command = $class->_instances($command_id);
     $command->execute($args);
   }
   

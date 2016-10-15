@@ -15,14 +15,14 @@ package Sangoku::Service::Player::Mypage::Command {
 
   sub input {
     my ($class, $args) = @_;
-    validate_values($args => [qw/player_id command_name/]);
+    validate_values($args => [qw/player_id command_id/]);
     my $model = $class->model('Command');
     $model->input($args);
   }
 
   sub select {
     my ($class, $args) = @_;
-    validate_values($args => [qw/player_id command_name current_page numbers/]);
+    validate_values($args => [qw/player_id command_id current_page numbers/]);
     my $model = $class->model('Command');
     my $next_info = $model->select($args);
     return $next_info;

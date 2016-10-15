@@ -2,7 +2,11 @@
 CGIゲーム三国志NETを新しく作りなおしたゲームです。  
 
 # next
-```
+```      
+* コマンド Js側でのチェック
+* API::Command select role 作成, base role 場所変更
+* select js部分調整、コード整理
+
 * t/ テストするモジュールのload部分をload関数に
 * Rowオブジェクトの処理共通化
 * template設定ファイルをどうするか

@@ -28,6 +28,7 @@
         contentType : 'application/JSON',
         type : 'post',
       }).done( function(data, textStatus, jqXHR) {
+
         if (typeof data === 'object') {
 
           document.getElementById('select-command-result').innerHTML = data.render_html;
@@ -36,7 +37,7 @@
           document.getElementById('select-command-submit').addEventListener('click', function () {
             var json = {
               'numbers' : data.numbers,
-              'command_name' : data.command_name,
+              'command_id' : data.command_id,
             };
             json[data.form_name] = selectForm.value;
             self.send('input', json);
@@ -46,6 +47,7 @@
         } else {
           document.getElementById('command-result').innerHTML = data;
         }
+
       }).fail( function(jqXHR, textStatus, errorThrown) {
         alert("ajax通信失敗" + "jqXHR:" + jqXHR + " textStatus:" + textStatus + " errorThrown:" + errorThrown);
       });
@@ -81,22 +83,21 @@
 
       var selectCommand = document.forms.send.mode.value;
       var splits = selectCommand.split(',');
-      var commandName = splits[0];
+      var commandId = splits[0];
       var selectPage = Number(splits[1]);
+      var json = {
+        'numbers' : [].concat(array),
+        'command_id' : commandId,
+      };
 
       if (selectPage === 0) {
-        self.send('input', {
-          'numbers' : [].concat(array),
-          'command_name' : commandName,
-        });
+        self.send('input', json);
       } else {
         selectField.style.display = 'block';
-        self.send('select', {
-          'current_page' : 0,
-          'numbers' : [].concat(array),
-          'command_name' : commandName,
-        });
+        json['current_page'] = 0;
+        self.send('select', json);
       }
+
     }, false);
 
   };
