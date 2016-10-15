@@ -83,7 +83,7 @@
 }
 
 /* コマンド付加情報選択部 */
-#select-command-result {
+#select-command {
   display: none;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
@@ -371,9 +371,9 @@ $letter-padding: 5px;
   </table>
 </div>
 
-<!-- コマンド選択部分 -->
-<div id="select-command-result">
-  <!-- ここに結果が -->
+<div id="select-command">
+  <div id="select-command-result">
+  </div>
 </div>
 
 <div class="grid-right" id="controll-command">
@@ -390,7 +390,7 @@ $letter-padding: 5px;
           <select name="mode" size="10">
         % for my $command (@$command_list) {
           % if (ref $command && $command->permit($player)) {
-            <option value="<%= $command->id %>" class="select-page-<%= $command->select_page %>">
+            <option value="<%= $command->id %>,<%= $command->select_page %>">
               <%= $command->name %>
             </option>
           % } else {

@@ -1,0 +1,10 @@
+<div class="select-command-narrow">
+  <p>挿入する空白の数を選択してください：</p>
+  <select name="insert_number">
+% for (1 .. 24) {
+    <option value="<%= $_ %>"><%= $_ %></option>
+% }
+  </select>
+  <br>
+  <input id="select-command-submit" type="button" value="送信">
+</div>

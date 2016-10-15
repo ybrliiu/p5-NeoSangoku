@@ -5,6 +5,7 @@ package Sangoku::API::Command::Base {
 
   # model is model loader method.
   use Sangoku::Util qw/validate_values model/;
+  use Carp qw/croak/;
 
   # name => attr, execute => method
   requires qw/
@@ -37,6 +38,16 @@ package Sangoku::API::Command::Base {
     validate_values($args => [qw/player_id numbers/]);
     my $model = $self->model('Player::Command')->new(id => $args->{player_id});
     $model->input($self->input_data, $args->{numbers});
+  }
+
+  sub select {
+    my ($self) = @_;
+    croak $self->name . 'コマンドは select method を実行できません.' if $self->select_page == 0;
+  }
+
+  sub execute {
+    my ($self) = @_;
+    croak $self->name . 'コマンドは execute method を実行できません。...もしくは実装されていません。';
   }
 
   sub permit {

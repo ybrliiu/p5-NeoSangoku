@@ -41,11 +41,14 @@ package Sangoku::Model::Player::Command {
   }
 
   sub insert {
-    my ($self, $insert_numbers, $num) = @_;
+    my ($self, $numbers, $insert_number) = @_;
+
     state $none = CLASS->new(NONE_DATA);
+    $none->detail('');
+
     my $record  = $self->record();
     $record->open('LOCK_EX');
-    $record->insert($none, $insert_numbers, $num);
+    $record->insert($none, $numbers, $insert_number);
     $record->close();
   }
 
