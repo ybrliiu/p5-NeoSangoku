@@ -5,6 +5,7 @@ package Sangoku::API::Command::Role::Base {
 
   # model is model loader method.
   use Sangoku::Util qw/validate_values model/;
+  use Sangoku::Validator;
   use Carp qw/croak/;
 
   # name => attr

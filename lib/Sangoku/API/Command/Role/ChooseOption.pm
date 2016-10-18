@@ -6,7 +6,7 @@ package Sangoku::API::Command::Role::ChooseOption {
   use Carp qw/croak/;
   use Sangoku::Util qw/validate_values/;
 
-  requires qw/name _build_options/;
+  requires qw/name _build_options _choose_last_option/;
 
   with 'Sangoku::API::Command::Role::Base';
 
@@ -19,30 +19,40 @@ package Sangoku::API::Command::Role::ChooseOption {
     return scalar @{ $self->options };
   }
 
-  sub input {
-    my ($self, $args) = @_;
-    validate_values($args => [qw/player_id numbers/, @{ $self->options }]);
-    my $model = $self->model('Player::Command')->new(id => $args->{player_id});
-    $model->input($self->input_data, $args->{numbers});
-  }
+  around 'input' => sub {
+    my ($orig, $self, $args) = @_;
+    validate_values($args => [qw/player_id next_page numbers/]);
 
-  sub choose_option {
-    my ($self, $args) = @_;
-    validate_values($args => [qw/player_id current_page numbers/]);
-
-    my $form_name = defined $self->options->[$args->{current_page}]
-      ? $self->options->[$args->{current_page}]
-      : croak 'オプションが存在しません。';
-    my $next_page = $args->{current_page} + 1;
+    my ($stash, $error) = $self->$orig($args);
+    my $current_page = $error->has_error ? $args->{next_page} - 1 : $args->{next_page};
+    my $next_page = $current_page + 1;
+    my $form_name = $self->options->[$current_page];
+    my $result = do {
+      if ($current_page == $self->options_length && !$error->has_error) {
+        +{complete => 1};
+      } else {
+        +{
+          command_id     => $self->id,
+          numbers        => $args->{numbers},
+          next_page      => $next_page,
+          next_page_name => "/player/mypage/command/choose_option/@{[ lc $self->id ]}_$current_page",
+          form_name      => $form_name,
+        };
+      }
+    };
 
     return {
-      command_id     => $self->id,
-      numbers        => $args->{numbers},
-      next_page      => $next_page,
-      next_page_name => "/player/mypage/command/choose_option/@{[ lc $self->id ]}_$next_page",
-      max_page       => $self->options_length,
-      form_name      => $form_name,
+      result => $result,
+      stash  => $stash,
+      error  => $error,
     };
+  };
+
+  sub validator {
+    my ($class, $args) = @_;
+    my $validator = Sangoku::Validator->new($args);
+    $validator->load_default_messages();
+    return $validator;
   }
 
 }

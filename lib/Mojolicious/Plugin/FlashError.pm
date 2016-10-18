@@ -63,11 +63,13 @@ package Mojolicious::Plugin::FlashError {
     my $fill_in_form = HTML::FillInForm::Lite->new(fill_password => 1);
   
     $app->helper(render_fill_error => sub {
-      my ($c, $file) = @_;
+      my ($c, $file, $options) = @_;
       $file //= '';
-      my $html = $c->render_to_string();
-      my $error = $c->stash('error');
+      $options //= {};
+      my $html = $c->render_to_string($file);
+      my $error = $c->stash('error') // {};
       my $fill = $fill_in_form->fill(\$html, $error);
+      return $fill if exists $options->{to_string};
       $c->render(text => $fill);
     });
 

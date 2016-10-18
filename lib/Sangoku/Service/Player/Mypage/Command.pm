@@ -20,14 +20,6 @@ package Sangoku::Service::Player::Mypage::Command {
     $model->input($args);
   }
 
-  sub choose_option {
-    my ($class, $args) = @_;
-    validate_values($args => [qw/player_id command_id current_page numbers/]);
-    my $model = $class->model('Command');
-    my $next_info = $model->choose_option($args);
-    return $next_info;
-  }
-
 }
 
 1;

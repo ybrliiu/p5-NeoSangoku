@@ -6,30 +6,28 @@
   
   sangoku.namespace('player.mypage.inputCommand');
 
-  sangoku.player.mypage.inputCommand = function () {};
+  sangoku.player.mypage.inputCommand = function () {
+    this.chooseField = document.getElementById('choose-command-option');
+    this.optionResult = document.getElementById('command-option-result');
+  };
 
   var PROTOTYPE = sangoku.player.mypage.inputCommand.prototype;
 
   PROTOTYPE.sendOption = function (data) {
     var optionForm = document.getElementsByName(data.form_name)[0];
     var json = {
-      'current_page' : data.next_page,
+      'next_page' : data.next_page,
       'numbers' : data.numbers,
       'command_id' : data.command_id,
     };
     json[data.form_name] = optionForm.value;
-
-    if (data.max_page === data.next_page) {
-      this.send('input', json);
-      document.getElementById('choose-command-option').style.display = 'none';
-    } else {
-      this.send('chooseOption', json);
-    }
+    this.send('input', json);
   };
 
   PROTOTYPE.chooseOption = function (data) {
     var self = this;
-    document.getElementById('command-option-result').innerHTML = data.render_html;
+    console.log(data);
+    this.optionResult.innerHTML = data.render_html;
     document.getElementById('submit-command-option').addEventListener('click', function () { self.sendOption(data); }, false);
   };
 
@@ -38,7 +36,6 @@
     var dispatchUrl = {
       'get' : '/player/mypage/command',
       'input' : '/player/mypage/command/input',
-      'chooseOption' : '/player/mypage/command/choose-option',
     };
     
     PROTOTYPE.send = function (type, json) {
@@ -55,6 +52,7 @@
         if (typeof data === 'object') {
           self.chooseOption(data);
         } else {
+          self.chooseField.style.display = 'none';
           document.getElementById('command-result').innerHTML = data;
         }
       }).fail( function(jqXHR, textStatus, errorThrown) {
@@ -64,7 +62,7 @@
 
   }());
 
-  PROTOTYPE.inputCommand = function (chooseField) {
+  PROTOTYPE.inputCommand = function () {
     var numbers = document.getElementsByName("no");
     var numbersLength = numbers.length;
 
@@ -90,25 +88,21 @@
     if (!hasOption) {
       this.send('input', json);
     } else {
-      chooseField.style.display = 'block';
-      json['current_page'] = 0;
-      this.send('chooseOption', json);
+      this.chooseField.style.display = 'block';
+      json['next_page'] = 0;
+      this.send('input', json);
     }
   };
 
   PROTOTYPE.registFunctions = function () {
     var self = this;
-    var chooseField = document.getElementById('choose-command-option');
-    
     // choose option window を閉じる
-    chooseField.addEventListener('click', function (eve) {
-      chooseField.style.display = 'none';
+    this.chooseField.addEventListener('click', function (eve) {
+      self.chooseField.style.display = 'none';
     }, false);
-
     // windowが閉じないようにする
-    document.getElementById('command-option-result').addEventListener('click', function (eve) { eve.stopPropagation(); }, false);
-
-    document.inputCommand.input.addEventListener('click', function (eve) { self.inputCommand(chooseField); }, false);
+    this.optionResult.addEventListener('click', function (eve) { eve.stopPropagation(); }, false);
+    document.inputCommand.input.addEventListener('click', function (eve) { self.inputCommand(); }, false);
   };
 
 }());

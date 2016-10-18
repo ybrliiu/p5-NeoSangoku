@@ -44,13 +44,6 @@ package Sangoku::Model::Command {
     $command->input($args);
   }
 
-  sub choose_option {
-    my ($class, $args) = @_;
-    validate_values($args => [qw/player_id command_id/]);
-    my $command = $class->_instances($args->{command_id});
-    $command->choose_option($args);
-  }
-
   sub execute {
     my ($class, $command_id, $args) = @_;
     my $command = $class->_instances($command_id);
