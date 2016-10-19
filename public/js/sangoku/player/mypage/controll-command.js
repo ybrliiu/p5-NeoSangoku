@@ -77,6 +77,11 @@
     }
   };
 
+  PROTOTYPE.moveDistance = function (point) {
+    return Math.abs(this.startPointX - point.pageX)
+    + Math.abs(this.startPointY === point.pageY);
+  };
+
   PROTOTYPE.registFunctions = function () {
     var self = this;
 
@@ -90,9 +95,7 @@
 
       $("#command-result").on('touchend', '#command tr', function (eve) {
         var point = eve.changedTouches[0];
-        if ( this.startPointX === point.pageX
-          && this.startPointY === point.pageY
-        ) {
+        if (self.moveDistance(point) < 20) {
           self.checkId = Number( $(this).attr("id") );
           $("#command input[value=" + self.checkId + "]").prop('checked')
             ? self.removeCheck(self.checkId)
