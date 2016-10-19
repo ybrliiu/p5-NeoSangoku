@@ -7,6 +7,10 @@
 
 </head>
 <body>
+
+<section>
+<div id="wrapper">
+
 <div id="player-menu">
   <div></div>
   <li>▼ゲーム関連
@@ -59,9 +63,6 @@
     </ul>
   </li>
 </div>
-
-<section>
-<div id="wrapper">
 
 % # 中身を表示
 <%= content %>

@@ -3,11 +3,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
-* JavaScript touch対応
-send-letter
-scrollしたときのも反応するのはどうすれば
-メニュー閉じるのがちゃんとしてない
-
 * template設定ファイルをどうするか, 定数の扱いをどうするか
 * templateでの定数の表示について
 

@@ -79,7 +79,7 @@
 
   PROTOTYPE.moveDistance = function (point) {
     return Math.abs(this.startPointX - point.pageX)
-    + Math.abs(this.startPointY === point.pageY);
+    + Math.abs(this.startPointY - point.pageY);
   };
 
   PROTOTYPE.registFunctions = function () {
@@ -87,13 +87,12 @@
 
     if (self.isMobile) {
 
+      // スクロールした時に touchend に反応しないよう
       $("#command-result").on('touchstart', '#command tr', function (eve) {
         var point = eve.touches[0];
-        this.startPointX = point.pageX;
-        this.startPointY = point.pageY;
-      });
-
-      $("#command-result").on('touchend', '#command tr', function (eve) {
+        self.startPointX = point.pageX;
+        self.startPointY = point.pageY;
+      }).on('touchend', '#command tr', function (eve) {
         var point = eve.changedTouches[0];
         if (self.moveDistance(point) < 20) {
           self.checkId = Number( $(this).attr("id") );
@@ -115,13 +114,12 @@
 
       $("#command-result").on('mousedown', '#command tr', function () {
         self.checkId = Number( $(this).attr("id") );
-        if (!$("#command input[value=" + self.checkId + "]").prop('checked')) {
-          self.addCheck(self.checkId);
-          self.pushShiftSelect(self.addCheck);
-        } else {
-          var box = document.getElementById(self.checkId);
+        if ($("#command input[value=" + self.checkId + "]").prop('checked')) {
           self.removeCheck(self.checkId);
           self.pushShiftSelect(self.removeCheck);
+        } else {
+          self.addCheck(self.checkId);
+          self.pushShiftSelect(self.addCheck);
         }
         self.beforeId = self.checkId;
       });

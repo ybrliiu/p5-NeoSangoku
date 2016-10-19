@@ -24,15 +24,23 @@
   PROTOTYPE.registFunctionToList = function () {
     var playerMenu = document.getElementById('player-menu').childNodes;
     var playerMenuLength = playerMenu.length;
+
     for (var i = 3; i < playerMenuLength; i += 2) {
       var li = playerMenu[i];
-      li.addEventListener(this.eventType('mouseover'), this.genMouseOverFunction(li), false);
+
+      if (this.isMobile) {
+        li.addEventListener('touchstart', this.genMouseOverFunction(li), false);
+      } else {
+        li.addEventListener('mouseover', this.genMouseOverFunction(li), false);
+      }
+
       li.addEventListener('mouseout', this.genMouseOutFunction(li), false);
       // without mypage link.
       if (i === 3) {
         i += 2;
       }
     }
+    
   };
 
 }());
