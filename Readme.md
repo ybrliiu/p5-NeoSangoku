@@ -3,11 +3,13 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
-* API::Command choose_option validate
+* JavaScript touch対応
+
+* template設定ファイルをどうするか, 定数の扱いをどうするか
+* templateでの定数の表示について
 
 * t/ テストするモジュールのload部分をload関数に
 * Rowオブジェクトの処理共通化
-* template設定ファイルをどうするか
 * API, Rowローダは別に必要なさそう？
 * js, scss 外部ファイル化, head読み込みシステム
 

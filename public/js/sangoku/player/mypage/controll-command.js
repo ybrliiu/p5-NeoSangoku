@@ -7,11 +7,14 @@
   sangoku.namespace('player.mypage.controllCommand');
 
   sangoku.player.mypage.controllCommand = function () {
+    sangoku.base.apply(this, arguments);
     this.keyHit = 0;
     this.mouseHit = 0;
     this.beforeId = null;
     this.checkId = null;
   };
+
+  sangoku.inherit(sangoku.base, sangoku.player.mypage.controllCommand);
 
   var PROTOTYPE = sangoku.player.mypage.controllCommand.prototype;
 
@@ -73,14 +76,16 @@
   PROTOTYPE.registFunctions = function () {
     var self = this;
   
-    $(window).keydown(function (e) {
-      if (e.keyCode === 16) { self.keyHit = 1; }
-    });
-    $(window).keyup(function (e) {
-      if (e.keyCode === 16) { self.keyHit = 0; }
-    });
+    if (!this.isMobile) {
+      $(window).keydown(function (e) {
+        if (e.keyCode === 16) { self.keyHit = 1; }
+      });
+      $(window).keyup(function (e) {
+        if (e.keyCode === 16) { self.keyHit = 0; }
+      });
+    }
 
-    $("#command-result").on('mousedown', '#command tr', function () {
+    $("#command-result").on(self.eventType('mousedown'), '#command tr', function () {
       self.checkId = Number( $(this).attr("id") );
       if (!$("#command input[value=" + self.checkId + "]").prop('checked')) {
         self.addCheck(self.checkId);
@@ -93,24 +98,26 @@
       self.beforeId = self.checkId;
     });
   
-    $("#command-result").on('mousedown', '#command', function () { self.mouseHit = 1; });
-    $("#command-result").on('mouseup', '#command', function () { self.mouseHit = 0; });
-    $("#command-result").on('mouseover', '#command tr', function () {
-      if (self.mouseHit) {
-        self.checkId = $(this).attr("id");
-        !$("#command input[value=" + self.checkId + "]").prop('checked') ? self.addCheck(self.checkId) : self.removeCheck(self.checkId);
-      }
-    });
+    if (!this.isMobile) {
+      $("#command-result").on('mousedown', '#command', function () { self.mouseHit = 1; });
+      $("#command-result").on('mouseup', '#command', function () { self.mouseHit = 0; });
+      $("#command-result").on('mouseover', '#command tr', function () {
+        if (self.mouseHit) {
+          self.checkId = $(this).attr("id");
+          !$("#command input[value=" + self.checkId + "]").prop('checked') ? self.addCheck(self.checkId) : self.removeCheck(self.checkId);
+        }
+      });
+    }
     
-    document.selectCommandNumber.select.addEventListener('click', self.selectNumbers, false);
+    document.selectCommandNumber.select.addEventListener(self.eventType('click'), self.selectNumbers, false);
 
-    $(document.selectCommandNumber.unCheckAll).mouseup(function () {
+    $(document.selectCommandNumber.unCheckAll).on(self.eventType('mouseup'), function () {
       $("#command input").prop('checked', false);
       $("#command tr").css("background", "#FFFFFF").css("color", "#000000");
     });
   
-    $("#can-select-command-text").mouseup(function () { self.changeUserSelect("text"); });
-    $("#cant-select-command-text").mouseup(function () { self.changeUserSelect("none"); });
+    $("#can-select-command-text").on(self.eventType('mouseup'), function () { self.changeUserSelect("text"); });
+    $("#cant-select-command-text").on(self.eventType('mouseup'), function () { self.changeUserSelect("none"); });
   
   };
 

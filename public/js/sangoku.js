@@ -5,7 +5,7 @@
 var sangoku = sangoku || {};
 
 // なぜかnameSpaceだと上手く行かない...(予約語？)
-sangoku.namespace = function(pkgName) {
+sangoku.namespace = function (pkgName) {
 
   var parts = pkgName.split('.');
   var parent = sangoku;
@@ -22,3 +22,9 @@ sangoku.namespace = function(pkgName) {
   }
 
 };
+
+sangoku.inherit = function (base, child) {
+  child.prototype = Object.create(base.prototype);
+  child.prototype.constructor = child;
+};
+

@@ -4,7 +4,11 @@
 
   sangoku.namespace('player');
 
-  sangoku.player = function () {};
+  sangoku.player = function () {
+    sangoku.base.apply(this, arguments);
+  };
+
+  sangoku.inherit(sangoku.base, sangoku.player);
 
   var PROTOTYPE = sangoku.player.prototype;
 
@@ -22,7 +26,7 @@
     var playerMenuLength = playerMenu.length;
     for (var i = 3; i < playerMenuLength; i += 2) {
       var li = playerMenu[i];
-      li.addEventListener('mouseover', this.genMouseOverFunction(li), false);
+      li.addEventListener(this.eventType('mouseover'), this.genMouseOverFunction(li), false);
       li.addEventListener('mouseout', this.genMouseOutFunction(li), false);
       // without mypage link.
       if (i === 3) {

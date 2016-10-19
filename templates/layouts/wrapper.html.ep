@@ -9,6 +9,7 @@
   %= asset 'base.css';
   %= asset 'country-table.css';
   %= javascript '/js/sangoku.js';
+  %= javascript '/js/sangoku/base.js';
 % content container => begin
   <%= content %>
 % end
