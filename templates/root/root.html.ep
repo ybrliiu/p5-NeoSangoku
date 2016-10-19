@@ -146,7 +146,7 @@
   <div class="grid width-20pc">
 
     <div id="login-form" class="adjust-bottom">
-      <form action="/player/mypage" method="post">
+      <form action="/player/login" method="post">
         <h2>■ログイン■</h2>
         <%= text_field(id => get_cookie('id') // '', placeholder => 'ユーザーID') %><br>
         <%= password_field('pass', value => get_cookie('pass') // '', placeholder => 'パスワード') %><br>

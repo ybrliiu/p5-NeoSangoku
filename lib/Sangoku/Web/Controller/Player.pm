@@ -28,13 +28,17 @@ package Sangoku::Web::Controller::Player {
     }
   }
 
+  sub login {
+    my ($self) = @_;
+    $self->redirect_to('/player/mypage');
+  }
+
   sub logout {
     my ($self) = @_;
     # encode_utf8 しないと Mojo::Reactor::EV でエラーが起きる
     $self->cookie(logout => Encode::encode_utf8('ログアウトしました。'), {max_age => 1, path => '/'});
     $self->session(expires => 1);
     $self->redirect_to('/');
-    return 1;
   }
 
 }

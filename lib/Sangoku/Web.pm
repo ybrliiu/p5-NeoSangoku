@@ -123,7 +123,8 @@ package Sangoku::Web {
       my $player = $r->any('/player')->to(controller => 'Player');
       $player->get('/logout')->to(action => 'logout');
       my $auth = $player->under->to(action => 'auth');
-      $auth->any('/command-log')->to(action => 'command_log');
+      $auth->post('/login')->to(action => 'login');
+      $auth->any( '/command-log')->to(action => 'command_log');
 
       # /player/mypage
       {
