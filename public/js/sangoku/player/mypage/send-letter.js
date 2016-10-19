@@ -17,8 +17,10 @@
 
   sangoku.player.mypage.sendLetter = function (args) {
     var self = this;
-    this.limit = args.limit;
 
+    sangoku.base.apply(this, arguments);
+
+    this.limit = args.limit;
     this.ws = new WebSocket(args.uri);
 
     this.ws.onmessage = function (eve) {
@@ -43,6 +45,8 @@
     };
 
   };
+
+  sangoku.inherit(sangoku.base, sangoku.player.mypage.sendLetter);
 
   var PROTOTYPE = sangoku.player.mypage.sendLetter.prototype;
 
@@ -95,7 +99,7 @@
 
   PROTOTYPE.registFunctions = function () { 
     var self = this;
-    document.getElementById('letter-submit').addEventListener('click', function(eve) {
+    document.getElementById('letter-submit').addEventListener(self.eventType('click'), function(eve) {
       self.send(document.getElementById('letter-to'), document.getElementById('letter-message'));
     }, false);
   };

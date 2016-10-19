@@ -7,9 +7,12 @@
   sangoku.namespace('player.mypage.inputCommand');
 
   sangoku.player.mypage.inputCommand = function () {
+    sangoku.base.apply(this, arguments);
     this.chooseField = document.getElementById('choose-command-option');
     this.optionResult = document.getElementById('command-option-result');
   };
+
+  sangoku.inherit(sangoku.base, sangoku.player.mypage.inputCommand);
 
   var PROTOTYPE = sangoku.player.mypage.inputCommand.prototype;
 
@@ -28,7 +31,7 @@
     var self = this;
     console.log(data);
     this.optionResult.innerHTML = data.render_html;
-    document.getElementById('submit-command-option').addEventListener('click', function () { self.sendOption(data); }, false);
+    document.getElementById('submit-command-option').addEventListener(self.eventType('click'), function () { self.sendOption(data); }, false);
   };
 
   (function () {
@@ -97,11 +100,11 @@
   PROTOTYPE.registFunctions = function () {
     var self = this;
     // choose option window を閉じる
-    this.chooseField.addEventListener('click', function (eve) {
+    this.chooseField.addEventListener(self.eventType('click'), function (eve) {
       self.chooseField.style.display = 'none';
     }, false);
     // windowが閉じないようにする
-    this.optionResult.addEventListener('click', function (eve) { eve.stopPropagation(); }, false);
+    this.optionResult.addEventListener(self.eventType('click'), function (eve) { eve.stopPropagation(); }, false);
     document.inputCommand.input.addEventListener('click', function (eve) { self.inputCommand(); }, false);
   };
 

@@ -25,7 +25,7 @@
 
   PROTOTYPE.eventType = function (type) {
     if (this.isMobile) {
-      return 'touchstart';
+      return 'touchend';
     } else {
       return type;
     }

@@ -8,10 +8,14 @@
 
   sangoku.player.mypage.controllCommand = function () {
     sangoku.base.apply(this, arguments);
+    if (this.isMobile) {
+      this.startPointX = undefined;
+      this.startPointY = undefined;
+    }
     this.keyHit = 0;
     this.mouseHit = 0;
-    this.beforeId = null;
-    this.checkId = null;
+    this.beforeId = undefined;
+    this.checkId = undefined;
   };
 
   sangoku.inherit(sangoku.base, sangoku.player.mypage.controllCommand);
@@ -75,38 +79,61 @@
 
   PROTOTYPE.registFunctions = function () {
     var self = this;
-  
-    if (!this.isMobile) {
+
+    if (self.isMobile) {
+
+      $("#command-result").on('touchstart', '#command tr', function (eve) {
+        var point = eve.touches[0];
+        this.startPointX = point.pageX;
+        this.startPointY = point.pageY;
+      });
+
+      $("#command-result").on('touchend', '#command tr', function (eve) {
+        var point = eve.changedTouches[0];
+        if ( this.startPointX === point.pageX
+          && this.startPointY === point.pageY
+        ) {
+          self.checkId = Number( $(this).attr("id") );
+          $("#command input[value=" + self.checkId + "]").prop('checked')
+            ? self.removeCheck(self.checkId)
+            : self.addCheck(self.checkId);
+          self.beforeId = self.checkId;
+        }
+      });
+
+    } else {
+
       $(window).keydown(function (e) {
         if (e.keyCode === 16) { self.keyHit = 1; }
       });
       $(window).keyup(function (e) {
         if (e.keyCode === 16) { self.keyHit = 0; }
       });
-    }
 
-    $("#command-result").on(self.eventType('mousedown'), '#command tr', function () {
-      self.checkId = Number( $(this).attr("id") );
-      if (!$("#command input[value=" + self.checkId + "]").prop('checked')) {
-        self.addCheck(self.checkId);
-        self.pushShiftSelect(self.addCheck);
-      } else {
-        var box = document.getElementById(self.checkId);
-        self.removeCheck(self.checkId);
-        self.pushShiftSelect(self.removeCheck);
-      }
-      self.beforeId = self.checkId;
-    });
-  
-    if (!this.isMobile) {
+      $("#command-result").on('mousedown', '#command tr', function () {
+        self.checkId = Number( $(this).attr("id") );
+        if (!$("#command input[value=" + self.checkId + "]").prop('checked')) {
+          self.addCheck(self.checkId);
+          self.pushShiftSelect(self.addCheck);
+        } else {
+          var box = document.getElementById(self.checkId);
+          self.removeCheck(self.checkId);
+          self.pushShiftSelect(self.removeCheck);
+        }
+        self.beforeId = self.checkId;
+      });
+
       $("#command-result").on('mousedown', '#command', function () { self.mouseHit = 1; });
       $("#command-result").on('mouseup', '#command', function () { self.mouseHit = 0; });
       $("#command-result").on('mouseover', '#command tr', function () {
         if (self.mouseHit) {
           self.checkId = $(this).attr("id");
-          !$("#command input[value=" + self.checkId + "]").prop('checked') ? self.addCheck(self.checkId) : self.removeCheck(self.checkId);
+          $("#command input[value=" + self.checkId + "]").prop('checked')
+            ? self.removeCheck(self.checkId)
+            : self.addCheck(self.checkId);
         }
       });
+
     }
     
     document.selectCommandNumber.select.addEventListener(self.eventType('click'), self.selectNumbers, false);
