@@ -11,7 +11,8 @@ subtest 'check' => sub {
 subtest 'new' => sub {
   ok(my $site = $TEST_CLASS->new(start_time => 10000000));
   isa_ok $site, $TEST_CLASS;
-  diag $site->game_year;
+  $site->game_year($site->game_year + 10);
+  is $site->passed_year, 10;
 };
 
 done_testing();

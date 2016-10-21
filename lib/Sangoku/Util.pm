@@ -7,7 +7,8 @@ package Sangoku::Util {
   our @EXPORT_OK = (
     qw/
       project_root_dir load_config validate_values minute_second
-      daytime date datetime child_module_list load_child_module load
+      daytime date datetime child_module_list load_child_module get_all_constants
+      load 
     /,
     @LOADER_METHODS,
   );
@@ -110,6 +111,31 @@ package Sangoku::Util {
       load $module;
     }
     return $list;
+  }
+
+  # package名からそのpkg内の定数一覧を取得
+  sub get_all_constants {
+    my ($pkg) = @_;
+
+    state $cache = {};
+    return $cache->{$pkg} if exists $cache->{$pkg};
+
+    no strict 'refs';
+    my %table = %{"${pkg}::"};
+
+    use strict 'refs';
+    my %constants = map {
+      (my $key = $_) =~ s/${pkg}:://g;
+      my $value = $table{$key};
+      # シンボリックテーブルの要素は通常型グロブだが
+      # 定数の場合はリファレンスである
+      if ($key !~ /([^A-Z0-9_])/ && ref $value) {
+        $key => $$value;
+      } else {
+        ();
+      }
+    } keys %table;
+    $cache->{$pkg} = \%constants;
   }
 
   __PACKAGE__->_generate_loader_method();

@@ -3,14 +3,12 @@ package Sangoku::DB::Row::Country {
   use Sangoku;
   use parent 'Sangoku::DB::Row';
 
-  use Sangoku::Util qw/load_config/;
+  use Sangoku::Util qw/load_config get_all_constants/;
 
   use constant {
-    CONSTANTS => {
-      NAME_LEN_MIN => 1,
-      NAME_LEN_MAX => 16,
-    },
-    COLOR => load_config('color.conf')->{countrycolor},
+    NAME_LEN_MIN => 1,
+    NAME_LEN_MAX => 16,
+    COLOR        => load_config('color.conf')->{countrycolor},
   };
 
   sub position {

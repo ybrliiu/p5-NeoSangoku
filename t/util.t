@@ -21,6 +21,21 @@ subtest 'child_module_list' => sub {
   ok(my @exists = grep { $_ eq 'Sangoku::Model::Player::Command' } @$list);
 };
 
+subtest 'get_all_constants' => sub {
+  package TestPkg {
+    use constant {
+      MAX     => 100,
+      MIN     => 10,
+      KEYWORD => '!?!?!?',
+    };
+  };
+  ok(my $constants = Sangoku::Util::get_all_constants('TestPkg'));
+  diag explain $constants;
+  is $constants->{MAX}, 100;
+  is $constants->{MIN}, 10;
+  is $constants->{KEYWORD}, '!?!?!?';
+};
+
 subtest 'loader' => sub {
   ok(my $model = Sangoku::Util->model('Player'));
   is $model, 'Sangoku::Model::Player';

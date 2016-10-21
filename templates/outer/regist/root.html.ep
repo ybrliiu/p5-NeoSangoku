@@ -247,44 +247,48 @@
         能力
       %= show_error(@$ABILITY_LIST, 'ability');
       </td>
+
+      <%# ability form %>
+      <% my $ability_form = begin %>
+      % my ($ability) = @_;
+      <%= number_field($ability => '', min => $ABILITY_MIN, max => $ability_max,
+        placeholder => "${ABILITY_MIN}〜${ability_max}", class => $error->emphasis('ability')) %>
+      <% end %>
+
       <td>
         <table class="layout">
           <tr>
             <td>武力</td>
             <td>
-              <%= number_field(force => '', min => $ABILITY_MIN, max => $ABILITY_MAX,
-                placeholder => "${ABILITY_MIN}〜${ABILITY_MAX}", class => $error->emphasis('ability')) %>
+              %= $ability_form->('force');
               ・主に攻撃力に影響します。
             </td>
           </tr>
           <tr>
             <td>知力</td>
             <td>
-              <%= number_field(intellect => '', min => $ABILITY_MIN, max => $ABILITY_MAX,
-                placeholder => "${ABILITY_MIN}〜${ABILITY_MAX}", class => $error->emphasis('ability')) %>
+              %= $ability_form->('intellect');
               ・主に内政の効果に影響します。
             </td>
           </tr>
           <tr>
             <td>統率力</td>
             <td>
-              <%= number_field(leadership => '', min => $ABILITY_MIN, max => $ABILITY_MAX,
-                placeholder => "${ABILITY_MIN}〜${ABILITY_MAX}", class => $error->emphasis('ability')) %>
+              %= $ability_form->('leadership');
               ・雇うことができる兵士数の最大値になります。
             </td>
           </tr>
           <tr>
             <td>人望</td>
             <td>
-              <%= number_field(popular => '', min => $ABILITY_MIN, max => $ABILITY_MAX,
-                placeholder => "${ABILITY_MIN}〜${ABILITY_MAX}", class => $error->emphasis('ability')) %>
+              %= $ability_form->('popular');
               ・主に農民関係の内政の効果に影響します。
             </td>
           </tr>
         </table>
         <ul>
           <li>能力を指定して下さい。1つの能力に特化させることをお勧めします。　【各能力の説明】　【能力振り分けの例】</li>
-          <li>全能力の合計が<span class="red"><%= $ABILITY_SUM %></span>になるようにして下さい！
+          <li>全能力の合計が<span class="red"><%= $ability_sum %></span>になるようにして下さい！
             ［現在の合計値：<strong id="ability-sum"></strong>］
           </li>
         </ul>

@@ -4,22 +4,26 @@ package Sangoku::DB::Row::Player {
   use parent 'Sangoku::DB::Row';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/load_config/;
+  use Sangoku::Util qw/load_config get_all_constants/;
 
   use constant {
-    CONSTANTS => {
-      NAME_LEN_MIN    => 1,
-      NAME_LEN_MAX    => 15,
-      ID_LEN_MIN      => 6,
-      ID_LEN_MAX      => 16,
-      PASS_LEN_MIN    => 6,
-      PASS_LEN_MAX    => 16,
-      LOYALTY_MIN     => 0,
-      LOYALTY_MAX     => 100,
-      PROFILE_LEN_MAX => 1000,
-      MAIL_LEN_MAX    => 40,
-    },
+    NAME_LEN_MIN    => 1,
+    NAME_LEN_MAX    => 15,
+    ID_LEN_MIN      => 6,
+    ID_LEN_MAX      => 16,
+    PASS_LEN_MIN    => 6,
+    PASS_LEN_MAX    => 16,
+    LOYALTY_MIN     => 0,
+    LOYALTY_MAX     => 100,
+    PROFILE_LEN_MAX => 1000,
+    MAIL_LEN_MAX    => 40,
+
     ABILITY_LIST      => [qw/force intellect leadership popular/],
+    ABILITY_MIN       => 1,
+    ABILITY_MAX_BASE  => 100,
+    ABILITY_SUM_BASE  => 160,
+    ABILITY_COEF      => 0.9,
+
     EQUIPMENT_LIST    => [qw/weapon guard book/],
     LANK_UP           => 500,   # 階級アップに必要な階級値
 		DELETE_TURN       => 72,    # 放置削除にかかるターン数
@@ -40,6 +44,16 @@ package Sangoku::DB::Row::Player {
           : $self->model("Player::$class_name")->get($self->id);
       };
     }
+  }
+
+  sub ability_max {
+    my ($class, $passed_year) = @_;
+    return ABILITY_MAX_BASE + int($passed_year * ABILITY_COEF);
+  }
+
+  sub ability_sum {
+    my ($class, $passed_year) = @_;
+    return ABILITY_SUM_BASE + int($passed_year * ABILITY_COEF);
   }
 
   sub command_log {

@@ -11,25 +11,19 @@ package Sangoku::Service::Outer::Regist {
     my ($class) = @_;
 
     my $towns = $class->model('Town')->get_all();
+    my $site = $class->model('Site')->get();
+    my $passed_year = $site->passed_year();
 
     return {
-      %{ Sangoku::DB::Row::Player->CONSTANTS },
-      %{ $class->_calc_ability_limits },
-      ABILITY_LIST         => Sangoku::DB::Row::Player->ABILITY_LIST,
+      %{ Sangoku::DB::Row::Player->get_all_constants },
+      ability_max          => Sangoku::DB::Row::Player->ability_max($passed_year),
+      ability_sum          => Sangoku::DB::Row::Player->ability_sum($passed_year),
       COUNTRY_COLOR        => Sangoku::DB::Row::Country->COLOR,
-      COUNTRY_NAME_LEN_MIN => Sangoku::DB::Row::Country->CONSTANTS->{NAME_LEN_MIN},
-      COUNTRY_NAME_LEN_MAX => Sangoku::DB::Row::Country->CONSTANTS->{NAME_LEN_MAX},
+      COUNTRY_NAME_LEN_MIN => Sangoku::DB::Row::Country->NAME_LEN_MIN,
+      COUNTRY_NAME_LEN_MAX => Sangoku::DB::Row::Country->NAME_LEN_MAX,
       ICONS_DIR_PATH       => $class->model('IconList')->ICONS_DIR_PATH,
       current_player       => $class->model('Player')->count_all,
       towns                => $towns,
-    };
-  }
-
-  sub _calc_ability_limits {
-    return {
-      ABILITY_MAX => 100,
-      ABILITY_MIN => 1,
-      ABILITY_SUM => 160,
     };
   }
 
@@ -49,12 +43,12 @@ package Sangoku::Service::Outer::Regist {
     # validate player info
     {
       # number_for_validation -> nfv
-      state $nfv = {
-        %{ Sangoku::DB::Row::Player->CONSTANTS },
-        %{ $class->_calc_ability_limits },
-      };
+      state $nfv = Sangoku::DB::Row::Player->get_all_constants();
       my %nfv = %$nfv;
-      my $ability_list = Sangoku::DB::Row::Player->ABILITY_LIST;
+      my $site = $class->model('Site')->get();
+      my $passed_year = $site->passed_year();
+      $nfv{ability_max} = Sangoku::DB::Row::Player->ability_max($passed_year);
+      $nfv{ability_sum} = Sangoku::DB::Row::Player->ability_sum($passed_year);
 
       $validator->set_message('id.length' => "[_1]は$nfv{ID_LEN_MIN}文字以上$nfv{ID_LEN_MAX}文字以下で入力してください。");
       $validator->set_message('id.regex' => "[_1]で使用可能な文字は半角英数字及び'_'だけです。");
@@ -68,8 +62,8 @@ package Sangoku::Service::Outer::Regist {
         id   => ['NOT_NULL', [REGEX => qr/^[a-zA-Z0-9_]+$/], [LENGTH => ($nfv{ID_LEN_MIN}, $nfv{ID_LEN_MAX})]],
         pass => ['NOT_NULL', 'ASCII', [LENGTH => ($nfv{PASS_LEN_MIN}, $nfv{PASS_LEN_MAX})]],
         (map {
-          $_ => ['NOT_NULL', [BETWEEN => ($nfv{ABILITY_MIN}, $nfv{ABILITY_MAX})]]
-        } @$ability_list),
+          $_ => ['NOT_NULL', [BETWEEN => ($nfv{ABILITY_MIN}, $nfv{ability_max})]]
+        } @{ $nfv{ABILITY_LIST} }),
         loyalty => ['NOT_NULL', [LENGTH => ($nfv{LOYALTY_MIN}, $nfv{LOYALTY_MAX})]],
         profile => [[LENGTH => (0, $nfv{PROFILE_LEN_MAX})]],
         mail    => ['ASCII', [LENGTH => (0, $nfv{MAIL_LEN_MAX})]],
@@ -79,9 +73,9 @@ package Sangoku::Service::Outer::Regist {
       $validator->set_error_and_message(pass => (same => 'IDとパスワードは同じにできません！'))
         if $args->{pass} eq $args->{id};
 
-      my $ability_sum = sum map { $args->{$_} || 0 } @$ability_list;
-      $validator->set_error_and_message('ability' => (sum => "能力の合計値は$nfv{ABILITY_SUM}になるようにしてください！"))
-        unless $ability_sum == $nfv{ABILITY_SUM};
+      my $ability_sum = sum map { $args->{$_} || 0 } @{ $nfv{ABILITY_LIST} };
+      $validator->set_error_and_message('ability' => (sum => "能力の合計値は$nfv{ability_sum}になるようにしてください！"))
+        unless $ability_sum == $nfv{ability_sum};
 
     }
 
@@ -93,16 +87,15 @@ package Sangoku::Service::Outer::Regist {
       # validate country info
       {
         # number_for_validation -> nfv
-        state $nfv = Sangoku::DB::Row::Country->CONSTANTS;
+        state $nfv = Sangoku::DB::Row::Country->get_all_constants();
         my %nfv = %$nfv;
-        my $country_color = Sangoku::DB::Row::Country->COLOR;
 
         $validator->set_message('country_name.length' => "[_1]は$nfv{NAME_LEN_MIN}文字以上$nfv{NAME_LEN_MAX}文字以下で入力してください。");
         $validator->set_message('country_color.not_null' => '[_1]を選択してください。');
 
         $validator->check(
           country_name  => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
-          country_color => ['NOT_NULL', [CHOICE => (keys %$country_color)]],
+          country_color => ['NOT_NULL', [CHOICE => (keys %{ $nfv{COUNTRY_COLOR} })]],
         );
 
         $validator->set_error_and_message(town => (cant_establish => 'その都市は既に他の国が支配しています。'))
