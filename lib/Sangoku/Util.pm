@@ -3,14 +3,17 @@ package Sangoku::Util {
   use Sangoku;
 
   use Exporter 'import';
+  # methods は role に切り出すべき
   my @LOADER_METHODS = qw/model row api/;
+  my @METHODS = (@LOADER_METHODS, qw/get_all_constants/);
   our @EXPORT_OK = (
     qw/
       project_root_dir load_config validate_values minute_second
-      daytime date datetime child_module_list load_child_module get_all_constants
-      load 
+      daytime date datetime child_module_list load_child_module
+      config
+      load
     /,
-    @LOADER_METHODS,
+    @METHODS,
   );
 
   use Carp qw/croak/;
@@ -111,6 +114,20 @@ package Sangoku::Util {
       load $module;
     }
     return $list;
+  }
+
+  sub random_color {
+    state $color_strs = [0 .. 9, 'a' .. 'f'];
+    state $color_strs_len = @$color_strs;
+    my $color_code = '#' . join('', map { $color_strs->[int(rand $color_strs_len)] } 0 .. 5);
+    return $color_code;
+  }
+
+  sub config {
+    my ($file) = @_;
+    state $config = {};
+    $config = { %$config, %{ load_config $file } } if defined $file;
+    return $config;
   }
 
   # package名からそのpkg内の定数一覧を取得

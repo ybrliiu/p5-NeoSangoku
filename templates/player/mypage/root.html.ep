@@ -486,7 +486,7 @@ $letter-padding: 5px;
 <% my $letter_list = begin %>
  % my ($type, $title) = @_;
   <div id="<%= $type %>-letter-title">
-    <strong><%= $title %></strong>（<%= $view_config->{LETTER}{uc $type} %>件）
+    <strong><%= $title %></strong>（<%= $template_config->{letter}{$type} %>件）
   </div>
   <table id="<%= $type %>-letter">
   <tbody>
@@ -534,9 +534,9 @@ $letter-padding: 5px;
     controll.registFunctions();
 
     var limit = {
-    % my $LETTER_LIMIT = $view_config->{LETTER};
-    % for (keys %$LETTER_LIMIT) {
-      '<%= lc $_ %>' : <%= $LETTER_LIMIT->{$_} %>,
+    % my $letter_limit = $template_config->{letter};
+    % for (keys %$letter_limit) {
+      '<%= $_ %>' : <%= $letter_limit->{$_} %>,
     % }
     };
 

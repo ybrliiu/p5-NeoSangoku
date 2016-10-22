@@ -5,24 +5,13 @@ package Sangoku::Service::Player::Mypage {
   with 'Sangoku::Service::Role::Base';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/validate_values/;
+  use Sangoku::Util qw/validate_values config/;
+  config('template.conf');
 
   sub root {
     my ($class, $player_id) = @_;
 
-    state $config = {
-      LOG => {
-        COMMAND_LOG => 6,
-        MAP_LOG     => 6,
-      },
-      LETTER => {
-        COUNTRY => 15,
-        INVITE  => 5,
-        PLAYER  => 10,
-        TOWN    => 5,
-        UNIT    => 5,
-      },
-    };
+    my $config = config->{template}{player}{mypage};
 
     my $player         = $class->model('Player')->get($player_id);
     my $unit           = $player->unit;
@@ -31,27 +20,27 @@ package Sangoku::Service::Player::Mypage {
     my $towns          = $class->model('Town')->get_all();
     my $town           = $player->town;
     my $letter = {
-      player  => $player->letter->get_without_same_letter($player, $config->{LETTER}{PLAYER}),
-      unit    => $player->is_delong_unit ? $unit->letter->get($config->{LETTER}{UNIT}) : [],
-      invite  => $player->invite->get($config->{LETTER}{INVITE}),
-      country => $country->letter->get($config->{LETTER}{COUNTRY}),
-      town    => $town->letter->get($config->{LETTER}{TOWN}),
+      player  => $player->letter->get_without_same_letter($player, $config->{letter}{player}),
+      unit    => $player->is_delong_unit ? $unit->letter->get($config->{letter}{unit}) : [],
+      invite  => $player->invite->get($config->{letter}{invite}),
+      country => $country->letter->get($config->{letter}{country}),
+      town    => $town->letter->get($config->{letter}{town}),
     };
 
     return {
-      player         => $player,
-      command_log    => $player->command_log->get($config->{LOG}{COMMAND_LOG}),
-      countries_hash => $countreis_hash,
-      country        => $country,
-      unit           => $unit,
-      towns          => $towns,
-      map_data       => $class->model('Town')->get_all_for_map($towns),
-      town           => $player->town,
-      command_list   => $class->model('Command')->get_list(),
-      site           => $class->model('Site')->get(),
-      map_log        => $class->model('MapLog')->get($config->{LOG}{MAP_LOG}),
-      letter         => $letter,
-      view_config    => $config,
+      player          => $player,
+      command_log     => $player->command_log->get($config->{log}{command}),
+      countries_hash  => $countreis_hash,
+      country         => $country,
+      unit            => $unit,
+      towns           => $towns,
+      map_data        => $class->model('Town')->get_all_for_map($towns),
+      town            => $player->town,
+      command_list    => $class->model('Command')->get_list(),
+      site            => $class->model('Site')->get(),
+      map_log         => $class->model('MapLog')->get($config->{log}{map}),
+      letter          => $letter,
+      template_config => $config,
     };
   }
 
@@ -59,9 +48,7 @@ package Sangoku::Service::Player::Mypage {
     my ($class, $args) = @_;
     my $type = $args->{type};
 
-    state $dispatch_method = {
-      map { $_ => "_write_${_}_letter" } qw/player unit country town/
-    };
+    state $dispatch_method = {map { $_ => "_write_${_}_letter" } qw/player unit country town/};
 
     my $method = $dispatch_method->{$type};
     my $letter_data = defined $method

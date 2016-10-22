@@ -8,7 +8,7 @@ package Sangoku::Web {
 
   sub startup {
     my ($self) = @_;
-    $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/app color hypnotoad NYTProf site template/;
+    $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/app color hypnotoad NYTProf site/;
     $self->generate_color_scss_files();
     $self->load_plugins();
     $self->setup();

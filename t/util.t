@@ -21,6 +21,12 @@ subtest 'child_module_list' => sub {
   ok(my @exists = grep { $_ eq 'Sangoku::Model::Player::Command' } @$list);
 };
 
+subtest 'config' => sub {
+  ok(my $config = Sangoku::Util::config('template.conf'));
+  ok(my $config2 = Sangoku::Util::config('site.conf'));
+  ok exists $config2->{$_} for qw/template site/;
+};
+
 subtest 'get_all_constants' => sub {
   package TestPkg {
     use constant {
