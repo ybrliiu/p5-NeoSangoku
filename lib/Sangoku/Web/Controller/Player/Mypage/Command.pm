@@ -18,15 +18,13 @@ package Sangoku::Web::Controller::Player::Mypage::Command {
     $json->{player_id} = $player_id;
 
     my $hash = $self->service->input($json);
-    use Data::Dumper;
-    $self->app->log->warn(Dumper $hash);
 
     # need to choose otion
     if (exists $json->{next_page}) {
       my ($result, $stash, $error) = map { $hash->{$_} } qw/result stash error/;
 
       # when complete
-      $self->redirect_to('/player/mypage/command') if $result->{complete};
+      return $self->redirect_to('/player/mypage/command') if $result->{complete};
 
       $self->stash(%$stash);
       $self->flash_error($error);
