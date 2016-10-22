@@ -60,6 +60,8 @@ Model/Role/DB/
      /HistoryLog   # Record.pm
      /AdminLog     # Record.pm を継承
 
+     /Command      # コマンドモジュール(API::Command::*)の管理
+
      /Book         # Config HashRef -> ArrayRefにして順序を保証、HashRefでデータ欲しい時はModelでmethod作って対応
      /Weapon
      /Guard
@@ -73,6 +75,8 @@ Model/Role/DB/
 ・Model層で管理対象になるオブジェクトクラスの定義をする。(例:Record.pmのクラス、設定ファイルの情報のオブジェクトクラス(武器、兵士など))  
 ・Mouseで記述する。  
 
+# API::Command層規約
+
 # Service層規約
 ・URLのエンドポイントに応じてクラス作成 + ループ(バッチ)処理の処理  
 ・バリデーションもここに書く(Sangoku::Validatorで)  
@@ -80,42 +84,34 @@ Model/Role/DB/
 ・トランザクションの管理はこちらで基本する。  
 ・エラー検証＆エラーデータ格納はSangoku::Validatorに  
 
-```
-     /Command/
-             /各コマンドのモジュール
-```
-
 # Controller規約
 基本的に以下のように書く。  
 バリデーションは基本的にここでしない。  
 
 ``` perl
+
 sub root {
-  my self = shift;
-
-  my $player_id = '';
-  my ($result, $error) = Sangoku::Service::Player->mypage($player_id);
-
-  $error->has_error() ? $self->stash(error => $error) : $self->stash(error => {});
+  my ($self) = @_;
+  my $player_id = $self->session('id');
+  my $result = Sangoku::Service::Player->mypage($player_id);
   $self->stash(%$result);
-
+  $self->flash_error(); # フォームのエラー
   $self->render();
-  # or
-  $self->render(template => 'player/unit/root', variant => 'phone');
 }
 
-sub edit {
-  my $self = shift;
-
-  my ($result, $error) = Sangoku::Service::Player->mypage($player_id);
+sub regist {
+  my ($self) = @_;
+  my $param = $self->req->params->to_hash();
+  my $error = $self->service->regist($param);
 
   if ($error->has_error) {
     $self->flash_error($error);
-    $self->redirect_to('/input');
+    $self->redirect_to('/outer/regist');
   } else {
-    $self->redirect_to('/complete-input');
+    $self->flash(id => $self->param('id'));
+    $self->redirect_to('/outer/regist/complete-regist');
   }
-
 }
+
 ```
 

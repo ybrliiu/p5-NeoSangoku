@@ -135,8 +135,8 @@ package Sangoku::Web {
         # /player/mypage/command
         {
           my $command = $mypage->any('/command')->to(controller => 'Player::Mypage::Command');
-          $command->any( '/'             )->to(action => 'root');
-          $command->post('/input'        )->to(action => 'input');
+          $command->any( '/'     )->to(action => 'root');
+          $command->post('/input')->to(action => 'input');
         }
       }
 
@@ -188,13 +188,13 @@ package Sangoku::Web {
       {
         my $unit = $auth->any('/unit')->to(controller => 'Player::Unit');
         $unit->get( '/'           )->to(action => 'root');
-        $unit->post('/create'     )->to(action => 'create');
-        $unit->post('/join'       )->to(action => 'join');
-        $unit->post('/quit'       )->to(action => 'quit');
         $unit->post('/break'      )->to(action => 'break');
-        $unit->post('/fire'       )->to(action => 'fire');
-        $unit->post('/join-permit')->to(action => 'join_permit');
         $unit->post('/change-info')->to(action => 'change_info');
+        $unit->post('/create'     )->to(action => 'create');
+        $unit->post('/fire'       )->to(action => 'fire');
+        $unit->post('/join'       )->to(action => 'join');
+        $unit->post('/join-permit')->to(action => 'join_permit');
+        $unit->post('/quit'       )->to(action => 'quit');
       }
 
       # /player/country

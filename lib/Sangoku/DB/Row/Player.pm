@@ -56,6 +56,11 @@ package Sangoku::DB::Row::Player {
     return ABILITY_SUM_BASE + int($passed_year * ABILITY_COEF);
   }
 
+  sub command {
+    my ($self) = @_;
+    return $self->model('Player::Command')->new(id => $self->id);
+  }
+
   sub command_log {
     my ($self) = @_;
     return $self->model('Player::CommandLog')->new(id => $self->id);

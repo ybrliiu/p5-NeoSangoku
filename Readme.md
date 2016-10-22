@@ -3,16 +3,17 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
-* template設定ファイルをどうするか, 定数の扱いをどうするか
-* templateでの定数の表示について
+
+* 部隊操作
+(view側及び動作テスト)
+
+* Model::DB to_hashメソッドに書き換えていく
 
 * t/ テストするモジュールのload部分をload関数に
 * Rowオブジェクトの処理共通化
-* API, Rowローダは別に必要なさそう？
 * js, scss 外部ファイル化, head読み込みシステム
 
-* 部隊操作
-
+* Util API, Rowローダは別に必要なさそう？
 * Util.pmのメソッド群はRoleに切り出すべきである
  -> Teng::Row がMouseオブジェクトでないのが問題に
     Mouse object化? (速度気にするならTeng::RowをMouse化して書き換え、気にしないならMouseX::Foreignで継承)
@@ -28,7 +29,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 * web.pm の処理 外部ファイルに切り出し
 * country_position, town country_name
 SQL見なおすべきか？
-
 * SQLのチューニング
 * 書いてないテストも書きましょうね〜〜
 * testのコード共通化進める?

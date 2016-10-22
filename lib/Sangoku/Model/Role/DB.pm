@@ -70,6 +70,13 @@ package Sangoku::Model::Role::DB {
     return \@rows;
   }
 
+  sub to_hash {
+    my ($class, $lists) = @_;
+    my $primary_key = $class->primary_key;
+    my %rows = map { $_->$primary_key => $_ } @$lists;
+    return \%rows;
+  }
+
 }
 
 1;
