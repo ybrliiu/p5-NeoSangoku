@@ -8,27 +8,26 @@ use Sangoku::Model::Unit;
 use Sangoku::Model::Unit::Letter;
 
 my $PSQL = Test::Sangoku::PostgreSQL->new();
-my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
 my $TEST_CLASS = 'Sangoku::Model::Unit::Letter';
 my $OBJ;
 
-# player のtableなども準備しないといけないので
 prepare_player_model_tests();
-{
-  my $leader = Sangoku::Model::Player->get($PLAYER_ID);
-  Sangoku::Model::Unit->create({
-    leader => $leader,
-    name   => 'テスト部隊',
-    message => '部隊説明文',
-  });
-}
+
+my $UNIT_NAME = 'テスト部隊';
+my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
+my $LEADER    = Sangoku::Model::Player->get($PLAYER_ID);
+Sangoku::Model::Unit->create({
+  leader => $LEADER,
+  name   => $UNIT_NAME,
+  message => '部隊説明文',
+});
 
 subtest 'new' => sub {
-  my $unit = Sangoku::Model::Unit->get($PLAYER_ID);
-  $OBJ = $TEST_CLASS->new(
+  my $unit = Sangoku::Model::Unit->get($UNIT_NAME, $LEADER->country_name);
+  $OBJ = $TEST_CLASS->new({
     id   => $unit->id,
     name => $unit->name,
-  );
+  });
   isa_ok $OBJ, $TEST_CLASS;
 };
 
