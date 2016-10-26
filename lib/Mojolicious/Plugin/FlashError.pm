@@ -11,6 +11,18 @@ package Mojolicious::Plugin::FlashError {
   use Data::Structure::Util qw/unbless/;
   use HTML::FillInForm::Lite;
 
+  sub escape {
+    my ($str) = @_;
+    $str =~ s/;/%3B/g;
+    return $str;
+  }
+
+  sub unescape {
+    my ($str) = @_;
+    $str =~ s/%3B/;/g;
+    return $str;
+  }
+
   sub register {
     my ($self, $app, $conf) = @_;
 
@@ -32,7 +44,7 @@ package Mojolicious::Plugin::FlashError {
         $options //= {};
         my $error_hash = unbless $error;
         for (@error_keys) {
-          my $json = encode_json $error_hash->{$_};
+          my $json = escape encode_json $error_hash->{$_};
           $c->cookie("_ERROR-$_" => $json, {%$options, max_age => 1});
         }
 
@@ -40,7 +52,7 @@ package Mojolicious::Plugin::FlashError {
 
         my @jsons = map {
           my $flash = $c->cookie("_ERROR-$_");
-          $flash ? decode_json $flash : ();
+          $flash ? decode_json unescape $flash : ();
         } @error_keys;
 
         my $error = do {
