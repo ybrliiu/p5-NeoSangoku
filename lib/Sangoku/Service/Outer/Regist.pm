@@ -87,6 +87,7 @@ package Sangoku::Service::Outer::Regist {
       # validate country info
       {
         # number_for_validation -> nfv
+         # 初回読み込み時　バグ
         state $nfv = Sangoku::DB::Row::Country->get_all_constants();
         my %nfv = %$nfv;
 

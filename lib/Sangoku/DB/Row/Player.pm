@@ -88,6 +88,11 @@ package Sangoku::DB::Row::Player {
     return $self->model('IconList')->ICONS_DIR_PATH . $self->icon . '.gif';
   }
 
+  sub is_same_unit {
+    my ($self, $player) = @_;
+    return $self->unit_id eq $player->unit_id;
+  }
+
   sub invite {
     my ($self) = @_;
     return $self->model('Player::Invite')->new(id => $self->id);
@@ -129,9 +134,17 @@ package Sangoku::DB::Row::Player {
 
   sub unit {
     my ($self, $units_hash) = @_;
+
     return defined($units_hash)
       ? $units_hash->{$self->unit_id}
       : $self->model('Unit')->get($self->unit_id);
+  }
+
+  sub unit_id {
+    my ($self) = @_;
+    return $self->{unit_id} if exists $self->{unit_id};
+    my $member = $self->model('Unit::Members')->get_by_player_id($self->id);
+    $self->{unit_id} = defined $member ? $member->unit_id : undef;
   }
 
   sub unit_name {

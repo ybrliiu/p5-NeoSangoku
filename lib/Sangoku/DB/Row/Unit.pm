@@ -18,7 +18,7 @@ package Sangoku::DB::Row::Unit {
 
   sub is_leader {
     my ($self, $player) = @_;
-    return $self->id eq $player->id;
+    return $self->leader_id eq $player->id;
   }
 
   sub members {
