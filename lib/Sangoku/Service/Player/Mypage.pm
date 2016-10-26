@@ -105,10 +105,7 @@ package Sangoku::Service::Player::Mypage {
     my $sender = $class->model('Player')->get($args->{sender_id});
     croak "部隊に所属していません" unless $sender->is_delong_unit;
 
-    my $letter_model = $class->model('Unit::Letter')->new({
-      id   => $sender->id,
-      name => $sender->name,
-    });
+    my $letter_model = $class->model('Unit::Letter')->new(id => $sender->id);
     my $letter_data = $letter_model->add({
       sender  => $sender,
       message => $args->{message},

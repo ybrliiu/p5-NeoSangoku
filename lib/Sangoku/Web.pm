@@ -187,14 +187,14 @@ package Sangoku::Web {
       # /player/unit
       {
         my $unit = $auth->any('/unit')->to(controller => 'Player::Unit');
-        $unit->get( '/'           )->to(action => 'root');
-        $unit->post('/break'      )->to(action => 'break');
-        $unit->post('/change-info')->to(action => 'change_info');
-        $unit->post('/create'     )->to(action => 'create');
-        $unit->post('/fire'       )->to(action => 'fire');
-        $unit->post('/join'       )->to(action => 'join');
-        $unit->post('/join-permit')->to(action => 'join_permit');
-        $unit->post('/quit'       )->to(action => 'quit');
+        $unit->get( '/'                  )->to(action => 'root');
+        $unit->post('/break'             )->to(action => 'break');
+        $unit->post('/change-info'       )->to(action => 'change_info');
+        $unit->post('/create'            )->to(action => 'create');
+        $unit->post('/fire'              )->to(action => 'fire');
+        $unit->post('/join'              )->to(action => 'join');
+        $unit->post('/switch-join-permit')->to(action => 'switch_join_permit');
+        $unit->post('/quit'              )->to(action => 'quit');
       }
 
       # /player/country

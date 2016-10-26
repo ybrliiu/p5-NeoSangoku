@@ -7,7 +7,10 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 * 部隊操作
 (view側及び動作テスト)
 
-* Model::DB to_hashメソッドに書き換えていく
+部隊テーブルの構成考えなおす
+* IDは作成順で
+* player_unit_id = unit_id
+* leader_id = unit_leader_id
 
 * t/ テストするモジュールのload部分をload関数に
 * Rowオブジェクトの処理共通化

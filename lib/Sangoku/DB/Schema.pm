@@ -189,7 +189,6 @@ package Sangoku::DB::Schema {
       {name => 'leadership_exp', type => 4},
       {name => 'popular_exp', type => 4},
       {name => 'mail', type => -1},
-      {name => 'unit_id', type => -1},
       {name => 'win_message', type => -1},
       {name => 'ip_after', type => -1},
       {name => 'ip', type => -1},
@@ -402,7 +401,8 @@ package Sangoku::DB::Schema {
     name 'unit';
     pk 'id';
     columns (
-      {name => 'id', type => -1},
+      {name => 'id', type => 4},
+      {name => 'leader_id', type => -1},
       {name => 'name', type => -1},
       {name => 'country_name', type => -1},
       {name => 'message', type => -1},
@@ -412,10 +412,21 @@ package Sangoku::DB::Schema {
   };
 
   table {
+    name 'unit_members';
+    pk 'player_id';
+    columns (
+      {name => 'unit_id', type => 4},
+      {name => 'player_id', type => -1},
+      {name => 'player_name', type => -1},
+    );
+    row_class 'Sangoku::DB::Row::Unit::Members';
+  };
+
+  table {
     name 'unit_letter';
     pk 'id';
     columns (
-      {name => 'unit_id', type => -1},
+      {name => 'unit_id', type => 4},
       {name => 'id', type => 4},
       {name => 'sender_name', type => -1},
       {name => 'sender_icon', type => 4},

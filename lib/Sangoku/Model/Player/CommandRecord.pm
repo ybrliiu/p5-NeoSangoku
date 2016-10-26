@@ -34,7 +34,7 @@ package Sangoku::Model::Player::CommandRecord {
     defined $row ? $row->update({execute_count => $row->execute_count + 1}) : $self->add($name);
   }
 
-  sub get_from_command_name {
+  sub get_by_command_name {
     my ($class, $name) = @_;
     my @columns = $class->db->search(TABLE_NAME, {command_name => $name});
     return \@columns;

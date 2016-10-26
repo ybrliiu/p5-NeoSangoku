@@ -119,7 +119,6 @@ CREATE TABLE "player" (
   "leadership_exp" int DEFAULT 0,
   "popular_exp"    int DEFAULT 0,
   "mail"        text DEFAULT '',
-  "unit_id"     text DEFAULT '', -- 部隊ID, 部隊長のplayer_id
   "win_message" text DEFAULT '',
   "ip_after"    text DEFAULT '',
   "ip"          text DEFAULT '',
@@ -258,17 +257,24 @@ CREATE TABLE "country_position" (
 
 -- 部隊関連テーブル
 CREATE TABLE "unit" (
-  "id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
-  "name" text,
+  "id"   serial PRIMARY KEY,
+  "leader_id" text UNIQUE REFERENCES "player" ("id") ON DELETE SET NULL,
+  "name"      text NOT NULL,
   "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE,
-  "message" text DEFAULT '',
-  "join_permit" int DEFAULT 1,
-  "auto_gather" int DEFAULT 0,
+  "message"      text DEFAULT '',
+  "join_permit"  int DEFAULT 1,
+  "auto_gather"  int DEFAULT 0,
   UNIQUE("name", "country_name")
 );
 
+CREATE TABLE "unit_members" (
+  "unit_id"     int REFERENCES "unit" ("id") ON DELETE CASCADE,
+  "player_id"   text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
+  "player_name" text UNIQUE REFERENCES "player" ("name") ON DELETE CASCADE
+);
+
 CREATE TABLE "unit_letter" (
-  "unit_id" text REFERENCES "unit" ("id") ON DELETE CASCADE,
+  "unit_id"   int REFERENCES "unit" ("id") ON DELETE CASCADE,
   "id"        serial PRIMARY KEY,
   "sender_name" text NOT NULL,
   "sender_icon"  int NOT NULL,

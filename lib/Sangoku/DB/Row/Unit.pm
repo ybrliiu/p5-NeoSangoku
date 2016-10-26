@@ -11,11 +11,6 @@ package Sangoku::DB::Row::Unit {
     MESSAGE_LEN_MAX => 300,
   };
 
-  sub change_join_permit {
-    my ($self) = @_;
-    $self->update({join_permit => $self->join_permit ? 0 : 1});
-  }
-
   sub is_same_country {
     my ($self, $player) = @_;
     return $self->country_name eq $player->country_name;
@@ -48,6 +43,11 @@ package Sangoku::DB::Row::Unit {
       id   => $self->id,
       name => $self->name,
     );
+  }
+
+  sub switch_join_permit {
+    my ($self) = @_;
+    $self->update({join_permit => $self->join_permit ? 0 : 1});
   }
 
 }

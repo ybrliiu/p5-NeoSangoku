@@ -17,7 +17,7 @@ package Sangoku::Model::Country {
 
   sub init {
     my ($class) = @_;
-    $class->create({name => '無所属', color => 'gray'});
+    $class->create(NEUTRAL_DATA);
   }
 
   sub create {

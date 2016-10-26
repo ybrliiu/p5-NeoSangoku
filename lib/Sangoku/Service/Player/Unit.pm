@@ -11,11 +11,13 @@ package Sangoku::Service::Player::Unit {
     my ($class, $player_id) = @_;
 
     my $player = $class->model('Player')->get($player_id);
+    my $players = $class->model('Player')->search(country_name => $player->country_name);
 
     return {
-      player  => $player,
-      players => $class->model('Player')->search(country_name => $player->country_name),
-      units   => $class->model('Unit')->search(country_name => $player->country_name),
+      player       => $player,
+      players      => $players,
+      players_hash => $class->model('Player')->to_hash($players),
+      units        => $class->model('Unit')->search(country_name => $player->country_name),
     };
   }
 
@@ -23,12 +25,12 @@ package Sangoku::Service::Player::Unit {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id unit_id/]);
 
+    my $txn = $class->txn();
     my $player = $class->model('Player')->get($args->{player_id});
     my $unit = $class->model('Unit')->get($args->{unit_id});
 
     croak "部隊長以外は実行できません。" unless $unit->is_leader($player);
 
-    my $txn = $class->txn();
     $class->model('Unit')->delete($unit->id);
     $txn->commit();
   }
@@ -52,7 +54,7 @@ package Sangoku::Service::Player::Unit {
   
       croak "部隊長以外は実行できません。" unless $unit->is_leader($player);
   
-      $unit->update({message => $args->{message});
+      $unit->update({message => $args->{message}});
       $txn->commit();
     }
 
@@ -87,9 +89,9 @@ package Sangoku::Service::Player::Unit {
       };
   
       if (my $e = $@) {
-        if ($e->caught('Sangoku::DB::Exception::Duplicate') {
-            $e->reason =~ /unit_pkey/                  ? $validator->set_error(id => ('already_exist'))
-          : $e->reason =~ /unit_name_country_name_key/ ? $validator->set_error(name => ('already_exist'))
+        if ($e->caught('Sangoku::DB::Exception::Duplicate')) {
+            $e->reason =~ /unit_pkey/                  ? $validator->set_error(id => 'already_exist')
+          : $e->reason =~ /unit_name_country_name_key/ ? $validator->set_error(name => 'already_exist')
           : undef;
         }
         $txn->rollback();
@@ -130,6 +132,14 @@ package Sangoku::Service::Player::Unit {
     my $player = $class->model('Player')->get($args->{player_id})->refetch({for_update => 1});
     my $unit = $class->model('Unit')->get($args->{unit_id});
 
+    my $validator = $class->validator($args);
+    $validator->set_error_and_message(unit => (cant_join => '入隊制限がかかっているので入隊できません。')) unless $unit->join_permit();
+
+    if ($validator->has_error) {
+      $txn->rollback();
+      return $validator;
+    }
+
     croak "ID:$args->{unit_id}の部隊は存在しません" unless defined $unit;
     croak "他国の部隊には所属できません。" unless $unit->is_same_country($player);
 
@@ -138,7 +148,7 @@ package Sangoku::Service::Player::Unit {
     $txn->commit();
   }
 
-  sub join_permit {
+  sub switch_join_permit {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id unit_id/]);
 
@@ -149,16 +159,24 @@ package Sangoku::Service::Player::Unit {
 
     croak "部隊長以外は実行できません。" unless $unit->is_leader($player);
 
-    $unit->change_join_permit();
+    $unit->switch_join_permit();
 
     $txn->commit();
   }
 
   sub quit {
     my ($class, $player_id) = @_;
+
     my $txn = $class->txn();
+
     my $player = $class->model('Player')->get($player_id)->refetch({for_update => 1});
+    my $unit = $class->model('Unit')->get($player->unit_id);
+
+    croak "部隊に所属していません！" unless defined $unit;
+    croak "部隊長は部隊を脱退できません。代わりに解散してください。" if $unit->is_leader($player);
+
     $player->update({unit_id => ''});
+
     $txn->commit();
   }
 

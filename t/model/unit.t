@@ -1,35 +1,34 @@
 use Sangoku 'test';
 use Test::Sangoku::PostgreSQL;
 use Test::Record;
-
-use Sangoku::Model::Player;
-use Sangoku::Model::Unit;
+use Test::Sangoku::Util qw/prepare_service_tests/;
 
 my $TEST_CLASS = 'Sangoku::Model::Unit';
+load $TEST_CLASS;
 my $PSQL = Test::Sangoku::PostgreSQL->new();
 my $TR = Test::Record->new();
 
-# テストの下準備
-{
-  load "Sangoku::Model::$_" for qw/Country Town Player/;
-  "Sangoku::Model::$_"->init() for qw/Country Town Player/;
-}
+prepare_service_tests();
 
 my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
 
 subtest 'create' => sub {
   my $leader = Sangoku::Model::Player->get($PLAYER_ID);
+  my $unit_name = 'テスト部隊';
 
   ok $TEST_CLASS->create({
     leader  => $leader,
-    name    => 'テスト部隊',
+    name    => $unit_name,
     message => '部隊紹介文',
   });
+
+  ok(my $unit = $TEST_CLASS->get($unit_name, $leader->country_name));
+  is $unit->id, 1;
+  is $unit->name, $unit_name;
+
 };
 
-subtest 'get' => sub {
-  ok(my $unit = $TEST_CLASS->get($PLAYER_ID));
-  is $unit->name, 'テスト部隊';
+subtest 'regist' => sub {
 };
 
 done_testing();
