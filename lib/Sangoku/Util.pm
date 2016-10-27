@@ -139,15 +139,19 @@ package Sangoku::Util {
 
     no strict 'refs';
     my %table = %{"${pkg}::"};
-
     use strict 'refs';
+
     my %constants = map {
       (my $key = $_) =~ s/${pkg}:://g;
       my $value = $table{$key};
-      # シンボリックテーブルの要素は通常型グロブだが
-      # 定数の場合はリファレンスである
-      if ($key !~ /([^A-Z0-9_])/ && ref $value) {
-        $key => $$value;
+      if ($key !~ /[^A-Z0-9_]/) {
+        if (ref $value) {
+          $key => $$value;
+        } elsif (defined *{$value}{CODE}) {
+          $key => *{$value}{CODE};
+        } else {
+          ();
+        }
       } else {
         ();
       }

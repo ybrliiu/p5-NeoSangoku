@@ -36,10 +36,14 @@ subtest 'get_all_constants' => sub {
     };
   };
   ok(my $constants = Sangoku::Util::get_all_constants('TestPkg'));
-  diag explain $constants;
-  is $constants->{MAX}, 100;
-  is $constants->{MIN}, 10;
-  is $constants->{KEYWORD}, '!?!?!?';
+  is $constants->{MAX}, TestPkg->MAX;
+  is $constants->{MIN}, TestPkg->MIN;
+  is $constants->{KEYWORD}, TestPkg->KEYWORD;
+
+  # fix bug if constant is not refarence
+  load 'Sangoku::DB::Row::Country';
+  ok($constants = Sangoku::Util::get_all_constants('Sangoku::DB::Row::Country'));
+  is $constants->{NAME_LEN_MIN}, Sangoku::DB::Row::Country->NAME_LEN_MIN;
 };
 
 subtest 'loader' => sub {
