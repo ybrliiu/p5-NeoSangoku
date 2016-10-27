@@ -20,11 +20,11 @@ package Sangoku::Service::Player::Mypage {
     my $towns          = $class->model('Town')->get_all();
     my $town           = $player->town;
     my $letter = {
-      player  => $player->letter->get_without_same_letter($player, $config->{letter}{player}),
-      unit    => $player->is_delong_unit ? $unit->letter->get($config->{letter}{unit}) : [],
-      invite  => $player->invite->get($config->{letter}{invite}),
-      country => $country->letter->get($config->{letter}{country}),
-      town    => $town->letter->get($config->{letter}{town}),
+      player  => $player->letter($config->{letter}{player}),
+      unit    => $player->unit_letter($config->{letter}{unit}),
+      invite  => $player->invite($config->{letter}{invite}),
+      country => $country->letter($config->{letter}{country}),
+      town    => $town->letter($config->{letter}{town}),
     };
 
     return {

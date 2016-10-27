@@ -145,13 +145,18 @@ package Sangoku::Util {
       (my $key = $_) =~ s/${pkg}:://g;
       my $value = $table{$key};
       if ($key !~ /[^A-Z0-9_]/) {
+
+        # 定数は型グロブではなくリファレンスになっている
         if (ref $value) {
           $key => $$value;
-        } elsif (defined *{$value}{CODE}) {
-          $key => *{$value}{CODE};
+        }
+        # use constant の中に直接記述しなかった場合は型グロブになる
+        elsif (defined *{$value}{CODE}) {
+          $key => *{$value}{CODE}->();
         } else {
           ();
         }
+
       } else {
         ();
       }

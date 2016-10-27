@@ -34,8 +34,9 @@ package Sangoku::DB::Row::Country {
   }
 
   sub letter {
-    my ($self) = @_;
-    return $self->model('Country::Letter')->new(name => $self->name);
+    my ($self, $limit) = @_;
+    my $model = $self->model('Country::Letter')->new(name => $self->name);
+    return $model->get($limit);
   }
 
 }

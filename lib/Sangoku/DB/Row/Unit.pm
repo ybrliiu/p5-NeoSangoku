@@ -38,11 +38,12 @@ package Sangoku::DB::Row::Unit {
   }
 
   sub letter {
-    my ($self) = @_;
-    return $self->model('Unit::Letter')->new(
+    my ($self, $limit) = @_;
+    my $model = $self->model('Unit::Letter')->new(
       id   => $self->id,
       name => $self->name,
     );
+    return $model->get($limit);
   }
 
   sub switch_join_permit {

@@ -48,8 +48,9 @@ package Sangoku::DB::Row::Town {
   }
 
   sub letter {
-    my ($self) = @_;
-    return $self->model('Town::Letter')->new(name => $self->name);
+    my ($self, $limit) = @_;
+    my $model = $self->model('Town::Letter')->new(name => $self->name);
+    return $model->get($limit);
   }
  
   sub wall_power_max {

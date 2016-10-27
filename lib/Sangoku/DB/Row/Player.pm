@@ -83,6 +83,11 @@ package Sangoku::DB::Row::Player {
     return DELETE_TURN - $self->delete_turn;
   }
 
+  sub unit_letter {
+    my ($self, $limit) = @_;
+    return $self->is_delong_unit ? $self->unit->letter($limit) : [];
+  }
+
   sub icon_path {
     my ($self) = @_;
     return $self->model('IconList')->ICONS_DIR_PATH . $self->icon . '.gif';
@@ -94,8 +99,9 @@ package Sangoku::DB::Row::Player {
   }
 
   sub invite {
-    my ($self) = @_;
-    return $self->model('Player::Invite')->new(id => $self->id);
+    my ($self, $limit) = @_;
+    my $model = $self->model('Player::Invite')->new(id => $self->id);
+    return $model->get($limit);
   }
 
   {
@@ -116,8 +122,9 @@ package Sangoku::DB::Row::Player {
   }
 
   sub letter {
-    my ($self) = @_;
-    return $self->model('Player::Letter')->new(id => $self->id);
+    my ($self, $limit) = @_;
+    my $model = $self->model('Player::Letter')->new(id => $self->id);
+    return $model->get_without_same_letter($self, $limit);
   }
 
   sub town {

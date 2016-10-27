@@ -31,9 +31,8 @@ package Sangoku::Model::Role::DB {
 
   sub get_all_to_hash {
     my ($class) = @_;
-    my $primary_key = $class->primary_key;
-    my %rows = map { $_->$primary_key => $_ } @{ $class->get_all() };
-    return \%rows;
+    my $rows = $class->get_all();
+    return $class->to_hash($rows);
   }
 
   sub count_all {
