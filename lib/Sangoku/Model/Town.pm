@@ -17,13 +17,17 @@ package Sangoku::Model::Town {
   sub get_all_for_map {
     my ($class, $towns) = @_;
 
-    $towns //= Sangoku::Model::Town->get_all();
+    my $towns_hash = ref $towns eq 'ARRAY' ? $class->to_hash($towns)
+      : ref $towns eq 'HASH' ? $towns : $class->get_all_to_hash;
     my $map_data = [];
+
     for my $i (0 .. 9) {
       for my $j (0 .. 9) {
-        for my $town (@$towns) {
+        for (keys %$towns_hash) {
+          my $town = $towns_hash->{$_};
           if ($town->y == $i && $town->x == $j) {
             $map_data->[$i][$j] = $town;
+            delete $towns_hash->{$_};
           }
         }
       }
