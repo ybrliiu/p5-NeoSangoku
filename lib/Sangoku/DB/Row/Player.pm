@@ -4,7 +4,7 @@ package Sangoku::DB::Row::Player {
   use parent 'Sangoku::DB::Row';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/load_config get_all_constants/;
+  use Sangoku::Util qw/load_config minute_second get_all_constants/;
 
   use constant {
     NAME_LEN_MIN    => 1,
@@ -57,13 +57,15 @@ package Sangoku::DB::Row::Player {
   }
 
   sub command {
-    my ($self) = @_;
-    return $self->model('Player::Command')->new(id => $self->id);
+    my ($self, $limit) = @_;
+    my $model = $self->model('Player::Command')->new(id => $self->id);
+    return $model->get($limit);
   }
 
   sub command_log {
-    my ($self) = @_;
-    return $self->model('Player::CommandLog')->new(id => $self->id);
+    my ($self, $limit) = @_;
+    my $model = $self->model('Player::CommandLog')->new(id => $self->id);
+    return $model->get($limit);
   }
 
   sub country {
@@ -83,14 +85,19 @@ package Sangoku::DB::Row::Player {
     return DELETE_TURN - $self->delete_turn;
   }
 
-  sub unit_letter {
-    my ($self, $limit) = @_;
-    return $self->is_delong_unit ? $self->unit->letter($limit) : [];
+  sub format_update_time {
+    my ($self) = @_;
+    return minute_second($self->update_time);
   }
 
   sub icon_path {
     my ($self) = @_;
     return $self->model('IconList')->ICONS_DIR_PATH . $self->icon . '.gif';
+  }
+
+  sub is_belong_unit {
+    my ($self) = @_;
+    return $self->unit_id ? 1 : 0;
   }
 
   sub is_same_unit {
@@ -134,11 +141,6 @@ package Sangoku::DB::Row::Player {
       : $self->model('Town')->get($self->town_name);
   }
 
-  sub is_delong_unit {
-    my ($self) = @_;
-    return $self->unit_id ? 1 : 0;
-  }
-
   sub unit {
     my ($self, $units_hash) = @_;
 
@@ -156,7 +158,12 @@ package Sangoku::DB::Row::Player {
 
   sub unit_name {
     my ($self, $units_hash) = @_;
-    return $self->is_delong_unit ? $self->unit($units_hash)->name : '無所属';
+    return $self->is_belong_unit ? $self->unit($units_hash)->name : '無所属';
+  }
+
+  sub unit_letter {
+    my ($self, $limit) = @_;
+    return $self->is_belong_unit ? $self->unit->letter($limit) : [];
   }
 
 }

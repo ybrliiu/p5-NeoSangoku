@@ -1,0 +1,176 @@
+% layout 'player';
+
+<style>
+<% my $scss = <<"EOM";
+
+#unit-list {
+  width: 70%;
+  form { width: 100% }
+  table {
+    width: 100%;
+    th:first-child { width: 1px; }
+    td:first-child { width: 1px; }
+  }
+  .snazzy-radio {
+    padding-left: 15px;
+  }
+}
+
+#bottom {
+  width: 100%;
+  table, form {
+    width: 70%;
+    td:nth-child(2n+1) {
+      width: 160px;
+    }
+  }
+}
+
+EOM
+%>
+%== scss_to_css(\$scss, 1);
+</style>
+
+<div id="title"><h1>部隊編成</h1></div>
+
+<div class="grid-right" id="explain">
+  <div>
+ここでは部隊の作成や、部隊に所属することなど部隊に関する操作ができます。<br>
+部隊に所属すると以下のことが可能になります。<br>
+<ul>
+  <li>部隊長が集合コマンドを実行すると、部隊員全員を部隊長のいる都市に集めることができる。</li>
+  <li>部隊チャットの使用</li>
+</ul>
+  </div>
+</div>
+  
+<div class="grid width-30pc">
+<%= include('parts/map', (
+  map_data       => $map_data,
+  countries_hash => $countries_hash,
+  width          => 100,
+)); %>
+</div>
+
+<div class="grid-right" id="unit-list">
+  <form action="/player/unit/<%= $player->is_belong_unit ? 'quit' : 'join'  %>" method="post">
+  <table class="table-<%= $country->color %>">
+    <tr>
+      <th></th>
+      <th>隊長</th>
+      <th>部隊名（隊長）</th>
+      <th>隊長の滞在都市</th>
+      <th>更新時間</th>
+      <th>隊長コマンド</th>
+      <th>募集メッセージ</th>
+      <th>人数</th>
+      <th>所属武将</th>
+    </tr>
+% for my $unit (@$units) {
+  % my @members = @{ $unit->members($members_hash) };
+  % my $leader = $unit->leader;
+    <tr>
+      <td>
+        <label class="snazzy-radio">
+          <%= radio_button 'unit_id', value => $unit->id %>
+          <span></span>
+        </label>
+      </td>
+      <td class="icon"><img class="icon" src="<%= $leader->icon_path %>"></td>
+      <td><%= $unit->name %><%= '【入隊制限中】' unless $unit->join_permit %><br>（<%= $leader->name %>）</td>
+      <td><%= $leader->town_name %></td>
+      <td><%= $leader->format_update_time %></td>
+      <td>
+    % my @command = @{ $leader->command(4) };
+    % for (0 .. @command - 1) {
+        <%= $_ + 1 %>：<%= $command[$_]->detail %><br>
+    % }
+      </td>
+      <td><%= $unit->message %></td>
+      <td><%= @members %>人</td>
+      <td><%= $_->player_name . ", " for @members %></td>
+    </tr>
+% }
+  </table>
+  %= submit_button '所属' unless $player->is_belong_unit;
+  % my $unit = $player->unit;
+  % if ($player->is_belong_unit) {
+  %= submit_button '離脱' if !$unit->is_leader($player);
+  % }
+  </form>
+</div>
+
+% if ($player->is_belong_unit) {
+  % if ( $unit->is_leader($player) ) {
+  <div class="grid-right" id="bottom">
+    <table class="table-<%= $country->color %>">
+      <tr><th colspan="2"><h2>部隊長専用コマンド</h2></th></tr>
+      <tr><td>入隊制限</td><td>
+        <form action="/player/unit/switch-join-permit" method="post">
+          %= submit_button $unit->join_permit ? '入隊制限' : '入隊制限解除';
+        </form>
+      </td></tr>
+      <tr><td>部隊員解雇</td><td>
+        <form action="/player/unit/fire" method="post">
+          <select name="target_id">
+          % for my $member (@{ $unit->members($members_hash) }) {
+            <option value=<%= $member->player_id %>><%= $member->player_name %>
+          % }
+          </select>
+          %= submit_button '解雇';
+        </form>
+      </td></tr>
+      <tr>
+        <td>部隊情報編集</td>
+        <td>
+          <form action="/player/unit/change-info" method="post">
+          %= label_for name => '■部隊名';
+          <br>
+          <%= text_field('name', size => 40, value => $unit->name,
+            placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字"); %>
+          <br>
+          %= label_for message => '■部隊募集メッセージ';
+          <%= text_area(message => $unit->message, cols => 50, rows => 5,
+            placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字"); %>
+          %= submit_button '編集';
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td>部隊解散</td>
+        <td>
+          <form action="/player/unit/break" method="post">
+          %= submit_button '解散する';
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
+  % }
+% } else {
+  <div class="grid-right" id="bottom">
+    <form action="/player/unit/create" method="post">
+      <table class="table-<%= $country->color %>">
+        <tr>
+          <th colspan="2">
+            <h2>新規部隊作成</h2>
+          </th>
+        </tr>
+        <tr>
+          <td>部隊名</td>
+          <td>
+            %= text_field 'name', placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字", size => 40;
+          </td>
+        </tr>
+        <tr>
+          <td>部隊募集メッセージ</td>
+          <td>
+            %= text_area message => '', cols => 50, rows => 5, placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字";
+          </td>
+        </tr>
+      </table>
+      %= submit_button '部隊作成';
+    </form>
+  </div>
+% }
+

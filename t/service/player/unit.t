@@ -66,6 +66,7 @@ subtest 'leader_tests' => sub {
   my $new_message = '変更したで';
   ok $TEST_CLASS->change_info({
     player_id => $LEADER_ID,
+    name      => $UNIT_NAME,
     message   => $new_message,
   });
   $unit = $unit->refetch;
@@ -75,7 +76,7 @@ subtest 'leader_tests' => sub {
     player_id => $LEADER_ID,
     target_id => $JOIN_PLAYER->id,
   });
-  ok !$JOIN_PLAYER->is_delong_unit;
+  ok !$JOIN_PLAYER->is_belong_unit;
 
   ok $TEST_CLASS->break($LEADER_ID);
   my $leader = Sangoku::Model::Player->get($LEADER_ID);

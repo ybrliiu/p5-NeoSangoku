@@ -3,7 +3,7 @@
 @import 'parts/color'; // 色一覧 etc/config/color.conf より出力
 
 /* サイト全体の外観 */
-body, tr, td, th, form {
+body, div, tr, td, th, form {
   font-family: "メイリオ", "Yu Gothic", "VL Gothic", "Ubuntu", "monospace";
   font-size: 9pt;
   color: #222;
@@ -111,9 +111,9 @@ ul {
     h1 {
       $border: 3px;
       $border-left: 20px;
-      $padding: 5px;
-      margin: 0px;
-      padding: $padding $padding $padding $border-left + 10px;
+      $padding: 11px;
+      margin: 0;
+      padding: $padding 0 $padding $border-left + 10px;
       background-color: $white;
       border-left: $border-left solid $darkred;
       border-bottom: $border solid $darkred;

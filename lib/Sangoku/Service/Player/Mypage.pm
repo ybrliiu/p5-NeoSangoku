@@ -29,7 +29,7 @@ package Sangoku::Service::Player::Mypage {
 
     return {
       player          => $player,
-      command_log     => $player->command_log->get($config->{log}{command}),
+      command_log     => $player->command_log($config->{log}{command}),
       countries_hash  => $countreis_hash,
       country         => $country,
       unit            => $unit,
@@ -103,7 +103,7 @@ package Sangoku::Service::Player::Mypage {
     validate_values($args => [qw/sender_id message/]);
 
     my $sender = $class->model('Player')->get($args->{sender_id});
-    croak "部隊に所属していません" unless $sender->is_delong_unit;
+    croak "部隊に所属していません" unless $sender->is_belong_unit;
 
     my $unit = $sender->unit;
     my $letter_model = $class->model('Unit::Letter')->new({

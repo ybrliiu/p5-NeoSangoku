@@ -4,16 +4,10 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```      
 
-* 部隊操作
-(view側及び動作テスト)
-
-部隊テーブルの構成考えなおす
-* IDは作成順で
-* player_unit_id = unit_id
-* leader_id = unit_leader_id
+* 部隊表示画面(membersをうまく使って...)
+* Rowオブジェクトの処理共通化(Letterだけでも)
 
 * t/ テストするモジュールのload部分をload関数に
-* Rowオブジェクトの処理共通化
 * js, scss 外部ファイル化, head読み込みシステム
 
 * Util API, Rowローダは別に必要なさそう？

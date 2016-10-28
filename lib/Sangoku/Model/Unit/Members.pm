@@ -17,9 +17,10 @@ package Sangoku::Model::Unit::Members {
   sub add {
     my ($self, $player) = @_;
     $self->db->do_insert(TABLE_NAME, {
-      unit_id     => $self->id,
-      player_id   => $player->id,
-      player_name => $player->name,
+      unit_id      => $self->id,
+      player_id    => $player->id,
+      player_name  => $player->name,
+      country_name => $player->country_name,
     });
   }
 

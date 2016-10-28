@@ -6,18 +6,22 @@ package Sangoku::Service::Player::Unit {
 
   use Carp qw/croak/;
   use Sangoku::Util qw/validate_values/;
+  use Sangoku::DB::Row::Unit;
 
   sub root {
     my ($class, $player_id) = @_;
 
     my $player = $class->model('Player')->get($player_id);
-    my $players = $class->model('Player')->search(country_name => $player->country_name);
+    my $members = $class->model('Unit::Members')->search(country_name => $player->country_name);
 
     return {
-      player       => $player,
-      players      => $players,
-      players_hash => $class->model('Player')->to_hash($players),
-      units        => $class->model('Unit')->search(country_name => $player->country_name),
+      %{ Sangoku::DB::Row::Unit->get_all_constants() },
+      player         => $player,
+      members_hash   => $class->model('Unit::Members')->to_hash($members),
+      units          => $class->model('Unit')->search(country_name => $player->country_name),
+      country        => $player->country,
+      countries_hash => $class->model('Country')->get_all_to_hash,
+      map_data       => $class->model('Town')->get_all_for_map,
     };
   }
 
@@ -36,12 +40,13 @@ package Sangoku::Service::Player::Unit {
 
   sub change_info {
     my ($class, $args) = @_;
-    validate_values($args => [qw/player_id message/]);
+    validate_values($args => [qw/player_id name message/]);
 
     my $validator = $class->validator($args);
     my %nfv = %{ Sangoku::DB::Row::Unit->get_all_constants() };
     $validator->check(
-      message => ['NOT_NULL', [LENGTH => (0, $nfv{MESSAGE_LEN_MAX})]],
+      name    => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
+      message => [[LENGTH => (0, $nfv{MESSAGE_LEN_MAX})]],
     );
 
     return $validator if $validator->has_error();
@@ -53,7 +58,11 @@ package Sangoku::Service::Player::Unit {
   
       croak "部隊長以外は実行できません。" unless $unit->is_leader($player);
   
-      $unit->update({message => $args->{message}});
+      $unit->update({
+        name    => $args->{name},
+        message => $args->{message},
+      });
+
       $txn->commit();
     }
 
@@ -140,6 +149,8 @@ package Sangoku::Service::Player::Unit {
 
     $class->model('Unit::Members')->new(id => $unit->id)->add($player);
     $txn->commit();
+
+    return $validator;
   }
 
   sub switch_join_permit {
@@ -164,7 +175,7 @@ package Sangoku::Service::Player::Unit {
     my $player = $class->model('Player')->get($player_id);
     my $unit = $class->model('Unit')->get($player->unit_id);
 
-    croak "部隊に所属していません！" unless $player->is_delong_unit();
+    croak "部隊に所属していません！" unless $player->is_belong_unit();
     croak "部隊長は部隊を脱退できません。代わりに解散してください。" if $unit->is_leader($player);
 
     $class->model('Unit::Members')->new(id => $unit->id)->delete($player->id);

@@ -268,9 +268,10 @@ CREATE TABLE "unit" (
 );
 
 CREATE TABLE "unit_members" (
-  "unit_id"     int REFERENCES "unit" ("id") ON DELETE CASCADE,
-  "player_id"   text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
-  "player_name" text UNIQUE REFERENCES "player" ("name") ON DELETE CASCADE
+  "unit_id"      int REFERENCES "unit" ("id") ON DELETE CASCADE,
+  "player_id"    text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
+  "player_name"  text UNIQUE REFERENCES "player" ("name") ON DELETE CASCADE,
+  "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE
 );
 
 CREATE TABLE "unit_letter" (
