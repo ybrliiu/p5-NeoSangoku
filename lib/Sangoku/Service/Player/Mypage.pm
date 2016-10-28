@@ -6,6 +6,7 @@ package Sangoku::Service::Player::Mypage {
 
   use Carp qw/croak/;
   use Sangoku::Util qw/validate_values config/;
+
   config('template.conf');
 
   sub root {

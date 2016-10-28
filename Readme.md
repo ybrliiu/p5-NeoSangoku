@@ -5,12 +5,15 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 ```      
 
 * 部隊表示画面(membersをうまく使って...)
+
+* service template config 専用メソッド化
 * Rowオブジェクトの処理共通化(Letterだけでも)
 
 * t/ テストするモジュールのload部分をload関数に
 * js, scss 外部ファイル化, head読み込みシステム
 
-* Util API, Rowローダは別に必要なさそう？
+* Util API, Rowローダは別に必要なさそう？ -> やっぱり必要になりそうである
+
 * Util.pmのメソッド群はRoleに切り出すべきである
  -> Teng::Row がMouseオブジェクトでないのが問題に
     Mouse object化? (速度気にするならTeng::RowをMouse化して書き換え、気にしないならMouseX::Foreignで継承)

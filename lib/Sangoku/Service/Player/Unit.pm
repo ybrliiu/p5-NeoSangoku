@@ -5,8 +5,10 @@ package Sangoku::Service::Player::Unit {
   with 'Sangoku::Service::Role::Base';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/validate_values/;
+  use Sangoku::Util qw/validate_values config/;
   use Sangoku::DB::Row::Unit;
+
+  config('template.conf');
 
   sub root {
     my ($class, $player_id) = @_;
@@ -16,12 +18,13 @@ package Sangoku::Service::Player::Unit {
 
     return {
       %{ Sangoku::DB::Row::Unit->get_all_constants() },
-      player         => $player,
-      members_hash   => $class->model('Unit::Members')->to_hash($members),
-      units          => $class->model('Unit')->search(country_name => $player->country_name),
-      country        => $player->country,
-      countries_hash => $class->model('Country')->get_all_to_hash,
-      map_data       => $class->model('Town')->get_all_for_map,
+      player          => $player,
+      members_hash    => $class->model('Unit::Members')->to_hash($members),
+      units           => $class->model('Unit')->search(country_name => $player->country_name),
+      country         => $player->country,
+      countries_hash  => $class->model('Country')->get_all_to_hash,
+      map_data        => $class->model('Town')->get_all_for_map,
+      template_config => config->{template}{player}{unit},
     };
   }
 

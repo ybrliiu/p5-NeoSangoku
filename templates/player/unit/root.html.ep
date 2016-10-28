@@ -57,6 +57,7 @@ EOM
 <div class="grid-right" id="unit-list">
   <form action="/player/unit/<%= $player->is_belong_unit ? 'quit' : 'join'  %>" method="post">
   <table class="table-<%= $country->color %>">
+
     <tr>
       <th></th>
       <th>隊長</th>
@@ -68,6 +69,7 @@ EOM
       <th>人数</th>
       <th>所属武将</th>
     </tr>
+
 % for my $unit (@$units) {
   % my @members = @{ $unit->members($members_hash) };
   % my $leader = $unit->leader;
@@ -83,7 +85,7 @@ EOM
       <td><%= $leader->town_name %></td>
       <td><%= $leader->format_update_time %></td>
       <td>
-    % my @command = @{ $leader->command(4) };
+    % my @command = @{ $leader->command( $template_config->{leader_command} ) };
     % for (0 .. @command - 1) {
         <%= $_ + 1 %>：<%= $command[$_]->detail %><br>
     % }
@@ -106,38 +108,53 @@ EOM
   % if ( $unit->is_leader($player) ) {
   <div class="grid-right" id="bottom">
     <table class="table-<%= $country->color %>">
-      <tr><th colspan="2"><h2>部隊長専用コマンド</h2></th></tr>
-      <tr><td>入隊制限</td><td>
-        <form action="/player/unit/switch-join-permit" method="post">
-          %= submit_button $unit->join_permit ? '入隊制限' : '入隊制限解除';
-        </form>
-      </td></tr>
-      <tr><td>部隊員解雇</td><td>
-        <form action="/player/unit/fire" method="post">
-          <select name="target_id">
-          % for my $member (@{ $unit->members($members_hash) }) {
-            <option value=<%= $member->player_id %>><%= $member->player_name %>
-          % }
-          </select>
-          %= submit_button '解雇';
-        </form>
-      </td></tr>
+
+      <tr>
+        <th colspan="2"><h2>部隊長専用コマンド</h2></th>
+      </tr>
+
+      <tr>
+        <td>入隊制限</td>
+        <td>
+          <form action="/player/unit/switch-join-permit" method="post">
+            %= submit_button $unit->join_permit ? '入隊制限' : '入隊制限解除';
+          </form>
+        </td>
+      </tr>
+
+      <tr>
+        <td>部隊員解雇</td>
+        <td>
+         <form action="/player/unit/fire" method="post">
+             <select name="target_id">
+            % for my $member (@{ $unit->members($members_hash) }) {
+              <option value=<%= $member->player_id %>><%= $member->player_name %>
+            % }
+            </select>
+            %= submit_button '解雇';
+          </form>
+        </td>
+      </tr>
+
       <tr>
         <td>部隊情報編集</td>
         <td>
           <form action="/player/unit/change-info" method="post">
           %= label_for name => '■部隊名';
+          %= show_error('name');
           <br>
           <%= text_field('name', size => 40, value => $unit->name,
             placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字"); %>
           <br>
           %= label_for message => '■部隊募集メッセージ';
+          %= show_error('message');
           <%= text_area(message => $unit->message, cols => 50, rows => 5,
             placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字"); %>
           %= submit_button '編集';
           </form>
         </td>
       </tr>
+
       <tr>
         <td>部隊解散</td>
         <td>
@@ -146,6 +163,7 @@ EOM
           </form>
         </td>
       </tr>
+
     </table>
   </div>
   % }
@@ -153,23 +171,33 @@ EOM
   <div class="grid-right" id="bottom">
     <form action="/player/unit/create" method="post">
       <table class="table-<%= $country->color %>">
+
         <tr>
           <th colspan="2">
             <h2>新規部隊作成</h2>
           </th>
         </tr>
+
         <tr>
-          <td>部隊名</td>
           <td>
-            %= text_field 'name', placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字", size => 40;
+            部隊名
+         %= show_error('name');
+          </td>
+          <td>
+            %= text_field('name', placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字", size => 40);
           </td>
         </tr>
+
         <tr>
-          <td>部隊募集メッセージ</td>
           <td>
-            %= text_area message => '', cols => 50, rows => 5, placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字";
+            部隊募集メッセージ
+         %= show_error('message');
+          </td>
+          <td>
+            %= text_area(message => '', cols => 50, rows => 5, placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字");
           </td>
         </tr>
+
       </table>
       %= submit_button '部隊作成';
     </form>
