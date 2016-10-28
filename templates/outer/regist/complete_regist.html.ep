@@ -62,4 +62,12 @@ table .icon-td {
   </tbody>
   </table>
 
+  <div>
+    <form action="/player/login" method="post">
+      <input type="hidden" name="id" value="<%= $player->id %>">
+      <input type="hidden" name="pass" value="<%= $player->pass %>">
+      <input type="submit" value="ゲームを開始する">
+    </form>
+  </div>
+
 </div>
