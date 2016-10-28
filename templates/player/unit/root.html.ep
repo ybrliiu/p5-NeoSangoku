@@ -33,6 +33,8 @@ EOM
 
 <div id="title"><h1>部隊編成</h1></div>
 
+%= show_all_error({grid => 1});
+
 <div class="grid-right" id="explain">
   <div>
 ここでは部隊の作成や、部隊に所属することなど部隊に関する操作ができます。<br>

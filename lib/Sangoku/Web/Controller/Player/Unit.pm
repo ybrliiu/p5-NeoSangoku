@@ -7,8 +7,9 @@ package Sangoku::Web::Controller::Player::Unit {
     my ($self) = @_;
     my $player_id = $self->session('id');
     my $result = $self->service->root($player_id);
+    $self->flash_error();
     $self->stash(%$result);
-    $self->render();
+    $self->render_fill_error();
   }
 
   sub break {

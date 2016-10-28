@@ -6,7 +6,7 @@ package Mojolicious::Plugin::Sangoku::TemplateFunctions {
   sub register {
     my ($self, $app) = @_;
 
-    $app->helper($_ => $self->can("_$_")) for qw/get_cookie show_error/;
+    $app->helper($_ => $self->can("_$_")) for qw/get_cookie show_error show_all_error/;
   }
 
   sub _get_cookie {
@@ -18,7 +18,7 @@ package Mojolicious::Plugin::Sangoku::TemplateFunctions {
     my ($c, @param_names) = @_;
 
     my $str = '';
-    my $error = $c->stash->{error};
+    my $error = $c->stash('error');
     my $is_exist = grep { $error->is_error($_) } @param_names;
     if ($is_exist) {
       $str .= qq{<ul class="error-list">\n};
@@ -33,6 +33,37 @@ package Mojolicious::Plugin::Sangoku::TemplateFunctions {
     }
 
     return $c->b($str);
+  }
+
+  sub _show_all_error {
+    my ($c, $option) = @_;
+    my $error = $c->stash('error');
+    my $str = '';
+    if ($error->has_error) {
+      if ($option->{grid}) {
+        $str .= qq{<div class="grid-right width-100pc">}
+          . _show_all_error_html($error, $option)
+          . qq{</div>};
+      } else {
+        $str .= _show_all_error_html($error, $option);
+      }
+    }
+    return $c->b($str);
+  }
+
+  sub _show_all_error_html {
+    my ($error, $option) = @_;
+    my $width = $option->{grid} ? 100 : 90;
+    my $str = qq{
+    <div id="error" class="width-${width}pc">
+      <h2>ERROR!!</h2>
+      <ul class="error-list">
+};
+    $str .= qq{<li>$_</li>\n} for $error->get_error_messages;
+    $str .= qq{
+      </ul>
+    </div>
+    };
   }
 
 }

@@ -91,16 +91,7 @@
 
   <h1 id="headline"><span>武将新規登録</span></h1>
 
-% if ($error->has_error) {
-  <div id="error">
-    <h2>ERROR!!</h2>
-    <ul class="error-list">
-    % for ($error->get_error_messages) {
-      <li><%= $_ %></li>
-    % }
-    </ul>
-  </div>
-% }
+%= show_all_error();
 
   <table id="invatation-message" class="tile-table">
     <tr>
