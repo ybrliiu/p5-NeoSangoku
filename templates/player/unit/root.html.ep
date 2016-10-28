@@ -43,6 +43,10 @@ EOM
   <li>部隊長が集合コマンドを実行すると、部隊員全員を部隊長のいる都市に集めることができる。</li>
   <li>部隊チャットの使用</li>
 </ul>
+% my $player_unit = $player->unit;
+% if ($player->is_belong_unit) {
+<strong>あなたは現在<span class="red"><%= $player_unit->name %></span>部隊に所属しています。</strong>
+% }
   </div>
 </div>
   
@@ -97,7 +101,7 @@ EOM
 % }
   </table>
   %= submit_button '所属' unless $player->is_belong_unit;
-  % my $unit = $player->unit;
+  % my $unit = $player_unit;
   % if ($player->is_belong_unit) {
   %= submit_button '離脱' if !$unit->is_leader($player);
   % }
@@ -143,13 +147,13 @@ EOM
           %= label_for name => '■部隊名';
           %= show_error('name');
           <br>
-          <%= text_field('name', size => 40, value => $unit->name,
-            placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字"); %>
+          <%= text_field('name', size => 40, value => $unit->name, class => $error->emphasis('name'),
+            placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字") %>
           <br>
           %= label_for message => '■部隊募集メッセージ';
           %= show_error('message');
-          <%= text_area(message => $unit->message, cols => 50, rows => 5,
-            placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字"); %>
+          <%= text_area(message => $unit->message, cols => 50, rows => 5, class => $error->emphasis('message'),
+            placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字") %>
           %= submit_button '編集';
           </form>
         </td>
@@ -184,7 +188,8 @@ EOM
          %= show_error('name');
           </td>
           <td>
-            %= text_field('name', placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字", size => 40);
+            <%= text_field('name', size => 40, class => $error->emphasis('name'),
+              placeholder => "全角で${NAME_LEN_MIN}〜${NAME_LEN_MAX}文字") %>
           </td>
         </tr>
 
@@ -194,7 +199,8 @@ EOM
          %= show_error('message');
           </td>
           <td>
-            %= text_area(message => '', cols => 50, rows => 5, placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字");
+            <%= text_area(message => '', cols => 50, rows => 5, class => $error->emphasis('message'),
+              placeholder => "全角で0〜${MESSAGE_LEN_MAX}文字") %>
           </td>
         </tr>
 

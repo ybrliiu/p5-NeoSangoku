@@ -46,11 +46,7 @@ package Sangoku::Service::Player::Unit {
     validate_values($args => [qw/player_id name message/]);
 
     my $validator = $class->validator($args);
-    my %nfv = %{ Sangoku::DB::Row::Unit->get_all_constants() };
-    $validator->check(
-      name    => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
-      message => [[LENGTH => (0, $nfv{MESSAGE_LEN_MAX})]],
-    );
+    $validator->check( _unit_rule() );
 
     return $validator if $validator->has_error();
 
@@ -60,13 +56,22 @@ package Sangoku::Service::Player::Unit {
       my $unit = $class->model('Unit')->get($player->unit_id)->refetch({for_update => 1});
   
       croak "部隊長以外は実行できません。" unless $unit->is_leader($player);
-  
-      $unit->update({
-        name    => $args->{name},
-        message => $args->{message},
-      });
 
-      $txn->commit();
+      eval {
+        $unit->update({
+          name    => $args->{name},
+          message => $args->{message},
+        });
+      };
+  
+      if (my $e = $@) {
+        if (Sangoku::DB::Exception::Duplicate->caught($e)) {
+          $validator->set_error(name => 'already_exist') if $e->reason =~ /unit_name_country_name_key/;
+        }
+        $txn->rollback();
+      } else {
+        $txn->commit();
+      }
     }
 
     return $validator;
@@ -77,12 +82,7 @@ package Sangoku::Service::Player::Unit {
     validate_values($args => [qw/player_id name message/]);
 
     my $validator = $class->validator($args);
-    my %nfv = %{ Sangoku::DB::Row::Unit->get_all_constants() };
-
-    $validator->check(
-      name    => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
-      message => [[LENGTH => (0, $nfv{MESSAGE_LEN_MAX})]],
-    );
+    $validator->check( _unit_rule() );
 
     return $validator if $validator->has_error();
 
@@ -99,10 +99,8 @@ package Sangoku::Service::Player::Unit {
       };
   
       if (my $e = $@) {
-        if ($e->caught('Sangoku::DB::Exception::Duplicate')) {
-            $e->reason =~ /unit_pkey/                  ? $validator->set_error(id => 'already_exist')
-          : $e->reason =~ /unit_name_country_name_key/ ? $validator->set_error(name => 'already_exist')
-          : undef;
+        if (Sangoku::DB::Exception::Duplicate->caught($e)) {
+          $validator->set_error(name => 'already_exist') if $e->reason =~ /unit_name_country_name_key/;
         }
         $txn->rollback();
       } else {
@@ -111,6 +109,15 @@ package Sangoku::Service::Player::Unit {
     }
     
     return $validator;
+  }
+
+  sub _unit_rule {
+    state $nfv = Sangoku::DB::Row::Unit->get_all_constants;
+    my %nfv = %$nfv;
+    return (
+      name    => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
+      message => [[LENGTH => (0, $nfv{MESSAGE_LEN_MAX})]],
+    );
   }
 
   sub fire {

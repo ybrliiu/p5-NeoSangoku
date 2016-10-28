@@ -56,7 +56,7 @@
 % }
 
 % for my $country (@countries) {
-  % my @members = @{ $country->members($players_hash) };
+  % my @players = @{ $country->players($players_hash) };
   <table class="table-<%= $country->color %> width-70pc">
     <tr><th class="first" colspan="6">
       <a href="/outer/player-list/<%= $country->name %>" id="<%= $country->name %>">
@@ -75,7 +75,7 @@
 
     <tr>
       <th>武将数</th>
-      <td class="color"><%= @members %>名</td>
+      <td class="color"><%= @players %>名</td>
       <th>支配都市</th>
     % my @towns = @{ $country->towns($towns) };
       <td class="color" colspan="3"><%= @towns %>都市(<%= $_->name . ' ' for @towns %>)</td>
@@ -90,9 +90,9 @@
   <table class="table-<%= $country->color %> width-70pc touch-top">
 
   % # 全国家表示で人数が10人より多い時
-  % my $limit = @countries != 1 && @members > 10 ? 10 : $#members;
+  % my $limit = @countries != 1 && @players > 10 ? 10 : $#players;
   % for (0 .. $limit) {
-    % my $player = $members[$_];
+    % my $player = $players[$_];
     <tr>
       <td class="icon">
         <img class="icon" src="<%= $player->icon_path %>">
@@ -115,11 +115,11 @@
   % }
 
   % # 全国家表示で人数が10人より多い時
-  % if (@countries != 1 && $limit != $#members) { 
+  % if (@countries != 1 && $limit != $#players) { 
     <tr>
       <td colspan="6">
-    % for ($limit + 1 .. $#members) {
-      % my $player = $members[$_];
+    % for ($limit + 1 .. $#players) {
+      % my $player = $players[$_];
         <%= $player->name %>
         <span style="color: <%= $country->color %>;">
           (Lv.<%= $player->lank %><%= $player->lank_name %>)

@@ -136,7 +136,7 @@ package Sangoku::DB::Row::Player {
 
   sub town {
     my ($self, $towns_hash) = @_;
-    return defined($towns_hash)
+    return ref $towns_hash eq 'HASH'
       ? $towns_hash->{$self->town_name}
       : $self->model('Town')->get($self->town_name);
   }
@@ -144,7 +144,9 @@ package Sangoku::DB::Row::Player {
   sub unit {
     my ($self, $units_hash) = @_;
 
-    return defined($units_hash)
+    return $self->{unit} if exists $self->{unit};
+
+    $self->{unit} = defined($units_hash)
       ? $units_hash->{$self->unit_id}
       : $self->model('Unit')->get($self->unit_id);
   }

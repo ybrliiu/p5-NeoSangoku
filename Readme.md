@@ -4,10 +4,8 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```      
 
-* 部隊表示画面(membersをうまく使って...)
-
 * service template config 専用メソッド化
-* Rowオブジェクトの処理共通化(Letterだけでも)
+* Rowオブジェクトの処理共通化(Letter, オブジェクトキャッシュ, Hashから値取り出すメソッド)
 
 * t/ テストするモジュールのload部分をload関数に
 * js, scss 外部ファイル化, head読み込みシステム

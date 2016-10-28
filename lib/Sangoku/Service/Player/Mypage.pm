@@ -19,7 +19,8 @@ package Sangoku::Service::Player::Mypage {
     my $countreis_hash = $class->model('Country')->get_all_to_hash();
     my $country        = $player->country($countreis_hash);
     my $towns          = $class->model('Town')->get_all();
-    my $town           = $player->town;
+    my $towns_hash     = $class->model('Town')->to_hash($towns);
+    my $town           = $player->town($towns_hash);
     my $letter = {
       player  => $player->letter($config->{letter}{player}),
       unit    => $player->unit_letter($config->{letter}{unit}),
@@ -35,7 +36,7 @@ package Sangoku::Service::Player::Mypage {
       country         => $country,
       unit            => $unit,
       towns           => $towns,
-      map_data        => $class->model('Town')->get_all_for_map($towns),
+      map_data        => $class->model('Town')->get_all_for_map($towns_hash),
       town            => $player->town,
       command_list    => $class->model('Command')->get_list(),
       site            => $class->model('Site')->get(),

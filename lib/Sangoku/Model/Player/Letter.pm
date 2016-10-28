@@ -19,9 +19,15 @@ package Sangoku::Model::Player::Letter {
         WHERE player_id = ?
         AND receiver_name <> ?
         AND receiver_name <> ?
+        @{[ $player->is_belong_unit ? "AND receiver_name <> ?" : '' ]}
         ORDER BY id DESC
         LIMIT $num},
-      [$player->id, $player->town_name, $player->country_name],
+      [
+        $player->id,
+        $player->town_name,
+        $player->country_name,
+        $player->is_belong_unit ? $player->unit->name : (),
+      ],
       TABLE_NAME,
     );
     return \@columns;

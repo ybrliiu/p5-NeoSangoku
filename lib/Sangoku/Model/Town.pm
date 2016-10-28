@@ -15,12 +15,10 @@ package Sangoku::Model::Town {
   }
 
   sub get_all_for_map {
-    my ($class, $towns) = @_;
+    my ($class, $towns_hash) = @_;
+    $towns_hash = $class->get_all_to_hash if ref $towns_hash ne 'HASH';
 
-    my $towns_hash = ref $towns eq 'ARRAY' ? $class->to_hash($towns)
-      : ref $towns eq 'HASH' ? $towns : $class->get_all_to_hash;
     my $map_data = [];
-
     for my $i (0 .. 9) {
       for my $j (0 .. 9) {
         for (keys %$towns_hash) {

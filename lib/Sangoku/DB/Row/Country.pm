@@ -17,17 +17,17 @@ package Sangoku::DB::Row::Country {
     return $self->model('Country::Position')->get($self->name);
   }
 
-  sub members {
+  sub players {
     my ($self, $players_hash) = @_;
-    my $members = defined($players_hash)
+    my $players = ref $players_hash eq 'HASH'
       ? [sort { $b->class <=> $a->class } grep { $_->country_name eq $self->name } values %$players_hash]
       : $self->model('Player')->search(country_name => $self->name);
-    return $members;
+    return $players;
   }
 
   sub towns {
     my ($self, $towns) = @_;
-    my $country_towns = defined($towns)
+    my $country_towns = ref $towns eq 'ARRAY'
       ? [grep { $_->country_name eq $self->name } @$towns]
       : $self->model('Town')->search(country_name => $self->name);
     return $country_towns;
