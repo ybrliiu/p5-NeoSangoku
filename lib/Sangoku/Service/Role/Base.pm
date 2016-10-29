@@ -5,9 +5,9 @@ package Sangoku::Service::Role::Base {
   
   use Sangoku::DB;
   # model, row, api is method
-  use Sangoku::Util qw/load model row api/;
+  use Sangoku::Util qw/load config model row api/;
+  config('template.conf');
   use Sangoku::Model::Role::DB;
-
   use Sangoku::Validator;
   Sangoku::Validator->load_constraints(qw/Number/);
 

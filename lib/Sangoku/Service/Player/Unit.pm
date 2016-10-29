@@ -8,8 +8,6 @@ package Sangoku::Service::Player::Unit {
   use Sangoku::Util qw/validate_values config/;
   use Sangoku::DB::Row::Unit;
 
-  config('template.conf');
-
   sub root {
     my ($class, $player_id) = @_;
 

@@ -6,19 +6,18 @@ package Sangoku::DB::Row {
   # model is method.
   use Sangoku::Util qw/model/;
 
-  # 作成中
   sub _generate_letter_method {
-    my ($class, $options) = @_;
-    $options //= {};
+    my ($class) = @_;
 
-    my $method_name = exists $options->{method_name} ? $options->{method_name} : 'letter';
-    my $model_name  = $class . ucfirst $method_name;
+    my $method_name = 'letter';
+    my $model_name  = ($class =~ s/Sangoku::DB::Row:://r) . '::' . ucfirst $method_name;
 
     no strict 'refs';
-    *{$class} = sub {
+    *{"${class}::${method_name}"} = sub {
       use strict 'refs';
       my ($self, $limit) = @_;
-      my $model = $self->model($model_name)->new();
+      my $model = $self->model($model_name)->new(name => $self->name);
+      return $model->get($limit);
     };
   }
 

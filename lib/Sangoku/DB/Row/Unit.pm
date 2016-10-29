@@ -23,18 +23,18 @@ package Sangoku::DB::Row::Unit {
 
   sub members {
     my ($self, $members_hash) = @_;
-    my $members = defined $members_hash
+    return $self->{members} if exists $self->{members};
+    $self->{members} = ref $members_hash eq 'HASH'
       ? [grep { $_->unit_id eq $self->id } values %$members_hash]
       : $self->model('Unit::Members')->search(unit_id => $self->id);
-    return $members;
   }
 
   sub leader {
     my ($self, $players_hash) = @_;
-    my $leader = defined $players_hash
+    return $self->{leader} if exists $self->{leader};
+    $self->{leader} = ref $players_hash eq 'HASH'
       ? $players_hash->{$self->leader_id}
       : $self->model('Player')->get($self->leader_id);
-    return $leader;
   }
 
   sub letter {

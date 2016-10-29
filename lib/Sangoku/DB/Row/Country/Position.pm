@@ -16,7 +16,8 @@ package Sangoku::DB::Row::Country::Position {
       *{$method_name} = sub {
         use strict 'refs';
         my ($self, $players_hash) = @_;
-        return defined $players_hash
+        return $self->{$method_name} if exists $self->{$method_name};
+        $self->{$method_name} = ref $players_hash eq 'HASH'
           ? $players_hash->{$self->$_id // ''}
           : $self->model('Player')->get($self->$_id);
       };

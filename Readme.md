@@ -3,9 +3,8 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
-
-* service template config 専用メソッド化
-* Rowオブジェクトの処理共通化(Letter, オブジェクトキャッシュ, Hashから値取り出すメソッド)
+* Sangoku::DB::Row Mouse化
+* Sangoku::Util methodをRoleに切り出し
 
 * t/ テストするモジュールのload部分をload関数に
 * js, scss 外部ファイル化, head読み込みシステム
@@ -25,11 +24,11 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
   )
 * plugin -> web 名前空間へ？
 * web.pm の処理 外部ファイルに切り出し
-* country_position, town country_name
-SQL見なおすべきか？
+* country_position, town country_name SQL見なおすべきか？
 * SQLのチューニング
 * 書いてないテストも書きましょうね〜〜
 * testのコード共通化進める?
+* Rowオブジェクトの処理共通化(かなり難しいのでよく考えて)
 * outer/regist/complete-regist リロードされた時どうするか
 ```
 

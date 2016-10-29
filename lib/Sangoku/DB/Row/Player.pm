@@ -4,7 +4,7 @@ package Sangoku::DB::Row::Player {
   use parent 'Sangoku::DB::Row';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/load_config minute_second get_all_constants/;
+  use Sangoku::Util qw/config minute_second get_all_constants/;
 
   use constant {
     NAME_LEN_MIN    => 1,
@@ -18,11 +18,11 @@ package Sangoku::DB::Row::Player {
     PROFILE_LEN_MAX => 1000,
     MAIL_LEN_MAX    => 40,
 
-    ABILITY_LIST      => [qw/force intellect leadership popular/],
-    ABILITY_MIN       => 1,
-    ABILITY_MAX_BASE  => 100,
-    ABILITY_SUM_BASE  => 160,
-    ABILITY_COEF      => 0.9,
+    ABILITY_LIST     => [qw/force intellect leadership popular/],
+    ABILITY_MIN      => 1,
+    ABILITY_MAX_BASE => 100,
+    ABILITY_SUM_BASE => 160,
+    ABILITY_COEF     => 0.9,
 
     EQUIPMENT_LIST    => [qw/weapon guard book/],
     LANK_UP           => 500,   # 階級アップに必要な階級値
@@ -30,16 +30,17 @@ package Sangoku::DB::Row::Player {
 		PLAYER_UPDATETIME => 3600,  # 更新時間(分)
   };
 
-  __PACKAGE__->_generate_methods();
+  __PACKAGE__->_generate_relation_methods();
 
-  sub _generate_methods {
+  sub _generate_relation_methods {
     no strict 'refs';
     for my $method_name (@{ EQUIPMENT_LIST() }, 'soldier') {
       my $class_name = ucfirst $method_name;
       *{$method_name} = sub {
         use strict 'refs';
         my ($self, $hash) = @_;
-        return defined $hash
+        return $self->{$method_name} if exists $self->{$method_name};
+        $self->{$method_name} = ref $hash eq 'HASH'
           ? $hash->{$self->id}
           : $self->model("Player::$class_name")->get($self->id);
       };
@@ -70,7 +71,8 @@ package Sangoku::DB::Row::Player {
 
   sub country {
     my ($self, $countreis_hash) = @_;
-    return defined($countreis_hash)
+    return $self->{country} if exists $self->{country};
+    return ref $countreis_hash eq 'HASH'
       ? $countreis_hash->{$self->country_name}
       : $self->model('Country')->get($self->country_name);
   }
@@ -112,8 +114,8 @@ package Sangoku::DB::Row::Player {
   }
 
   {
-
-    my $lank = load_config('data/lank.conf')->{lank};
+    config('data/lank.conf');
+    my $lank = config->{lank};
     my $LANK_MAX = @$lank;
 
     sub lank {
@@ -125,7 +127,6 @@ package Sangoku::DB::Row::Player {
       my ($self) = @_;
       return $lank->[$self->lank];
     }
-
   }
 
   sub letter {
@@ -136,17 +137,16 @@ package Sangoku::DB::Row::Player {
 
   sub town {
     my ($self, $towns_hash) = @_;
-    return ref $towns_hash eq 'HASH'
+    return $self->{town} if exists $self->{town};
+    $self->{town} = ref $towns_hash eq 'HASH'
       ? $towns_hash->{$self->town_name}
       : $self->model('Town')->get($self->town_name);
   }
 
   sub unit {
     my ($self, $units_hash) = @_;
-
     return $self->{unit} if exists $self->{unit};
-
-    $self->{unit} = defined($units_hash)
+    $self->{unit} = ref $units_hash eq 'HASH'
       ? $units_hash->{$self->unit_id}
       : $self->model('Unit')->get($self->unit_id);
   }
