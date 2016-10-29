@@ -29,7 +29,7 @@ Sangoku::Service::Admin::ResetGame->init_data_all($reset_time);
 say '初期化が終わりました';
 
 sub prepare_tables {
-  my $config = load_config('etc/config/db.conf');
+  my $config = load_config('db.conf');
   my $dbh = DBI->connect(@{ $config->{connect_info} }) || die 'dbi fail.';
   my $file = path('etc/documents', 'sangoku_schema.sql');
   my $sql = $file->slurp();

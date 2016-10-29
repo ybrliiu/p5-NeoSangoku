@@ -95,7 +95,7 @@ package Sangoku::Service::Outer::Regist {
 
         $validator->check(
           country_name  => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
-          country_color => ['NOT_NULL', [CHOICE => (keys %{ $nfv{COUNTRY_COLOR} })]],
+          country_color => ['NOT_NULL', [CHOICE => (keys %{ $nfv{COLOR} })]],
         );
 
         $validator->set_error_and_message(town => (cant_establish => 'その都市は既に他の国が支配しています。'))

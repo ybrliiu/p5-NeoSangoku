@@ -6,6 +6,8 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 * Sangoku::DB::Row Mouse化
 * Sangoku::Util methodをRoleに切り出し
 
+* Model::Site 月をまたがる場合や年をまたがる場合は？
+
 * t/ テストするモジュールのload部分をload関数に
 * js, scss 外部ファイル化, head読み込みシステム
 
