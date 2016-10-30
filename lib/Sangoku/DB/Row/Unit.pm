@@ -29,6 +29,15 @@ package Sangoku::DB::Row::Unit {
       : $self->model('Unit::Members')->search(unit_id => $self->id);
   }
 
+  sub members_without_leader {
+    my ($self, $members_hash) = @_;
+    if (ref $members_hash eq 'HASH') {
+      return [grep { $_->player_id ne $self->leader_id } @{ $self->members($members_hash) }];
+    } else {
+      # call SQL
+    }
+  }
+
   sub leader {
     my ($self, $players_hash) = @_;
     return $self->{leader} if exists $self->{leader};

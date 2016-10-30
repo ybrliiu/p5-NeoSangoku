@@ -33,9 +33,10 @@ package Sangoku::Model::Player {
         loyalty      => 10,
         update_time  => time,
       },
-      weapon => $equipments_status,
-      guard  => $equipments_status,
-      book   => $equipments_status,
+      profile => '',
+      weapon  => $equipments_status,
+      guard   => $equipments_status,
+      book    => $equipments_status,
     };
   }
 
@@ -54,13 +55,13 @@ package Sangoku::Model::Player {
 
   sub regist {
     my ($class, $args) = @_;
-    validate_values($args => [qw/player weapon guard book/]);
+    validate_values($args => [qw/player profile weapon guard book/]);
 
     $class->create($args->{player});
 
     for (@{ CHILD_RECORD_MODULES() }) {
       my $model = "$class::$_"->new(id => $args->{player}{id});
-      $model->init();
+      $_ eq 'Profile' ? $model->init($args->{profile}) : $model->init;
     }
 
     for (qw/weapon guard book/) {

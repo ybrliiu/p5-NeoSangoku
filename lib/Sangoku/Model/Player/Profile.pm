@@ -18,10 +18,11 @@ package Sangoku::Model::Player::Profile {
   }
 
   sub init {
-    my ($self) = @_;
+    my ($self, $message) = @_;
     $self->record->make();
     my $record = $self->record->open('LOCK_EX');
     my $profile = CLASS->new();
+    $profile->message($message) if $message;
     $record->add($profile);
     $record->close();
   }

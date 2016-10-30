@@ -39,13 +39,15 @@ EOM
   <div>
 ここでは部隊の作成や、部隊に所属することなど部隊に関する操作ができます。<br>
 部隊に所属すると以下のことが可能になります。<br>
+<br>
 <ul>
   <li>部隊長が集合コマンドを実行すると、部隊員全員を部隊長のいる都市に集めることができる。</li>
   <li>部隊チャットの使用</li>
 </ul>
+<br>
 % my $player_unit = $player->unit;
 % if ($player->is_belong_unit) {
-<strong>あなたは現在<span class="red"><%= $player_unit->name %></span>部隊に所属しています。</strong>
+<strong>あなたは現在<span class="red"><%= $player_unit->name %></span>に所属しています。</strong>
 % }
   </div>
 </div>
@@ -131,11 +133,12 @@ EOM
         <td>
          <form action="/player/unit/fire" method="post">
              <select name="target_id">
-            % for my $member (@{ $unit->members($members_hash) }) {
+            % my @members_without_leader = @{ $unit->members_without_leader($members_hash) };
+            % for my $member (@members_without_leader) {
               <option value=<%= $member->player_id %>><%= $member->player_name %>
             % }
             </select>
-            %= submit_button '解雇';
+            %= submit_button('解雇', @members_without_leader ? () : (disabled => 'disabled'));
           </form>
         </td>
       </tr>

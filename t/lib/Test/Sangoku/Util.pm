@@ -28,9 +28,10 @@ package Test::Sangoku::Util {
         loyalty      => 10,
         update_time  => time,
       },
-      weapon => $equipment_status,
-      guard  => $equipment_status,
-      book   => $equipment_status,
+      profile => '',
+      weapon  => $equipment_status,
+      guard   => $equipment_status,
+      book    => $equipment_status,
     };
   }
 

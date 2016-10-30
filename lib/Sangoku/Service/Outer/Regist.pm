@@ -35,7 +35,7 @@ package Sangoku::Service::Outer::Regist {
   sub regist {
     my ($class, $args) = @_;
     validate_values($args => [qw/name icon town id pass
-      force intellect leadership popular loyalty confirm_rule/]);
+      force intellect leadership popular loyalty profile confirm_rule/]);
 
     my $validator = $class->validator($args);
     my $txn = $class->txn;
@@ -184,16 +184,17 @@ package Sangoku::Service::Outer::Regist {
         icon => $param->{icon},
         country_name => $town->country_name,
         town_name    => $town->name,
-        force      => $param->{force},
-        intellect  => $param->{intellect},
-        leadership => $param->{leadership},
-        popular    => $param->{popular},
-        loyalty    => $param->{loyalty},
-        update_time => time,
+        force        => $param->{force},
+        intellect    => $param->{intellect},
+        leadership   => $param->{leadership},
+        popular      => $param->{popular},
+        loyalty      => $param->{loyalty},
+        update_time  => time,
       },
-      weapon => $equipments_status,
-      guard  => $equipments_status,
-      book   => $equipments_status,
+      profile => $param->{profile},
+      weapon  => $equipments_status,
+      guard   => $equipments_status,
+      book    => $equipments_status,
     };
 
     $class->model('Player')->regist($player_info);

@@ -14,7 +14,7 @@ subtest 'new' => sub {
 };
 
 subtest 'init' => sub {
-  ok $OBJ->init();
+  ok $OBJ->init('profile message.');
   dies_ok { $OBJ->init() };
 };
 
@@ -23,6 +23,7 @@ subtest 'get' => sub {
   {
     my $rec = $OBJ->record->open('LOCK_EX');
     my $profile = $OBJ->get();
+    is $profile->message, 'profile message.';
     $profile->message('my profile message is ... ');
     $rec->close();
   }

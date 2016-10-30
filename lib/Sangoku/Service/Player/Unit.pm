@@ -140,21 +140,20 @@ package Sangoku::Service::Player::Unit {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id unit_id/]);
 
-    my $txn = $class->txn();
-
     my $player = $class->model('Player')->get($args->{player_id});
     my $unit = $class->model('Unit')->get($args->{unit_id});
 
     my $validator = $class->validator($args);
-    $validator->set_error_and_message(unit => (cant_join => '入隊制限がかかっているので入隊できません。')) unless $unit->join_permit();
 
-    if ($validator->has_error) {
-      $txn->rollback();
-      return $validator;
-    }
+    $validator->set_error_and_message(unit_id => (not_select => '部隊が選択されていません。')) unless defined $unit;
+    return $validator if $validator->has_error;
+
+    $validator->set_error_and_message(unit => (cant_join => '入隊制限がかかっているので入隊できません。')) unless $unit->join_permit();
+    return $validator if $validator->has_error;
 
     croak "他国の部隊には所属できません。" unless $unit->is_same_country($player);
 
+    my $txn = $class->txn();
     $class->model('Unit::Members')->new(id => $unit->id)->add($player);
     $txn->commit();
 

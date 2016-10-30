@@ -53,6 +53,7 @@ package Sangoku::Web::Controller::Player::Unit {
     my $player_id = $self->session('id');
     my $param = $self->req->params->to_hash();
     $param->{player_id} = $player_id;
+    $param->{unit_id} //= undef;
     my $error = $self->service->join($param);
     $self->flash_error($error);
     $self->redirect_to('/player/unit');
