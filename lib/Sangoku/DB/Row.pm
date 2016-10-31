@@ -1,7 +1,8 @@
 package Sangoku::DB::Row {
 
+  use Mouse;
   use Sangoku;
-  use parent 'Teng::Row';
+  use MouseX::Foreign 'Teng::Row';
 
   # model is method.
   use Sangoku::Util qw/model/;
@@ -21,6 +22,7 @@ package Sangoku::DB::Row {
     };
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;

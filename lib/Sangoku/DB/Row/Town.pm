@@ -1,7 +1,8 @@
 package Sangoku::DB::Row::Town {
 
+  use Mouse;
   use Sangoku;
-  use parent 'Sangoku::DB::Row';
+  extends 'Sangoku::DB::Row';
 
   use constant {
     ICONS_DIR_PATH  => '/images/map_icon/',
@@ -69,6 +70,7 @@ package Sangoku::DB::Row::Town {
     return $wall_power;
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;

@@ -1,7 +1,8 @@
 package Sangoku::DB::Row::Unit {
 
+  use Mouse;
   use Sangoku;
-  use parent 'Sangoku::DB::Row';
+  extends 'Sangoku::DB::Row';
 
   use Sangoku::Util qw/get_all_constants/;
 
@@ -60,6 +61,7 @@ package Sangoku::DB::Row::Unit {
     $self->update({join_permit => $self->join_permit ? 0 : 1});
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;

@@ -1,7 +1,8 @@
 package Sangoku::DB::Row::Country::Position {
 
+  use Mouse;
   use Sangoku;
-  use parent 'Sangoku::DB::Row';
+  extends 'Sangoku::DB::Row';
 
   use Sangoku::Model::Player;
 
@@ -32,6 +33,7 @@ package Sangoku::DB::Row::Country::Position {
     }
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;

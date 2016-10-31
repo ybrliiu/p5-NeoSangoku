@@ -1,7 +1,8 @@
 package Sangoku::DB::Row::Player::CommandRecord {
 
+  use Mouse;
   use Sangoku;
-  use parent 'Sangoku::DB::Row';
+  extends 'Sangoku::DB::Row';
 
   use Carp qw/croak/;
 
@@ -17,6 +18,7 @@ package Sangoku::DB::Row::Player::CommandRecord {
     croak 'player_id id not found.';
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;

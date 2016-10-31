@@ -1,7 +1,8 @@
 package Sangoku::DB::Row::Player::Soldier {
 
+  use Mouse;
   use Sangoku;
-  use parent 'Sangoku::DB::Row';
+  extends 'Sangoku::DB::Row';
 
   use Sangoku::Model::Soldier;
   use Data::Dumper;
@@ -22,6 +23,7 @@ package Sangoku::DB::Row::Player::Soldier {
       + int($self->training / 5);
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;

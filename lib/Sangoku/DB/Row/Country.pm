@@ -1,7 +1,8 @@
 package Sangoku::DB::Row::Country {
 
+  use Mouse;
   use Sangoku;
-  use parent 'Sangoku::DB::Row';
+  extends 'Sangoku::DB::Row';
 
   use Sangoku::Util qw/config get_all_constants/;
 
@@ -37,6 +38,7 @@ package Sangoku::DB::Row::Country {
     return $country_towns;
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;

@@ -1,7 +1,8 @@
 package Sangoku::DB::Row::Player {
 
+  use Mouse;
   use Sangoku;
-  use parent 'Sangoku::DB::Row';
+  extends 'Sangoku::DB::Row';
 
   use Carp qw/croak/;
   use Sangoku::Util qw/config minute_second get_all_constants/;
@@ -180,6 +181,7 @@ package Sangoku::DB::Row::Player {
     return $self->is_belong_unit ? $self->unit->letter($limit) : [];
   }
 
+  __PACKAGE__->meta->make_immutable();
 }
 
 1;
