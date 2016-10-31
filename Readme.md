@@ -5,7 +5,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 ```      
 * 設定ページ作成
 
-* Sangoku::DB::Row Mouse化
 * Sangoku::Util methodをRoleに切り出し
 * service validate部を適切なRowクラスに移動
 
