@@ -157,7 +157,7 @@ package Sangoku::Web {
         $config->post('/change-equipments-name')->to(action => 'change_equipments-name');
         $config->post('/change-loyalty'        )->to(action => 'change_loyalty');
         $config->post('/change-win-message'    )->to(action => 'change_win_message');
-        $config->post('/set-profile'           )->to(action => 'set_profile');
+        $config->post('/change-profile'        )->to(action => 'change_profile');
         $config->post('/set-twitter'           )->to(action => 'set_twitter');
       }
 

@@ -34,8 +34,8 @@ package Sangoku::DB::Row::Player {
 
   sub _generate_relation_methods {
     no strict 'refs';
-    for my $method_name (@{ EQUIPMENT_LIST() }, 'soldier') {
-      my $class_name = ucfirst $method_name;
+    for my $method_name (@{ EQUIPMENT_LIST() }, qw/soldier battle_record/) {
+      my $class_name = join '', map { ucfirst $_ } split /_/, $method_name;
       *{$method_name} = sub {
         use strict 'refs';
         my ($self, $hash) = @_;
@@ -69,10 +69,16 @@ package Sangoku::DB::Row::Player {
     return $model->get($limit);
   }
 
+  sub command_record {
+    my ($self) = @_;
+    return $self->{command_record}  if exists $self->{command_record};
+    $self->{command_record} = $self->model('Player::CommandRecord')->new(id => $self->id)->get;
+  }
+
   sub country {
     my ($self, $countreis_hash) = @_;
     return $self->{country} if exists $self->{country};
-    return ref $countreis_hash eq 'HASH'
+    $self->{country} = ref $countreis_hash eq 'HASH'
       ? $countreis_hash->{$self->country_name}
       : $self->model('Country')->get($self->country_name);
   }
@@ -133,6 +139,12 @@ package Sangoku::DB::Row::Player {
     my ($self, $limit) = @_;
     my $model = $self->model('Player::Letter')->new(id => $self->id);
     return $model->get_without_same_letter($self, $limit);
+  }
+
+  sub profile {
+    my ($self) = @_;
+    my $model = $self->model('Player::Profile')->new(id => $self->id);
+    return $model->get->message;
   }
 
   sub town {

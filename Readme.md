@@ -3,8 +3,11 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
+* 設定ページ作成
+
 * Sangoku::DB::Row Mouse化
 * Sangoku::Util methodをRoleに切り出し
+* service validate部を適切なRowクラスに移動
 
 * Model::Site 月をまたがる場合や年をまたがる場合は？
 

@@ -1,0 +1,161 @@
+% layout 'player';
+
+<div id="title"><h1>設定＆戦績</h1></div>
+
+%= show_all_error({grid => 1});
+
+<div class="grid-right width-100pc">
+
+  <table class="table-<%= $country->color %> width-100pc">
+    <tr>
+      <th colspan="4"><h2>設定</h2></th>
+    </tr>
+
+    <tr>
+      <form action="/player/change-win-message" method="post">
+        <td colspan="2">
+          戦闘勝利時のメッセージ
+        </td>
+        <td class="middle">
+          <%= text_field('win_message', size => 35, class => "emphasis-error",
+            placeholder => "~~~", value => $player->win_message) %>
+        </td>
+        <td>
+          %= submit_button '変更';
+        </td>
+      </form>
+    </tr>
+
+    <tr>
+      <form action="/player/change-loyalty" method="post">
+        <td colspan="2">忠誠度</td>
+        <td class="middle">
+          <%= text_field('loyalty', size => 35, class => "emphasis-error",
+            placeholder => "~~~", value => $player->win_message) %>
+        </td>
+        <td>
+          %= submit_button '変更';
+        </td>
+      </form>
+    </tr>
+
+    <tr>
+      <form action="/player/change-icon" method="post">
+        <td colspan="2">
+          アイコン
+        </td>
+        <td class="middle">
+          <%= text_field('win_message', size => 35, class => "emphasis-error",
+            placeholder => "~~~", value => $player->win_message) %>
+        </td>
+        <td>
+          %= submit_button '変更';
+        </td>
+      </form>
+    </tr>
+
+    <form action="/player/change-equipments-name" method="post">
+      <tr>
+        <td rowspan="3">
+          装備品名変更
+        </td>
+        <td class="middle">
+          武器
+        </td>
+        <td class="middle">
+          <%= text_field('weapon_name', size => 35, class => "emphasis-error",
+            placeholder => "~~~", value => $player->win_message) %>
+        </td>
+        <td rowspan="3">
+          %= submit_button '変更';
+        </td>
+      </tr>
+
+      <tr>
+        <td class="middle">
+          防具
+        </td>
+        <td class="middle">
+          <%= text_field('guard_name', size => 35, class => "emphasis-error",
+            placeholder => "~~~", value => $player->win_message) %>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="middle">
+          書物 
+        </td>
+        <td class="middle">
+          <%= text_field('book_name', size => 35, class => "emphasis-error",
+            placeholder => "~~~", value => $player->win_message) %>
+        </td>
+      </tr>
+    </form>
+
+    <tr>
+      <form action="/player/change-profile" method="post">
+        <td colspan="2">
+          プロフィール
+        </td>
+        <td class="middle">
+          <textarea name="profile" cols="60" rows="10" class="emphasis-error"><%= $player->profile %></textarea>
+        </td>
+        <td>
+          %= submit_button '変更';
+        </td>
+      </form>
+    </tr>
+
+  </table>
+
+</div>
+
+<div class="grid width-50pc">
+
+  <table class="table-<%= $country->color %> width-100pc">
+    <tr>
+      <th colspan="3"><h2>戦績</h2></th>
+    </tr>
+
+<%# 列表示関数 %>
+<% my $battle_record_row = begin %>
+ % my ($name, $value, $rank) = @_;
+    <tr>
+      <td><%= $name %></td>
+      <td><%= $battle_record->$value %>回</td>
+      <td>0位</td>
+    </tr>
+<% end %>
+
+  %= $battle_record_row->('攻撃側勝利回数', 'attack_win', '');
+  %= $battle_record_row->('攻撃側敗北回数', 'attack_lose', '');
+  %= $battle_record_row->('守備側勝利回数', 'guard_win', '');
+  %= $battle_record_row->('守備側勝利回数', 'guard_lose', '');
+  %= $battle_record_row->('引き分け回数',   'draw', '');
+  %= $battle_record_row->('倒した兵数',     'kill_people', '');
+  %= $battle_record_row->('倒された兵数',   'die_people', '');
+  %= $battle_record_row->('支配都市数',     'conquer_town', '');
+  %= $battle_record_row->('都市攻撃回数',   'attack_town', '');
+  %= $battle_record_row->('城壁破壊量',     'wall_destroy', '');
+
+  </table>
+
+</div>
+
+<div class="grid-right width-50pc">
+
+  <table class="table-<%= $country->color %> width-100pc">
+    <tr>
+      <th colspan="3"><h2>コマンド実行回数</h2></th>
+    </tr>
+  % for (@{ $command_record }) {
+
+    <tr>
+      <td><%= $_->command_name %></td>
+      <td><%= $_->execute_count %></td>
+      <td><%= $_->rank %></td>
+    </tr>
+  % }
+  </table>
+
+</div>

@@ -28,7 +28,7 @@
   <li><a href="/player/mypage" style="width:100px">マイページ</a></li>
   <li>▼武将情報
     <ul>
-      <li><a href="/">・設定&戦績</a></li>
+      <li><a href="/player/config">・設定&戦績</a></li>
       <li><a href="/player/unit">・部隊編成</a></li>
       <li><a href="/">・行動ログ</a></li>
       <li><a href="/player/logout">・ログアウト</a></li>
