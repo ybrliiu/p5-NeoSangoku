@@ -2,9 +2,10 @@ package Sangoku::API::Command::Role::Base {
 
   use Mouse::Role;
   use Sangoku;
+  with 'Sangoku::Role::Loader';
 
   # model is model loader method.
-  use Sangoku::Util qw/validate_values model/;
+  use Sangoku::Util qw/validate_values/;
   use Sangoku::Validator;
   use Carp qw/croak/;
 
@@ -68,11 +69,10 @@ __END__
 クラス名からSangoku::Model::Commandを取り除いたもので、
 コマンド入力や実行時の識別時に使用します。
 
-=head2 select_page
+=head2 has_option 
 
-コマンド入力の時に追加の情報を付加するページ数。
-例えば、徴兵コマンドはコマンド入力時に徴兵数を入力する必要があるので1,
-農業開発はコマンドを入力するだけなので0
+コマンド入力の時に追加の情報を付加するかどうか。
+この値が正値になる場合は ChooseOption ロールを取り込む場合のみです。
 
 =cut
 

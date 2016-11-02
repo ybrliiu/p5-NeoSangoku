@@ -21,36 +21,4 @@ subtest 'child_module_list' => sub {
   ok(my @exists = grep { $_ eq 'Sangoku::Model::Player::Command' } @$list);
 };
 
-subtest 'config' => sub {
-  ok(my $config = Sangoku::Util::config('template.conf'));
-  ok(my $config2 = Sangoku::Util::config('site.conf'));
-  ok exists $config2->{$_} for qw/template site/;
-};
-
-subtest 'constants' => sub {
-  package TestPkg {
-    use constant {
-      MAX     => 100,
-      MIN     => 10,
-      KEYWORD => '!?!?!?',
-    };
-  };
-  ok(my $constants = Sangoku::Util::constants('TestPkg'));
-  is $constants->{MAX}, TestPkg->MAX;
-  is $constants->{MIN}, TestPkg->MIN;
-  is $constants->{KEYWORD}, TestPkg->KEYWORD;
-
-  # fix bug if constant is not refarence
-  load 'Sangoku::DB::Row::Country';
-  ok($constants = Sangoku::Util::constants('Sangoku::DB::Row::Country'));
-  is $constants->{NAME_LEN_MIN}, Sangoku::DB::Row::Country->NAME_LEN_MIN;
-};
-
-subtest 'loader' => sub {
-  ok(my $model = Sangoku::Util->model('Player'));
-  is $model, 'Sangoku::Model::Player';
-  ok(my $row = Sangoku::Util->row('Player'));
-  is $row, 'Sangoku::DB::Row::Player';
-};
-
 done_testing();
