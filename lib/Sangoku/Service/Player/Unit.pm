@@ -44,8 +44,7 @@ package Sangoku::Service::Player::Unit {
     validate_values($args => [qw/player_id name message/]);
 
     my $validator = $class->validator($args);
-    $validator->check( _unit_rule() );
-
+    $class->row('Unit')->validate_name_and_message($validator);
     return $validator if $validator->has_error();
 
     {
@@ -80,8 +79,7 @@ package Sangoku::Service::Player::Unit {
     validate_values($args => [qw/player_id name message/]);
 
     my $validator = $class->validator($args);
-    $validator->check( _unit_rule() );
-
+    $class->row('Unit')->validate_name_and_message($validator);
     return $validator if $validator->has_error();
 
     {
@@ -107,15 +105,6 @@ package Sangoku::Service::Player::Unit {
     }
     
     return $validator;
-  }
-
-  sub _unit_rule {
-    state $nfv = Sangoku::DB::Row::Unit->constants;
-    my %nfv = %$nfv;
-    return (
-      name    => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],
-      message => [[LENGTH => (0, $nfv{MESSAGE_LEN_MAX})]],
-    );
   }
 
   sub fire {

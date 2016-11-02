@@ -59,6 +59,14 @@ package Sangoku::DB::Row::Unit {
     $self->update({join_permit => $self->join_permit ? 0 : 1});
   }
 
+  sub validate_name_and_message {
+    my ($class, $validator) = @_;
+    $validator->check(
+      name    => ['NOT_NULL', [LENGTH => (NAME_LEN_MIN, NAME_LEN_MAX)]],
+      message => [[LENGTH => (0, MESSAGE_LEN_MAX)]],
+    );
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 

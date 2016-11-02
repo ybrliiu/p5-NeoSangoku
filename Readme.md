@@ -5,19 +5,14 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 ```      
 * 設定ページ作成
 
-* Sangoku::Util methodをRoleに切り出し
 * service validate部を適切なRowクラスに移動
+* service DB::Row::* を直接呼ぶのではなく $class->row('') で
 
 * Model::Site 月をまたがる場合や年をまたがる場合は？
 
 * t/ テストするモジュールのload部分をload関数に
 * js, scss 外部ファイル化, head読み込みシステム
 
-* Util API, Rowローダは別に必要なさそう？ -> やっぱり必要になりそうである
-
-* Util.pmのメソッド群はRoleに切り出すべきである
- -> Teng::Row がMouseオブジェクトでないのが問題に
-    Mouse object化? (速度気にするならTeng::RowをMouse化して書き換え、気にしないならMouseX::Foreignで継承)
 * WebSocket, SSL化しないと使えないっぽい
   comet と合わせて活用すべきか(wsで接続できない時cometとか)
   (comet の場合

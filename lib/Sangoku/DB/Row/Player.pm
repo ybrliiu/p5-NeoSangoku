@@ -5,6 +5,7 @@ package Sangoku::DB::Row::Player {
   extends 'Sangoku::DB::Row';
 
   use Carp qw/croak/;
+  use List::Util qw/sum/;
   use Sangoku::Util qw/minute_second/;
 
   use constant {
@@ -178,6 +179,39 @@ package Sangoku::DB::Row::Player {
   sub unit_letter {
     my ($self, $limit) = @_;
     return $self->is_belong_unit ? $self->unit->letter($limit) : [];
+  }
+
+  sub validate_regist_data {
+    my ($class, $validator, $args) = @_;
+
+    my $site = $class->model('Site')->get();
+    my $passed_year = $site->passed_year();
+
+    $validator->set_message('id.length'          => "[_1]は" . ID_LEN_MIN . "文字以上" . ID_LEN_MAX . "文字以下で入力してください。");
+    $validator->set_message('id.regex'           => "[_1]で使用可能な文字は半角英数字及び'_'だけです。");
+    $validator->set_message('pass.length'        => "[_1]は" . PASS_LEN_MIN . "文字以上" . PASS_LEN_MAX . "文字以下で入力してください。");
+    $validator->set_message('confirm_rule.equal' => '規約に同意できない場合は登録できません。');
+
+    $validator->check(
+      name => ['NOT_NULL', [LENGTH => (NAME_LEN_MIN, NAME_LEN_MAX)]],
+      icon => ['NOT_NULL', [BETWEEN => (0, $class->model('IconList')->MAX)]],
+      town => ['NOT_NULL'],
+      id   => ['NOT_NULL', [REGEX => qr/^[a-zA-Z0-9_]+$/], [LENGTH => (ID_LEN_MIN, ID_LEN_MAX)]],
+      pass => ['NOT_NULL', 'ASCII', [LENGTH => (PASS_LEN_MIN, PASS_LEN_MAX)]],
+      ( map { $_ => ['NOT_NULL', [BETWEEN => (ABILITY_MIN, $class->ability_max($passed_year))]] } @{ ABILITY_LIST() }),
+      loyalty      => ['NOT_NULL', [LENGTH => (LOYALTY_MIN, LOYALTY_MAX)]],
+      profile      => [[LENGTH => (0, PROFILE_LEN_MAX)]],
+      mail         => ['ASCII', [LENGTH => (0, MAIL_LEN_MAX)]],
+      confirm_rule => ['NOT_NULL', [EQUAL => 1]],
+    );
+
+    $validator->set_error_and_message(pass => (same => 'IDとパスワードは同じにできません！'))
+      if $args->{pass} eq $args->{id};
+
+    my $ability_sum = $class->ability_sum($passed_year);
+    $args->{ability_sum} = sum map { $args->{$_} || 0 } @{ ABILITY_LIST() };
+    $validator->set_error_and_message('ability' => (sum => "能力の合計値は${ability_sum}になるようにしてください！"))
+      unless $args->{ability_sum} == $ability_sum;
   }
 
   __PACKAGE__->meta->make_immutable();

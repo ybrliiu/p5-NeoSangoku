@@ -42,10 +42,7 @@ package Sangoku::API::Command::Insert {
 
   sub _choose_last_option {
     my ($self, $validator) = @_;
-    {
-      INSERT_NUMBER_MIN => INSERT_NUMBER_MIN,
-      INSERT_NUMBER_MAX => INSERT_NUMBER_MAX,
-    }, $validator;
+    $self->constants, $validator;
   }
 
   __PACKAGE__->meta->make_immutable();

@@ -55,11 +55,10 @@ package Test::Sangoku::Util {
 
   # Test::Record を同時に使用すること
   sub prepare_service_tests {
-    my @modules = qw/Country Town Player/;
-    my $model_class = "Sangoku::Model::";
-    load "$model_class$_" for @modules;
-    "$model_class$_"->init for @modules;
-
+    my $init_class = "Sangoku::Service::Admin::ResetGame";
+    load $init_class;
+    $init_class->init_data_all("1日0時");
+    
     create_test_player();
   }
   

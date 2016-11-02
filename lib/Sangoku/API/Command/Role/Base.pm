@@ -2,7 +2,7 @@ package Sangoku::API::Command::Role::Base {
 
   use Mouse::Role;
   use Sangoku;
-  with 'Sangoku::Role::Loader';
+  with map { "Sangoku::Role::$_" } qw/Constants Loader/;
 
   # model is model loader method.
   use Sangoku::Util qw/validate_values/;

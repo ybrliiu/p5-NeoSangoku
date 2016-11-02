@@ -37,6 +37,18 @@ package Sangoku::DB::Row::Country {
     return $country_towns;
   }
 
+  sub validate_regist_data {
+    my ($class, $validator, $args, $town) = @_;
+
+    $validator->set_message('country_name.length' => "[_1]は" . NAME_LEN_MIN . "文字以上" . NAME_LEN_MAX . "文字以下で入力してください。");
+    $validator->set_message('country_color.not_null' => '[_1]を選択してください。');
+
+    $validator->check(
+      country_name  => ['NOT_NULL', [LENGTH => (NAME_LEN_MIN, NAME_LEN_MAX)]],
+      country_color => ['NOT_NULL', [CHOICE => (keys %{ COLOR() })]],
+    );
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 
