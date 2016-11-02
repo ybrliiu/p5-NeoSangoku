@@ -6,7 +6,6 @@ package Sangoku::Service::Player::Unit {
 
   use Carp qw/croak/;
   use Sangoku::Util qw/validate_values/;
-  use Sangoku::DB::Row::Unit;
 
   sub root {
     my ($class, $player_id) = @_;
@@ -15,7 +14,7 @@ package Sangoku::Service::Player::Unit {
     my $members = $class->model('Unit::Members')->search(country_name => $player->country_name);
 
     return {
-      %{ Sangoku::DB::Row::Unit->constants() },
+      %{ $class->row('Unit')->constants() },
       player          => $player,
       members_hash    => $class->model('Unit::Members')->to_hash($members),
       units           => $class->model('Unit')->search(country_name => $player->country_name),

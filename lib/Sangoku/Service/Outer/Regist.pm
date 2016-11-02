@@ -15,12 +15,12 @@ package Sangoku::Service::Outer::Regist {
     my $passed_year = $site->passed_year();
 
     return {
-      %{ Sangoku::DB::Row::Player->constants },
-      ability_max          => Sangoku::DB::Row::Player->ability_max($passed_year),
-      ability_sum          => Sangoku::DB::Row::Player->ability_sum($passed_year),
-      COUNTRY_COLOR        => Sangoku::DB::Row::Country->COLOR,
-      COUNTRY_NAME_LEN_MIN => Sangoku::DB::Row::Country->NAME_LEN_MIN,
-      COUNTRY_NAME_LEN_MAX => Sangoku::DB::Row::Country->NAME_LEN_MAX,
+      %{ $class->row('Player')->constants },
+      ability_max          => $class->row('Player')->ability_max($passed_year),
+      ability_sum          => $class->row('Player')->ability_sum($passed_year),
+      COUNTRY_COLOR        => $class->row('Country')->COLOR,
+      COUNTRY_NAME_LEN_MIN => $class->row('Country')->NAME_LEN_MIN,
+      COUNTRY_NAME_LEN_MAX => $class->row('Country')->NAME_LEN_MAX,
       ICONS_DIR_PATH       => $class->model('IconList')->ICONS_DIR_PATH,
       current_player       => $class->model('Player')->count_all,
       towns                => $towns,
@@ -40,14 +40,14 @@ package Sangoku::Service::Outer::Regist {
     my $validator = $class->validator($args);
     my $txn = $class->txn;
 
-    Sangoku::DB::Row::Player->validate_regist_data($validator, $args);
+    $class->row('Player')->validate_regist_data($validator, $args);
 
     my $town = $class->model('Town')->get($args->{town})->refetch({for_update => 1});
 
     my @is_input_country_form = grep { $args->{"country_$_"} } qw/name color/;
     if ($town->can_establish_nation || @is_input_country_form) {
 
-      Sangoku::DB::Row::Country->validate_regist_data($validator, $args);
+      $class->row('Country')->validate_regist_data($validator, $args);
 
       # 下3つのメソッド呼び出しを以下のようにしてもいいかも
       # $class->model('Country')->regist_country({
