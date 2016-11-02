@@ -3,9 +3,7 @@ package Sangoku::DB::Row {
   use Mouse;
   use Sangoku;
   use MouseX::Foreign 'Teng::Row';
-
-  # model is method.
-  use Sangoku::Util qw/model/;
+  with map { "Sangoku::Role::$_" } qw/Constants Config Loader/;
 
   sub _generate_letter_method {
     my ($class) = @_;

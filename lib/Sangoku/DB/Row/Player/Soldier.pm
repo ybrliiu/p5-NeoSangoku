@@ -4,10 +4,7 @@ package Sangoku::DB::Row::Player::Soldier {
   use Sangoku;
   extends 'Sangoku::DB::Row';
 
-  use Sangoku::Model::Soldier;
-  use Data::Dumper;
-
-  my %SOLDIER_DATA = %{ Sangoku::Model::Soldier->to_hash() };
+  my %SOLDIER_DATA = %{ __PACKAGE__->model('Soldier')->to_hash() };
 
   sub attack_power {
     my ($self, $player) = @_;

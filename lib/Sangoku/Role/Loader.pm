@@ -2,6 +2,7 @@ package Sangoku::Role::Loader {
 
   use Mouse::Role;
   use Sangoku;
+  use Sangoku::Util qw/load/;
 
   __PACKAGE__->_generate_loader_method();
 

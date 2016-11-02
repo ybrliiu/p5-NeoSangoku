@@ -5,7 +5,7 @@ package Sangoku::Service::Player::Unit {
   with 'Sangoku::Service::Role::Base';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/validate_values config/;
+  use Sangoku::Util qw/validate_values/;
   use Sangoku::DB::Row::Unit;
 
   sub root {
@@ -15,14 +15,14 @@ package Sangoku::Service::Player::Unit {
     my $members = $class->model('Unit::Members')->search(country_name => $player->country_name);
 
     return {
-      %{ Sangoku::DB::Row::Unit->get_all_constants() },
+      %{ Sangoku::DB::Row::Unit->constants() },
       player          => $player,
       members_hash    => $class->model('Unit::Members')->to_hash($members),
       units           => $class->model('Unit')->search(country_name => $player->country_name),
       country         => $player->country,
       countries_hash  => $class->model('Country')->get_all_to_hash,
       map_data        => $class->model('Town')->get_all_for_map,
-      template_config => config->{template}{player}{unit},
+      template_config => $class->config->{template}{player}{unit},
     };
   }
 
@@ -110,7 +110,7 @@ package Sangoku::Service::Player::Unit {
   }
 
   sub _unit_rule {
-    state $nfv = Sangoku::DB::Row::Unit->get_all_constants;
+    state $nfv = Sangoku::DB::Row::Unit->constants;
     my %nfv = %$nfv;
     return (
       name    => ['NOT_NULL', [LENGTH => ($nfv{NAME_LEN_MIN}, $nfv{NAME_LEN_MAX})]],

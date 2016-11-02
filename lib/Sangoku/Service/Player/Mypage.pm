@@ -5,13 +5,12 @@ package Sangoku::Service::Player::Mypage {
   with 'Sangoku::Service::Role::Base';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/validate_values config/;
+  use Sangoku::Util qw/validate_values/;
 
   sub root {
     my ($class, $player_id) = @_;
 
-    my $config = config->{template}{player}{mypage};
-
+    my $config         = $class->config->{template}{player}{mypage};
     my $player         = $class->model('Player')->get($player_id);
     my $unit           = $player->unit;
     my $countreis_hash = $class->model('Country')->get_all_to_hash();

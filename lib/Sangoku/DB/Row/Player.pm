@@ -5,7 +5,7 @@ package Sangoku::DB::Row::Player {
   extends 'Sangoku::DB::Row';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/config minute_second get_all_constants/;
+  use Sangoku::Util qw/minute_second/;
 
   use constant {
     NAME_LEN_MIN    => 1,
@@ -121,13 +121,12 @@ package Sangoku::DB::Row::Player {
   }
 
   {
-    config('data/lank.conf');
-    my $lank = config->{lank};
-    my $LANK_MAX = @$lank;
+    my $lank = __PACKAGE__->config('data/lank.conf')->{lank};
+    my $MAX_LANK = @$lank;
 
     sub lank {
       my ($self) = @_;
-      return ($self->class / LANK_UP) > $LANK_MAX ? $LANK_MAX : int($self->class / LANK_UP);
+      return ($self->class / LANK_UP) > $MAX_LANK ? $MAX_LANK : int($self->class / LANK_UP);
     }
 
     sub lank_name {

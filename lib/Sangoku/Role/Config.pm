@@ -6,7 +6,7 @@ package Sangoku::Role::Config {
   use Sangoku::Util qw/load_config/;
 
   sub config {
-    my ($file) = @_;
+    my ($class, $file) = @_;
     state $config = {};
     $config = { %$config, %{ load_config $file } } if defined $file;
     return $config;

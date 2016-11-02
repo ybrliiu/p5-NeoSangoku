@@ -12,6 +12,7 @@ requires qw/Module::Load/;
 requires qw/Mojolicious 7.0/;
 requires qw/Mojolicious::Plugin::AssetPack 1.18/;
 requires qw/Mouse 2.4.5/;
+requires qw/MouseX::Foreign/;
 requires qw/Class::Accessor::Lite 0.08/;
 requires qw/Teng 0.28/;
 requires qw/Exception::Tiny 0.2.1/;

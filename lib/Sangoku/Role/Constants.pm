@@ -25,7 +25,8 @@ package Sangoku::Role::Constants {
         }
         # use constant の中に直接記述しなかった場合は型グロブになる
         elsif (defined *{$value}{CODE}) {
-          $key => *{$value}{CODE}->();
+          # DESTROY はブラックリスト($selfから呼び出さないので例外発生することが)
+          $value =~ /DESTROY/ ? () : ($key => *{$value}{CODE}->());
         } else {
           ();
         }

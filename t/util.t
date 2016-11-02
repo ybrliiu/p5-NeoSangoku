@@ -27,7 +27,7 @@ subtest 'config' => sub {
   ok exists $config2->{$_} for qw/template site/;
 };
 
-subtest 'get_all_constants' => sub {
+subtest 'constants' => sub {
   package TestPkg {
     use constant {
       MAX     => 100,
@@ -35,14 +35,14 @@ subtest 'get_all_constants' => sub {
       KEYWORD => '!?!?!?',
     };
   };
-  ok(my $constants = Sangoku::Util::get_all_constants('TestPkg'));
+  ok(my $constants = Sangoku::Util::constants('TestPkg'));
   is $constants->{MAX}, TestPkg->MAX;
   is $constants->{MIN}, TestPkg->MIN;
   is $constants->{KEYWORD}, TestPkg->KEYWORD;
 
   # fix bug if constant is not refarence
   load 'Sangoku::DB::Row::Country';
-  ok($constants = Sangoku::Util::get_all_constants('Sangoku::DB::Row::Country'));
+  ok($constants = Sangoku::Util::constants('Sangoku::DB::Row::Country'));
   is $constants->{NAME_LEN_MIN}, Sangoku::DB::Row::Country->NAME_LEN_MIN;
 };
 

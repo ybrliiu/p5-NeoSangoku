@@ -3,17 +3,12 @@ package Sangoku::Util {
   use Sangoku;
 
   use Exporter 'import';
-  # methods は role に切り出すべき
-  my @LOADER_METHODS = qw/model row api/;
-  my @METHODS = (@LOADER_METHODS, qw/get_all_constants/);
   our @EXPORT_OK = (
     qw/
       project_root_dir load_config validate_values minute_second
       daytime date datetime child_module_list load_child_module
-      config
       load
     /,
-    @METHODS,
   );
 
   use Carp qw/croak/;
@@ -121,73 +116,6 @@ package Sangoku::Util {
     state $color_strs_len = @$color_strs;
     my $color_code = '#' . join('', map { $color_strs->[int(rand $color_strs_len)] } 0 .. 5);
     return $color_code;
-  }
-
-  sub config {
-    my ($file) = @_;
-    state $config = {};
-    $config = { %$config, %{ load_config $file } } if defined $file;
-    return $config;
-  }
-
-  # package名からそのpkg内の定数一覧を取得
-  sub get_all_constants {
-    my ($pkg) = @_;
-
-    state $cache = {};
-    return $cache->{$pkg} if exists $cache->{$pkg};
-
-    no strict 'refs';
-    my %table = %{"${pkg}::"};
-    use strict 'refs';
-
-    my %constants = map {
-      (my $key = $_) =~ s/${pkg}:://g;
-      my $value = $table{$key};
-      if ($key !~ /[^A-Z0-9_]/) {
-
-        # 定数は型グロブではなくリファレンスになっている
-        if (ref $value) {
-          $key => $$value;
-        }
-        # use constant の中に直接記述しなかった場合は型グロブになる
-        elsif (defined *{$value}{CODE}) {
-          $key => *{$value}{CODE}->();
-        } else {
-          ();
-        }
-
-      } else {
-        ();
-      }
-    } keys %table;
-    $cache->{$pkg} = \%constants;
-  }
-
-  __PACKAGE__->_generate_loader_method();
-
-  sub _generate_loader_method {
-
-    my %pkg_name;
-    @pkg_name{@LOADER_METHODS} = qw/Model DB::Row API/;
-    
-    for my $method (@LOADER_METHODS) {
-
-      no strict 'refs';
-      *$method = sub {
-        use strict 'refs';
-        my ($class, $name) = @_;
-
-        state $module_names = {};
-        return $module_names->{$name} if exists $module_names->{$name};
-
-        my $pkg = "Sangoku::$pkg_name{$method}::$name";
-        load $pkg;
-        $module_names->{$name} = $pkg;
-      };
-
-    }
-
   }
 
 }

@@ -15,7 +15,7 @@ package Sangoku::Service::Outer::Regist {
     my $passed_year = $site->passed_year();
 
     return {
-      %{ Sangoku::DB::Row::Player->get_all_constants },
+      %{ Sangoku::DB::Row::Player->constants },
       ability_max          => Sangoku::DB::Row::Player->ability_max($passed_year),
       ability_sum          => Sangoku::DB::Row::Player->ability_sum($passed_year),
       COUNTRY_COLOR        => Sangoku::DB::Row::Country->COLOR,
@@ -43,7 +43,7 @@ package Sangoku::Service::Outer::Regist {
     # validate player info
     {
       # number_for_validation -> nfv
-      state $nfv = Sangoku::DB::Row::Player->get_all_constants();
+      state $nfv = Sangoku::DB::Row::Player->constants();
       my %nfv = %$nfv;
       my $site = $class->model('Site')->get();
       my $passed_year = $site->passed_year();
@@ -87,7 +87,7 @@ package Sangoku::Service::Outer::Regist {
       # validate country info
       {
         # number_for_validation -> nfv
-        state $nfv = Sangoku::DB::Row::Country->get_all_constants();
+        state $nfv = Sangoku::DB::Row::Country->constants();
         my %nfv = %$nfv;
 
         $validator->set_message('country_name.length' => "[_1]は$nfv{NAME_LEN_MIN}文字以上$nfv{NAME_LEN_MAX}文字以下で入力してください。");

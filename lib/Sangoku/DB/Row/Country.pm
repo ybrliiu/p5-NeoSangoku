@@ -4,13 +4,12 @@ package Sangoku::DB::Row::Country {
   use Sangoku;
   extends 'Sangoku::DB::Row';
 
-  use Sangoku::Util qw/config get_all_constants/;
-
   use constant {
     NAME_LEN_MIN => 1,
     NAME_LEN_MAX => 16,
-    COLOR        => config('color.conf')->{countrycolor},
   };
+
+  sub COLOR() { state $color = __PACKAGE__->config('color.conf')->{countrycolor} }
 
   __PACKAGE__->_generate_letter_method();
 

@@ -4,8 +4,6 @@ package Sangoku::DB::Row::Unit {
   use Sangoku;
   extends 'Sangoku::DB::Row';
 
-  use Sangoku::Util qw/get_all_constants/;
-
   use constant {
     NAME_LEN_MIN    => 1,
     NAME_LEN_MAX    => 15,
