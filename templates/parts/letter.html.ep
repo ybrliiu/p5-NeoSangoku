@@ -1,0 +1,15 @@
+  % for (@{ $letters }) {
+    <tr data-letter-id="<%= $_->id %>">
+      <td class="letter-icon">
+        <img class="icon" src="/images/icons/<%= $_->sender_icon %>.gif">
+      </td>
+      <td class="letter-message">
+        <%= $_->sender_name %>@<span class="thin"><%= $_->sender_town_name %>@<%= $_->sender_country_name %>から<%= $_->receiver_name %>へ</span><br>
+『<%== $_->message %>』<br>
+        <div class="thin"><%= $_->time %></div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="line"></td>
+    </tr>
+  % }

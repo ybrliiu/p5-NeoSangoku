@@ -116,6 +116,40 @@ package Sangoku::Service::Player::Mypage {
     return $letter_data;
   }
 
+  sub check_new_letter {
+    my ($class, $args) = @_;
+    validate_values($args => [qw/player_id player_letter_id invite_letter_id
+      country_letter_id town_letter_id unit_letter_id/]);
+
+    my $player = $class->model('Player')->get($args->{player_id});
+    my $unit = $player->unit;
+    my %letter_model = (
+      player  => $class->model('Player::Letter')->new(id => $player->id),
+      invite  => $class->model('Player::Invite')->new(id => $player->id),
+      unit    => $class->model('Unit::Letter')->new({
+        id   => $unit->id,
+        name => $unit->name,
+      }),
+      country => $class->model('Country::Letter')->new(name => $player->country_name),
+      town    => $class->model('Town::Letter')->new(name => $player->town_name),
+    );
+    my @letters = keys %letter_model;
+
+    my %update_letter =
+      map { $_ => $letter_model{$_}->check_new_letter($args->{$_ . '_letter_id'}, $player) } @letters;
+
+    return {
+      check  => \%update_letter,
+      letter => +{
+        map {
+          $update_letter{$_}
+            ? ($_ => $letter_model{$_}->get($class->config->{template}{player}{mypage}{letter}{$_}))
+            : ()
+        } @letters
+      },
+    };
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 

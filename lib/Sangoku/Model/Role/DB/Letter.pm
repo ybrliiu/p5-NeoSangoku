@@ -65,6 +65,21 @@ package Sangoku::Model::Role::DB::Letter {
     return \%letter_data;
   }
 
+  # for commet chat. (alternative websocket)
+  sub check_new_letter {
+    my ($self, $before_id) = @_;
+    my ($pkey, $pvalue) = %{ $self->where };
+    my $sth = $self->db->dbh->prepare("
+      SELECT id from " . $self->TABLE_NAME . "
+        WHERE $pkey = '$pvalue'
+        ORDER BY id DESC
+    ");
+    $sth->execute;
+    my $row = $sth->fetch;
+    return 0 unless ref $row eq 'ARRAY';
+    return ($row->[0] > $before_id) + 0;
+  }
+
 }
 
 1;

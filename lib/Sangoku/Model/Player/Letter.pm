@@ -65,6 +65,31 @@ package Sangoku::Model::Player::Letter {
     $self->db->do_insert(TABLE_NAME, $args);
   }
 
+  around 'check_new_letter' => sub {
+    my ($orig, $self, $before_id, $player) = @_;
+
+    state $TABLE_NAME = $self->TABLE_NAME;
+    my $sth = $self->db->dbh->prepare("
+      SELECT id from $TABLE_NAME
+        WHERE player_id = ?
+        AND receiver_name <> ?
+        AND receiver_name <> ?
+        @{[ $player->is_belong_unit ? 'AND receiver_name <> ?' : '' ]}
+        ORDER BY id DESC
+        LIMIT 1
+    ");
+    $sth->execute(
+      $player->id,
+      $player->town_name,
+      $player->country_name,
+      $player->is_belong_unit ? $player->unit->name : (),
+    );
+
+    my $row = $sth->fetch;
+    return 0 unless defined $row;
+    return $row->[0] > $before_id;
+  };
+
   __PACKAGE__->meta->make_immutable();
 }
 

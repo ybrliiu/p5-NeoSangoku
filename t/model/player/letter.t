@@ -18,18 +18,20 @@ subtest 'new' => sub {
   isa_ok $OBJ, $TEST_CLASS;
 };
 
+my $SENDER;
+
 subtest 'add, add_sended' => sub {
-  my $sender = Sangoku::Model::Player->get($PLAYER_ID);
+  $SENDER = Sangoku::Model::Player->get($PLAYER_ID);
   my $receiver = Sangoku::Model::Player->get(TEST_PLAYER_DATA->{player}{id});
 
   ok $OBJ->add({
-    sender   => $sender,
+    sender   => $SENDER,
     receiver => $receiver,
     message  => '手紙テスト',
   });
 
   ok $OBJ->add({
-    sender   => $sender,
+    sender   => $SENDER,
     receiver => $receiver,
     message  => 'テスト2',
   });
@@ -45,7 +47,7 @@ subtest 'add, add_sended' => sub {
   });
 };
 
-subtest 'get_all' => sub {
+subtest 'get_all, check_new_letter' => sub {
   ok(my $list = $OBJ->get_all);
   is @$list, 5;
 };
@@ -63,6 +65,10 @@ subtest 'get' => sub {
     my $letter = $list->[0];
     is $letter->sender_icon, 100;
   }
+
+  my $letter_id = $list->[0]->id;
+  ok $OBJ->check_new_letter($letter_id - 1, $SENDER);
+  ok !$OBJ->check_new_letter($letter_id, $SENDER);
 };
 
 done_testing();

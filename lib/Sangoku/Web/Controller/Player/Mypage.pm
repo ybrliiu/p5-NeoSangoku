@@ -42,6 +42,38 @@ package Sangoku::Web::Controller::Player::Mypage {
 
   }
 
+  # websocket の代わり
+  sub check_new_letter {
+    my ($self) = @_;
+    my ($player_id, $json) = ($self->session('id'), $self->req->json);
+    $json->{player_id} = $player_id;
+
+    my $result = $self->service->check_new_letter($json);
+    my $letter_data = $result->{letter};
+    $self->render(json => +{
+      %{ $result->{check} },
+      (
+        map {
+          if (exists $letter_data->{$_}) {
+            "${_}_letter" => $self->render_to_string('/parts/letter', letters => $letter_data->{$_})
+          } else {
+            ()
+          }
+        } keys %$letter_data
+      ),
+    });
+  }
+
+  sub send_letter {
+    my ($self) = @_;
+    my $player_id = $self->session('id');
+    my $json = $self->req->json;
+    $json->{sender_id} = $player_id;
+    $json->{message} =~ s/(\n|\r\n|\r)/<br>/g;
+    my $letter_data = $self->service->write_letter($json);
+    $self->render(json => $letter_data);
+  }
+
 }
 
 1;
