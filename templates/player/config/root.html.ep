@@ -1,24 +1,35 @@
 % layout 'player';
 
+%= javascript '/js/sangoku/util.js';
+
+<style>
+
+#config {
+  width: 100%;
+}
+
+#config tbody tr td:last-child { text-align: center }
+
+</style>
+
 <div id="title"><h1>設定＆戦績</h1></div>
 
 %= show_all_error({grid => 1});
 
 <div class="grid-right width-100pc">
 
-  <table class="table-<%= $country->color %> width-100pc">
+  <table class="table-<%= $country->color %>" id="config">
     <tr>
       <th colspan="4"><h2>設定</h2></th>
     </tr>
 
     <tr>
-      <form action="/player/change-win-message" method="post">
+      <form action="/player/config/change-win-message" method="post">
         <td colspan="2">
-          戦闘勝利時のメッセージ
+          戦闘勝利時のメッセージ（<%= $WIN_MESSAGE_LEN_MAX %>文字以内）
         </td>
         <td class="middle">
-          <%= text_field('win_message', size => 35, class => "emphasis-error",
-            placeholder => "~~~", value => $player->win_message) %>
+          <%= text_field('win_message', size => 35, class => $error->emphasis('win_message'), value => $player->win_message) %>
         </td>
         <td>
           %= submit_button '変更';
@@ -27,11 +38,12 @@
     </tr>
 
     <tr>
-      <form action="/player/change-loyalty" method="post">
-        <td colspan="2">忠誠度</td>
+      <form action="/player/config/change-loyalty" method="post">
+        <td colspan="2">
+          忠誠度（<%= $LOYALTY_MIN %>〜<%= $LOYALTY_MAX %>）
+        </td>
         <td class="middle">
-          <%= text_field('loyalty', size => 35, class => "emphasis-error",
-            placeholder => "~~~", value => $player->win_message) %>
+          <%= number_field('loyalty', size => 35, class => $error->emphasis('loyalty'), value => $player->loyalty) %>
         </td>
         <td>
           %= submit_button '変更';
@@ -40,13 +52,23 @@
     </tr>
 
     <tr>
-      <form action="/player/change-icon" method="post">
+      <form action="/player/config/change-icon" method="post">
         <td colspan="2">
           アイコン
         </td>
         <td class="middle">
-          <%= text_field('win_message', size => 35, class => "emphasis-error",
-            placeholder => "~~~", value => $player->win_message) %>
+
+          <div>
+            <div id="choosed-icon-frame" class="center">
+              <img class="icon" src="<%= $ICONS_DIR_PATH %><%= $error->param('icon') // $player->icon %>.gif">
+              <span id="choosed-icon">
+                <%= $error->param('icon') // $player->icon %><br>
+              </span>
+            </div>
+            <input type="hidden" name="icon" value="0">
+            <input type="button" id="open-icon-list" class="<%= $error->emphasis('icon') %>" value="アイコンを選択する..."><br>
+          </div>
+
         </td>
         <td>
           %= submit_button '変更';
@@ -54,51 +76,47 @@
       </form>
     </tr>
 
-    <form action="/player/change-equipments-name" method="post">
+    <form action="/player/config/change-equipments-name" method="post">
+      
+      <%# equipment form %>
+      <% my $equipment_form = begin %>
+      % my ($equipment_name, $form_name) = @_;
+        <td class="middle">
+          <%= $equipment_name %>
+        </td>
+        <td class="middle">
+          <%= text_field("${form_name}_name", size => 35, 
+            class => $error->emphasis("${form_name}_name"), value => $player->$form_name->name) %>
+        </td>
+      <% end %>
+
       <tr>
         <td rowspan="3">
-          装備品名変更
+          装備品名変更（<%= $EQUIPMENT_NAME_LEN_MAX %>文字以内）
         </td>
-        <td class="middle">
-          武器
-        </td>
-        <td class="middle">
-          <%= text_field('weapon_name', size => 35, class => "emphasis-error",
-            placeholder => "~~~", value => $player->win_message) %>
-        </td>
+        %= $equipment_form->('武器', 'weapon');
         <td rowspan="3">
           %= submit_button '変更';
         </td>
       </tr>
 
       <tr>
-        <td class="middle">
-          防具
-        </td>
-        <td class="middle">
-          <%= text_field('guard_name', size => 35, class => "emphasis-error",
-            placeholder => "~~~", value => $player->win_message) %>
-        </td>
+        %= $equipment_form->('防具', 'guard');
       </tr>
 
       <tr>
-        <td class="middle">
-          書物 
-        </td>
-        <td class="middle">
-          <%= text_field('book_name', size => 35, class => "emphasis-error",
-            placeholder => "~~~", value => $player->win_message) %>
-        </td>
+        %= $equipment_form->('書物', 'book');
       </tr>
+
     </form>
 
     <tr>
-      <form action="/player/change-profile" method="post">
+      <form action="/player/config/set-profile" method="post">
         <td colspan="2">
-          プロフィール
+          プロフィール（<%= $PROFILE_LEN_MAX %>文字以内）
         </td>
         <td class="middle">
-          <textarea name="profile" cols="60" rows="10" class="emphasis-error"><%= $player->profile %></textarea>
+          <%= text_area(profile => $player->profile, cols => 60, rows => 10, class => $error->emphasis('profile')) %>
         </td>
         <td>
           %= submit_button '変更';
@@ -122,8 +140,8 @@
  % my ($name, $value, $rank) = @_;
     <tr>
       <td><%= $name %></td>
-      <td><%= $battle_record->$value %>回</td>
-      <td>0位</td>
+      <td class="middle"><%= $battle_record->$value %>回</td>
+      <td class="middle">0位</td>
     </tr>
 <% end %>
 
@@ -159,3 +177,16 @@
   </table>
 
 </div>
+
+<script>
+
+  'use strict';
+
+  (function () {
+
+    var util = new sangoku.util;
+    util.registOpenIconList();
+
+  }());
+
+</script>

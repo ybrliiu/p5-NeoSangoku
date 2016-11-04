@@ -26,7 +26,10 @@ package Sangoku::DB::Row::Player {
     ABILITY_SUM_BASE => 160,
     ABILITY_COEF     => 0.9,
 
-    EQUIPMENT_LIST    => [qw/weapon guard book/],
+    EQUIPMENT_LIST         => [qw/weapon guard book/],
+    EQUIPMENT_NAME_LEN_MAX => 15,
+    WIN_MESSAGE_LEN_MAX    => 20,
+
     LANK_UP           => 500,   # 階級アップに必要な階級値
 		DELETE_TURN       => 72,    # 放置削除にかかるターン数
 		PLAYER_UPDATETIME => 3600,  # 更新時間(分)
@@ -181,6 +184,16 @@ package Sangoku::DB::Row::Player {
     return $self->is_belong_unit ? $self->unit->letter($limit) : [];
   }
 
+  sub validate_icon {
+    my ($class, $validator) = @_;
+    $validator->check(icon => ['NOT_NULL', [BETWEEN => (0, $class->model('IconList')->MAX)]]);
+  }
+
+  sub validate_loyalty {
+    my ($class, $validator) = @_;
+    $validator->check(loyalty => ['NOT_NULL', [BETWEEN => (LOYALTY_MIN, LOYALTY_MAX)]]);
+  }
+
   sub validate_regist_data {
     my ($class, $validator, $args) = @_;
 
@@ -199,7 +212,7 @@ package Sangoku::DB::Row::Player {
       id   => ['NOT_NULL', [REGEX => qr/^[a-zA-Z0-9_]+$/], [LENGTH => (ID_LEN_MIN, ID_LEN_MAX)]],
       pass => ['NOT_NULL', 'ASCII', [LENGTH => (PASS_LEN_MIN, PASS_LEN_MAX)]],
       ( map { $_ => ['NOT_NULL', [BETWEEN => (ABILITY_MIN, $class->ability_max($passed_year))]] } @{ ABILITY_LIST() }),
-      loyalty      => ['NOT_NULL', [LENGTH => (LOYALTY_MIN, LOYALTY_MAX)]],
+      loyalty      => ['NOT_NULL', [BETWEEN => (LOYALTY_MIN, LOYALTY_MAX)]],
       profile      => [[LENGTH => (0, PROFILE_LEN_MAX)]],
       mail         => ['ASCII', [LENGTH => (0, MAIL_LEN_MAX)]],
       confirm_rule => ['NOT_NULL', [EQUAL => 1]],

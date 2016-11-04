@@ -5,9 +5,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 ```      
 * 設定ページ作成
 
-* service validate部を適切なRowクラスに移動
-* service DB::Row::* を直接呼ぶのではなく $class->row('') で
-
 * Model::Site 月をまたがる場合や年をまたがる場合は？
 
 * t/ テストするモジュールのload部分をload関数に

@@ -6,6 +6,7 @@ package Sangoku::Role::Constants {
   # package名からそのpkg内の定数一覧を取得
   sub constants {
     my ($pkg) = @_;
+    $pkg = ref $pkg || $pkg;
 
     state $cache = {};
     return $cache->{$pkg} if exists $cache->{$pkg};

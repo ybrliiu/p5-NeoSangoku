@@ -1,5 +1,7 @@
 % layout 'default';
 
+%= javascript '/js/sangoku/util.js';
+
 <style>
 
 <% my $scss = '
@@ -23,21 +25,6 @@
       &:nth-child(2n+1) { 
         @extend %gray-td;
       }
-    }
-  }
-
-  #choosed-icon-frame {
-    width: 82px;
-    background-color: ' . $config->{color}{white} . ';
-    border: 3px ' . $config->{color}{darkred} . ' inset;
-    border-radius: 3px;
-    margin: 4px;
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
-    img {
-      background-color: ' . $config->{color}{lightblack} . ';
-      margin-bottom: 3px;
     }
   }
 
@@ -460,11 +447,6 @@
         form.addEventListener('keyup', self.setSumValue, false);
       });
 
-      var btn = document.getElementById('open-icon-list');
-      btn.addEventListener('click', function () {
-        window.open('/outer/icon-list', 'child');
-      }, false);
-
     };
 
   }());
@@ -476,6 +458,9 @@
     c.registEvents();
     c.updateValues();
     c.setSumValue();
+
+    var util = new sangoku.util;
+    util.registOpenIconList();
 
   }());
 

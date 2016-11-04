@@ -154,7 +154,7 @@ package Sangoku::Web {
         my $config = $auth->any('/config')->to(controller => 'Player::Config');
         $config->any( '/'                      )->to(action => 'root'); # 戦績も一緒に表示
         $config->post('/change-icon'           )->to(action => 'change_icon');
-        $config->post('/change-equipments-name')->to(action => 'change_equipments-name');
+        $config->post('/change-equipments-name')->to(action => 'change_equipments_name');
         $config->post('/change-loyalty'        )->to(action => 'change_loyalty');
         $config->post('/change-win-message'    )->to(action => 'change_win_message');
         $config->post('/set-profile'           )->to(action => 'set_profile');

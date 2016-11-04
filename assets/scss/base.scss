@@ -53,8 +53,8 @@ ul {
   $margin: 20px;
 
   > * {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: auto !important;
+    margin-right: auto !important;
     margin-top: $margin;
     margin-bottom: $margin;
     box-sizing: border-box;
@@ -209,10 +209,32 @@ ul {
 
 }
 
+/* アイコン選択部 */
+#choosed-icon-frame {
+  width: 82px;
+  background-color: $white;
+  border: 3px $darkred inset;
+  border-radius: 3px;
+  margin: 4px;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  img {
+    background-color: $lightblack;
+    margin-bottom: 3px;
+  }
+}
+
 /* スクロール */
 .scroll {
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+}
+
+/* 強制中央揃え */
+.center {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* 見出し用 */

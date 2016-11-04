@@ -36,8 +36,8 @@ package Sangoku::Model::Player::Profile {
   sub edit_message {
     my ($self, $str) = @_;
     my $record = $self->record->open('LOCK_EX');
-    my $site = $record->at(0);
-    $site->message($str);
+    my $profile = $record->at(0);
+    $profile->message($str);
     $record->close();
   }
 
