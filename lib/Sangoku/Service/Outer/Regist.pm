@@ -18,6 +18,7 @@ package Sangoku::Service::Outer::Regist {
       %{ $class->row('Player')->constants },
       ability_max          => $class->row('Player')->ability_max($passed_year),
       ability_sum          => $class->row('Player')->ability_sum($passed_year),
+      PROFILE_LEN_MAX      => $class->api('Player::Profile')->MESSAGE_LEN_MAX,
       COUNTRY_COLOR        => $class->row('Country')->COLOR,
       COUNTRY_NAME_LEN_MIN => $class->row('Country')->NAME_LEN_MIN,
       COUNTRY_NAME_LEN_MAX => $class->row('Country')->NAME_LEN_MAX,

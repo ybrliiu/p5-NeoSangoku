@@ -44,6 +44,17 @@ package Sangoku::Web::Controller::Player::Config {
     $self->redirect_to('/player/config');
   }
 
+  sub change_win_message {
+    my ($self) = @_;
+    my $player_id = $self->session('id');
+    my $error = $self->service->change_win_message({
+      player_id   => $player_id,
+      win_message => $self->param('win_message'),
+    });
+    $self->flash_error($error);
+    $self->redirect_to('/player/config');
+  }
+
   sub set_profile {
     my ($self) = @_;
     my $player_id = $self->session('id');

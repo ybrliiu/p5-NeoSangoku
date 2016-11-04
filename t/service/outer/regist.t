@@ -41,13 +41,14 @@ subtest 'build_country' => sub {
     });
     ok !$error->has_error;
 
-    ok my $error = $TEST_CLASS->regist({
+    ok $error = $TEST_CLASS->regist({
       name => '仕官者2',
       icon => 100,
       town => '開封',
       id   => $builder_id,
       pass => 'pass',
-      (map { $_ => 100 } qw/force intellect leadership popular loyalty/),
+      (map { $_ => 100 } qw/force intellect leadership popular/),
+      loyalty => 110,
       profile => 'プロフィール！！',
       confirm_rule  => 1,
       country_name  => $build_country_name,
@@ -55,6 +56,7 @@ subtest 'build_country' => sub {
     });
     ok $error->has_error;
     is $error->get_error_message(ability => 'sum'), '能力の合計値は160になるようにしてください！';
+    is $error->get_error_message(loyalty => 'between'), '忠誠度が指定された範囲内で入力されていません。';
     is $error->get_error_message(id => 'already_exist'), 'そのIDは既に使用されています。';
     is $error->get_error_message(pass => 'LENGTH'), 'パスワードは6文字以上16文字以下で入力してください。';
     is $error->get_error_message(town => 'cant_establish'), 'その都市は既に他の国が支配しています。';

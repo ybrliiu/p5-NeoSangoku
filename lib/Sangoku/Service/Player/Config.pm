@@ -13,11 +13,12 @@ package Sangoku::Service::Player::Config {
 
     return {
       %{ $player->constants },
-      ICONS_DIR_PATH => $class->model('IconList')->ICONS_DIR_PATH,
-      player         => $player,
-      country        => $player->country,
-      command_record => $player->command_record,
-      battle_record  => $player->battle_record,
+      PROFILE_LEN_MAX => $class->api('Player::Profile')->MESSAGE_LEN_MAX,
+      ICONS_DIR_PATH  => $class->model('IconList')->ICONS_DIR_PATH,
+      player          => $player,
+      country         => $player->country,
+      command_record  => $player->command_record,
+      battle_record   => $player->battle_record,
     };
   }
 
@@ -93,6 +94,23 @@ package Sangoku::Service::Player::Config {
       $profile->message($args->{profile});
       $rec->close;
     }
+
+    return $validator;
+  }
+
+  sub change_win_message {
+    my ($class, $args) = @_;
+    validate_values($args => [qw/player_id win_message/]);
+
+    my $txn = $class->txn;
+    my $player = $class->model('Player')->get($args->{player_id})->refetch({for_update => 1});
+
+    my $validator = $class->validator($args);
+    $player->validate_win_message($validator);
+    return $validator if $validator->has_error;
+
+    $player->update({win_message => $args->{win_message}});
+    $txn->commit;
 
     return $validator;
   }

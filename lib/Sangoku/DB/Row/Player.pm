@@ -17,7 +17,6 @@ package Sangoku::DB::Row::Player {
     PASS_LEN_MAX    => 16,
     LOYALTY_MIN     => 0,
     LOYALTY_MAX     => 100,
-    PROFILE_LEN_MAX => 1000,
     MAIL_LEN_MAX    => 40,
 
     ABILITY_LIST     => [qw/force intellect leadership popular/],
@@ -28,7 +27,7 @@ package Sangoku::DB::Row::Player {
 
     EQUIPMENT_LIST         => [qw/weapon guard book/],
     EQUIPMENT_NAME_LEN_MAX => 15,
-    WIN_MESSAGE_LEN_MAX    => 20,
+    WIN_MESSAGE_LEN_MAX    => 30,
 
     LANK_UP           => 500,   # 階級アップに必要な階級値
 		DELETE_TURN       => 72,    # 放置削除にかかるターン数
@@ -194,6 +193,12 @@ package Sangoku::DB::Row::Player {
     $validator->check(loyalty => ['NOT_NULL', [BETWEEN => (LOYALTY_MIN, LOYALTY_MAX)]]);
   }
 
+  sub validate_win_message {
+    my ($class, $validator) = @_;
+    $validator->set_message('win_message.length' => "[_1]は" . WIN_MESSAGE_LEN_MAX . "文字以内で入力してください");
+    $validator->check(win_message => [[LENGTH => (0, WIN_MESSAGE_LEN_MAX)]]);
+  }
+
   sub validate_regist_data {
     my ($class, $validator, $args) = @_;
 
@@ -207,16 +212,16 @@ package Sangoku::DB::Row::Player {
 
     $validator->check(
       name => ['NOT_NULL', [LENGTH => (NAME_LEN_MIN, NAME_LEN_MAX)]],
-      icon => ['NOT_NULL', [BETWEEN => (0, $class->model('IconList')->MAX)]],
       town => ['NOT_NULL'],
       id   => ['NOT_NULL', [REGEX => qr/^[a-zA-Z0-9_]+$/], [LENGTH => (ID_LEN_MIN, ID_LEN_MAX)]],
       pass => ['NOT_NULL', 'ASCII', [LENGTH => (PASS_LEN_MIN, PASS_LEN_MAX)]],
       ( map { $_ => ['NOT_NULL', [BETWEEN => (ABILITY_MIN, $class->ability_max($passed_year))]] } @{ ABILITY_LIST() }),
-      loyalty      => ['NOT_NULL', [BETWEEN => (LOYALTY_MIN, LOYALTY_MAX)]],
-      profile      => [[LENGTH => (0, PROFILE_LEN_MAX)]],
       mail         => ['ASCII', [LENGTH => (0, MAIL_LEN_MAX)]],
       confirm_rule => ['NOT_NULL', [EQUAL => 1]],
     );
+    $class->validate_icon($validator);
+    $class->validate_loyalty($validator);
+    $class->api('Player::Profile')->validate_message($validator);
 
     $validator->set_error_and_message(pass => (same => 'IDとパスワードは同じにできません！'))
       if $args->{pass} eq $args->{id};

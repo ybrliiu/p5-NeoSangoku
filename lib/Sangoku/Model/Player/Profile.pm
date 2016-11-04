@@ -33,14 +33,6 @@ package Sangoku::Model::Player::Profile {
     return $record->at(0);
   }
 
-  sub edit_message {
-    my ($self, $str) = @_;
-    my $record = $self->record->open('LOCK_EX');
-    my $profile = $record->at(0);
-    $profile->message($str);
-    $record->close();
-  }
-
   __PACKAGE__->meta->make_immutable();
 }
 

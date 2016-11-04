@@ -43,7 +43,8 @@
           忠誠度（<%= $LOYALTY_MIN %>〜<%= $LOYALTY_MAX %>）
         </td>
         <td class="middle">
-          <%= number_field('loyalty', size => 35, class => $error->emphasis('loyalty'), value => $player->loyalty) %>
+          <%= number_field('loyalty', size => 35, class => $error->emphasis('loyalty'),
+            min => $LOYALTY_MIN, max => $LOYALTY_MAX, value => $player->loyalty) %>
         </td>
         <td>
           %= submit_button '変更';
