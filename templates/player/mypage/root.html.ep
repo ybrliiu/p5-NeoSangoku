@@ -2,7 +2,8 @@
 
 %= javascript '/js/sangoku/player/mypage/controll-command.js';
 %= javascript '/js/sangoku/player/mypage/input-command.js';
-%= javascript '/js/sangoku/player/mypage/send-letter.js';
+%= javascript '/js/sangoku/player/mypage/chat.js';
+%= javascript '/js/sangoku/player/mypage/web-socket-chat.js';
 %= javascript '/js/sangoku/player/mypage/comet-chat.js';
 
 <style>
@@ -527,20 +528,28 @@ $letter-padding: 5px;
     % }
     };
 
-    var cometChat = new sangoku.player.mypage.cometChat({
-      'checkUri' : '/player/mypage/check-new-letter',
-      'sendUri' : '/player/mypage/send-letter',
-    });
-    cometChat.startCheck();
-    cometChat.registFunctions();
-
-/*
-    var sendLetter = new sangoku.player.mypage.sendLetter({
+    var webSocketChat = new sangoku.player.mypage.webSocketChat({
       'uri' : '<%= url_for('/player/mypage/channel')->to_abs->scheme('ws') %>',
       'limit' : limit,
     });
-    sendLetter.registFunctions();
-*/
+
+    /* if cant connect to ws server, run comet chat. */
+    var id;
+    var stop = function () { clearInterval(id) };
+    id = setInterval(function () {
+      if (webSocketChat.readyState() === 3) {
+        var cometChat = new sangoku.player.mypage.cometChat({
+          'checkUri' : '/player/mypage/check-new-letter',
+          'sendUri' : '/player/mypage/send-letter',
+          'limit' : limit,
+        });
+        cometChat.startCheck();
+        cometChat.registFunctions();
+      } else {
+        webSocketChat.registFunctions();
+      }
+      stop();
+    }, 1000);
 
   }());
 

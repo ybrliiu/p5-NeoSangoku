@@ -3,7 +3,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
-* commet chat, websocket chat 共通部分くくり出す
 
 * Model::Site 月をまたがる場合や年をまたがる場合は？
 

@@ -31,5 +31,14 @@
     }
   };
 
+/*
+  PROTOTYPE.SUPER = function () {
+    return Object.getPrototypeOf(Object.getPrototypeOf(this));
+  };
+*/
+
+  PROTOTYPE.sayHello = function () { console.log('say hello!! from base.js'); };
+  // sangoku.base.prototype.sayHello.apply(this, arguments);
+
 }());
 

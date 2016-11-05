@@ -28,3 +28,9 @@ sangoku.inherit = function (base, child) {
   child.prototype.constructor = child;
 };
 
+sangoku.mixin = function (trait, consume) {
+  Object.keys(trait).forEach(function (element) {
+    consume.prototype[element] = trait[element];
+  });
+};
+
