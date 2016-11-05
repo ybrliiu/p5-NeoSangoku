@@ -9,6 +9,9 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 * t/ テストするモジュールのload部分をload関数に
 * js, scss 外部ファイル化, head読み込みシステム
 
+* primary_key を参照するメソッド、modelにあるべきかrowにあるべきか...
+  (record系と統一させるならrowにあるべき？, 両方あってもいいような気が)
+
 * plugin -> web 名前空間へ？
 * web.pm の処理 外部ファイルに切り出し
 * country_position, town country_name SQL見なおすべきか？

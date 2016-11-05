@@ -1,0 +1,22 @@
+% layout 'player';
+
+<style>
+
+#command-log {
+  width: 80%;
+  text-align: left;
+}
+
+</style>
+
+<div id="title"><h1>行動ログ(<%= $COMMAND_LOG_MAX %>件)</h1></div>
+
+<div class="centering">
+
+  <div id="command-log" class="width-80pc">
+  % for (@$command_log) {
+      ●<%== $_ %><br>
+  % }
+  </div>
+
+</div>

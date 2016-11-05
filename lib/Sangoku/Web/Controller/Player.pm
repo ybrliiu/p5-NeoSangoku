@@ -41,6 +41,14 @@ package Sangoku::Web::Controller::Player {
     $self->redirect_to('/');
   }
 
+  sub command_log {
+    my ($self) = @_;
+    my $player_id = $self->session('id');
+    my $result = $self->service->command_log($player_id);
+    $self->stash(%$result);
+    $self->render();
+  }
+
 }
 
 1;

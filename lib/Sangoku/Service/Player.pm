@@ -28,6 +28,14 @@ package Sangoku::Service::Player {
     return $validator;
   }
 
+  sub command_log {
+    my ($class, $player_id) = @_;
+    return {
+      command_log     => $class->model('Player::CommandLog')->new(id => $player_id)->get_all,
+      COMMAND_LOG_MAX => $class->api('Player::CommandLog')->MAX,
+    };
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 
