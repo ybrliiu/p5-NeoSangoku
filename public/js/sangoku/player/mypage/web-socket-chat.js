@@ -15,6 +15,8 @@
      }
   */
 
+  var CONFIRM_LOOP_INTERVAL = 15000;
+
   sangoku.player.mypage.webSocketChat = function (args) {
     sangoku.base.apply(this, arguments);
     this.initChat(args);
@@ -23,6 +25,11 @@
     var self = this;
     var ws = this.ws;
     ws.onmessage = function (eve) {
+      if (eve.data === "ack") {
+        console.log('ack ok.');
+        return true;
+      }
+
       var json = JSON.parse(eve.data);
       var parentDom = self[json.type];
       self.createNewLetter(parentDom, json);
@@ -53,6 +60,19 @@
   PROTOTYPE.aroundSend = function (json) { this.ws.send(JSON.stringify(json)); };
 
   PROTOTYPE.readyState = function () { return this.ws.readyState; };
+
+  PROTOTYPE.startConfirmAckLoop = function () {
+    var self = this;
+    var msg = JSON.stringify({ping : 1});
+    this.ws.send(msg);
+    var count = 0;
+    var id;
+    var stop = function () { clearInterval(id); };
+    setInterval(function () {
+      self.ws.send(msg);
+      count++;
+    }, CONFIRM_LOOP_INTERVAL + count * 2);
+  };
 
 }());
 

@@ -9,7 +9,7 @@
   /*
     args = {
       sendUri : '/player/mypage/send-letter',
-      checkUri : '/player/mypage/check-new-letter',
+      pollingUri : '/player/mypage/polling',
       limit = {
         country : 15,
         invite  : 5,
@@ -24,7 +24,7 @@
     sangoku.base.apply(this, arguments);
     this.initChat(args);
     this.sendUri = args.sendUri;
-    this.checkUri = args.checkUri;
+    this.pollingUri = args.pollingUri;
     this.tryConnectLoop = false;
   };
 
@@ -59,9 +59,9 @@
     });
   };
 
-  PROTOTYPE.startCheck = function () {
+  PROTOTYPE.startPolling = function () {
     var self = this;
-    self.checkNewLetter();
+    self.polling();
   };
 
   PROTOTYPE.doneFunc = function (json) {
@@ -80,18 +80,18 @@
   
     var failCount = 0;
     
-    PROTOTYPE.checkNewLetter = function () {
+    PROTOTYPE.polling = function () {
       var self = this;
   
       $.ajax({
-        'url' : this.checkUri,
+        'url' : this.pollingUri,
         'cache' : false,
         'data' : {},
         'contentType' : 'application/JSON',
         'type' : 'post',
       }).done(function(data, textStatus, jqXHR) {
         self.doneFunc(data);
-        self.checkNewLetter();
+        self.polling();
       }).fail(function(jqXHR, textStatus, errorThrown) {
   
         if (self.tryConnectLoop) { return false; }
@@ -104,7 +104,7 @@
             stop();
             self.failFunc(jqXHR, textStatus, errorThrown);
           } else {
-            self.checkNewLetter();
+            self.polling();
           }
           failCount++;
         }, INTERVAL);

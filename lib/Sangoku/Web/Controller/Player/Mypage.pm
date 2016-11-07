@@ -48,8 +48,17 @@ package Sangoku::Web::Controller::Player::Mypage {
 
     $self->on(json => sub {
       my ($c, $json) = @_;
+
+      return $self->send({text => 'ack'}) if exists $json->{ping};
+
       my $letter_data = $self->_write_letter($json);
       $self->_emit_event($letter_data);
+    });
+
+    # 接続確認用
+    $self->on(message => sub {
+      my ($c, $msg) = @_;
+      $self->send({text => 'ack'}) if $msg eq 'ping';
     });
 
     my $cb = $self->events->on(chat => sub {
@@ -60,9 +69,9 @@ package Sangoku::Web::Controller::Player::Mypage {
     $self->_finish_connect($cb);
   }
 
-  sub check_new_letter {
+  sub polling {
     my ($self) = @_;
-    $self->inactivity_timeout(300);
+    $self->inactivity_timeout(600);
     $self->render_later();
 
     my $cb = $self->_once_event();
