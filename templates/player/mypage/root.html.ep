@@ -537,7 +537,7 @@ $letter-padding: 5px;
     var id;
     var stop = function () { clearInterval(id) };
     id = setInterval(function () {
-      if (webSocketChat.readyState() === 3) {
+      if (webSocketChat.readyState() === 1) {
         var cometChat = new sangoku.player.mypage.cometChat({
           'checkUri' : '/player/mypage/check-new-letter',
           'sendUri' : '/player/mypage/send-letter',

@@ -228,9 +228,11 @@
   };
 
   var compareColumnNumber = function (a, b, columnIndex) {
-    if (Number(b.getElementsByTagName('td')[columnIndex].innerHTML) > Number(a.getElementsByTagName('td')[columnIndex].innerHTML)) {
+    var numA = Number(a.getElementsByTagName('td')[columnIndex].innerHTML);
+    var numB = Number(b.getElementsByTagName('td')[columnIndex].innerHTML);
+    if (numB > numA) {
       return 1;
-    } else if (Number(b.getElementsByTagName('td')[columnIndex].innerHTML) < Number(a.getElementsByTagName('td')[columnIndex].innerHTML)) {
+    } else if (numB < numA) {
       return -1;
     } else {
       return 0;

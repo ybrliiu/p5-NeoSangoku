@@ -43,7 +43,7 @@
       'contentType' : 'application/JSON',
       'type' : 'post',
     }).done(function(data, textStatus, jqXHR) {
-      args.doneFunc.call(self, data);
+      console.log(data);
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log(jqXHR, textStatus, errorThrown);
     });
@@ -63,9 +63,7 @@
 
   PROTOTYPE.startCheck = function () {
     var self = this;
-    var timer = setInterval(function() {
-      self.checkNewLetter();
-    }, INTERVAL);
+    self.checkNewLetter();
   };
 
   PROTOTYPE.checkNewLetter = function () {
@@ -75,10 +73,18 @@
       json[element + '_letter_id'] = self.getHeadLetterId(element);
     });
 
-    this.send({
-      'uri' : this.checkUri,
-      'json': json,
-      'doneFunc': this.updateLetter
+    $.ajax({
+      'url' : this.checkUri,
+      'cache' : false,
+      'data' : JSON.stringify(json),
+      'contentType' : 'application/JSON',
+      'type' : 'post',
+    }).done(function(data, textStatus, jqXHR) {
+      self.doneSend(data);
+      self.checkNewLetter();
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR, textStatus, errorThrown);
+      self.checkNewLetter();
     });
   };
 
