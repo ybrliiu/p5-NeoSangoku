@@ -25,6 +25,7 @@
     this.initChat(args);
     this.sendUri = args.sendUri;
     this.checkUri = args.checkUri;
+    this.tryConnectLoop = false;
   };
 
   var CLASS = sangoku.player.mypage.cometChat;
@@ -43,22 +44,19 @@
       'contentType' : 'application/JSON',
       'type' : 'post',
     }).done(function(data, textStatus, jqXHR) {
-      console.log(data);
+      args.doneFunc.call(self, data);
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      console.log(jqXHR, textStatus, errorThrown);
+      args.failFunc.apply(self, arguments);
     });
   };
 
-  PROTOTYPE.getHeadLetterId = function (name) {
-    var headRow = this[name].children[0];
-    if (headRow === undefined) {
-      return 0;
-    }
-    var letterId = headRow.dataset.letterId;
-    if (letterId === undefined) {
-      return 0;
-    }
-    return letterId;
+  PROTOTYPE.aroundSend = function (json) {
+    this.send({
+      'uri': this.sendUri,
+      'json': json,
+      'doneFunc' : function () {},
+      'failFunc' : function () {},
+    });
   };
 
   PROTOTYPE.startCheck = function () {
@@ -66,49 +64,54 @@
     self.checkNewLetter();
   };
 
-  PROTOTYPE.checkNewLetter = function () {
-    var self = this;
-    var json = {};
-    PROTOTYPE.LETTERS.forEach(function (element) {
-      json[element + '_letter_id'] = self.getHeadLetterId(element);
-    });
-
-    $.ajax({
-      'url' : this.checkUri,
-      'cache' : false,
-      'data' : JSON.stringify(json),
-      'contentType' : 'application/JSON',
-      'type' : 'post',
-    }).done(function(data, textStatus, jqXHR) {
-      self.doneSend(data);
-      self.checkNewLetter();
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-      console.log(jqXHR, textStatus, errorThrown);
-      self.checkNewLetter();
-    });
-  };
-
-  PROTOTYPE.updateLetter = function (data) {
-    var self = this;
-    PROTOTYPE.LETTERS.forEach(function (element) {
-      if (data[element]) {
-        self[element].innerHTML = data[element + '_letter'];
-      }
-    });
-  };
-
-  PROTOTYPE.doneSend = function (json) {
+  PROTOTYPE.doneFunc = function (json) {
     var parentDom = this[json.type];
     this.createNewLetter(parentDom, json);
     this.removeLastChild(parentDom, json.type);
   };
 
-  PROTOTYPE.aroundSend = function (json) {
-    this.send({
-      'uri': this.sendUri,
-      'json': json,
-      'doneFunc' : this.doneSend,
-    });
+  PROTOTYPE.failFunc = function (jqXHR, textStatus, errorThrown) {
+    console.log(jqXHR, textStatus, errorThrown);
+    alert('サーバーと接続できませんでした。インターネットの接続を確認してください。');
+    throw 'connect failed';
   };
+
+  (function () {
+  
+    var failCount = 0;
+    
+    PROTOTYPE.checkNewLetter = function () {
+      var self = this;
+  
+      $.ajax({
+        'url' : this.checkUri,
+        'cache' : false,
+        'data' : {},
+        'contentType' : 'application/JSON',
+        'type' : 'post',
+      }).done(function(data, textStatus, jqXHR) {
+        self.doneFunc(data);
+        self.checkNewLetter();
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+  
+        if (self.tryConnectLoop) { return false; }
+  
+        self.tryConnectLoop = true;
+        var id;
+        var stop = function () { clearInterval(id) };
+        id = setInterval(function () {
+          if (failCount >= 5) {
+            stop();
+            self.failFunc(jqXHR, textStatus, errorThrown);
+          } else {
+            self.checkNewLetter();
+          }
+          failCount++;
+        }, INTERVAL);
+  
+      });
+    };
+
+  }());
 
 }());

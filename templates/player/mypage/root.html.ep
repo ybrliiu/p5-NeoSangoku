@@ -529,7 +529,7 @@ $letter-padding: 5px;
     };
 
     var webSocketChat = new sangoku.player.mypage.webSocketChat({
-      'uri' : '<%= url_for('/player/mypage/channel')->to_abs->scheme('ws') %>',
+      'uri' : '<%= url_for('/player/mypage/chanel')->to_abs->scheme('ws') %>',
       'limit' : limit,
     });
 
@@ -537,7 +537,7 @@ $letter-padding: 5px;
     var id;
     var stop = function () { clearInterval(id) };
     id = setInterval(function () {
-      if (webSocketChat.readyState() === 1) {
+      if (webSocketChat.readyState() === 3) {
         var cometChat = new sangoku.player.mypage.cometChat({
           'checkUri' : '/player/mypage/check-new-letter',
           'sendUri' : '/player/mypage/send-letter',
