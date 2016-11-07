@@ -18,6 +18,7 @@
 
 .sort-by-number:after {
   content: '↕';
+  color: <%= $config->{color}{white} %>;
   position: relative;
   width: 0px;
   height: 0px;
@@ -185,13 +186,13 @@
 
   sangoku.namespace('sangoku.outer.playerList.SortTable');
 
-  var ASC = 0;
-  var DESC = 1;
+  var ASC_CLASS = 'sorted-asc';
+  var DESC_CLASS = 'sorted-desc';
 
   sangoku.outer.playerList.SortTable = function () {
     sangoku.base.apply(this, arguments);
-    this.nowSortedColumn = undefined;
-    this.order = undefined;
+    this.beforeTable = undefined;
+    this.beforeTh = undefined;
   };
 
   var CLASS = sangoku.outer.playerList.SortTable;
@@ -200,43 +201,49 @@
 
   var PROTOTYPE = CLASS.prototype;
 
-  PROTOTYPE.setSortedColumn = function (th, index, table) {
-    if (this.nowSortedColumn === index) {
-      if (this.order === ASC) {
-        this.order = DESC;
-        th.classList.remove('sorted-asc');
-        th.classList.add('sorted-desc');
-      } else {
-        this.order = ASC;
-        th.classList.remove('sorted-desc');
-        th.classList.add('sorted-asc');
-      }
+  PROTOTYPE.switchOrderClass = function (th) {
+    if (th.classList.contains(ASC_CLASS)) {
+      th.classList.remove(ASC_CLASS);
+      th.classList.add(DESC_CLASS);
     } else {
-      var asc = table.getElementsByClassName('sorted-asc')[0];
-      if (asc) {
-        asc.classList.remove('sorted-asc');
-      }
-      var desc = table.getElementsByClassName('sorted-desc')[0];
-      if (desc) {
-        desc.classList.remove('sorted-desc');
-      }
-
-      this.nowSortedColumn = index;
-      this.order = ASC;
-      th.classList.add('sorted-asc');
+      th.classList.remove(DESC_CLASS);
+      th.classList.add(ASC_CLASS);
     }
+  };
+
+  PROTOTYPE.addOrderClass = function (table, th) {
+    if (
+      this.beforeTh !== undefined &&
+      this.beforeTable === table
+    ) {
+      this.beforeTh.classList.remove(ASC_CLASS);
+      this.beforeTh.classList.remove(DESC_CLASS);
+    } else if (
+      this.beforeTable !== undefined &&
+      this.beforeTable !== table
+    ) {
+      var asc = table.getElementsByClassName(ASC_CLASS)[0];
+      if (asc !== undefined) {
+        if (asc !== th) { asc.classList.remove(ASC_CLASS); }
+      }
+      var desc = table.getElementsByClassName(DESC_CLASS)[0];
+      if (desc !== undefined) {
+        if (desc !== th) { desc.classList.remove(DESC_CLASS); }
+      }
+    }
+    this.switchOrderClass(th);
+  };
+
+  PROTOTYPE.setSortedColumn = function (table, th) {
+    this.beforeTh === th ? this.switchOrderClass(th) : this.addOrderClass(table, th);
+    this.beforeTh = th;
+    this.beforeTable = table;
   };
 
   var compareColumnNumber = function (a, b, columnIndex) {
     var numA = Number(a.getElementsByTagName('td')[columnIndex].innerHTML);
     var numB = Number(b.getElementsByTagName('td')[columnIndex].innerHTML);
-    if (numB > numA) {
-      return 1;
-    } else if (numB < numA) {
-      return -1;
-    } else {
-      return 0;
-    }
+    return (numB > numA) ? 1 : (numB < numA) ? -1 : 0;
   };
 
   var replaceRows = function (table, rows) {
@@ -256,10 +263,11 @@
     var self = this;
     var rowsOrigin = table.getElementsByTagName('tr');
     var rows = [].slice.call(rowsOrigin);
-    rows.shift();
+    var headRow = rows.shift();
+    var isAsc = headRow.getElementsByTagName('th')[columnIndex].classList.contains(ASC_CLASS);
     rows.sort(function (a, b) {
       var result = compareColumnNumber(a, b, columnIndex);
-      return self.order === ASC ? result : result * -1;
+      return isAsc ? result : result * -1;
     });
     replaceRows(table, rows);
   };
@@ -271,7 +279,7 @@
       Array.prototype.forEach.call(table.getElementsByTagName('th'), function (th, index) {
         if (th.classList.contains('sort-by-number')) {
           th.addEventListener(self.eventType('click'), function (eve) {
-            self.setSortedColumn(th, index, table);
+            self.setSortedColumn(table, th);
             self.sortRows(table, index);
           });
         }
