@@ -1,5 +1,7 @@
 % layout 'default';
 
+%= javascript '/js/sangoku/sortable.js';
+
 <style>
 
 #country-list {
@@ -16,7 +18,7 @@
   text-decoration: underline;
 }
 
-.sort-by-number:after {
+.sort-by-number:after, .sort-by-string:after, .sort-by-data:after {
   content: '↕';
   color: <%= $config->{color}{white} %>;
   position: relative;
@@ -127,14 +129,14 @@
     
     <tr>
       <th></th>
-      <th>名前</th>
+      <th class="sort-by-string">名前</th>
       <th class="sort-by-number">武力</th>
       <th class="sort-by-number">知力</th>
       <th class="sort-by-number">統率力</th>
       <th class="sort-by-number">人望</th>
-      <th>階級</th>
+      <th class="sort-by-data">階級</th>
       <th>装備</th>
-      <th>削除まで</th>
+      <th class="sort-by-data">削除まで</th>
     </tr>
 
   % # 全国家表示で人数が10人より多い時
@@ -150,13 +152,17 @@
       <td><%= $player->intellect %></td>
       <td><%= $player->leadership %></td>
       <td><%= $player->popular %></td>
-      <td>Lv.<%= $player->lank %> <%= $player->lank_name %></td>
+      <td data-compare=<%= $player->lank %>>
+        Lv.<%= $player->lank %> <%= $player->lank_name %>
+      </td>
       <td>
         武器：<%= $player->weapon($weapons_hash)->name %>：威力：<%= $player->weapon($weapons_hash)->power %><br>
         防具：<%= $player->guard($guards_hash)->name %>：威力：<%= $player->guard($guards_hash)->power %><br>
         書物：<%= $player->book($books_hash)->name %>：威力：<%= $player->book($books_hash)->power %>
       </td>
-      <td>削除まで<span class="blue"><%= $player->delete_until %></span>ターン</td>
+      <td data-compare="<%= $player->delete_until %>">
+        <span class="blue"><%= $player->delete_until %></span>ターン
+      </td>
     </tr>
   % }
 
@@ -184,116 +190,8 @@
 
 (function () {
 
-  sangoku.namespace('sangoku.outer.playerList.SortTable');
-
-  var ASC_CLASS = 'sorted-asc';
-  var DESC_CLASS = 'sorted-desc';
-
-  sangoku.outer.playerList.SortTable = function () {
-    sangoku.base.apply(this, arguments);
-    this.beforeTable = undefined;
-    this.beforeTh = undefined;
-  };
-
-  var CLASS = sangoku.outer.playerList.SortTable;
-
-  sangoku.inherit(sangoku.base, CLASS);
-
-  var PROTOTYPE = CLASS.prototype;
-
-  PROTOTYPE.switchOrderClass = function (th) {
-    if (th.classList.contains(ASC_CLASS)) {
-      th.classList.remove(ASC_CLASS);
-      th.classList.add(DESC_CLASS);
-    } else {
-      th.classList.remove(DESC_CLASS);
-      th.classList.add(ASC_CLASS);
-    }
-  };
-
-  PROTOTYPE.addOrderClass = function (table, th) {
-    if (
-      this.beforeTh !== undefined &&
-      this.beforeTable === table
-    ) {
-      this.beforeTh.classList.remove(ASC_CLASS);
-      this.beforeTh.classList.remove(DESC_CLASS);
-    } else if (
-      this.beforeTable !== undefined &&
-      this.beforeTable !== table
-    ) {
-      var asc = table.getElementsByClassName(ASC_CLASS)[0];
-      if (asc !== undefined) {
-        if (asc !== th) { asc.classList.remove(ASC_CLASS); }
-      }
-      var desc = table.getElementsByClassName(DESC_CLASS)[0];
-      if (desc !== undefined) {
-        if (desc !== th) { desc.classList.remove(DESC_CLASS); }
-      }
-    }
-    this.switchOrderClass(th);
-  };
-
-  PROTOTYPE.setSortedColumn = function (table, th) {
-    this.beforeTh === th ? this.switchOrderClass(th) : this.addOrderClass(table, th);
-    this.beforeTh = th;
-    this.beforeTable = table;
-  };
-
-  var compareColumnNumber = function (a, b, columnIndex) {
-    var numA = Number(a.getElementsByTagName('td')[columnIndex].innerHTML);
-    var numB = Number(b.getElementsByTagName('td')[columnIndex].innerHTML);
-    return (numB > numA) ? 1 : (numB < numA) ? -1 : 0;
-  };
-
-  var replaceRows = function (table, rows) {
-    var tbody = table.getElementsByTagName('tbody')[0];
-    var headRow = tbody.getElementsByTagName('tr')[0];
-    table.removeChild(tbody);
-
-    var newTbody = document.createElement('tbody');
-    newTbody.appendChild(headRow);
-    rows.forEach(function (tr) {
-      newTbody.appendChild(tr);
-    });
-    table.appendChild(newTbody);
-  };
-  
-  PROTOTYPE.sortRows = function (table, columnIndex) {
-    var self = this;
-    var rowsOrigin = table.getElementsByTagName('tr');
-    var rows = [].slice.call(rowsOrigin);
-    var headRow = rows.shift();
-    var isAsc = headRow.getElementsByTagName('th')[columnIndex].classList.contains(ASC_CLASS);
-    rows.sort(function (a, b) {
-      var result = compareColumnNumber(a, b, columnIndex);
-      return isAsc ? result : result * -1;
-    });
-    replaceRows(table, rows);
-  };
-
-  PROTOTYPE.registFunctions = function () {
-    var self = this;
-
-    Array.prototype.forEach.call(document.getElementsByClassName('sortable'), function (table) {
-      Array.prototype.forEach.call(table.getElementsByTagName('th'), function (th, index) {
-        if (th.classList.contains('sort-by-number')) {
-          th.addEventListener(self.eventType('click'), function (eve) {
-            self.setSortedColumn(table, th);
-            self.sortRows(table, index);
-          });
-        }
-      });
-    });
-
-  };
-
-}());
-
-(function () {
-
-  var c = new sangoku.outer.playerList.SortTable();
-  c.registFunctions();
+  var sortable = new sangoku.Sortable();
+  sortable.registFunctions();
 
 }());
 

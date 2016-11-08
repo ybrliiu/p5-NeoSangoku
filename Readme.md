@@ -4,6 +4,11 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```      
 
+* css grid row 追加
+* JS setTimeout
+
+* player status 表示レイアウト変更
+
 * 個人宛手紙、mypageに履歴から送信追加、手紙ログ
 
 * JS package と class の区別を明確に...
