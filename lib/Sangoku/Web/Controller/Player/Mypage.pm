@@ -3,6 +3,10 @@ package Sangoku::Web::Controller::Player::Mypage {
   use Mojo::Base 'Mojolicious::Controller';
   use Sangoku;
 
+  # タイムアウトにかかる時間
+  # nginx, apache側の keep-alive の値も影響するので注意
+  use constant TIMEOUT => 3600;
+
   sub root {
     my ($self) = @_;
     my $player_id = $self->session('id');
@@ -44,7 +48,7 @@ package Sangoku::Web::Controller::Player::Mypage {
   sub channel {
     my ($self) = @_;
 
-    $self->inactivity_timeout(600);
+    $self->inactivity_timeout(TIMEOUT);
 
     $self->on(json => sub {
       my ($c, $json) = @_;
@@ -53,12 +57,6 @@ package Sangoku::Web::Controller::Player::Mypage {
 
       my $letter_data = $self->_write_letter($json);
       $self->_emit_event($letter_data);
-    });
-
-    # 接続確認用
-    $self->on(message => sub {
-      my ($c, $msg) = @_;
-      $self->send({text => 'ack'}) if $msg eq 'ping';
     });
 
     my $cb = $self->events->on(chat => sub {
@@ -71,8 +69,11 @@ package Sangoku::Web::Controller::Player::Mypage {
 
   sub polling {
     my ($self) = @_;
-    $self->inactivity_timeout(600);
+    $self->inactivity_timeout(TIMEOUT);
     $self->render_later();
+
+    my $json = $self->req->json;
+    $self->render(text => 'ack') if exists $json->{ping};
 
     my $cb = $self->_once_event();
     $self->_finish_connect($cb);

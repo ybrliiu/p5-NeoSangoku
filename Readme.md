@@ -5,7 +5,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 ```      
 
 * css grid row 追加
-* JS setTimeout
 
 * player status 表示レイアウト変更
 

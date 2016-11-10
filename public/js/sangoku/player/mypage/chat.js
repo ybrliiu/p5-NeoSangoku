@@ -73,4 +73,13 @@
     }, false);
   };
 
+  CLASS.isOnline = function () {
+    if (navigator.onLine) {
+      return true;
+    } else {
+      alert('インターネットに接続されていません。');
+      throw 'offLine';
+    }
+  };
+
 }());

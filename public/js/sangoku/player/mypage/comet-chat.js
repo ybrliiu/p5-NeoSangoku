@@ -2,9 +2,7 @@
 
 (function () {
   
-  sangoku.namespace('player.mypage.cometChat');
-
-  var INTERVAL = 1500;
+  sangoku.namespace('player.mypage.CometChat');
 
   /*
     args = {
@@ -20,14 +18,14 @@
     };
   */
 
-  sangoku.player.mypage.cometChat = function (args) {
+  sangoku.player.mypage.CometChat = function (args) {
     sangoku.base.apply(this, arguments);
     this.initChat(args);
     this.sendUri = args.sendUri;
     this.pollingUri = args.pollingUri;
   };
 
-  var CLASS = sangoku.player.mypage.cometChat;
+  var CLASS = sangoku.player.mypage.CometChat;
 
   sangoku.inherit(sangoku.base, CLASS);
   sangoku.mixin(sangoku.player.mypage.Chat, CLASS);
@@ -36,6 +34,7 @@
 
   PROTOTYPE.send = function (args) {
     var self = this;
+    self.isOnline();
     $.ajax({
       'url' : args.uri,
       'cache' : false,
@@ -74,11 +73,13 @@
     var failCount = 0;
 
     PROTOTYPE.failFunc = function (jqXHR, textStatus, errorThrown) {
-      if (++failCount === 2) {
-        throw 'サーバーとの接続に失敗しました。';
+      this.isOnline();
+      if (failCount > 1) {
+        alert("サーバーから切断されました。\nリロードしてください。");
+        throw 'connect failed.';
+        return false;
       }
-      console.log(jqXHR, textStatus, errorThrown);
-      console.log('接続失敗');
+      return failCount++;
     };
 
   }());
