@@ -20,22 +20,8 @@
   sangoku.player.mypage.webSocketChat = function (args) {
     sangoku.base.apply(this, arguments);
     this.initChat(args);
-    this.ws = new WebSocket(args.uri);
-
-    var self = this;
-    var ws = this.ws;
-    ws.onmessage = function (eve) {
-      if (eve.data === "ack") {
-        console.log('ack ok.');
-        return true;
-      }
-
-      var json = JSON.parse(eve.data);
-      var parentDom = self[json.type];
-      self.createNewLetter(parentDom, json);
-      self.removeLastChild(parentDom, json.type);
-    };
-    ws.close = wsClose;
+    this.ws = newWebSocket(this, args.uri);
+    this.ws.close = wsClose;
   };
 
   var wsClose = function() {
@@ -48,6 +34,23 @@
         window.location.reload(true);
       }
     }, 1000);
+  };
+
+  var newWebSocket = function (self, uri) {
+    var ws = new WebSocket(uri);
+
+    ws.onmessage = function (eve) {
+      if (eve.data === "ack") {
+        console.log('ack ok.');
+        return true;
+      }
+      var json = JSON.parse(eve.data);
+      var parentDom = self[json.type];
+      self.createNewLetter(parentDom, json);
+      self.removeLastChild(parentDom, json.type);
+    };
+
+    return ws;
   };
 
   var CLASS = sangoku.player.mypage.webSocketChat;
@@ -65,6 +68,7 @@
     var self = this;
     var msg = JSON.stringify({ping : 1});
     this.ws.send(msg);
+
     var count = 0;
     var id;
     var stop = function () { clearInterval(id); };

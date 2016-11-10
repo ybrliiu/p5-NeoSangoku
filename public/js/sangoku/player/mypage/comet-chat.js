@@ -25,7 +25,6 @@
     this.initChat(args);
     this.sendUri = args.sendUri;
     this.pollingUri = args.pollingUri;
-    this.tryConnectLoop = false;
   };
 
   var CLASS = sangoku.player.mypage.cometChat;
@@ -70,48 +69,35 @@
     this.removeLastChild(parentDom, json.type);
   };
 
-  PROTOTYPE.failFunc = function (jqXHR, textStatus, errorThrown) {
-    console.log(jqXHR, textStatus, errorThrown);
-    alert('サーバーと接続できませんでした。インターネットの接続を確認してください。');
-    throw 'connect failed';
-  };
-
   (function () {
   
     var failCount = 0;
-    
-    PROTOTYPE.polling = function () {
-      var self = this;
-  
-      $.ajax({
-        'url' : this.pollingUri,
-        'cache' : false,
-        'data' : {},
-        'contentType' : 'application/JSON',
-        'type' : 'post',
-      }).done(function(data, textStatus, jqXHR) {
-        self.doneFunc(data);
-        self.polling();
-      }).fail(function(jqXHR, textStatus, errorThrown) {
-  
-        if (self.tryConnectLoop) { return false; }
-  
-        self.tryConnectLoop = true;
-        var id;
-        var stop = function () { clearInterval(id) };
-        id = setInterval(function () {
-          if (failCount >= 5) {
-            stop();
-            self.failFunc(jqXHR, textStatus, errorThrown);
-          } else {
-            self.polling();
-          }
-          failCount++;
-        }, INTERVAL);
-  
-      });
+
+    PROTOTYPE.failFunc = function (jqXHR, textStatus, errorThrown) {
+      if (++failCount === 2) {
+        throw 'サーバーとの接続に失敗しました。';
+      }
+      console.log(jqXHR, textStatus, errorThrown);
+      console.log('接続失敗');
     };
 
   }());
+
+  PROTOTYPE.polling = function () {
+    var self = this;
+    $.ajax({
+      'url' : this.pollingUri,
+      'cache' : false,
+      'data' : {},
+      'contentType' : 'application/JSON',
+      'type' : 'post',
+    }).done(function(data, textStatus, jqXHR) {
+      self.doneFunc(data);
+      self.polling();
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      self.failFunc(jqXHR, textStatus, errorThrown);
+      self.polling();
+    });
+  };
 
 }());

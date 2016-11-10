@@ -1,0 +1,42 @@
+// sortable用
+
+$sortable-left: 3px;
+$sortable-border: 4px;
+
+.sort-by-number:after, .sort-by-string:after, .sort-by-data:after {
+  content: '↕';
+  color: $white;
+  position: relative;
+  display: inline-block;
+  width: $sortable-border * 2;
+  height: 0px;
+  left: $sortable-left;
+  top: 0px;
+}
+
+$sorted-top: 5px;
+
+%sorted {
+  content: '';
+  position: relative;
+  width: 0px;
+  height: 0px;
+  border-right: solid $sortable-border transparent;
+  border-left: solid $sortable-border transparent;
+  left: 3px;
+}
+
+.sorted-asc:after {
+  @extend %sorted;
+  border-top: solid $sortable-border $white;
+  border-bottom: solid $sortable-border transparent;
+  top: $sorted-top;
+}
+
+.sorted-desc:after {
+  @extend %sorted;
+  border-top: solid $sortable-border transparent;
+  border-bottom: solid $sortable-border $white;
+  top: $sorted-top * -1;
+}
+

@@ -18,42 +18,6 @@
   text-decoration: underline;
 }
 
-.sort-by-number:after, .sort-by-string:after, .sort-by-data:after {
-  content: '↕';
-  color: <%= $config->{color}{white} %>;
-  position: relative;
-  width: 0px;
-  height: 0px;
-  left: 3px;
-  top: 0px;
-}
-
-.sorted-asc:after {
-  content: '';
-  position: relative;
-  width: 0px;
-  height: 0px;
-  border-top: solid 4px #ffffff;
-  border-right: solid 4px transparent;
-  border-bottom: solid 4px transparent;
-  border-left: solid 4px transparent;
-  left: 3px;
-  top: 11px;
-}
-
-.sorted-desc:after {
-  content: '';
-  position: relative;
-  width: 0px;
-  height: 0px;
-  border-top: solid 4px transparent;
-  border-right: solid 4px transparent;
-  border-bottom: solid 4px #fff;
-  border-left: solid 4px transparent;
-  left: 3px;
-  top: -11px;
-}
-
 </style>
 
 <!-- ナビゲートボタン -->
