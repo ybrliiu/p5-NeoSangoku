@@ -22,6 +22,7 @@
     this.initChat(args);
     this.ws = newWs(this, args.uri);
     this.reconnectCount = 0;
+    this.isSupport = true;
 
     window.addEventListener('beforeunload', function (e) {
       this.ws.close();
@@ -47,7 +48,9 @@
 
     ws.onclose = function() {
       console.log('繋ぎ直し');
-      self.ws = newWs(self, uri);
+      if (self.isSupport) {
+        self.ws = newWs(self, uri);
+      }
     };
 
     return ws;
@@ -59,6 +62,10 @@
   sangoku.mixin(sangoku.player.mypage.Chat, CLASS);
 
   var PROTOTYPE = CLASS.prototype;
+
+  PROTOTYPE.switchComet = function () {
+    this.isSupport = false;
+  };
 
   PROTOTYPE.aroundSend = function (json) {
     this.isOnline();

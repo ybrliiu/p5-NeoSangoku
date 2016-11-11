@@ -4,7 +4,7 @@ package Sangoku::Web::Controller::Player::Mypage {
   use Sangoku;
 
   # タイムアウトにかかる時間
-  # nginx, apache側の keep-alive の値も影響するので注意
+  # nginx, apache側の keepalive_timeout, proxy_read_timeout の値も影響する
   use constant TIMEOUT => 3600;
 
   sub root {

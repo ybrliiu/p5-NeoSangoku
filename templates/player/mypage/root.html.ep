@@ -537,8 +537,8 @@ $letter-padding: 5px;
     var id;
     var stop = function () { clearInterval(id); };
     id = setTimeout(function () {
-      if (wsChat.ws.readyState === wsChat.ws.CONNECTING) {
-      } else if (wsChat.ws.readyState === wsChat.ws.CLOSED) {
+      if (wsChat.ws.readyState !== wsChat.ws.OPEN) {
+        wsChat.switchComet();
         var cometChat = new sangoku.player.mypage.CometChat({
           'pollingUri' : '/player/mypage/polling',
           'sendUri' : '/player/mypage/send-letter',
