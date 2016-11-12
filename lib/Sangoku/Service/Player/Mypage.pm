@@ -11,7 +11,8 @@ package Sangoku::Service::Player::Mypage {
     my ($class, $player_id) = @_;
 
     my $config         = $class->config->{template}{player}{mypage};
-    my $player         = $class->model('Player')->get($player_id);
+    my $players_hash   = $class->model('Player')->get_all_to_hash;
+    my $player         = $players_hash->{$player_id};
     my $unit           = $player->unit;
     my $countreis_hash = $class->model('Country')->get_all_to_hash();
     my $country        = $player->country($countreis_hash);
@@ -28,6 +29,7 @@ package Sangoku::Service::Player::Mypage {
 
     return {
       player          => $player,
+      players_hash    => $players_hash,
       command_log     => $player->command_log($config->{log}{command}),
       countries_hash  => $countreis_hash,
       country         => $country,

@@ -26,7 +26,10 @@
     text-align: center;
     font-weight: bold;
   }
-  td:nth-child(2n) { text-align: right; }
+  td:nth-child(2n) {
+    width: 60%;
+    text-align: right;
+  }
   #town-name {
     font-weight: bold;
     text-align: center;
@@ -44,7 +47,6 @@
 
 /* コマンド操作部 */
 #controll-command {
-  width: 100%;
 
   #command-result { width: 65% }
   #command-list {
@@ -206,7 +208,7 @@ $letter-padding: 5px;
   </div>
 </div>
 
-<div class="grid width-40pc">
+<div class="grid width-50pc">
 <%= include('parts/map', (
   map_data       => $map_data,
   countries_hash => $countries_hash,
@@ -214,7 +216,7 @@ $letter-padding: 5px;
 )); %>
 </div>
 
-<div class="grid width-30pc">
+<div class="grid-right width-50pc">
   <table id="town-info" class="table-<%= $country->color %> width-100pc">
 
     <%# グラフ描画関数 %>
@@ -297,7 +299,15 @@ $letter-padding: 5px;
   </table>
 </div>
 
-<div class="grid-right width-30pc">
+<div class="divider width-100pc"></div>
+
+<!-- コマンドオプション選択画面がここで表示される -->
+<div id="choose-command-option">
+  <div id="command-option-result">
+  </div>
+</div>
+
+<div class="grid width-40pc">
   <table class="table-<%= $country->color %> width-100pc">
     <tr><th colspan="4"><h2><%= $country->name %></h2></th></tr>
     <tr>
@@ -331,64 +341,56 @@ $letter-padding: 5px;
       <td>外交状況</td>
       <td colspan="3"></td>
     </tr>
-    <tr>
-      <td colspan="2"></td>
-      <td colspan="2"></td>
-    </tr>
-    <tr>
-      <td colspan="2"></td>
-      <td colspan="2"></td>
-    </tr>
-    <tr><td colspan="4"></td></tr>
   </table>
-</div>
 
-<div class="grid-right width-100pc">
   <table class="table-<%= $country->color %> width-100pc">
     <tr><th colspan="18"><h2><%= $player->name %></h2></th></tr>
     <tr>
-      <td rowspan="5" class="icon"><img class="icon" src="<%= $player->icon_path %>"></td>
-      <td>武力</td><td class="middle"><%= $player->force %> (exp:<%= $player->force_exp %>)</td>
-      <td>知力</td><td class="middle"><%= $player->intellect %> (exp:<%= $player->intellect_exp %>)</td>
-      <td>統率力</td><td class="middle"><%= $player->leadership %> (exp:<%= $player->leadership_exp %>)</td>
-      <td>人望</td><td class="middle"><%= $player->popular %> (exp:<%= $player->popular_exp %>)</td>
-    % my $weapon = $player->weapon;
-      <td>武器</td><td class="middle"><%= $weapon->name %></td><td class="middle"><%= $weapon->power %></td>
+      <td rowspan="6" class="icon"><img class="icon" src="<%= $player->icon_path %>"></td>
+      <td>武力</td><td class="middle"><%= $player->force %> (exp : <%= $player->force_exp %>)</td>
+      <td>所属国</td><td class="middle"><%= $player->country_name %></td>
     </tr>
     <tr>
-      <td>所属</td><td class="middle"><%= $player->country_name %></td>
-      <td>忠誠度</td><td class="middle"><%= $player->loyalty %></td>
-      <td>金</td><td class="middle"><%= $player->money %></td>
-      <td>米</td><td class="middle"><%= $player->rice %></td>
-    % my $book = $player->book;
-      <td>書物</td><td class="middle"><%= $book->name %></td><td class="middle"><%= $book->power %></td>
-    </tr>
-    <tr>
+      <td>知力</td><td class="middle"><%= $player->intellect %> (exp : <%= $player->intellect_exp %>)</td>
       <td>部隊</td><td class="middle"><%= $player->unit_name %></td>
-      <td>階級</td><td class="middle">Lv.<%= $player->lank %> <%= $player->lank_name %></td>
+    </tr>
+    <tr>
+      <td>統率力</td><td class="middle"><%= $player->leadership %> (exp : <%= $player->leadership_exp %>)</td>
+      <td>金</td><td class="middle"><%= $player->money %></td>
+    </tr>
+    <tr>
+      <td>人望</td><td class="middle"><%= $player->popular %> (exp : <%= $player->popular_exp %>)</td>
+      <td>米</td><td class="middle"><%= $player->rice %></td>
+    </tr>
+    <tr>
       <td>階級値</td><td class="middle"><%= $player->class %></td>
       <td>貢献値</td><td class="middle"><%= $player->contribute %></td>
-    % my $guard = $player->guard;
-      <td>防具</td><td class="middle"><%= $guard->name %></td><td class="middle"><%= $guard->power %></td>
     </tr>
     <tr>
+      <td>階級</td><td class="middle">Lv.<%= $player->lank %> <%= $player->lank_name %></td>
+      <td>忠誠度</td><td class="middle"><%= $player->loyalty %></td>
+    </tr>
+    <tr>
+    % my $weapon = $player->weapon;
+      <td>武器</td><td class="middle"><%= $weapon->name %></td><td class="middle"><%= $weapon->power %></td>
     % my $soldier = $player->soldier;
-      <td>兵種</td><td class="middle"><%= $soldier->name %></td>
-      <td>兵士</td><td class="middle"><%= $soldier->num  %></td>
+      <td>兵士</td><td class="middle"><%= $soldier->name %> (<%= $soldier->num  %>人)</td>
+    </tr>
+    <tr>
+    % my $book = $player->book;
+      <td>書物</td><td class="middle"><%= $book->name %></td><td class="middle"><%= $book->power %></td>
       <td>訓練</td><td class="middle"><%= $soldier->training %></td>
-      <td>攻撃力</td><td class="middle"><%= $soldier->attack_power($player) %></td>
-      <td>守備力</td><td class="middle" colspan="2"><%= $soldier->defense_power($player) %></td>
+    </tr>
+    <tr>
+    % my $guard = $player->guard;
+      <td>防具</td><td class="middle"><%= $guard->name %></td><td class="middle"><%= $guard->power %></td>
+      <td class="middle">攻撃力 : <%= $soldier->attack_power($player) %></td>
+      <td class="middle">守備力 : <%= $soldier->defense_power($player) %></td>
     </tr>
   </table>
 </div>
 
-<!-- コマンドオプション選択画面がここで表示される -->
-<div id="choose-command-option">
-  <div id="command-option-result">
-  </div>
-</div>
-
-<div class="grid-right" id="controll-command">
+<div class="grid-right width-60pc" id="controll-command">
   <table class="table-<%= $country->color %> width-100pc">
     <tr>
       <th colspan="2"><h2>コマンド入力</h2></th>
@@ -465,22 +467,106 @@ $letter-padding: 5px;
 
 <div class="grid-right width-100pc">
   <table class="table-<%= $country->color %> width-100pc">
+  <tbody>
     <tr>
       <th>
         <a id="letter-link"></a><h2>手紙送信</h2>
       </th>
     </tr>
     <tr><td>
-      <%= text_area(profile => '', cols => 70, rows => 4, id => 'letter-message') %>
-      <select id="letter-to">
-        <option class="country" value="<%= $player->country_name %>"><%= $player->country_name %>へ
-        <option class="town" value="<%= $player->town_name %>"><%= $player->town_name %>へ
-      % if ($player->unit_id) {
-        <option class="unit" value="<%= $player->unit_id %>"><%= $player->unit_name %>へ
-      % }
-      </select>
-      <input type="button" id="letter-submit" value="送信">
+
+      <table class="layout-table">
+        <tbody>
+          <tr>
+            <td rowspan="2">
+              <%= text_area(profile => '', cols => 70, rows => 4, id => 'letter-message') %>
+            </td>
+            <td>
+              宛先リスト : 
+              <select id="letter-adr-list-type">
+                <option value="default">通常</option>
+                <option value="player">個人宛</option>
+                <option value="other-country">他国宛</option>
+              </select>
+              <input type="button" id="letter-switch-adr-list" value="切り替え">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              宛先 : 
+              <select id="letter-to">
+                <option data-letter-type="country" value="<%= $player->country_name %>"><%= $player->country_name %>へ
+                <option data-letter-type="town" value="<%= $player->town_name %>"><%= $player->town_name %>へ
+              % if ($player->unit_id) {
+                <option data-letter-type="unit" value="<%= $player->unit_id %>"><%= $player->unit_name %>へ
+              % }
+              </select>
+              <input type="button" id="letter-submit" value="送信">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+<script>
+
+'use strict';
+
+(function () {
+
+  sangoku.namespace('player.mypage.SwitchAdrList');
+
+% my $player_adr_list;
+% for my $player (values %$players_hash) {
+  % $player_adr_list .= qq{<option data-letter-type="player" value="@{[ $player->id ]}">@{[ $player->name ]}</option>};
+% }
+
+% my $country_adr_list;
+% for my $country (values %$countries_hash) {
+  % $country_adr_list .= qq{<option data-letter-type="country" value="@{[ $country->name ]}">@{[ $country->name ]}</option>};
+% }
+
+  sangoku.player.mypage.SwitchAdrList = function () {
+    sangoku.base.apply(this, arguments);
+    this.letterAdrListType = document.getElementById('letter-adr-list-type');
+    this.letterTo = document.getElementById('letter-to');
+    this.defaultList = document.getElementById('letter-to').innerHTML;
+    this.countryList = '<%== $country_adr_list %>';
+    this.playerList = '<%== $player_adr_list %>';
+  };
+
+  var CLASS = sangoku.player.mypage.SwitchAdrList;
+
+  sangoku.inherit(sangoku.base, CLASS);
+
+  var PROTOTYPE = CLASS.prototype;
+
+  var dispatch = {
+    'default' : 'defaultList',
+    'player' : 'playerList',
+    'other-country' : 'countryList',
+  };
+
+  PROTOTYPE.registFunctions = function () {
+    document.getElementById('letter-switch-adr-list').addEventListener('click', function () {
+      var type = this.letterAdrListType.value;
+      this.letterTo.innerHTML = this[dispatch[type]];
+    }.bind(this), false);
+  };
+
+}());
+
+(function () {
+
+  var c = new sangoku.player.mypage.SwitchAdrList();
+  c.registFunctions();
+
+}());
+
+</script>
+
     </td></tr>
+  </tbody>
   </table>
 </div>
 

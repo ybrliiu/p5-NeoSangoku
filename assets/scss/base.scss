@@ -104,6 +104,10 @@ ul {
     span { color: $darkred; }
   }
 
+  .divider {
+    float: left;
+  }
+
   #title {
     position: relative;
     width: 100%;
@@ -177,6 +181,15 @@ ul {
     border: 1px $border-orange solid;
     background-color: $lightorange;
     padding: 3px;
+  }
+}
+
+/* レイアウトテーブル */
+.layout-table {
+  th, td {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
   }
 }
 

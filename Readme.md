@@ -4,9 +4,9 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```      
 
-* css grid row 追加
-
 * player status 表示レイアウト変更
+* model, 不要なものを抜く(pollng chat のときのとか...)
+* 未読がわかるように
 
 * 個人宛手紙、mypageに履歴から送信追加、手紙ログ
 

@@ -52,7 +52,7 @@
      CLASS.sendLetter = function (to, message) {
        if (!message.value) { return false; }
        var json = {
-         'type' : to.children[to.selectedIndex].className,
+         'type' : to.children[to.selectedIndex].dataset.letterType,
          'message' : message.value,
        };
        dispatchFunction[json.type](json, to.children[to.selectedIndex].value);
