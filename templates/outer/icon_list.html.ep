@@ -32,13 +32,13 @@
 
   (function () {
 
-    sangoku.namespace('iconList');
+    sangoku.namespace('outer.IconList');
 
-    sangoku.iconList = function () {
+    sangoku.outer.IconList = function () {
       this.opener = window.opener;
     };
 
-    var PROTOTYPE = sangoku.iconList.prototype;
+    var PROTOTYPE = sangoku.outer.IconList.prototype;
 
     PROTOTYPE.showExplain = function () {
       if (this.opener) {
@@ -79,7 +79,7 @@
   // init
   (function () {
 
-    var c = new sangoku.iconList();
+    var c = new sangoku.outer.IconList();
     c.showExplain();
     c.registFunctionToIcons();
 

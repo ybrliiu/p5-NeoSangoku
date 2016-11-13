@@ -4,17 +4,17 @@
 
 (function () {
   
-  sangoku.namespace('player.mypage.inputCommand');
+  sangoku.namespace('player.mypage.InputCommand');
 
-  sangoku.player.mypage.inputCommand = function () {
+  sangoku.player.mypage.InputCommand = function () {
     sangoku.base.apply(this, arguments);
     this.chooseField = document.getElementById('choose-command-option');
     this.optionResult = document.getElementById('command-option-result');
   };
 
-  sangoku.inherit(sangoku.base, sangoku.player.mypage.inputCommand);
+  sangoku.inherit(sangoku.base, sangoku.player.mypage.InputCommand);
 
-  var PROTOTYPE = sangoku.player.mypage.inputCommand.prototype;
+  var PROTOTYPE = sangoku.player.mypage.InputCommand.prototype;
 
   PROTOTYPE.sendOption = function (data) {
     var optionForm = document.getElementsByName(data.form_name)[0];

@@ -600,11 +600,11 @@ $letter-padding: 5px;
 
   (function () {
 
-    var input = new sangoku.player.mypage.inputCommand;
+    var input = new sangoku.player.mypage.InputCommand();
     input.registFunctions();
     input.send('get');
 
-    var controll = new sangoku.player.mypage.controllCommand;
+    var controll = new sangoku.player.mypage.ControllCommand();
     controll.registFunctions();
 
     var limit = {

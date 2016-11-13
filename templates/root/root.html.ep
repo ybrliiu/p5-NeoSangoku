@@ -42,16 +42,6 @@
   margin-right: auto;
 }
 
-#login-form {
-  width: 100%;
-  border: 3px ' . $config->{color}{darkred} . ' solid;
-  border-radius: 4px;
-  background-color: ' . $config->{color}{lightdarkred} . ';
-  text-align: center;
-  padding: 10px;
-  input[type="text"], input[type="password"] { width: 95%; }
-}
-
 #menu {
   background-color: ' . $config->{color}{darkred} . ';
   padding: 8px;
@@ -60,8 +50,8 @@
   li {
     list-style: none;
     background-color: ' . $config->{color}{lightdarkred} . ';
-    padding: 3px;
-    margin: 5px;
+    padding: 5px;
+    margin: 12px;
     border-radius: 3px;
     text-align: left;
 
@@ -88,6 +78,25 @@
       margin: 0;
     }
   }
+}
+
+%small-section {
+  width: 100%;
+  border: 3px ' . $config->{color}{darkred} . ' solid;
+  border-radius: 4px;
+  text-align: center;
+  padding: 10px;
+}
+
+#login-form {
+  @extend %small-section;
+  background-color: ' . $config->{color}{lightdarkred} . ';
+  input[type="text"], input[type="password"] { width: 95%; }
+}
+
+#sub-info {
+  @extend %small-section;
+  background-color: ' . $config->{color}{white} . ';
 }
 
 .subhead {
@@ -145,23 +154,6 @@
 
   <div class="grid width-20pc">
 
-    <div id="login-form" class="adjust-bottom">
-      <form action="/player/login" method="post">
-        <h2>■ログイン■</h2>
-        <%= text_field(id => get_cookie('id') // '', placeholder => 'ユーザーID') %><br>
-        <%= password_field('pass', value => get_cookie('pass') // '', placeholder => 'パスワード') %><br>
-        <label class="snazzy-checkbox">
-          <%= check_box store => 1 %>
-          <span>ID、パスワードを保存する</span>
-        </label>
-        %= show_error(qw/id pass/);
-        % if(my $logout = Encode::decode_utf8(get_cookie('logout'))) {
-          <p class="red"><%= $logout %></p>
-        % }
-        <input type="submit" value="ログイン">
-      </form>
-    </div>
-
     <nav>
     <ul id="menu" class="adjust-bottom">
       <li class="not-list"><h2>■メニュー■</h2></li>
@@ -175,15 +167,12 @@
       <a href="/outer/document" target="_blank"><li>【説明書】</li></a>
       <a href="/outer/unified-history" target="_blank"><li>【歴代統一国】</li></a>
       <a href="/outer/change-log" target="_blank"><li>【改造履歴】</li></a>
-      <li class="not-list">ログイン人数：<%= $login_people %>人</li>
-      <li class="not-list">最大登録人数(<%= $config->{site}{max_player} %>人)</li>
-      <li class="not-list"><span class="red">総アクセス数：<%= $access %></span></li>
     </ul>
     </nav>
 
   </div>
 
-  <div class="grid-right width-80pc">
+  <div class="grid width-60pc">
 
     <div class="adjust-bottom">
       <div class="subhead"><h2>お知らせ</h2></div>
@@ -224,6 +213,33 @@
         % }
         </div>
       </div>
+    </div>
+
+  </div>
+
+  <div class="grid-right width-20pc">
+
+    <div id="login-form" class="adjust-bottom">
+      <form action="/player/login" method="post">
+        <h2>■ログイン■</h2>
+        <%= text_field(id => get_cookie('id') // '', placeholder => 'ユーザーID') %><br>
+        <%= password_field('pass', value => get_cookie('pass') // '', placeholder => 'パスワード') %><br>
+        <label class="snazzy-checkbox">
+          <%= check_box store => 1 %>
+          <span>ID、パスワードを保存する</span>
+        </label>
+        %= show_error(qw/id pass/);
+        % if(my $logout = Encode::decode_utf8(get_cookie('logout'))) {
+          <p class="red"><%= $logout %></p>
+        % }
+        <input type="submit" value="ログイン">
+      </form>
+    </div>
+
+    <div id="sub-info">
+      <p>ログイン人数 : <%= $login_people %>人</p>
+      <p>最大登録人数(<%= $config->{site}{max_player} %>人)</p>
+      <p class="red">総アクセス数 : <%= $access %></p>
     </div>
 
   </div>

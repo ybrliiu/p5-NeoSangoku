@@ -99,9 +99,10 @@ ul {
 
   .footer {
     @extend .centering;
+    background-color: $darkred;
     border-top: solid 1px $silver;
     padding: 0;
-    span { color: $darkred; }
+    span { color: $lightdarkred; }
   }
 
   .divider {

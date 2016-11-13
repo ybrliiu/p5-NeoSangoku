@@ -4,9 +4,9 @@
 
 (function () {
 
-  sangoku.namespace('player.mypage.controllCommand');
+  sangoku.namespace('player.mypage.ControllCommand');
 
-  sangoku.player.mypage.controllCommand = function () {
+  sangoku.player.mypage.ControllCommand = function () {
     sangoku.base.apply(this, arguments);
     if (this.isMobile) {
       this.startPointX = undefined;
@@ -18,9 +18,9 @@
     this.checkId = undefined;
   };
 
-  sangoku.inherit(sangoku.base, sangoku.player.mypage.controllCommand);
+  sangoku.inherit(sangoku.base, sangoku.player.mypage.ControllCommand);
 
-  var PROTOTYPE = sangoku.player.mypage.controllCommand.prototype;
+  var PROTOTYPE = sangoku.player.mypage.ControllCommand.prototype;
 
   PROTOTYPE.changeUserSelect = function (type) {
     $("#can-select-command-text").toggle();
