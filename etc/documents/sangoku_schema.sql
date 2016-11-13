@@ -12,7 +12,7 @@ CREATE TABLE "country" (
 );
 
 CREATE TABLE "country_law" (
-  "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE,
+  "country_name" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
   "id"    serial PRIMARY KEY,
   "title" text NOT NULL,
   "name" text NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE "country_law" (
 );
 
 CREATE TABLE "country_conference_thread" (
-  "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE,
+  "country_name" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
   "id" serial PRIMARY KEY,
   "title"   text NOT NULL,
   "name"    text NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE "country_conference_thread" (
 );
 
 CREATE TABLE "country_conference_reply" (
-  "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE,
+  "country_name" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
   "thread_id"    int REFERENCES "country_conference_thread" ON DELETE CASCADE,
   "id"      serial PRIMARY KEY,
   "name"    text NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE "country_conference_reply" (
 );
 
 CREATE TABLE "country_letter" (
-  "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE,
+  "country_name" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
   "id"        serial PRIMARY KEY,
   "sender_name" text NOT NULL,
   "sender_icon"  int NOT NULL,
@@ -55,8 +55,8 @@ CREATE TABLE "country_letter" (
 CREATE TABLE "country_diplomacy" (
   "type" text NOT NULL,
   "is_accepted" int DEFAULT 0,
-  "request_country" text REFERENCES "country" ("name") ON DELETE CASCADE,
-  "receive_country" text REFERENCES "country" ("name") ON DELETE CASCADE,
+  "request_country" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
+  "receive_country" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
   "start_year" int NOT NULL,
   "start_month" int NOT NULL,
   "option" text DEFAULT '',
@@ -67,7 +67,7 @@ CREATE TABLE "country_diplomacy" (
 -- 都市関連テーブル
 CREATE TABLE "town" (
   "name" text PRIMARY KEY,
-  "country_name" text NOT NULL,
+  "country_name" text DEFAULT '無所属' REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE SET DEFAULT,
   "x" int NOT NULL,
   "y" int NOT NULL,
   "loyalty" int DEFAULT 50,
@@ -105,8 +105,8 @@ CREATE TABLE "player" (
   "name" text UNIQUE NOT NULL,
   "pass" text NOT NULL,
   "icon" int  NOT NULL,
-  "country_name" text NOT NULL,
-  "town_name"    text NOT NULL,
+  "country_name" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE SET NULL,
+  "town_name"    text REFERENCES "town" ("name") ON DELETE SET NULL,
   "force"      int NOT NULL,
   "intellect"  int NOT NULL,
   "leadership" int NOT NULL,
@@ -242,7 +242,7 @@ CREATE TABLE "town_guards" (
 
 -- 国役職一覧
 CREATE TABLE "country_position" (
-  "country_name" text PRIMARY KEY REFERENCES "country" ("name") ON DELETE CASCADE,
+  "country_name" text PRIMARY KEY REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
   "king_id"      text UNIQUE REFERENCES "player" ("id") ON DELETE SET NULL,
   "premier_id"          text REFERENCES "player" ("id") ON DELETE SET NULL,
   "strategist_id"       text REFERENCES "player" ("id") ON DELETE SET NULL,
@@ -260,7 +260,7 @@ CREATE TABLE "unit" (
   "id"   serial PRIMARY KEY,
   "leader_id" text UNIQUE REFERENCES "player" ("id") ON DELETE SET NULL,
   "name"      text NOT NULL,
-  "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE,
+  "country_name" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
   "message"      text DEFAULT '',
   "join_permit"  int DEFAULT 1,
   "auto_gather"  int DEFAULT 0,
@@ -270,8 +270,8 @@ CREATE TABLE "unit" (
 CREATE TABLE "unit_members" (
   "unit_id"      int REFERENCES "unit" ("id") ON DELETE CASCADE,
   "player_id"    text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE,
-  "player_name"  text UNIQUE REFERENCES "player" ("name") ON DELETE CASCADE,
-  "country_name" text REFERENCES "country" ("name") ON DELETE CASCADE
+  "player_name"  text UNIQUE REFERENCES "player" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
+  "country_name" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE "unit_letter" (
