@@ -2,15 +2,15 @@
 
 (function () {
 
-  sangoku.namespace('player');
+  sangoku.namespace('player.Menu');
 
-  sangoku.player = function () {
-    sangoku.base.apply(this, arguments);
+  sangoku.player.Menu = function () {
+    sangoku.Base.apply(this, arguments);
   };
 
-  sangoku.inherit(sangoku.base, sangoku.player);
+  sangoku.inherit(sangoku.Base, sangoku.player.Menu);
 
-  var PROTOTYPE = sangoku.player.prototype;
+  var PROTOTYPE = sangoku.player.Menu.prototype;
 
   PROTOTYPE.genMouseOverFunction = function (li) {
     // childNodes[1] = <ul>

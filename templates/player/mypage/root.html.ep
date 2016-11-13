@@ -527,7 +527,7 @@ $letter-padding: 5px;
 % }
 
   sangoku.player.mypage.SwitchAdrList = function () {
-    sangoku.base.apply(this, arguments);
+    sangoku.Base.apply(this, arguments);
     this.letterAdrListType = document.getElementById('letter-adr-list-type');
     this.letterTo = document.getElementById('letter-to');
     this.defaultList = document.getElementById('letter-to').innerHTML;
@@ -537,7 +537,7 @@ $letter-padding: 5px;
 
   var CLASS = sangoku.player.mypage.SwitchAdrList;
 
-  sangoku.inherit(sangoku.base, CLASS);
+  sangoku.inherit(sangoku.Base, CLASS);
 
   var PROTOTYPE = CLASS.prototype;
 

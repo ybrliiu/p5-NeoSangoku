@@ -19,7 +19,7 @@
   */
 
   sangoku.player.mypage.CometChat = function (args) {
-    sangoku.base.apply(this, arguments);
+    sangoku.Base.apply(this, arguments);
     this.initChat(args);
     this.sendUri = args.sendUri;
     this.pollingUri = args.pollingUri;
@@ -27,7 +27,7 @@
 
   var CLASS = sangoku.player.mypage.CometChat;
 
-  sangoku.inherit(sangoku.base, CLASS);
+  sangoku.inherit(sangoku.Base, CLASS);
   sangoku.mixin(sangoku.player.mypage.Chat, CLASS);
 
   var PROTOTYPE = CLASS.prototype;

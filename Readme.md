@@ -4,20 +4,14 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```      
 
-* JS package と class の区別を明確に...
-sangoku.player -> sangoku.player.PlayerMenu;
-sangoku.util -> sangoku.Util;
-sangoku.base -> sangoku.Base;
-
 * ログイン時のcookie を暗号化
 
-* player status 表示レイアウト変更
-* model, 不要なものを抜く(pollng chat のときのとか...)
 * 未読がわかるように
-
 * 個人宛手紙、mypageに履歴から送信追加、手紙ログ
 
 * Model::Site 月をまたがる場合や年をまたがる場合は？
+
+* country_position, town country_name SQL見なおすべきか？
 
 * t/ テストするモジュールのload部分をload関数に
 * js, scss 外部ファイル化, head読み込みシステム
@@ -27,7 +21,6 @@ sangoku.base -> sangoku.Base;
 
 * plugin -> web 名前空間へ？
 * web.pm の処理 外部ファイルに切り出し
-* country_position, town country_name SQL見なおすべきか？
 * SQLのチューニング
 * 書いてないテストも書きましょうね〜〜
 * testのコード共通化進める?

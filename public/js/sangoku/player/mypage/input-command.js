@@ -7,12 +7,12 @@
   sangoku.namespace('player.mypage.InputCommand');
 
   sangoku.player.mypage.InputCommand = function () {
-    sangoku.base.apply(this, arguments);
+    sangoku.Base.apply(this, arguments);
     this.chooseField = document.getElementById('choose-command-option');
     this.optionResult = document.getElementById('command-option-result');
   };
 
-  sangoku.inherit(sangoku.base, sangoku.player.mypage.InputCommand);
+  sangoku.inherit(sangoku.Base, sangoku.player.mypage.InputCommand);
 
   var PROTOTYPE = sangoku.player.mypage.InputCommand.prototype;
 

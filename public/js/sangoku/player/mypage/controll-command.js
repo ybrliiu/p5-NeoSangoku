@@ -7,7 +7,7 @@
   sangoku.namespace('player.mypage.ControllCommand');
 
   sangoku.player.mypage.ControllCommand = function () {
-    sangoku.base.apply(this, arguments);
+    sangoku.Base.apply(this, arguments);
     if (this.isMobile) {
       this.startPointX = undefined;
       this.startPointY = undefined;
@@ -18,7 +18,7 @@
     this.checkId = undefined;
   };
 
-  sangoku.inherit(sangoku.base, sangoku.player.mypage.ControllCommand);
+  sangoku.inherit(sangoku.Base, sangoku.player.mypage.ControllCommand);
 
   var PROTOTYPE = sangoku.player.mypage.ControllCommand.prototype;
 

@@ -18,7 +18,7 @@
   var CONFIRM_LOOP_INTERVAL = 30000;
 
   sangoku.player.mypage.WebSocketChat = function (args) {
-    sangoku.base.apply(this, arguments);
+    sangoku.Base.apply(this, arguments);
     this.initChat(args);
     this.ws = newWs(this, args.uri);
     this.reconnectCount = 0;
@@ -58,7 +58,7 @@
 
   var CLASS = sangoku.player.mypage.WebSocketChat;
 
-  sangoku.inherit(sangoku.base, CLASS);
+  sangoku.inherit(sangoku.Base, CLASS);
   sangoku.mixin(sangoku.player.mypage.Chat, CLASS);
 
   var PROTOTYPE = CLASS.prototype;

@@ -459,7 +459,7 @@
     c.updateValues();
     c.setSumValue();
 
-    var util = new sangoku.util;
+    var util = new sangoku.Util;
     util.registOpenIconList();
 
   }());

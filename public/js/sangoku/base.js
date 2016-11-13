@@ -2,13 +2,13 @@
 
 (function () {
 
-  sangoku.namespace('base');
+  sangoku.namespace('Base');
 
-  sangoku.base = function () {
+  sangoku.Base = function () {
     this.isMobile = this.judgeIsMobile();
   };
 
-  var PROTOTYPE = sangoku.base.prototype;
+  var PROTOTYPE = sangoku.Base.prototype;
 
   PROTOTYPE.judgeIsMobile = function () {
     var ua = navigator.userAgent;
@@ -31,7 +31,7 @@
     }
   };
 
-  // sangoku.base.prototype.sayHello.apply(this, arguments);
+  // sangoku.Base.prototype.sayHello.apply(this, arguments);
 
 }());
 

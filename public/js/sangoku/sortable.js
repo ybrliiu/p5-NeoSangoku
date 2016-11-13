@@ -12,14 +12,14 @@
   var DESC_CLASS = 'sorted-desc';
 
   sangoku.Sortable = function () {
-    sangoku.base.apply(this, arguments);
+    sangoku.Base.apply(this, arguments);
     this.beforeTable = undefined;
     this.beforeTh = undefined;
   };
 
   var CLASS = sangoku.Sortable;
 
-  sangoku.inherit(sangoku.base, CLASS);
+  sangoku.inherit(sangoku.Base, CLASS);
 
   var PROTOTYPE = CLASS.prototype;
 

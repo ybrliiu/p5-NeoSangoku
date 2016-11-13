@@ -74,7 +74,7 @@
   // init
   (function () {
     
-    var c = new sangoku.player;
+    var c = new sangoku.player.Menu();
     c.registFunctionToList();
 
   }());
