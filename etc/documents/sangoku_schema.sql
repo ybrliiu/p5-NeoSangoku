@@ -333,3 +333,28 @@ CREATE TABLE "icon_uploader" (
   "time" text NOT NULL
 );
 
+
+-- こうすると依存性が減っていいかもしれないってことで...。
+-- 未実装 --
+
+-- 国支配都市一覧
+CREATE TABLE "country_towns" (
+  "country_name" text NOT NULL REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
+  "town_name"    text PRIMARY KEY REFERENCES "town" ("name") ON DELETE CASCADE
+);
+
+-- 国所属プレイヤー
+CREATE TABLE "country_members" (
+  "country_name" text DEFAULT '無所属' REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE SET DEFAULT,
+  "player_id"    text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE
+);
+
+-- 都市滞在プレイヤー
+CREATE TABLE "town_stay_players" (
+  "town_name" text NOT NULL REFERENCES "town" ("name") ON DELETE CASCADE,
+  "player_id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE
+);
+
+-- 未実装 --
+
+
