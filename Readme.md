@@ -11,7 +11,7 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 * Model::Site 月をまたがる場合や年をまたがる場合は？
 
-* country_position, town country_name SQL見なおすべきか？
+* country_position, town country_name SQL見なおす
 
 * t/ テストするモジュールのload部分をload関数に
 * js, scss 外部ファイル化, head読み込みシステム

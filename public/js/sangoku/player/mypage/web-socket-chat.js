@@ -25,6 +25,7 @@
     this.isSupport = true;
 
     window.addEventListener('beforeunload', function (e) {
+      this.isSupport = false;
       this.ws.close();
       // alertではできない
       // e.preventDefault();
