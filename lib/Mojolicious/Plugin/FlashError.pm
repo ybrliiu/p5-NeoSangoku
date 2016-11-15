@@ -38,8 +38,6 @@ package Mojolicious::Plugin::FlashError {
     $app->helper(flash_error => sub {
       my ($c, $error, $options) = @_;
 
-      use Data::Dumper;
-
       if ($error) {
         $options //= {};
         my $error_hash = unbless $error;

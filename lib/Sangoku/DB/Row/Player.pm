@@ -168,6 +168,8 @@ package Sangoku::DB::Row::Player {
 
   sub unit_id {
     my ($self) = @_;
+    # row を get_joined で取得した場合
+    return $self->{row_data}{unit_id} if exists $self->{row_data}{unit_id};
     return $self->{unit_id} if exists $self->{unit_id};
     my $member = $self->model('Unit::Members')->get_by_player_id($self->id);
     $self->{unit_id} = defined $member ? $member->unit_id : undef;

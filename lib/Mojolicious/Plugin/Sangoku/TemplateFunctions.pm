@@ -5,7 +5,6 @@ package Mojolicious::Plugin::Sangoku::TemplateFunctions {
 
   sub register {
     my ($self, $app) = @_;
-
     $app->helper($_ => $self->can("_$_")) for qw/get_cookie show_error show_all_error/;
   }
 

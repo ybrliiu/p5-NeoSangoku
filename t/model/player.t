@@ -37,8 +37,9 @@ subtest 'delete_all' => sub {
 };
 
 sub get_id_and_check_name {
-  ok( my $player = $TEST_CLASS->get($PLAYER_DATA->{id}) );
+  ok(my $player = $TEST_CLASS->get($PLAYER_DATA->{id}));
   is $player->name, $PLAYER_DATA->{name};
+  ok($player = $TEST_CLASS->get_joined($PLAYER_DATA->{id}));
 }
 
 done_testing();

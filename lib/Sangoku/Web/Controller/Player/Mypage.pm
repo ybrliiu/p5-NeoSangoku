@@ -37,6 +37,14 @@ package Sangoku::Web::Controller::Player::Mypage {
     });
   }
 
+  sub _subscride_event {
+    my ($self, $type) = @_;
+    return sub {
+      my ($event, $player, $letter_data) = @_;
+      $type eq 'ws' ? $self->send({json => $letter_data}) : $self->render(json => $letter_data);
+    };
+  }
+
   sub _once_event {
     my ($self) = @_;
     $self->events->once(chat => sub {
@@ -52,9 +60,7 @@ package Sangoku::Web::Controller::Player::Mypage {
 
     $self->on(json => sub {
       my ($c, $json) = @_;
-
       return $self->send({text => 'ack'}) if exists $json->{ping};
-
       my $letter_data = $self->_write_letter($json);
       $self->_emit_event($letter_data);
     });

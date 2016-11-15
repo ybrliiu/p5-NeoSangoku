@@ -4,6 +4,7 @@ package Sangoku::Model::Player {
   use Mouse;
   with 'Sangoku::Model::Role::DB';
 
+  use Sangoku::Model::Unit::Members;
   use Sangoku::Util qw/load_child_module validate_values load_config/;
   load_child_module(__PACKAGE__);
 
@@ -51,6 +52,19 @@ package Sangoku::Model::Player {
     validate_values($args => [qw/id name pass icon country_name town_name
       force intellect leadership popular loyalty update_time/]);
     $class->db->do_insert(TABLE_NAME, $args);
+  }
+
+  sub get_joined {
+    my ($class, $id) = @_;
+    my @rows = $class->db->search_by_sql(
+      "SELECT * FROM @{[ TABLE_NAME ]}
+        LEFT JOIN @{[ Sangoku::Model::Unit::Members->TABLE_NAME ]}
+        ON id = player.id
+        WHERE id = ?",
+      [$id],
+      TABLE_NAME, 
+    );
+    return $rows[0];
   }
 
   sub regist {
