@@ -598,7 +598,7 @@ $letter-padding: 5px;
 
   'use strict';
 
-  (function () {
+  window.addEventListener('DOMContentLoaded', function () {
 
     var input = new sangoku.player.mypage.InputCommand();
     input.registFunctions();
@@ -640,6 +640,6 @@ $letter-padding: 5px;
       }
     }, 1000);
 
-  }());
+  }, false);
 
 </script>

@@ -24,8 +24,8 @@ package Sangoku::Web::Controller::Player::Mypage {
   }
 
   sub _emit_event {
-    my ($self, $letter_data) = @_;
-    $self->events->emit(chat => $letter_data);
+    my ($self, $letter_data, $sender) = @_;
+    $self->events->emit(chat => ($letter_data, $sender));
   }
 
   # 接続が切れた後の処理(イベントの購読をやめる
@@ -39,18 +39,21 @@ package Sangoku::Web::Controller::Player::Mypage {
 
   sub _subscride_event {
     my ($self, $type) = @_;
+    my $player_id = $self->session('id');
+    my $player = $self->service->get_player($player_id);
     return sub {
-      my ($event, $player, $letter_data) = @_;
-      $type eq 'ws' ? $self->send({json => $letter_data}) : $self->render(json => $letter_data);
+      my ($event, $letter_data, $sender) = @_;
+      my $is_player_and_receiver_same
+        = $player->name eq $letter_data->{receiver_name} && $letter_data->{type} eq 'player';
+      if (
+           $is_player_and_receiver_same
+        || $player->unit_id eq $sender->unit_id
+        || $player->country_name eq $sender->country_name
+        || $player->town_name eq $sender->town_name
+      ) {
+        $type eq 'websocket' ? $self->send({json => $letter_data}) : $self->render(json => $letter_data);
+      }
     };
-  }
-
-  sub _once_event {
-    my ($self) = @_;
-    $self->events->once(chat => sub {
-      my ($event, $letter_data) = @_;
-      $self->render(json => $letter_data);
-    });
   }
 
   sub channel {
@@ -61,15 +64,11 @@ package Sangoku::Web::Controller::Player::Mypage {
     $self->on(json => sub {
       my ($c, $json) = @_;
       return $self->send({text => 'ack'}) if exists $json->{ping};
-      my $letter_data = $self->_write_letter($json);
-      $self->_emit_event($letter_data);
+      my ($letter_data, $sender) = $self->_write_letter($json);
+      $self->_emit_event($letter_data, $sender);
     });
 
-    my $cb = $self->events->on(chat => sub {
-      my ($event, $letter_data) = @_;
-      $self->send({json => $letter_data});
-    });
-
+    my $cb = $self->events->on(chat => $self->_subscride_event('websocket'));
     $self->_finish_connect($cb);
   }
 
@@ -77,18 +76,14 @@ package Sangoku::Web::Controller::Player::Mypage {
     my ($self) = @_;
     $self->inactivity_timeout(TIMEOUT);
     $self->render_later();
-
-    my $json = $self->req->json;
-    $self->render(text => 'ack') if exists $json->{ping};
-
-    my $cb = $self->_once_event();
+    my $cb = $self->events->once(chat => $self->_subscride_event('long_polling'));
     $self->_finish_connect($cb);
   }
 
   sub send_letter {
     my ($self) = @_;
-    my $letter_data = $self->_write_letter($self->req->json);
-    $self->_emit_event($letter_data);
+    my ($letter_data, $sender) = $self->_write_letter($self->req->json);
+    $self->_emit_event($letter_data, $sender);
     $self->render(json => {status => 'succsess'});
   }
 

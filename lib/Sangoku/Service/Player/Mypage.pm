@@ -45,6 +45,11 @@ package Sangoku::Service::Player::Mypage {
     };
   }
 
+  sub get_player {
+    my ($class, $player_id) = @_;
+    return $class->model('Player')->get_joined($player_id);
+  }
+
   sub write_letter {
     my ($class, $args) = @_;
     my $type = $args->{type};
@@ -52,11 +57,11 @@ package Sangoku::Service::Player::Mypage {
     state $dispatch_method = {map { $_ => "_write_${_}_letter" } qw/player unit country town/};
 
     my $method = $dispatch_method->{$type};
-    my $letter_data = defined $method
+    my ($letter_data, $sender) = defined $method
       ? $class->$method($args)
       : croak "不正な letter type が指定されています($type)";
     $letter_data->{type} = $type;
-    return $letter_data;
+    return ($letter_data, $sender);
   }
 
   sub _write_player_letter {
@@ -71,7 +76,7 @@ package Sangoku::Service::Player::Mypage {
       receiver => $receiver,
       message  => $args->{message},
     });
-    return $letter_data;
+    return ($letter_data, $sender);
   }
 
   sub _write_country_letter {
@@ -84,7 +89,7 @@ package Sangoku::Service::Player::Mypage {
       receiver_name => $args->{receiver_name},
       message       => $args->{message},
     });
-    return $letter_data;
+    return ($letter_data, $sender);
   }
 
   sub _write_town_letter {
@@ -96,7 +101,7 @@ package Sangoku::Service::Player::Mypage {
       sender  => $sender,
       message => $args->{message},
     });
-    return $letter_data;
+    return ($letter_data, $sender);
   }
 
   sub _write_unit_letter {
@@ -115,41 +120,7 @@ package Sangoku::Service::Player::Mypage {
       sender  => $sender,
       message => $args->{message},
     });
-    return $letter_data;
-  }
-
-  sub check_new_letter {
-    my ($class, $args) = @_;
-    validate_values($args => [qw/player_id player_letter_id invite_letter_id
-      country_letter_id town_letter_id unit_letter_id/]);
-
-    my $player = $class->model('Player')->get($args->{player_id});
-    my $unit = $player->unit;
-    my %letter_model = (
-      player  => $class->model('Player::Letter')->new(id => $player->id),
-      invite  => $class->model('Player::Invite')->new(id => $player->id),
-      unit    => $class->model('Unit::Letter')->new({
-        id   => $unit->id,
-        name => $unit->name,
-      }),
-      country => $class->model('Country::Letter')->new(name => $player->country_name),
-      town    => $class->model('Town::Letter')->new(name => $player->town_name),
-    );
-    my @letters = keys %letter_model;
-
-    my %update_letter =
-      map { $_ => $letter_model{$_}->check_new_letter($args->{$_ . '_letter_id'}, $player) } @letters;
-
-    return {
-      check  => \%update_letter,
-      letter => +{
-        map {
-          $update_letter{$_}
-            ? ($_ => $letter_model{$_}->get($class->config->{template}{player}{mypage}{letter}{$_}))
-            : ()
-        } @letters
-      },
-    };
+    return ($letter_data, $sender);
   }
 
   __PACKAGE__->meta->make_immutable();
