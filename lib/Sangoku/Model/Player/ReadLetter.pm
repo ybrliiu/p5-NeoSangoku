@@ -2,7 +2,7 @@ package Sangoku::Model::Player::ReadLetter {
 
   use Mouse;
   use Sangoku;
-  with 'Sangoku::Model::Role::RecordMultiple::Single';
+  with 'Sangoku::Model::Role::RecordMultipleFile::Single';
 
   use Sangoku::API::Player::ReadLetter;
 

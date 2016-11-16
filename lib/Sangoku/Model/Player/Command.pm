@@ -2,7 +2,7 @@ package Sangoku::Model::Player::Command {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::RecordMultiple';
+  with 'Sangoku::Model::Role::RecordMultipleFile';
 
   use Record::List::Command;
   use Sangoku::API::Player::Command;

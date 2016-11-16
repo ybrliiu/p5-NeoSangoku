@@ -2,7 +2,7 @@ package Sangoku::Model::AdminLog {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::RecordSingle::Log';
+  with 'Sangoku::Model::Role::RecordSingleFile::Log';
 
   use Sangoku::API::AdminLog;
 

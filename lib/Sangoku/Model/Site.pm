@@ -2,7 +2,7 @@ package Sangoku::Model::Site {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::RecordSingle';
+  with 'Sangoku::Model::Role::RecordSingleFile';
 
   use Carp qw/croak/;
   use Try::Tiny;

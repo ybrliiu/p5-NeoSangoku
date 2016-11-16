@@ -1,8 +1,8 @@
-package Sangoku::Model::Role::RecordSingle::Log {
+package Sangoku::Model::Role::RecordSingleFile::Log {
 
   use Sangoku;
   use Mouse::Role;
-  with 'Sangoku::Model::Role::RecordSingle';
+  with 'Sangoku::Model::Role::RecordSingleFile';
 
   use Record::List;
 

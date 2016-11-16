@@ -1,4 +1,4 @@
-package Sangoku::Model::Role::RecordSingle {
+package Sangoku::Model::Role::RecordSingleFile {
 
   use Sangoku;
   use Mouse::Role;

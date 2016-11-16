@@ -16,9 +16,9 @@ Model/Role/DB/
              /Reply
           /Cache
           /Record
-          /RecordSingle/
-                       /Log
-          /RecordMultiple
+          /RecordSingleFile/
+                           /Log
+          /RecordMultipleFile
           /Config
 
      /Player/

@@ -1,8 +1,8 @@
-package Sangoku::Model::Role::RecordMultiple::Single {
+package Sangoku::Model::Role::RecordMultipleFile::Single {
 
   use Mouse::Role;
   use Sangoku;
-  with 'Sangoku::Model::Role::RecordMultiple';
+  with 'Sangoku::Model::Role::RecordMultipleFile';
   requires 'CLASS';
 
   use Record::List::Log;
