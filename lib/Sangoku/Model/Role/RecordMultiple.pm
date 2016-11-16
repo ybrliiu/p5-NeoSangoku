@@ -1,7 +1,7 @@
 package Sangoku::Model::Role::RecordMultiple {
 
-  use Sangoku;
   use Mouse::Role;
+  use Sangoku;
   with 'Sangoku::Model::Role::Record';
   requires qw/_build_record init/;
 

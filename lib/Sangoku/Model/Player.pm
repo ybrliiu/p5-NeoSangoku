@@ -10,7 +10,7 @@ package Sangoku::Model::Player {
 
   use constant {
     TABLE_NAME           => 'player',
-    CHILD_RECORD_MODULES => [qw/Command CommandList CommandLog Profile/],
+    CHILD_RECORD_MODULES => [qw/Command CommandList CommandLog Profile ReadLetter/],
   };
 
   sub ADMINISTARTOR_DATA() {

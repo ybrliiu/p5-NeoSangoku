@@ -48,8 +48,8 @@
     };
 
     ws.onclose = function() {
-      console.log('繋ぎ直し');
       if (self.isSupport) {
+        console.log('繋ぎ直し');
         self.ws = newWs(self, uri);
       }
     };
