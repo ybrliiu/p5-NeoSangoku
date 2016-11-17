@@ -155,7 +155,7 @@
   <div class="grid width-20pc">
 
     <nav>
-    <ul id="menu" class="adjust-bottom">
+    <ul id="menu">
       <li class="not-list"><h2>■メニュー■</h2></li>
       <a href="/"><li>【HOME】</li></a>
       <a href="/outer/regist"><li>【新規登録】</li></a>
@@ -174,7 +174,7 @@
 
   <div class="grid width-60pc">
 
-    <div class="adjust-bottom">
+    <div>
       <div class="subhead"><h2>お知らせ</h2></div>
       <div class="show-log-wrapper background-white">
         <div class="show-log scroll">
@@ -193,7 +193,7 @@
       </div>
     </div>
 
-    <div class="adjust-bottom">
+    <div>
       <div class="subhead"><h2>MAP LOG</h2></div>
       <div class="show-log-wrapper background-lightdarkred">
         <div class="show-log scroll">
@@ -219,7 +219,7 @@
 
   <div class="grid-right width-20pc">
 
-    <div id="login-form" class="adjust-bottom">
+    <div id="login-form">
       <form action="/player/login" method="post">
         <h2>■ログイン■</h2>
         <%= text_field(id => get_cookie('id') // '', placeholder => 'ユーザーID') %><br>

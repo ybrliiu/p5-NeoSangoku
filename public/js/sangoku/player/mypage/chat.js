@@ -6,11 +6,13 @@
 
   var CLASS = sangoku.player.mypage.Chat;
 
-  CLASS.LETTERS = ['country', 'player', 'invite', 'unit', 'town'];
+  CLASS.LETTERS_LEFT = ['player', 'unit', 'invite'];
+  CLASS.LETTERS_RIGHT = ['country', 'town'];
+  CLASS.LETTERS = CLASS.LETTERS_LEFT.concat(CLASS.LETTERS_RIGHT);
+  CLASS.LETTERS_LEFT_TO_HASH = sangoku.arrayToHash(CLASS.LETTERS_LEFT);
 
   CLASS.initChat = function (args) {
     this.limit = args.limit;
-
     var self = this;
     this.LETTERS.forEach(function (element) {
       self[element] = getLetterTable(element);
@@ -66,11 +68,40 @@
     throw 'ロールを消費したクラスで実装する必要があります';
   };
 
-  CLASS.registFunctions = function () { 
+  CLASS.registSwitchLetterBtn = function () {
     var self = this;
-    document.getElementById('letter-submit').addEventListener(self.eventType('click'), function(eve) {
-      self.sendLetter(document.getElementById('letter-to'), document.getElementById('letter-message'));
-    }, false);
+
+    Array.prototype.forEach.call(document.getElementsByClassName('letter-title-wrapper'), function (table) {
+      var tdList = table.getElementsByTagName('td');
+
+      Array.prototype.forEach.call(tdList, function (td) {
+        td.addEventListener(self.eventType('click'), function () {
+          var letterType = td.dataset.letterType;
+          self[letterType].parentNode.style.display = 'block';
+          td.id = letterType + '-letter-title';
+
+          var switchLetter = function (element) {
+            if (letterType !== element) {
+              self[element].parentNode.style.display = 'none';
+            }
+          };
+          CLASS.LETTERS_LEFT_TO_HASH.hasOwnProperty(letterType)
+            ? CLASS.LETTERS_LEFT.forEach(switchLetter)
+            : CLASS.LETTERS_RIGHT.forEach(switchLetter);
+
+          Array.prototype.forEach.call(tdList, function (loopTd) {
+            if (td !== loopTd) { loopTd.id = loopTd.dataset.letterType + '-letter-title-empty'; }
+          });
+        }, false);
+      });
+    });
+  };
+
+  CLASS.registFunctions = function () { 
+    document.getElementById('letter-submit').addEventListener(this.eventType('click'), function(eve) {
+      this.sendLetter(document.getElementById('letter-to'), document.getElementById('letter-message'));
+    }.bind(this), false);
+    this.registSwitchLetterBtn();
   };
 
   CLASS.isOnline = function () {

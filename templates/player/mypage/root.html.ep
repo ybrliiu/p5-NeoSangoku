@@ -76,9 +76,7 @@
     }
 
     input { display: none; }
-    tr {
-      background-color: ' . $config->{color}{white} . ';
-    }
+    tr { background-color: ' . $config->{color}{white} . '; }
     td {
       text-align: center;
       padding: 3px;
@@ -134,20 +132,34 @@
 
 // 手紙の関数
 $letter-radius: 5px;
-@mixin letter-title($color) {
-  background-color: $color;
-  padding: 7px;
-  color: '. $config->{color}{white} .';
+$letter-border: 3px;
+
+@mixin letter-title-base($color) {
+  padding: 8px;
+  border: solid $letter-border $color;
   border-top-left-radius: $letter-radius;
   border-top-right-radius: $letter-radius;
-  margin-bottom: 0px !important;
+  min-width: 100px;
+  text-align: center;
 }
+
+@mixin letter-title($color) {
+  @include letter-title-base($color);
+  background-color: $color;
+  color: '. $config->{color}{white} .';
+}
+
+@mixin letter-title-empty($color) {
+  @include letter-title-base($color);
+  background-color: '. $config->{color}{white} .';
+  color: $color;
+}
+
 @mixin letter($color) {
   width: 100%;
   background-color: '. $config->{color}{white} .';
-  border: solid 3px $color;
-  border-bottom-right-radius: $letter-radius;
-  border-bottom-left-radius: $letter-radius;
+  border: solid $letter-border $color;
+  border-radius: $letter-radius;
   border-collapse: separate;
   border-spacing: 2px;
   .line { background-color: $color; }
@@ -164,12 +176,20 @@ $letter-padding: 5px;
   padding: $letter-padding;
   vertical-align: top;
   font-weight: bold;
+  width: 100%;
 }
 .thin {
   position: relative;
   top: 0;
   color: #444444;
   font-weight: lighter;
+}
+
+/* 手紙タイトル表示外郭 */
+.letter-title-wrapper {
+  border-collapse: separate;
+  border-spacing: 7px 0;
+  margin-bottom: 0px !important;
 }
 
 /* 手紙表示外郭 */
@@ -179,22 +199,27 @@ $letter-padding: 5px;
 }
 
 /* 個宛 */
+#player-letter-title-empty { @include letter-title-empty('. $config->{color}{green} .'); }
 #player-letter-title { @include letter-title('. $config->{color}{green} .'); }
 #player-letter { @include letter('. $config->{color}{green} .'); }
 
 /* 部隊宛 */
+#unit-letter-title-empty { @include letter-title-empty('. $config->{color}{orange} .'); }
 #unit-letter-title { @include letter-title('. $config->{color}{orange} .'); }
 #unit-letter { @include letter('. $config->{color}{orange} .'); }
 
 /* 密書 */
+#invite-letter-title-empty { @include letter-title-empty('. $config->{color}{purple} .'); }
 #invite-letter-title { @include letter-title('. $config->{color}{purple} .'); }
 #invite-letter { @include letter('. $config->{color}{purple} .'); }
 
 /* 国宛 */
+#country-letter-title-empty { @include letter-title-empty('. $config->{color}{blue} .'); }
 #country-letter-title { @include letter-title('. $config->{color}{blue} .'); }
 #country-letter { @include letter('. $config->{color}{blue} .'); }
 
 /* 都市宛 */
+#town-letter-title-empty { @include letter-title-empty('. $config->{color}{darkred} .'); }
 #town-letter-title { @include letter-title('. $config->{color}{darkred} .'); }
 #town-letter { @include letter('. $config->{color}{darkred} .'); }
 
@@ -570,13 +595,18 @@ $letter-padding: 5px;
   </table>
 </div>
 
-<%# 手紙のリストを表示する関数 #%>
-<% my $letter_list = begin %>
- % my ($type, $title) = @_;
-  <div id="<%= $type %>-letter-title">
+<%# 手紙タイトル表示関数 %>
+<% my $letter_title = begin %>
+ % my ($type, $title, $option) = @_;
+  <td id="<%= $type %>-letter-title<%= $option->{empty} ? '-empty' : '' %>" data-letter-type="<%= $type %>">
     <strong><%= $title %></strong>（<%= $template_config->{letter}{$type} %>件）
-  </div>
-  <table id="<%= $type %>-letter">
+  </td>
+<% end %>
+
+<%# 手紙リスト表示関数 #%>
+<% my $letter_list = begin %>
+ % my ($type, $option) = @_;
+  <table id="<%= $type %>-letter" <%== $option->{show} ? '' : 'class="display-none"' %>>
   <tbody>
 %= include('/parts/letter', (letters => $letter->{$type}));
   </tbody>
@@ -584,21 +614,44 @@ $letter-padding: 5px;
 <% end %>
 
 <div class="grid letter-wrapper">
-  <%= $letter_list->(player => $player->name . '宛') %>
-  <%= $letter_list->(unit   => $player->unit_name . '部隊宛') %>
-  <%= $letter_list->(invite => $player->name . '宛密書') %>
+
+  <table class="letter-title-wrapper">
+    <tbody>
+      <tr>
+        <%= $letter_title->(player => '個宛', {empty => 0}) %>
+        <%= $letter_title->(unit   => '部隊宛', {empty => 1}) %>
+        <%= $letter_title->(invite => '登用', {empty => 1}) %>
+      </tr>
+    </tbody>
+  </table>
+
+  <%= $letter_list->('player', {show => 1}) %>
+  <%= $letter_list->('unit', {show => 0}) %>
+  <%= $letter_list->('invite', {show => 0}) %>
+
 </div>
 
 <div class="grid-right letter-wrapper">
-  <%= $letter_list->(country => $player->country_name . '宛') %>
-  <%= $letter_list->(town    => $player->town_name . '宛') %>
+  
+  <table class="letter-title-wrapper">
+    <tbody>
+      <tr>
+        <%= $letter_title->(country => '国宛', {empty => 0}) %>
+        <%= $letter_title->(town    => '都市宛', {empty => 1}) %>
+      </tr>
+    </tbody>
+  </table>
+
+  <%= $letter_list->('country', {show => 1}) %>
+  <%= $letter_list->('town', {show => 0}) %>
+
 </div>
 
 <script>
 
   'use strict';
 
-  window.addEventListener('DOMContentLoaded', function () {
+  (function () {
 
     var input = new sangoku.player.mypage.InputCommand();
     input.registFunctions();
@@ -640,6 +693,6 @@ $letter-padding: 5px;
       }
     }, 1000);
 
-  }, false);
+  }());
 
 </script>

@@ -34,3 +34,10 @@ sangoku.mixin = function (trait, consume) {
   });
 };
 
+sangoku.arrayToHash = function (array) {
+  var hash = {};
+  array.forEach(function (element) {
+    hash[element] = 1;
+  });
+  return hash;
+};
