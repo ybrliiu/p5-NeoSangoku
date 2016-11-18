@@ -599,7 +599,7 @@ $letter-padding: 5px;
 <% my $letter_title = begin %>
  % my ($type, $title, $option) = @_;
   <td id="<%= $type %>-letter-title<%= $option->{empty} ? '-empty' : '' %>" data-letter-type="<%= $type %>">
-    <strong><%= $title %></strong>（<%= $template_config->{letter}{$type} %>件）
+    <strong><%= $title %></strong> (<%= $unread_letter->{$type} %>件) 
   </td>
 <% end %>
 

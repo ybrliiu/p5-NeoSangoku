@@ -9,7 +9,7 @@ package Sangoku::API::Player::ReadLetter {
     MAX      => 1,
   };
 
-  has [qw/player invate unit country town/] => (is => 'rw', isa => 'Int', default => 0);
+  has [qw/player invite unit country town/] => (is => 'rw', isa => 'Int', default => 0);
 
   __PACKAGE__->meta->make_immutable();
 }

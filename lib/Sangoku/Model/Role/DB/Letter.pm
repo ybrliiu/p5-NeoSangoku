@@ -44,6 +44,15 @@ package Sangoku::Model::Role::DB::Letter {
     return \@columns;
   }
 
+  sub unread_letter {
+    my ($self, $letters, $read_letter_id) = @_;
+    my $unread_letter = 0;
+    for my $letter (@$letters) {
+      $unread_letter++ if $read_letter_id < $letter->id;
+    }
+    return $unread_letter;
+  }
+
   sub add {
     my ($self, $args) = @_;
     validate_values($args => [qw/sender message/]);

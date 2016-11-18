@@ -63,7 +63,17 @@ package Sangoku::Web::Controller::Player::Mypage {
 
     $self->on(json => sub {
       my ($c, $json) = @_;
+
       return $self->send({text => 'ack'}) if exists $json->{ping};
+
+      if (exists $json->{read_letter}) {
+        return $self->service->read_letter({
+          player_id => $self->session('id'),
+          type      => $json->{read_letter},
+          letter_id => $json->{letter_id},
+        });
+      }
+
       my ($letter_data, $sender) = $self->_write_letter($json);
       $self->_emit_event($letter_data, $sender);
     });

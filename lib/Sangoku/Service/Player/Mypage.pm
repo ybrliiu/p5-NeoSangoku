@@ -19,13 +19,14 @@ package Sangoku::Service::Player::Mypage {
     my $towns          = $class->model('Town')->get_all();
     my $towns_hash     = $class->model('Town')->to_hash($towns);
     my $town           = $player->town($towns_hash);
-    my $letter = {
-      player  => $player->letter($config->{letter}{player}),
-      unit    => $player->unit_letter($config->{letter}{unit}),
-      invite  => $player->invite($config->{letter}{invite}),
-      country => $country->letter($config->{letter}{country}),
-      town    => $town->letter($config->{letter}{town}),
-    };
+
+    my ($letter, $unread_letter) = $class->_root_letter({
+      player  => $player,
+      unit    => $unit,
+      country => $country,
+      town    => $town,
+      config  => $config,
+    });
 
     return {
       player          => $player,
@@ -41,8 +42,39 @@ package Sangoku::Service::Player::Mypage {
       site            => $class->model('Site')->get(),
       map_log         => $class->model('MapLog')->get($config->{log}{map}),
       letter          => $letter,
+      unread_letter   => $unread_letter,
       template_config => $config,
     };
+  }
+
+  sub _root_letter {
+    my ($class, $args) = @_;
+    my ($player, $unit, $country, $town, $config) = map { $args->{$_} } qw/player unit country town config/;
+    my $read_letter = $player->read_letter,
+
+    my %letter_model = (
+      player  => $player->letter_model,
+      unit    => $player->unit_letter_model,
+      invite  => $player->invite_model,
+      country => $country->letter_model,
+      town    => $town->letter_model,
+    );
+
+    my %letter = map { $_ => $letter_model{$_}->get( $config->{letter}{$_} ) } qw/town invite country/;
+    $letter{player} = $letter_model{player}->get_without_same_letter($player, $config->{letter}{player});
+    $letter{unit}   = $player->unit_letter($letter_model{unit}, $config->{letter}{unit});
+
+    my %unread_letter = map {
+      my $key = $_;
+      if (defined $letter_model{$key}) {
+        my $unread_letter = $letter_model{$key}->unread_letter($letter{$key}, $read_letter->$key);
+        $key => $unread_letter;
+      } else {
+        ();
+      }
+    } keys %letter_model;
+
+    return (\%letter, \%unread_letter);
   }
 
   sub get_player {
@@ -121,6 +153,20 @@ package Sangoku::Service::Player::Mypage {
       message => $args->{message},
     });
     return ($letter_data, $sender);
+  }
+
+  sub read_letter {
+    my ($class, $args) = @_;
+    my @params = qw/player_id type letter_id/;
+    validate_values($args => \@params);
+    my ($player_id, $type, $letter_id) = map { $args->{$_} } @params;
+
+    my $model = $class->model('Player::ReadLetter')->new(id => $player_id);
+    my $rec = $model->record->open('LOCK_EX');
+    my $read_letter = $rec->at(0);
+    croak "$type という手紙テーブルは存在していません" unless $read_letter->can($type);
+    $read_letter->$type($letter_id);
+    $rec->close();
   }
 
   __PACKAGE__->meta->make_immutable();

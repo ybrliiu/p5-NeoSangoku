@@ -38,11 +38,12 @@ subtest 'add, add_sended' => sub {
     message       => 'テスト',
   });
 
-  ok $OBJ->add({
+  ok (my $letter_data = $OBJ->add({
     sender        => $sender,
     receiver_name => $NEUTRAL_DATA->{name},
     message       => 'テスト2',
-  });
+  }));
+  is $letter_data->{id}, 4;
 
 };
 

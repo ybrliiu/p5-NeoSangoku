@@ -26,10 +26,10 @@
   CLASS.createNewLetter = function (parentDom, json) {
     parentDom.insertAdjacentHTML(
       'afterbegin',
-      '<td class="letter-icon"><img class="icon" src="/images/icons/' + json.sender_icon + '.gif"></td>'
+      '<tr data-letter-id="' + json.id + '"><td class="letter-icon"><img class="icon" src="/images/icons/' + json.sender_icon + '.gif"></td>'
         + '<td class="letter-message">' + json.sender_name + '@<span class="thin">' + json.sender_town_name
         + '@' + json.sender_country_name + 'から' + json.receiver_name + 'へ</span><br>『'
-        + json.message + '』<br><div class="thin">' + json.time + '</div></td>'
+        + json.message + '』<br><div class="thin">' + json.time + '</div></td></tr>'
         + '<tr><td colspan="2" class="line"></td></tr>'
     );
   };

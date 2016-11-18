@@ -185,9 +185,14 @@ package Sangoku::DB::Row::Player {
     return $self->is_belong_unit ? $self->unit($units_hash)->name : '無所属';
   }
 
+  sub unit_letter_model {
+    my ($self) = @_;
+    return $self->is_belong_unit ? $self->unit->letter_model : undef;
+  }
+
   sub unit_letter {
-    my ($self, $limit) = @_;
-    return $self->is_belong_unit ? $self->unit->letter($limit) : [];
+    my ($self, $model, $limit) = @_;
+    return $self->is_belong_unit ? $model->get($limit) : [];
   }
 
   sub validate_icon {
