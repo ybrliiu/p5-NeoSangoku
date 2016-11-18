@@ -117,10 +117,9 @@ package Sangoku::DB::Row::Player {
     return $self->unit_id eq $player->unit_id;
   }
 
-  sub invite {
-    my ($self, $limit) = @_;
-    my $model = $self->model('Player::Invite')->new(id => $self->id);
-    return $model->get($limit);
+  sub invite_model {
+    my ($self) = @_;
+    return $self->model('Player::Invite')->new(id => $self->id);
   }
 
   {
@@ -138,16 +137,22 @@ package Sangoku::DB::Row::Player {
     }
   }
 
-  sub letter {
-    my ($self, $limit) = @_;
-    my $model = $self->model('Player::Letter')->new(id => $self->id);
-    return $model->get_without_same_letter($self, $limit);
+  #  $model->get_without_same_letter($self, $limit);
+  sub letter_model {
+    my ($self) = @_;
+    return $self->model('Player::Letter')->new(id => $self->id);
   }
 
   sub profile {
     my ($self) = @_;
     my $model = $self->model('Player::Profile')->new(id => $self->id);
     return $model->get->message;
+  }
+
+  sub read_letter {
+    my ($self) = @_;
+    my $model = $self->model('Player::ReadLetter')->new(id => $self->id);
+    return $model->get;
   }
 
   sub town {

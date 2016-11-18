@@ -11,7 +11,7 @@ package Sangoku::DB::Row::Town {
     WALL_POWER_MAX  => 9999,
   };
 
-  __PACKAGE__->_generate_letter_method();
+  __PACKAGE__->_generate_letter_model_method();
   
   sub country {
     my ($self, $countreis_hash) = @_;

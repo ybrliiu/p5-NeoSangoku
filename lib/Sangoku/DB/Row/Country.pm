@@ -11,7 +11,7 @@ package Sangoku::DB::Row::Country {
 
   sub COLOR() { state $color = __PACKAGE__->config('color.conf')->{countrycolor} }
 
-  __PACKAGE__->_generate_letter_method();
+  __PACKAGE__->_generate_letter_model_method();
 
   sub position {
     my ($self, $positions_hash) = @_;

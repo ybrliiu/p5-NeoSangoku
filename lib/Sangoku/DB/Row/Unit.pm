@@ -45,13 +45,12 @@ package Sangoku::DB::Row::Unit {
       : $self->model('Player')->get($self->leader_id);
   }
 
-  sub letter {
-    my ($self, $limit) = @_;
-    my $model = $self->model('Unit::Letter')->new(
+  sub letter_model {
+    my ($self) = @_;
+    return $self->model('Unit::Letter')->new(
       id   => $self->id,
       name => $self->name,
     );
-    return $model->get($limit);
   }
 
   sub switch_join_permit {
