@@ -17,6 +17,7 @@
     this.LETTERS.forEach(function (element) {
       self[element] = getLetterTable(element);
     });
+    this.unreadLetterNumDom = {};
   };
 
   var getLetterTable = function (name) {
@@ -75,11 +76,17 @@
       var tdList = table.getElementsByTagName('td');
 
       Array.prototype.forEach.call(tdList, function (td) {
+        var letterType = td.dataset.letterType;
+        var table = self[letterType].parentNode;
+        self.unreadLetterNumDom[letterType] = td.getElementsByTagName('span')[0];
+
         td.addEventListener(self.eventType('click'), function () {
-          var letterType = td.dataset.letterType;
-          self[letterType].parentNode.style.display = 'block';
+
+          // 非表示 -> 表示
+          table.style.display = 'block';
           td.id = letterType + '-letter-title';
 
+          // 表示 -> 非表示
           var switchLetter = function (element) {
             if (letterType !== element) {
               self[element].parentNode.style.display = 'none';
@@ -89,9 +96,14 @@
             ? CLASS.LETTERS_LEFT.forEach(switchLetter)
             : CLASS.LETTERS_RIGHT.forEach(switchLetter);
 
+          // 手紙選択タブ 表示 -> 非表示
           Array.prototype.forEach.call(tdList, function (loopTd) {
             if (td !== loopTd) { loopTd.id = loopTd.dataset.letterType + '-letter-title-empty'; }
           });
+
+          // 未読 -> 既読
+          self.unreadLetterNumDom[letterType].innerHTML = '';
+          self.sendReadLetter(letterType);
         }, false);
       });
     });

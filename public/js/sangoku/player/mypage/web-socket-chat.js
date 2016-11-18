@@ -45,6 +45,10 @@
       var parentDom = self[json.type];
       self.createNewLetter(parentDom, json);
       self.removeLastChild(parentDom, json.type);
+
+      var unreadLetterNumInnerHTML = self.unreadLetterNumDom[json.type].innerHTML;
+      var unreadLetterNum = Number((unreadLetterNumInnerHTML.match(/\((.*?)\)/) || ['', 0])[1]) + 1;
+      self.unreadLetterNumDom[json.type].innerHTML = '(' + unreadLetterNum + ')';
     };
 
     ws.onclose = function() {
@@ -86,6 +90,17 @@
       self.ws.send(msg);
       count++;
     }, CONFIRM_LOOP_INTERVAL + count * 2);
+  };
+
+  PROTOTYPE.sendReadLetter = function (letterType) {
+    var headLetter = this[letterType].getElementsByTagName('tr')[0];
+    if (headLetter === undefined) { return true; }
+    var json = {
+      'read_letter' : letterType,
+      'letter_id'   : headLetter.dataset.letterId,
+    };
+    console.log(json);
+    this.ws.send(JSON.stringify(json));
   };
 
 }());
