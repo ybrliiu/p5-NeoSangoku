@@ -22,19 +22,23 @@ package Sangoku::Model::Country::Letter {
       time                => datetime(),
     );
 
-    if ($self->name eq $args->{receiver_name}) {
-      $self->db->do_insert(TABLE_NAME, {country_name => $self->name, %letter_data});
-    }
-    # 他国宛に送信する場合は自国にもログ残す
-    else {
-      $self->db->bulk_insert(TABLE_NAME, [
-        {country_name => $self->name, %letter_data},
-        {country_name => $args->{receiver_name}, %letter_data},
-      ]);
-    }
+    my $letter = do {
+      if ($self->name eq $args->{receiver_name}) {
+        $self->db->insert(TABLE_NAME, {country_name => $self->name, %letter_data});
+      }
+      # 他国宛に送信する場合は自国にもログ残す
+      else {
+        $self->db->bulk_insert(TABLE_NAME, [
+          {country_name => $args->{receiver_name}, %letter_data},
+          {country_name => $self->name, %letter_data},
+        ]);
+        $self->get(1)->[0];
+      }
+    };
 
     Sangoku::Model::Player::Letter->new(id => $args->{sender}->id)->add_sended(\%letter_data);
 
+    $letter_data{id} = $letter->id;
     return \%letter_data;
   }
 

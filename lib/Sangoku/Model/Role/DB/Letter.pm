@@ -58,10 +58,11 @@ package Sangoku::Model::Role::DB::Letter {
       time                => datetime(),
     );
 
-    $self->db->do_insert($self->TABLE_NAME, {%{ $self->where }, %letter_data});
+    my $letter = $self->db->insert($self->TABLE_NAME, {%{ $self->where }, %letter_data});
     require Sangoku::Model::Player::Letter;
     Sangoku::Model::Player::Letter->new(id => $args->{sender}->id)->add_sended(\%letter_data);
 
+    $letter_data{id} = $letter->id;
     return \%letter_data;
   }
 

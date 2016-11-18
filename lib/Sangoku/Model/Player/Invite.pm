@@ -26,10 +26,12 @@ package Sangoku::Model::Player::Invite {
     );
 
     $self->db->bulk_insert(TABLE_NAME, [
-      {player_id => $self->id, %letter_data},
       {player_id => $args->{receiver}->id, %letter_data},
+      {player_id => $self->id, %letter_data},
     ]);
+    my $letter = $self->get(1)->[0];
 
+    $letter_data{id} = $letter->id;
     return \%letter_data;
   }
 
