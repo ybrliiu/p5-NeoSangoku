@@ -20,7 +20,7 @@
   sangoku.player.mypage.WebSocketChat = function (args) {
     sangoku.Base.apply(this, arguments);
     this.initChat(args);
-    this.ws = newWs(this, args.uri);
+    this.ws = this.newWs(args.uri);
     this.reconnectCount = 0;
     this.isSupport = true;
 
@@ -33,7 +33,14 @@
     }.bind(this));
   };
 
-  var newWs = function (self, uri) {
+  var CLASS = sangoku.player.mypage.WebSocketChat;
+
+  sangoku.inherit(sangoku.Base, CLASS);
+  sangoku.mixin(sangoku.player.mypage.Chat, CLASS);
+
+  var PROTOTYPE = CLASS.prototype;
+
+  PROTOTYPE.newWs = function (uri) {
     var ws = new WebSocket(uri);
 
     ws.onmessage = function (eve) {
@@ -42,43 +49,29 @@
         return true;
       }
       var json = JSON.parse(eve.data);
-      var parentDom = self[json.type];
-      self.createNewLetter(parentDom, json);
-      self.removeLastChild(parentDom, json.type);
-
-      var unreadLetterNumInnerHTML = self.unreadLetterNumDom[json.type].innerHTML;
-      var unreadLetterNum = Number((unreadLetterNumInnerHTML.match(/\((.*?)\)/) || ['', 0])[1]) + 1;
-      self.unreadLetterNumDom[json.type].innerHTML = '(' + unreadLetterNum + ')';
-    };
+      this.receiveLetter(json);
+    }.bind(this);
 
     ws.onclose = function() {
-      if (self.isSupport) {
-        console.log('繋ぎ直し');
-        self.ws = newWs(self, uri);
+      if (this.isSupport) {
+        console.log('[ws.onclose] reconnect.');
+        this.ws = this.newWs(uri);
       }
-    };
+    }.bind(this);
 
     return ws;
   };
-
-  var CLASS = sangoku.player.mypage.WebSocketChat;
-
-  sangoku.inherit(sangoku.Base, CLASS);
-  sangoku.mixin(sangoku.player.mypage.Chat, CLASS);
-
-  var PROTOTYPE = CLASS.prototype;
 
   PROTOTYPE.switchComet = function () {
     this.isSupport = false;
   };
 
-  PROTOTYPE.aroundSend = function (json) {
+  PROTOTYPE.innerSendLetter = function (json) {
     this.isOnline();
     this.ws.send(JSON.stringify(json));
   };
 
   PROTOTYPE.startConfirmAckLoop = function () {
-    var self = this;
     var msg = JSON.stringify({ping : 1});
     this.ws.send(msg);
 
@@ -86,20 +79,13 @@
     var id;
     var stop = function () { clearInterval(id); };
     id = setInterval(function () {
-      self.isOnline();
-      self.ws.send(msg);
+      this.isOnline();
+      this.ws.send(msg);
       count++;
-    }, CONFIRM_LOOP_INTERVAL + count * 2);
+    }.bind(this), CONFIRM_LOOP_INTERVAL + count * 2);
   };
 
-  PROTOTYPE.sendReadLetter = function (letterType) {
-    var headLetter = this[letterType].getElementsByTagName('tr')[0];
-    if (headLetter === undefined) { return true; }
-    var json = {
-      'read_letter' : letterType,
-      'letter_id'   : headLetter.dataset.letterId,
-    };
-    console.log(json);
+  PROTOTYPE.innerSendReadLetterId = function (json) {
     this.ws.send(JSON.stringify(json));
   };
 

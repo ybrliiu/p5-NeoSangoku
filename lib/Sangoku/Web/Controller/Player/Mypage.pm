@@ -23,6 +23,15 @@ package Sangoku::Web::Controller::Player::Mypage {
     $self->service->write_letter($json);
   }
 
+  sub _write_read_letter_id {
+    my ($self, $json) = @_;
+    $self->service->read_letter({
+      player_id => $self->session('id'),
+      type      => $json->{read_letter},
+      letter_id => $json->{letter_id},
+    });
+  }
+
   sub _emit_event {
     my ($self, $letter_data, $sender) = @_;
     $self->events->emit(chat => ($letter_data, $sender));
@@ -67,11 +76,7 @@ package Sangoku::Web::Controller::Player::Mypage {
       return $self->send({text => 'ack'}) if exists $json->{ping};
 
       if (exists $json->{read_letter}) {
-        return $self->service->read_letter({
-          player_id => $self->session('id'),
-          type      => $json->{read_letter},
-          letter_id => $json->{letter_id},
-        });
+        return $self->_write_read_letter_id($json);
       }
 
       my ($letter_data, $sender) = $self->_write_letter($json);
@@ -90,10 +95,16 @@ package Sangoku::Web::Controller::Player::Mypage {
     $self->_finish_connect($cb);
   }
 
-  sub send_letter {
+  sub write_letter {
     my ($self) = @_;
     my ($letter_data, $sender) = $self->_write_letter($self->req->json);
     $self->_emit_event($letter_data, $sender);
+    $self->render(json => {status => 'succsess'});
+  }
+
+  sub write_read_letter_id {
+    my ($self) = @_;
+    $self->_write_read_letter_id($self->req->json);
     $self->render(json => {status => 'succsess'});
   }
 

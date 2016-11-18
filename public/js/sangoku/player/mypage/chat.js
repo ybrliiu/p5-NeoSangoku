@@ -59,14 +59,43 @@
          'message' : message.value,
        };
        dispatchFunction[json.type](json, to.children[to.selectedIndex].value);
-       this.aroundSend(json);
+       this.innerSendLetter(json);
        message.value = '';
      };
 
   }());
 
-  CLASS.aroundSend = function () {
-    throw 'ロールを消費したクラスで実装する必要があります';
+  CLASS.innerSendLetter = function () {
+    throw 'innerSendLetter method を実装してください';
+  };
+
+  CLASS.plusUnreadLetter = function (type) {
+    var unreadLetterNumInnerHTML = this.unreadLetterNumDom[type].innerHTML;
+    var unreadLetterNum = Number((unreadLetterNumInnerHTML.match(/\((.*?)\)/) || ['', 0])[1]) + 1;
+    this.unreadLetterNumDom[type].innerHTML = '(' + unreadLetterNum + ')';
+  };
+
+  CLASS.receiveLetter = function (json) {
+    var parentDom = this[json.type];
+    this.createNewLetter(parentDom, json);
+    this.removeLastChild(parentDom, json.type);
+    this.plusUnreadLetter(json.type);
+  };
+
+  CLASS.sendReadLetterId = function (letterType) {
+    var headLetter = this[letterType].getElementsByTagName('tr')[0];
+    if (headLetter === undefined) { return true; }
+
+    this.unreadLetterNumDom[letterType].innerHTML = '';
+    var json = {
+      'read_letter' : letterType,
+      'letter_id'   : headLetter.dataset.letterId,
+    };
+    this.innerSendReadLetterId(json);
+  };
+
+  CLASS.innerSendReadLetterId = function () {
+    throw 'innerSendReadLetter method を実装してください';
   };
 
   CLASS.registSwitchLetterBtn = function () {
@@ -102,8 +131,7 @@
           });
 
           // 未読 -> 既読
-          self.unreadLetterNumDom[letterType].innerHTML = '';
-          self.sendReadLetter(letterType);
+          self.sendReadLetterId(letterType);
         }, false);
       });
     });

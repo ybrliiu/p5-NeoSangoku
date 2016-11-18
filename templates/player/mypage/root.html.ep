@@ -509,7 +509,7 @@ $letter-padding: 5px;
             <td>
               宛先リスト : 
               <select id="letter-adr-list-type">
-                <option value="default">通常</option>
+                <option value="default">通常 / 履歴</option>
                 <option value="player">個人宛</option>
                 <option value="other-country">他国宛</option>
               </select>
@@ -521,10 +521,10 @@ $letter-padding: 5px;
             <td>
               宛先 : 
               <select id="letter-to">
-                <option data-letter-type="country" value="<%= $player->country_name %>"><%= $player->country_name %>へ
-                <option data-letter-type="town" value="<%= $player->town_name %>"><%= $player->town_name %>へ
-              % if ($player->unit_id) {
-                <option data-letter-type="unit" value="<%= $player->unit_id %>"><%= $player->unit_name %>へ
+                <option data-letter-type="country" value="<%= $player->country_name %>">国宛
+                <option data-letter-type="town" value="<%= $player->town_name %>">都市宛
+              % if ($player->is_belong_unit) {
+                <option data-letter-type="unit" value="<%= $player->unit_id %>">部隊宛
               % }
               </select>
               <input type="button" id="letter-submit" value="送信">
@@ -599,7 +599,7 @@ $letter-padding: 5px;
 <% my $letter_title = begin %>
  % my ($type, $title, $option) = @_;
   <td id="<%= $type %>-letter-title<%= $option->{empty} ? '-empty' : '' %>" data-letter-type="<%= $type %>">
-    <strong><%= $title %></strong> <span><%= $unread_letter->{$type} ? '' : "($unread_letter->{$type})" %></span> 
+    <strong><%= $title %></strong> <span><%= $unread_letter->{$type} ? "($unread_letter->{$type})" : '' %></span> 
   </td>
 <% end %>
 
@@ -679,8 +679,9 @@ $letter-padding: 5px;
       if (wsChat.ws.readyState !== wsChat.ws.OPEN) {
         wsChat.switchComet();
         var cometChat = new sangoku.player.mypage.CometChat({
-          'pollingUri' : '/player/mypage/polling',
-          'sendUri' : '/player/mypage/send-letter',
+          'uriOfpolling' : '/player/mypage/polling',
+          'uriOfWriteLetter' : '/player/mypage/write-letter',
+          'uriOfWriteReadLetterId' : '/player/mypage/write-read-letter-id',
           'limit' : limit,
         });
         cometChat.registFunctions();

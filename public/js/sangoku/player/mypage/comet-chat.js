@@ -6,8 +6,9 @@
 
   /*
     args = {
-      sendUri : '/player/mypage/send-letter',
-      pollingUri : '/player/mypage/polling',
+      uriOfpolling : '/player/mypage/polling',
+      uriOfWriteLetter : '/player/mypage/write-letter',
+      uriOfWriteReadLetterId : '/player/mypage/write-read-letter-id',
       limit = {
         country : 15,
         invite  : 5,
@@ -21,8 +22,9 @@
   sangoku.player.mypage.CometChat = function (args) {
     sangoku.Base.apply(this, arguments);
     this.initChat(args);
-    this.sendUri = args.sendUri;
-    this.pollingUri = args.pollingUri;
+    this.uriOfpolling = args.uriOfpolling;
+    this.uriOfWriteLetter = args.uriOfWriteLetter;
+    this.uriOfWriteReadLetterId = args.uriOfWriteReadLetterId;
   };
 
   var CLASS = sangoku.player.mypage.CometChat;
@@ -32,40 +34,58 @@
 
   var PROTOTYPE = CLASS.prototype;
 
-  PROTOTYPE.send = function (args) {
-    var self = this;
-    self.isOnline();
+  PROTOTYPE.sendJSON = function (args) {
+    this.isOnline();
     $.ajax({
       'url' : args.uri,
       'cache' : false,
       'data' : JSON.stringify(args.json),
       'contentType' : 'application/JSON',
       'type' : 'post',
-    }).done(function(data, textStatus, jqXHR) {
-      args.doneFunc.call(self, data);
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-      args.failFunc.apply(self, arguments);
-    });
+    }).done(
+      args.doneFunc
+    ).fail(
+      args.failFunc
+    );
   };
 
-  PROTOTYPE.aroundSend = function (json) {
-    this.send({
-      'uri': this.sendUri,
+  PROTOTYPE.innerSendLetter = function (json) {
+    this.sendJSON({
+      'uri': this.uriOfWriteLetter,
       'json': json,
       'doneFunc' : function () {},
       'failFunc' : function () {},
     });
   };
 
-  PROTOTYPE.startPolling = function () {
-    var self = this;
-    self.polling();
+  PROTOTYPE.innerSendReadLetterId = function (json) {
+    this.sendJSON({
+      'uri' : this.uriOfWriteReadLetterId,
+      'json' : json,
+      'doneFunc' : function () {},
+      'failFunc' : function () {},
+    });
   };
 
-  PROTOTYPE.doneFunc = function (json) {
-    var parentDom = this[json.type];
-    this.createNewLetter(parentDom, json);
-    this.removeLastChild(parentDom, json.type);
+  PROTOTYPE.startPolling = function () {
+    this.polling();
+  };
+
+  PROTOTYPE.polling = function () {
+    var self = this;
+    $.ajax({
+      'url' : this.uriOfpolling,
+      'cache' : false,
+      'data' : {},
+      'contentType' : 'application/JSON',
+      'type' : 'post',
+    }).done(function(data, textStatus, jqXHR) {
+      self.receiveLetter(data);
+      self.polling();
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      self.failFunc(jqXHR, textStatus, errorThrown);
+      self.polling();
+    });
   };
 
   (function () {
@@ -83,22 +103,5 @@
     };
 
   }());
-
-  PROTOTYPE.polling = function () {
-    var self = this;
-    $.ajax({
-      'url' : this.pollingUri,
-      'cache' : false,
-      'data' : {},
-      'contentType' : 'application/JSON',
-      'type' : 'post',
-    }).done(function(data, textStatus, jqXHR) {
-      self.doneFunc(data);
-      self.polling();
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-      self.failFunc(jqXHR, textStatus, errorThrown);
-      self.polling();
-    });
-  };
 
 }());
