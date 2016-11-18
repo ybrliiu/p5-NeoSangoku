@@ -668,7 +668,7 @@ $letter-padding: 5px;
     };
 
     var wsChat = new sangoku.player.mypage.WebSocketChat({
-      'uri' : '<%= url_for('/player/mypage/channel')->to_abs->scheme('ws') %>',
+      'uri' : '<%= url_for('/player/mypage/chanel')->to_abs->scheme('ws') %>',
       'limit' : limit,
     });
 

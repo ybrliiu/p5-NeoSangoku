@@ -13,10 +13,10 @@
 
   CLASS.initChat = function (args) {
     this.limit = args.limit;
-    var self = this;
+    this.letterTbodyDom = {};
     this.LETTERS.forEach(function (element) {
-      self[element] = getLetterTable(element);
-    });
+      this.letterTbodyDom[element] = getLetterTable(element);
+    }.bind(this));
     this.unreadLetterNumDom = {};
   };
 
@@ -24,78 +24,82 @@
     return document.getElementById(name + '-letter').children[0];
   };
 
-  CLASS.createNewLetter = function (parentDom, json) {
-    parentDom.insertAdjacentHTML(
-      'afterbegin',
-      '<tr data-letter-id="' + json.id + '"><td class="letter-icon"><img class="icon" src="/images/icons/' + json.sender_icon + '.gif"></td>'
-        + '<td class="letter-message">' + json.sender_name + '@<span class="thin">' + json.sender_town_name
-        + '@' + json.sender_country_name + 'から' + json.receiver_name + 'へ</span><br>『'
-        + json.message + '』<br><div class="thin">' + json.time + '</div></td></tr>'
-        + '<tr><td colspan="2" class="line"></td></tr>'
-    );
-  };
-
-  CLASS.removeLastChild = function (parentDom, type) {
-    var max = parentDom.children.length;
-    if (max / 2 > this.limit[type]) {
-      parentDom.removeChild(parentDom.children[max - 1]);
-      parentDom.removeChild(parentDom.children[max - 2]);
-    }
+  CLASS.innerSendLetter = function () {
+    throw 'innerSendLetter method を実装してください';
   };
 
   (function () {
 
      var dispatchFunction = {
-       'player' : function (json, to) { json.receiver_id = to; },
-       'country' : function (json, to) { json.receiver_name = to; },
-       'unit' : function () {},
-       'town' : function () {},
+       player : function (letter, to) { letter.receiver_id = to; },
+       country : function (letter, to) { letter.receiver_name = to; },
+       unit : function () {},
+       town : function () {},
      };
 
      CLASS.sendLetter = function (to, message) {
        if (!message.value) { return false; }
-       var json = {
-         'type' : to.children[to.selectedIndex].dataset.letterType,
-         'message' : message.value,
+       var letter = {
+         type : to.children[to.selectedIndex].dataset.letterType,
+         message : message.value,
        };
-       dispatchFunction[json.type](json, to.children[to.selectedIndex].value);
-       this.innerSendLetter(json);
+       dispatchFunction[letter.type](letter, to.children[to.selectedIndex].value);
+       this.innerSendLetter(letter);
        message.value = '';
      };
 
   }());
 
-  CLASS.innerSendLetter = function () {
-    throw 'innerSendLetter method を実装してください';
+  CLASS.createNewLetter = function (parentDom, letter) {
+    parentDom.insertAdjacentHTML(
+      'afterbegin',
+      '<tr data-letter-id="' + letter.id + '"><td class="letter-icon"><img class="icon" src="/images/icons/' + letter.sender_icon + '.gif"></td>'
+        + '<td class="letter-message">' + letter.sender_name + '@<span class="thin">' + letter.sender_town_name
+        + '@' + letter.sender_country_name + 'から' + letter.receiver_name + 'へ</span><br>『'
+        + letter.message + '』<br><div class="thin">' + letter.time + '</div></td></tr>'
+        + '<tr><td colspan="2" class="line"></td></tr>'
+    );
   };
 
-  CLASS.plusUnreadLetter = function (type) {
-    var unreadLetterNumInnerHTML = this.unreadLetterNumDom[type].innerHTML;
+  CLASS.removeLastChild = function (parentDom, letterType) {
+    var max = parentDom.children.length;
+    if (max / 2 > this.limit[letterType]) {
+      parentDom.removeChild(parentDom.children[max - 1]);
+      parentDom.removeChild(parentDom.children[max - 2]);
+    }
+  };
+
+  CLASS.plusUnreadLetter = function (letterType) {
+    var unreadLetterNumInnerHTML = this.unreadLetterNumDom[letterType].innerHTML;
     var unreadLetterNum = Number((unreadLetterNumInnerHTML.match(/\((.*?)\)/) || ['', 0])[1]) + 1;
-    this.unreadLetterNumDom[type].innerHTML = '(' + unreadLetterNum + ')';
+    this.unreadLetterNumDom[letterType].innerHTML = '(' + unreadLetterNum + ')';
   };
 
-  CLASS.receiveLetter = function (json) {
-    var parentDom = this[json.type];
-    this.createNewLetter(parentDom, json);
-    this.removeLastChild(parentDom, json.type);
-    this.plusUnreadLetter(json.type);
-  };
-
-  CLASS.sendReadLetterId = function (letterType) {
-    var headLetter = this[letterType].getElementsByTagName('tr')[0];
-    if (headLetter === undefined) { return true; }
-
-    this.unreadLetterNumDom[letterType].innerHTML = '';
-    var json = {
-      'read_letter' : letterType,
-      'letter_id'   : headLetter.dataset.letterId,
-    };
-    this.innerSendReadLetterId(json);
+  CLASS.receiveLetter = function (letter) {
+    var parentDom = this.letterTbodyDom[letter.type];
+    this.createNewLetter(parentDom, letter);
+    this.removeLastChild(parentDom, letter.type);
+    this.plusUnreadLetter(letter.type);
   };
 
   CLASS.innerSendReadLetterId = function () {
     throw 'innerSendReadLetter method を実装してください';
+  };
+
+  CLASS.sendReadLetterId = function (letterType) {
+    var headLetter = this.letterTbodyDom[letterType].getElementsByTagName('tr')[0];
+    if ( headLetter === undefined
+      || this.unreadLetterNumDom[letterType].innerHTML === ''
+    ) {
+      return true;
+    }
+
+    this.unreadLetterNumDom[letterType].innerHTML = '';
+    var letter = {
+      type : letterType,
+      id   : headLetter.dataset.letterId,
+    };
+    this.innerSendReadLetterId(letter);
   };
 
   CLASS.registSwitchLetterBtn = function () {
@@ -106,7 +110,7 @@
 
       Array.prototype.forEach.call(tdList, function (td) {
         var letterType = td.dataset.letterType;
-        var table = self[letterType].parentNode;
+        var table = self.letterTbodyDom[letterType].parentNode;
         self.unreadLetterNumDom[letterType] = td.getElementsByTagName('span')[0];
 
         td.addEventListener(self.eventType('click'), function () {
@@ -116,9 +120,9 @@
           td.id = letterType + '-letter-title';
 
           // 表示 -> 非表示
-          var switchLetter = function (element) {
-            if (letterType !== element) {
-              self[element].parentNode.style.display = 'none';
+          var switchLetter = function (letter_type) {
+            if (letterType !== letter_type) {
+              self.letterTbodyDom[letter_type].parentNode.style.display = 'none';
             }
           };
           CLASS.LETTERS_LEFT_TO_HASH.hasOwnProperty(letterType)

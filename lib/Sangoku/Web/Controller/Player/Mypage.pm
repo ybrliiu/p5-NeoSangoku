@@ -25,10 +25,10 @@ package Sangoku::Web::Controller::Player::Mypage {
 
   sub _write_read_letter_id {
     my ($self, $json) = @_;
-    $self->service->read_letter({
+    $self->service->write_read_letter_id({
+      id        => $json->{id},
+      type      => $json->{type},
       player_id => $self->session('id'),
-      type      => $json->{read_letter},
-      letter_id => $json->{letter_id},
     });
   }
 
@@ -70,18 +70,25 @@ package Sangoku::Web::Controller::Player::Mypage {
 
     $self->inactivity_timeout(TIMEOUT);
 
-    $self->on(json => sub {
-      my ($c, $json) = @_;
+    {
+      my %dispatch_mode = (
+        ping         => sub { $self->send({text => 'ack'}) },
+        write_letter => sub {
+          my ($json) = @_;
+          my ($letter_data, $sender) = $self->_write_letter($json);
+          $self->_emit_event($letter_data, $sender);
+        },
+        write_read_letter_id => sub {
+          my ($json) = @_;
+          $self->_write_read_letter_id($json);
+        },
+      );
 
-      return $self->send({text => 'ack'}) if exists $json->{ping};
-
-      if (exists $json->{read_letter}) {
-        return $self->_write_read_letter_id($json);
-      }
-
-      my ($letter_data, $sender) = $self->_write_letter($json);
-      $self->_emit_event($letter_data, $sender);
-    });
+      $self->on(json => sub {
+        my ($c, $json) = @_;
+        $dispatch_mode{$json->{mode}}->($json);
+      });
+    }
 
     my $cb = $self->events->on(chat => $self->_subscride_event('websocket'));
     $self->_finish_connect($cb);

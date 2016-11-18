@@ -68,11 +68,12 @@
 
   PROTOTYPE.innerSendLetter = function (json) {
     this.isOnline();
+    json['mode'] = 'write_letter';
     this.ws.send(JSON.stringify(json));
   };
 
   PROTOTYPE.startConfirmAckLoop = function () {
-    var msg = JSON.stringify({ping : 1});
+    var msg = JSON.stringify({'mode' : 'ping'});
     this.ws.send(msg);
 
     var count = 0;
@@ -86,6 +87,7 @@
   };
 
   PROTOTYPE.innerSendReadLetterId = function (json) {
+    json['mode'] = 'write_read_letter_id';
     this.ws.send(JSON.stringify(json));
   };
 

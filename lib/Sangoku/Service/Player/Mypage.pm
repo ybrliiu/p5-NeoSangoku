@@ -155,17 +155,17 @@ package Sangoku::Service::Player::Mypage {
     return ($letter_data, $sender);
   }
 
-  sub read_letter {
+  sub write_read_letter_id {
     my ($class, $args) = @_;
-    my @params = qw/player_id type letter_id/;
+    my @params = qw/player_id type id/;
     validate_values($args => \@params);
-    my ($player_id, $type, $letter_id) = map { $args->{$_} } @params;
+    my ($player_id, $type, $id) = map { $args->{$_} } @params;
 
     my $model = $class->model('Player::ReadLetter')->new(id => $player_id);
     my $rec = $model->record->open('LOCK_EX');
     my $read_letter = $rec->at(0);
     croak "$type という手紙テーブルは存在していません" unless $read_letter->can($type);
-    $read_letter->$type($letter_id);
+    $read_letter->$type($id);
     $rec->close();
   }
 
