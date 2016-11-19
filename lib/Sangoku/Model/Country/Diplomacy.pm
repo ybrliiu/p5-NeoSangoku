@@ -13,12 +13,12 @@ package Sangoku::Model::Country::Diplomacy {
 
   sub get_diplomacy_state {
     my ($self) = @_;
-    my @columns = $self->db->search_by_sql(
+    my @rows = $self->db->search_by_sql(
       "SELECT * FROM @{[ TABLE_NAME ]}
         WHERE receive_country = ? OR request_country = ?",
       [$self->name, $self->name]
     );
-    return \@columns;
+    return \@rows;
   }
 
   # $month_and_years_num は $site->month_and_years_num から来る想定で
@@ -28,25 +28,25 @@ package Sangoku::Model::Country::Diplomacy {
 
     # 領土割譲・譲渡
     {
-      my @columns = $self->db->search_by_sql(
+      my @rows = $self->db->search_by_sql(
         "SELECT * FROM @{[ TABLE_NAME ]}
           WHERE type = 'cession-or-accept-territory'
           AND (receive_country = ? OR request_country = ?)",
         [$self->name, $self->name]
       );
-      return 1 if @columns;
+      return 1 if @rows;
     }
 
     # 交戦
     {
-      my @columns = $self->db->search_by_sql(
+      my @rows = $self->db->search_by_sql(
         "SELECT * FROM @{[ TABLE_NAME ]}
           WHERE type = 'war'
           AND (receive_country = ? OR request_country = ?)",
         [$self->name, $self->name]
       );
-      return 0 unless @columns;
-      my $diplomacy = $columns[0]; 
+      return 0 unless @rows;
+      my $diplomacy = $rows[0]; 
       return $diplomacy->start_month_and_years_num <= $month_and_years_num; 
     }
 

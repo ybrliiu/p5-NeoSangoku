@@ -11,12 +11,12 @@ package Sangoku::Model::IdleTalk {
   sub get {
     my ($class, $limit, $offset) = @_;
 
-    my @columns = $class->db->search(TABLE_NAME, {}, {
+    my @rows = $class->db->search(TABLE_NAME, {}, {
         order_by => 'id DESC',
         defined $limit ? (limit => $limit) : (),
         defined $offset ? (offset => $offset) : (),
     });
-    return \@columns;
+    return \@rows;
   }
 
   sub add {

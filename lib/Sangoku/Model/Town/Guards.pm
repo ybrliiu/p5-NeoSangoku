@@ -38,7 +38,7 @@ package Sangoku::Model::Town::Guards {
     state $player_table_name = Sangoku::Model::Player->TABLE_NAME;
     state $table_name = TABLE_NAME;
 
-    my @columns = $self->db->search_by_sql(
+    my @rows = $self->db->search_by_sql(
       qq{SELECT * FROM $table_name, $player_table_name
         WHERE $player_table_name.id = $table_name.player_id
         AND $table_name.town_name = ?
@@ -48,7 +48,7 @@ package Sangoku::Model::Town::Guards {
     );
 
     # Row::Playerオブジェクトの配列が帰ってきます
-    return \@columns;
+    return \@rows;
   }
 
   sub get_head_player {

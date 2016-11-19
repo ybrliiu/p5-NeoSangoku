@@ -10,8 +10,8 @@ package Sangoku::Model::Unit::Members {
 
   sub get {
     my ($self) = @_;
-    my @columns = $self->db->search(TABLE_NAME, {unit_id => $self->id});
-    return \@columns;
+    my @rows = $self->db->search(TABLE_NAME, {unit_id => $self->id});
+    return \@rows;
   }
 
   sub add {

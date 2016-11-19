@@ -10,8 +10,8 @@ package Sangoku::Model::Player::CommandRecord {
 
   sub get {
     my ($self) = @_;
-    my @columns = $self->db->search(TABLE_NAME, {player_id => $self->id});
-    return \@columns;
+    my @rows = $self->db->search(TABLE_NAME, {player_id => $self->id});
+    return \@rows;
   }
 
   sub add {
@@ -36,8 +36,8 @@ package Sangoku::Model::Player::CommandRecord {
 
   sub get_by_command_name {
     my ($class, $name) = @_;
-    my @columns = $class->db->search(TABLE_NAME, {command_name => $name});
-    return \@columns;
+    my @rows = $class->db->search(TABLE_NAME, {command_name => $name});
+    return \@rows;
   }
 
   __PACKAGE__->meta->make_immutable();

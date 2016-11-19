@@ -39,7 +39,7 @@ package Sangoku::Model::Role::DB::Letter {
 
   sub get {
     my ($self, $limit) = @_;
-    my @columns = $self->db->search(
+    my @rows = $self->db->search(
       $self->TABLE_NAME,
       $self->where,
       {
@@ -47,7 +47,7 @@ package Sangoku::Model::Role::DB::Letter {
         defined $limit ? (limit => $limit) : (),
       },
     );
-    return \@columns;
+    return \@rows;
   }
 
   sub unread_letter {

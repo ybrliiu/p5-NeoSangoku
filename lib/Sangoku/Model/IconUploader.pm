@@ -11,12 +11,12 @@ package Sangoku::Model::IconUploader {
   sub get {
     my ($class, $limit, $offset) = @_;
 
-    my @columns = $class->db->search(TABLE_NAME, {}, {
+    my @rows = $class->db->search(TABLE_NAME, {}, {
         order_by => 'id DESC',
         defined $limit ? (limit => $limit) : (),
         defined $offset ? (offset => $offset) : (),
     });
-    return \@columns;
+    return \@rows;
   }
 
   sub add {
@@ -29,8 +29,8 @@ package Sangoku::Model::IconUploader {
 
   sub get_by_tag {
     my ($class, $tag) = @_;
-    my @columns = $class->db->search(TABLE_NAME, {tag => $tag}, {order_by => 'id DESC'});
-    return \@columns;
+    my @rows = $class->db->search(TABLE_NAME, {tag => $tag}, {order_by => 'id DESC'});
+    return \@rows;
   }
 
   __PACKAGE__->meta->make_immutable();

@@ -16,12 +16,12 @@ package Sangoku::Model::Role::DB::Thread {
   sub get {
     my ($class, $limit, $offset) = @_;
 
-    my @columns = $class->db->search($class->TABLE_NAME, {$class->_additional_condition}, {
+    my @rows = $class->db->search($class->TABLE_NAME, {$class->_additional_condition}, {
         order_by => 'id DESC',
         defined $limit ? (limit => $limit) : (),
         defined $offset ? (offset => $offset) : (),
     });
-    return \@columns;
+    return \@rows;
   }
 
 }

@@ -10,11 +10,11 @@ package Sangoku::Model::Announce {
 
   sub get {
     my ($class, $limit) = @_;
-    my @columns = $class->db->search(TABLE_NAME, {}, {
+    my @rows = $class->db->search(TABLE_NAME, {}, {
       order_by => 'id DESC',
       defined $limit ? (limit => $limit) : (),
     });
-    return \@columns;
+    return \@rows;
   }
 
   sub add {

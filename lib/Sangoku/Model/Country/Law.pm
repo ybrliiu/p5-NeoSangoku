@@ -12,8 +12,8 @@ package Sangoku::Model::Country::Law {
 
   sub get {
     my ($self) = @_;
-    my @columns = $self->db->search(TABLE_NAME, {country_name => $self->name}, {order_by => 'id DESC'});
-    return \@columns;
+    my @rows = $self->db->search(TABLE_NAME, {country_name => $self->name}, {order_by => 'id DESC'});
+    return \@rows;
   }
 
   sub add {
