@@ -94,10 +94,10 @@
       return (numB > numA) ? 1 : (numB < numA) ? -1 : 0;
     };
   
-    var dispatchCmpFunc = {};
-    dispatchCmpFunc[NUMBER_CLASS] = compareColumnNumber;
-    dispatchCmpFunc[STRING_CLASS] = compareColumnString;
-    dispatchCmpFunc[DATA_CLASS] = compareColumnData;
+    var switchCmpFunc = {};
+    switchCmpFunc[NUMBER_CLASS] = compareColumnNumber;
+    switchCmpFunc[STRING_CLASS] = compareColumnString;
+    switchCmpFunc[DATA_CLASS] = compareColumnData;
     
     PROTOTYPE.sortRows = function (type, table, th, columnIndex) {
       var rowsOrigin = table.getElementsByTagName('tr');
@@ -105,7 +105,7 @@
       rows.shift();
       var isAsc = th.classList.contains(ASC_CLASS);
       rows.sort(function (a, b) {
-        var result = dispatchCmpFunc[type](a, b, columnIndex);
+        var result = switchCmpFunc[type](a, b, columnIndex);
         return isAsc ? result : result * -1;
       });
       replaceRows(table, rows);

@@ -89,9 +89,9 @@ package Sangoku::Service::Player::Mypage {
     my ($class, $args) = @_;
     my $type = $args->{type};
 
-    state $dispatch_method = {map { $_ => "_write_${_}_letter" } qw/player unit country town/};
+    state $switch_method = {map { $_ => "_write_${_}_letter" } qw/player unit country town/};
 
-    my $method = $dispatch_method->{$type};
+    my $method = $switch_method->{$type};
     my ($letter_data, $sender) = defined $method
       ? $class->$method($args)
       : croak "不正な letter type が指定されています($type)";

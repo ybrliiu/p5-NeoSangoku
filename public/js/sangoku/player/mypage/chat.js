@@ -30,7 +30,7 @@
 
   (function () {
 
-     var dispatchFunction = {
+     var switchFunction = {
        player : function (letter, to) { letter.receiver_name = to; },
        country : function (letter, to) { letter.receiver_name = to; },
        unit : function () {},
@@ -44,7 +44,7 @@
          type : option.dataset.letterType,
          message : message.value,
        };
-       dispatchFunction[letter.type](letter, option.value);
+       switchFunction[letter.type](letter, option.value);
        this.innerSendLetter(letter);
        message.value = '';
      };

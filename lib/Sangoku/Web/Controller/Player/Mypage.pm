@@ -71,7 +71,7 @@ package Sangoku::Web::Controller::Player::Mypage {
     $self->inactivity_timeout(TIMEOUT);
 
     {
-      my %dispatch_mode = (
+      my %switch_mode = (
         ping         => sub { $self->send({text => 'ack'}) },
         write_letter => sub {
           my ($json) = @_;
@@ -86,7 +86,7 @@ package Sangoku::Web::Controller::Player::Mypage {
 
       $self->on(json => sub {
         my ($c, $json) = @_;
-        $dispatch_mode{$json->{mode}}->($json);
+        $switch_mode{$json->{mode}}->($json);
       });
     }
 

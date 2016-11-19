@@ -36,7 +36,7 @@
 
   (function () {
 
-    var dispatchUrl = {
+    var switchUrl = {
       'get' : '/player/mypage/command',
       'input' : '/player/mypage/command/input',
     };
@@ -45,7 +45,7 @@
       var self = this;
 
       $.ajax({
-        url : dispatchUrl[type],
+        url : switchUrl[type],
         cache : false,
         data : JSON.stringify(json),
         contentType : 'application/JSON',
