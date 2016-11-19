@@ -54,6 +54,11 @@ package Sangoku::Model::Player {
     $class->db->do_insert(TABLE_NAME, $args);
   }
 
+  sub get_by_name {
+    my ($class, $name) = @_;
+    return $class->db->single(TABLE_NAME, {name => $name});
+  }
+
   sub get_joined {
     my ($class, $id) = @_;
     my @rows = $class->db->search_by_sql(

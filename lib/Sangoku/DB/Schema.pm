@@ -295,6 +295,7 @@ package Sangoku::DB::Schema {
     columns (
       {name => 'player_id', type => -1},
       {name => 'id', type => 4},
+      {name => 'letter_type', type => -1},
       {name => 'sender_name', type => -1},
       {name => 'sender_icon', type => 4},
       {name => 'sender_town_name', type => -1},

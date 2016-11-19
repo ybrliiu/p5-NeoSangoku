@@ -31,7 +31,7 @@
   (function () {
 
      var dispatchFunction = {
-       player : function (letter, to) { letter.receiver_id = to; },
+       player : function (letter, to) { letter.receiver_name = to; },
        country : function (letter, to) { letter.receiver_name = to; },
        unit : function () {},
        town : function () {},
@@ -39,11 +39,12 @@
 
      CLASS.sendLetter = function (to, message) {
        if (!message.value) { return false; }
+       var option = to.getElementsByTagName('option')[to.selectedIndex];
        var letter = {
-         type : to.children[to.selectedIndex].dataset.letterType,
+         type : option.dataset.letterType,
          message : message.value,
        };
-       dispatchFunction[letter.type](letter, to.children[to.selectedIndex].value);
+       dispatchFunction[letter.type](letter, option.value);
        this.innerSendLetter(letter);
        message.value = '';
      };

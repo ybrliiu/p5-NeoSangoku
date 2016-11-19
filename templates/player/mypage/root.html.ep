@@ -195,6 +195,7 @@ $letter-padding: 5px;
 /* 手紙表示外郭 */
 .letter-wrapper {
   width: 50%;
+  min-height: 500px;
   float: left;
 }
 
@@ -521,11 +522,17 @@ $letter-padding: 5px;
             <td>
               宛先 : 
               <select id="letter-to">
-                <option data-letter-type="country" value="<%= $player->country_name %>">国宛
-                <option data-letter-type="town" value="<%= $player->town_name %>">都市宛
+                <option data-letter-type="country" value="<%= $player->country_name %>">国宛</option>
+                <option data-letter-type="town" value="<%= $player->town_name %>">都市宛</option>
               % if ($player->is_belong_unit) {
-                <option data-letter-type="unit" value="<%= $player->unit_id %>">部隊宛
+                <option data-letter-type="unit" value="<%= $player->unit_id %>">部隊宛</option>
               % }
+                <optgroup label="== 送信履歴 ==">
+                % for my $letter (@$transmission_history) {
+                  % my $name = $letter->receiver_name;
+                  <option data-letter-type="<%= $letter->letter_type %>" value="<%= $name %>"><%= $name %></option>
+                % }
+                </optgroup>
               </select>
               <input type="button" id="letter-submit" value="送信">
             </td>
@@ -543,7 +550,8 @@ $letter-padding: 5px;
 
 % my $player_adr_list;
 % for my $player (values %$players_hash) {
-  % $player_adr_list .= qq{<option data-letter-type="player" value="@{[ $player->id ]}">@{[ $player->name ]}</option>};
+  % my $name = $player->name;
+  % $player_adr_list .= qq{<option data-letter-type="player" value="$name">$name</option>};
 % }
 
 % my $country_adr_list;
@@ -668,7 +676,7 @@ $letter-padding: 5px;
     };
 
     var wsChat = new sangoku.player.mypage.WebSocketChat({
-      'uri' : '<%= url_for('/player/mypage/chanel')->to_abs->scheme('ws') %>',
+      'uri' : '<%= url_for('/player/mypage/channel')->to_abs->scheme('ws') %>',
       'limit' : limit,
     });
 

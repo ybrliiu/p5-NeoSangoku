@@ -6,7 +6,8 @@ package Sangoku::Model::Role::DB::Letter {
 
   use Sangoku::Util qw/validate_values datetime/;
 
-  has 'where' => (is => 'rw', isa => 'HashRef', lazy => 1, builder => '_build_where');
+  has 'where'       => (is => 'rw', isa => 'HashRef', lazy => 1, builder => '_build_where');
+  has 'letter_type' => (is => 'rw', isa => 'Str', lazy => 1, builder => '_build_letter_type');
 
   sub _build_where {
     my ($self) = @_;
@@ -26,9 +27,14 @@ package Sangoku::Model::Role::DB::Letter {
       }
     };
 
-    my $parent_table = lc( (split /::/, ref $self)[2] );
-
+    my $parent_table = $self->letter_type;
     return {"${parent_table}_${attribute_name}" => $self->$attribute_name};
+  }
+
+  sub _build_letter_type {
+    my ($self) = @_;
+    my $letter_type= lc( (split /::/, ref $self)[2] );
+    return $letter_type;
   }
 
   sub get {
@@ -68,7 +74,9 @@ package Sangoku::Model::Role::DB::Letter {
     );
 
     my $letter = $self->db->insert($self->TABLE_NAME, {%{ $self->where }, %letter_data});
+
     require Sangoku::Model::Player::Letter;
+    $letter_data{letter_type} = $self->letter_type;
     Sangoku::Model::Player::Letter->new(id => $args->{sender}->id)->add_sended(\%letter_data);
 
     $letter_data{id} = $letter->id;

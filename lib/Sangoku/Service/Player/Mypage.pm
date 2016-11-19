@@ -20,30 +20,31 @@ package Sangoku::Service::Player::Mypage {
     my $towns_hash     = $class->model('Town')->to_hash($towns);
     my $town           = $player->town($towns_hash);
 
-    my ($letter, $unread_letter) = $class->_root_letter({
+    my ($letter, $unread_letter, $transmission_history) = @{ $class->_root_letter({
       player  => $player,
       unit    => $unit,
       country => $country,
       town    => $town,
       config  => $config,
-    });
+    }) };
 
     return {
-      player          => $player,
-      players_hash    => $players_hash,
-      command_log     => $player->command_log($config->{log}{command}),
-      countries_hash  => $countreis_hash,
-      country         => $country,
-      unit            => $unit,
-      towns           => $towns,
-      map_data        => $class->model('Town')->get_all_for_map($towns_hash),
-      town            => $player->town,
-      command_list    => $class->model('Command')->get_list(),
-      site            => $class->model('Site')->get(),
-      map_log         => $class->model('MapLog')->get($config->{log}{map}),
-      letter          => $letter,
-      unread_letter   => $unread_letter,
-      template_config => $config,
+      player               => $player,
+      players_hash         => $players_hash,
+      command_log          => $player->command_log($config->{log}{command}),
+      countries_hash       => $countreis_hash,
+      country              => $country,
+      unit                 => $unit,
+      towns                => $towns,
+      map_data             => $class->model('Town')->get_all_for_map($towns_hash),
+      town                 => $player->town,
+      command_list         => $class->model('Command')->get_list(),
+      site                 => $class->model('Site')->get(),
+      map_log              => $class->model('MapLog')->get($config->{log}{map}),
+      letter               => $letter,
+      unread_letter        => $unread_letter,
+      template_config      => $config,
+      transmission_history => $transmission_history,
     };
   }
 
@@ -74,7 +75,9 @@ package Sangoku::Service::Player::Mypage {
       }
     } keys %letter_model;
 
-    return (\%letter, \%unread_letter);
+    my $transmission_history = $letter_model{player}->transmission_history( $config->{transmission_history} );
+
+    return [\%letter, \%unread_letter, $transmission_history];
   }
 
   sub get_player {
@@ -98,11 +101,13 @@ package Sangoku::Service::Player::Mypage {
 
   sub _write_player_letter {
     my ($class, $args) = @_;
-    validate_values($args => [qw/sender_id receiver_id message/]);
+    validate_values($args => [qw/sender_id receiver_name message/]);
+
+    warn "sender_id : ", $args->{sender_id}, " receiver_name : ", $args->{receiver_name};
 
     my $player_model = $class->model('Player');
     my $sender   = $player_model->get($args->{sender_id});
-    my $receiver = $player_model->get($args->{receiver_id});
+    my $receiver = $player_model->get_by_name($args->{receiver_name});
     my $letter_data = $class->model('Player::Letter')->new(id => $sender->id)->add({
       sender   => $sender,
       receiver => $receiver,

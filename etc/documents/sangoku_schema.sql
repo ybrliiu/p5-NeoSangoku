@@ -208,6 +208,7 @@ CREATE TABLE "player_skill" (
 CREATE TABLE "player_letter" (
   "player_id" text REFERENCES "player" ("id") ON DELETE CASCADE,
   "id"        serial PRIMARY KEY,
+  "letter_type" text NOT NULL,
   "sender_name" text NOT NULL,
   "sender_icon" int NOT NULL,
   "sender_town_name"    text NOT NULL,

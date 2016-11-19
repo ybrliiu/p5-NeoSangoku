@@ -36,6 +36,7 @@ package Sangoku::Model::Country::Letter {
       }
     };
 
+    $letter_data{letter_type} = $self->letter_type;
     Sangoku::Model::Player::Letter->new(id => $args->{sender}->id)->add_sended(\%letter_data);
 
     $letter_data{id} = $letter->id;

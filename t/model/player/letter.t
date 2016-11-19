@@ -37,6 +37,7 @@ subtest 'add, add_sended' => sub {
   });
 
   ok $OBJ->add_sended({
+    letter_type         => $OBJ->letter_type,
     sender_name         => 'test_player',
     sender_icon         => 100,
     sender_town_name    => '金陵',
@@ -65,6 +66,10 @@ subtest 'get' => sub {
     my $letter = $list->[0];
     is $letter->sender_icon, 100;
   }
+
+  my $transmission_history = $OBJ->transmission_history;
+  my $letter = $transmission_history->[0];
+  is $letter->letter_type, 'player';
 };
 
 done_testing();
