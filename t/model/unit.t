@@ -11,7 +11,7 @@ my $TR = Test::Record->new();
 prepare_service_tests();
 
 my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
-my $LEADER = Sangoku::Model::Player->get($PLAYER_ID);
+my $LEADER = Sangoku::Model::Player->get_joined_to_country_members($PLAYER_ID);
 
 subtest 'create' => sub {
   my $unit_name = 'テスト部隊';

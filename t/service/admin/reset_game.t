@@ -9,8 +9,8 @@ my $PSQL = Test::Sangoku::PostgreSQL->new();
 my $TR = Test::Record->new();
 
 subtest 'reset_game' => sub {
-  lives_ok { $TEST_CLASS->init_data_all('8日19時') };
-  lives_ok { $TEST_CLASS->reset_game('20日20時') };
+  lives_ok { $TEST_CLASS->init_data_all('2016年1月8日19時') };
+  lives_ok { $TEST_CLASS->reset_game('2016年10月20日20時') };
 };
 
 done_testing();

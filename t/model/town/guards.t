@@ -1,4 +1,5 @@
 use Sangoku 'test';
+use Test::Record;
 use Test::Sangoku::PostgreSQL;
 use Test::Sangoku::Util qw/prepare_player_model_tests/;
 
@@ -7,6 +8,7 @@ use Sangoku::Model::Town;
 use Sangoku::Model::Town::Guards;
 
 my $PSQL = Test::Sangoku::PostgreSQL->new();
+my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::Town::Guards';
 my $OBJ;
 
@@ -14,19 +16,24 @@ my $OBJ;
 prepare_player_model_tests();
 my @PLAYERS = do {
   for my $no (1 .. 5) {
-    Sangoku::Model::Player->create({
-      id   => "test_player_$no",
-      name => "テストプレイヤー$no",
-      pass => 'test_test',
-      icon => 0,
+    Sangoku::Model::Player->regist({
+      player => {
+        id   => "test_player_$no",
+        name => "テストプレイヤー$no",
+        pass => 'test_test',
+        icon => 0,
+        town_name => '成都',
+        (map { $_ => 10 } qw/force intellect leadership popular loyalty/),
+        update_time => time,
+      },
       country_name => '無所属',
-      town_name    => '成都',
-      force        => 100,
-      intellect    => 10,
-      leadership   => 10,
-      popular      => 10,
-      loyalty      => 10,
-      update_time  => time,
+      profile => '',
+      (map {
+        $_ => +{
+          player_id => "test_player_$no",
+          power     => 0,
+        };
+      } qw/weapon guard book/),
     });
   }
   @{ Sangoku::Model::Player->get_all };

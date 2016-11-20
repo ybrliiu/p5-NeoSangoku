@@ -111,6 +111,16 @@ package Sangoku::DB::Schema {
   };
 
   table {
+    name 'country_members';
+    pk 'player_id';
+    columns (
+      {name => 'player_id', type => -1},
+      {name => 'country_name', type => -1},
+    );
+    row_class 'Sangoku::DB::Row::Country::Members';
+  };
+
+  table {
     name 'forum_reply';
     pk 'id';
     columns (
@@ -176,7 +186,6 @@ package Sangoku::DB::Schema {
       {name => 'name', type => -1},
       {name => 'pass', type => -1},
       {name => 'icon', type => 4},
-      {name => 'country_name', type => -1},
       {name => 'town_name', type => -1},
       {name => 'force', type => 4},
       {name => 'intellect', type => 4},

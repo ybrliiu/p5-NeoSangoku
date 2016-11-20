@@ -25,7 +25,7 @@ subtest 'txn' => sub {
   my $player = $model->get($model->ADMINISTARTOR_DATA->{player}{id});
   $player->update({name => '一般プレイヤー'});
 
-  my $country = $TEST_CLASS->model('Country')->get( $model->ADMINISTARTOR_DATA->{player}{country_name} );
+  my $country = $TEST_CLASS->model('Country')->get( $model->ADMINISTARTOR_DATA->{country_name} );
   $country->update({color => 'red'});
 
   ok $txn->commit();
@@ -46,7 +46,7 @@ subtest 'txn_rollback' => sub {
   my $player = $model->get($model->ADMINISTARTOR_DATA->{player}{id});
   $player->update({name => 'hoge'});
 
-  my $country = $TEST_CLASS->model('Country')->get( $model->ADMINISTARTOR_DATA->{player}{country_name} );
+  my $country = $TEST_CLASS->model('Country')->get( $model->ADMINISTARTOR_DATA->{country_name} );
   $country->update({color => 'blue'});
 
   ok $txn->rollback();

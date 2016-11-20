@@ -38,7 +38,7 @@ subtest 'join_and_quit' => sub {
 
   join_unit($join_player_id);
 
-  $JOIN_PLAYER = Sangoku::Model::Player->get($join_player_id);
+  $JOIN_PLAYER = Sangoku::Model::Player->get_joined_to_country_members($join_player_id);
   is $JOIN_PLAYER->unit_id, $UNIT_ID;
 
   ok $TEST_CLASS->quit($join_player_id);

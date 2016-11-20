@@ -15,7 +15,7 @@ my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
 
 subtest 'add&get' => sub {
 
-  my $leader = Sangoku::Model::Player->get($PLAYER_ID);
+  my $leader = Sangoku::Model::Player->get_joined_to_country_members($PLAYER_ID);
   my $unit_name = 'テスト部隊';
   Sangoku::Model::Unit->create({
     leader  => $leader,

@@ -5,6 +5,7 @@ package Sangoku::Model::Player {
   with 'Sangoku::Model::Role::DB';
 
   use Sangoku::Model::Unit::Members;
+  use Sangoku::Model::Country::Members;
   use Sangoku::Util qw/load_child_module validate_values load_config/;
   load_child_module(__PACKAGE__);
 
@@ -25,7 +26,6 @@ package Sangoku::Model::Player {
         name => '管理人',
         pass => $site->{admin_pass},
         icon => 0,
-        country_name => '無所属',
         town_name    => '開封',
         force        => 10,
         intellect    => 10,
@@ -34,6 +34,7 @@ package Sangoku::Model::Player {
         loyalty      => 10,
         update_time  => time,
       },
+      country_name => '無所属',
       profile => '',
       weapon  => $equipments_status,
       guard   => $equipments_status,
@@ -49,7 +50,7 @@ package Sangoku::Model::Player {
 
   sub create {
     my ($class, $args) = @_;
-    validate_values($args => [qw/id name pass icon country_name town_name
+    validate_values($args => [qw/id name pass icon town_name
       force intellect leadership popular loyalty update_time/]);
     $class->db->do_insert(TABLE_NAME, $args);
   }
@@ -72,11 +73,40 @@ package Sangoku::Model::Player {
     return $rows[0];
   }
 
+  sub get_joined_to_unit_members {
+    my ($class, $id) = @_;
+    my @rows = $class->db->search_by_sql(
+      "SELECT * FROM @{[ TABLE_NAME ]}
+        LEFT JOIN @{[ Sangoku::Model::Unit::Members->TABLE_NAME ]}
+        ON id = player.id
+        WHERE id = ?",
+      [$id],
+      TABLE_NAME, 
+    );
+    return $rows[0];
+  }
+
+  sub get_joined_to_country_members {
+    my ($class, $id) = @_;
+    my @rows = $class->db->search_by_sql(
+      "SELECT * FROM @{[ TABLE_NAME ]}
+        LEFT JOIN @{[ Sangoku::Model::Country::Members->TABLE_NAME ]}
+        ON id = player.id
+        WHERE id = ?",
+      [$id],
+      TABLE_NAME, 
+    );
+    return $rows[0];
+  }
+
   sub regist {
     my ($class, $args) = @_;
-    validate_values($args => [qw/player profile weapon guard book/]);
+    validate_values($args => [qw/player country_name profile weapon guard book/]);
 
     $class->create($args->{player});
+
+    my $country_members = Sangoku::Model::Country::Members->new(name => $args->{country_name});
+    $country_members->add($args->{player}{id});
 
     for (@{ CHILD_RECORD_MODULES() }) {
       my $model = "$class::$_"->new(id => $args->{player}{id});

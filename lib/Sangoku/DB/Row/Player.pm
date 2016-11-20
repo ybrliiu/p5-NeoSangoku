@@ -87,6 +87,15 @@ package Sangoku::DB::Row::Player {
       : $self->model('Country')->get($self->country_name);
   }
 
+  sub country_name {
+    my ($self) = @_;
+    # row を get_joined で取得した場合
+    return $self->{row_data}{country_name} if exists $self->{row_data}{country_name};
+    return $self->{country_name} if exists $self->{country_name};
+    my $member = $self->model('Country::Members')->get_by_player_id($self->id);
+    $self->{country_name} = defined $member ? $member->country_name : undef;
+  }
+
   sub check_pass {
     my ($self, $pass) = @_;
     return $self->pass eq $pass;

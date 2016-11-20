@@ -1,4 +1,5 @@
 use Sangoku 'test';
+use Test::Record;
 use Test::Sangoku::PostgreSQL;
 use Test::Sangoku::Util qw/prepare_player_model_tests create_test_player TEST_PLAYER_DATA/;
 
@@ -9,6 +10,7 @@ my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
 my $TEST_CLASS = 'Sangoku::Model::Player::CommandRecord';
 my $OBJ;
 my $PSQL = Test::Sangoku::PostgreSQL->new();
+my $TR = Test::Record->new();
 
 prepare_player_model_tests();
 create_test_player();

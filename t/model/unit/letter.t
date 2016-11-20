@@ -11,7 +11,7 @@ my $PSQL = Test::Sangoku::PostgreSQL->new();
 my $TEST_CLASS = 'Sangoku::Model::Unit::Letter';
 my $OBJ;
 
-prepare_player_model_tests();
+prepare_player_model_tests({regist => 1});
 
 my $UNIT_NAME = 'テスト部隊';
 my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};

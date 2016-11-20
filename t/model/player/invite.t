@@ -10,8 +10,8 @@ my $TEST_CLASS = 'Sangoku::Model::Player::Invite';
 my $OBJ;
 my $PSQL = Test::Sangoku::PostgreSQL->new();
 
-prepare_player_model_tests();
-create_test_player();
+prepare_player_model_tests({country => 1});
+create_test_player({country => 1});
 
 subtest 'new' => sub {
   $OBJ = $TEST_CLASS->new(id => $PLAYER_ID);

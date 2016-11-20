@@ -1,4 +1,5 @@
 use Sangoku 'test';
+use Test::Record;
 use Test::Sangoku::PostgreSQL;
 use Test::Sangoku::Util qw/prepare_player_model_tests/;
 
@@ -7,6 +8,7 @@ use Sangoku::Model::Player::Letter;
 use Sangoku::Model::Country;
 
 my $PSQL = Test::Sangoku::PostgreSQL->new();
+my $TR = Test::Record->new();
 my $PLAYER_ID = Sangoku::Model::Player->ADMINISTARTOR_DATA->{player}{id};
 my $NEUTRAL_DATA = Sangoku::Model::Country->NEUTRAL_DATA;
 my $TEST_CLASS = 'Sangoku::Model::Country::Letter';
@@ -14,7 +16,7 @@ load $TEST_CLASS;
 my $OBJ;
 
 # player のtableなども準備しないといけないので
-prepare_player_model_tests();
+prepare_player_model_tests({regist => 1});
 my $TEST_COUNTRY_NAME2 = 'テスト国家';
 Sangoku::Model::Country->create({name => $TEST_COUNTRY_NAME2, color => 'gray'});
 
@@ -24,7 +26,7 @@ subtest 'new' => sub {
 };
 
 subtest 'add, add_sended' => sub {
-  my $sender = Sangoku::Model::Player->get($PLAYER_ID);
+  my $sender = Sangoku::Model::Player->get_joined_to_country_members($PLAYER_ID);
 
   ok $OBJ->add({
     sender        => $sender,

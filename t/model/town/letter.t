@@ -13,7 +13,7 @@ my $TEST_CLASS = 'Sangoku::Model::Town::Letter';
 my $OBJ;
 
 # player のtableなども準備しないといけないので
-prepare_player_model_tests();
+prepare_player_model_tests({regist => 1});
 
 subtest 'new' => sub {
   $OBJ = $TEST_CLASS->new(name => '開封');

@@ -105,7 +105,6 @@ CREATE TABLE "player" (
   "name" text UNIQUE NOT NULL,
   "pass" text NOT NULL,
   "icon" int  NOT NULL,
-  "country_name" text REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE SET NULL,
   "town_name"    text REFERENCES "town" ("name") ON DELETE SET NULL,
   "force"      int NOT NULL,
   "intellect"  int NOT NULL,
@@ -241,6 +240,12 @@ CREATE TABLE "town_guards" (
 );
 
 
+-- 国所属プレイヤー
+CREATE TABLE "country_members" (
+  "country_name" text DEFAULT '無所属' REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE SET DEFAULT,
+  "player_id"    text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE
+);
+
 -- 国役職一覧
 CREATE TABLE "country_position" (
   "country_name" text PRIMARY KEY REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
@@ -333,29 +338,4 @@ CREATE TABLE "icon_uploader" (
   "tag"  text DEFAULT '',
   "time" text NOT NULL
 );
-
-
--- こうすると依存性が減っていいかもしれないってことで...。
--- 未実装 --
-
--- 国支配都市一覧
-CREATE TABLE "country_towns" (
-  "country_name" text NOT NULL REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
-  "town_name"    text PRIMARY KEY REFERENCES "town" ("name") ON DELETE CASCADE
-);
-
--- 国所属プレイヤー
-CREATE TABLE "country_members" (
-  "country_name" text DEFAULT '無所属' REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE SET DEFAULT,
-  "player_id"    text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE
-);
-
--- 都市滞在プレイヤー
-CREATE TABLE "town_stay_players" (
-  "town_name" text NOT NULL REFERENCES "town" ("name") ON DELETE CASCADE,
-  "player_id" text PRIMARY KEY REFERENCES "player" ("id") ON DELETE CASCADE
-);
-
--- 未実装 --
-
 
