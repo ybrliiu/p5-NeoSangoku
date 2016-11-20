@@ -8,23 +8,25 @@ my $TR = Test::Record->new();
 my $TEST_CLASS = 'Sangoku::Model::Site';
 
 subtest 'init' => sub {
-  $TEST_CLASS->init('10日19時');
+  my $start_time = '2016年8月10日19時';
+  $TEST_CLASS->init($start_time);
   ok(my $site = $TEST_CLASS->get);
   is $site->term, 0;
-  is reverse_to_format($site->start_time), '10日19時';
+  is reverse_to_format($site->start_time), $start_time;
 };
 
 subtest 'init_2' => sub {
-  $TEST_CLASS->init('11日21時');
+  my $start_time = '2016年11月20日21時';
+  $TEST_CLASS->init($start_time);
   ok(my $site = $TEST_CLASS->get);
   is $site->term, 1;
-  is reverse_to_format($site->start_time), '11日21時';
+  is reverse_to_format($site->start_time), $start_time;
 };
 
 sub reverse_to_format {
   my ($epoch_time) = @_;
   my $time = localtime($epoch_time);
-  return "@{[ $time->mday ]}日@{[ $time->hour ]}時";
+  return "@{[ $time->year ]}年@{[ $time->mon ]}月@{[ $time->mday ]}日@{[ $time->hour ]}時";
 }
 
 done_testing();

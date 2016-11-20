@@ -4,12 +4,9 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```      
 
-* Model::Site 月をまたがる場合や年をまたがる場合は？
-
 * country_position, town country_name SQL見なおす
 
 * t/ テストするモジュールのload部分をload関数に
-* js, scss 外部ファイル化, head読み込みシステム
 
 * primary_key を参照するメソッド、modelにあるべきかrowにあるべきか...
   (record系と統一させるならrowにあるべき？, 両方あってもいいような気が)
@@ -19,11 +16,11 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 * SQLのチューニング
 * 書いてないテストも書きましょうね〜〜
 * testのコード共通化進める?
+
 * Rowオブジェクトの処理共通化(かなり難しいのでよく考えて)
 * outer/regist/complete-regist リロードされた時どうするか
 * ログイン時のcookie を暗号化
-* チャット部分のとコマンド部分、なんか汚い
-時間あればより良い方法を考える
+* チャット部分(model-addmethod, 共通化)とコマンド部分(input, choose-select混合部)、なんか汚い
 
 ```
 
