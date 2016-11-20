@@ -4,7 +4,8 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```      
 
-* country_position, town country_name SQL見なおす
+* Model new rolw (Members, Parent)
+* Serviceモジュールのチューニング、新メソッド実装
 
 * t/ テストするモジュールのload部分をload関数に
 

@@ -1,4 +1,5 @@
 use Sangoku 'test';
+use Test::Record;
 use Test::Sangoku::PostgreSQL;
 use Test::Sangoku::Util qw/prepare_service_tests/;
 
@@ -32,6 +33,7 @@ load $TEST_CLASS;
   
   
 my $PSQL = Test::Sangoku::PostgreSQL->new();
+my $TR = Test::Record->new();
 prepare_service_tests();
 
 subtest 'regist' => sub {

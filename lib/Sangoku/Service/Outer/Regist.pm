@@ -50,17 +50,8 @@ package Sangoku::Service::Outer::Regist {
 
       $class->row('Country')->validate_regist_data($validator, $args);
 
-      # 下3つのメソッド呼び出しを以下のようにしてもいいかも
-      # $class->model('Country')->regist_country({
-      #   params => $args,
-      #   validator => $validator,
-      #   town => $town,
-      #   regist_player => sub { $class->_regist_player(...) },
-      # });
-
-      $class->_create_country($args, $validator, $town);
+      $class->_regist_country($args, $validator, $town);
       $class->_regist_player($args, $validator, $town);
-      $class->_create_country_position($args, $validator);
 
       unless ($validator->has_error) {
         my $log = qq{<span class="darkblue">【建国】</span>新しく$args->{name}が$args->{town}に$args->{country_name}を建国しました！};
@@ -80,7 +71,7 @@ package Sangoku::Service::Outer::Regist {
     return $validator;
   }
 
-  sub _create_country {
+  sub _regist_country {
     my ($class, $param, $validator, $town) = @_;
 
     $validator->set_error_and_message(town => (cant_establish => 'その都市は既に他の国が支配しています。'))
@@ -91,22 +82,12 @@ package Sangoku::Service::Outer::Regist {
 
     return if $validator->has_error();
 
-    $class->model('Country')->create({
-      name  => $param->{country_name},
-      color => $param->{country_color},
-    });
-    $town->update({country_name => $param->{country_name}});
-  }
-
-  sub _create_country_position {
-    my ($class, $param, $validator) = @_;
-
-    return if $validator->has_error;
-
-    $class->model('Country::Position')->create({
+    $class->model('Country')->regist({
       name    => $param->{country_name},
+      color   => $param->{country_color},
       king_id => $param->{id},
     });
+    $town->update({country_name => $param->{country_name}});
   }
 
   sub _regist_player {
