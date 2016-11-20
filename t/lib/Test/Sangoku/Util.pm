@@ -63,7 +63,6 @@ package Test::Sangoku::Util {
     my $init_class = "Sangoku::Service::Admin::ResetGame";
     load $init_class;
     $init_class->init_data_all("2016年1月1日0時");
-    
     create_test_player();
   }
   

@@ -249,7 +249,8 @@ CREATE TABLE "country_members" (
 -- 国役職一覧
 CREATE TABLE "country_position" (
   "country_name" text PRIMARY KEY REFERENCES "country" ("name") ON UPDATE CASCADE ON DELETE CASCADE,
-  "king_id"      text UNIQUE REFERENCES "player" ("id") ON DELETE SET NULL,
+  -- 遅延外部キー制約
+  "king_id"      text UNIQUE REFERENCES "player" ("id") ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
   "premier_id"          text REFERENCES "player" ("id") ON DELETE SET NULL,
   "strategist_id"       text REFERENCES "player" ("id") ON DELETE SET NULL,
   "great_general_id"    text REFERENCES "player" ("id") ON DELETE SET NULL,

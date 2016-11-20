@@ -26,6 +26,21 @@ package Sangoku::Model::Country {
     $class->db->do_insert(TABLE_NAME, $args);
   }
 
+  sub regist {
+    my ($class, $args) = @_;
+    validate_values($args => [qw/name color king_id/]);
+
+    $class->create({
+      name  => $args->{name},
+      color => $args->{color},
+    });
+
+    "${class}::Position"->create({
+      name    => $args->{name},
+      king_id => $args->{king_id},
+    });
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 
