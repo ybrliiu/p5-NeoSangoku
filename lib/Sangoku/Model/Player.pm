@@ -63,9 +63,11 @@ package Sangoku::Model::Player {
   sub get_joined {
     my ($class, $id) = @_;
     my @rows = $class->db->search_by_sql(
-      "SELECT * FROM @{[ TABLE_NAME ]}
-        LEFT JOIN @{[ Sangoku::Model::Unit::Members->TABLE_NAME ]}
-        ON id = player.id
+      "SELECT * FROM " . TABLE_NAME . "
+        LEFT JOIN " . Sangoku::Model::Unit::Members->TABLE_NAME . "
+        ON id = " . Sangoku::Model::Unit::Members->TABLE_NAME . ".player_id
+        INNER JOIN " . Sangoku::Model::Country::Members->TABLE_NAME . "
+        ON id = " . Sangoku::Model::Country::Members->TABLE_NAME . ".player_id
         WHERE id = ?",
       [$id],
       TABLE_NAME, 
@@ -76,9 +78,9 @@ package Sangoku::Model::Player {
   sub get_joined_to_unit_members {
     my ($class, $id) = @_;
     my @rows = $class->db->search_by_sql(
-      "SELECT * FROM @{[ TABLE_NAME ]}
-        LEFT JOIN @{[ Sangoku::Model::Unit::Members->TABLE_NAME ]}
-        ON id = player.id
+      "SELECT * FROM " . TABLE_NAME  . "
+        LEFT JOIN " . Sangoku::Model::Unit::Members->TABLE_NAME . "
+        ON id = player_id
         WHERE id = ?",
       [$id],
       TABLE_NAME, 
@@ -89,9 +91,9 @@ package Sangoku::Model::Player {
   sub get_joined_to_country_members {
     my ($class, $id) = @_;
     my @rows = $class->db->search_by_sql(
-      "SELECT * FROM @{[ TABLE_NAME ]}
-        LEFT JOIN @{[ Sangoku::Model::Country::Members->TABLE_NAME ]}
-        ON id = player.id
+      "SELECT * FROM " . TABLE_NAME . "
+        INNER JOIN " . Sangoku::Model::Country::Members->TABLE_NAME . "
+        ON id = player_id
         WHERE id = ?",
       [$id],
       TABLE_NAME, 

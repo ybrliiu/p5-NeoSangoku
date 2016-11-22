@@ -26,6 +26,7 @@ package Sangoku::Model::Country {
     $class->db->do_insert(TABLE_NAME, $args);
   }
 
+  # トランザクションが終わる前に king_id のプレイヤーを登録する必要がある
   sub regist {
     my ($class, $args) = @_;
     validate_values($args => [qw/name color king_id/]);
