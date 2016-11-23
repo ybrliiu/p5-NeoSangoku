@@ -77,7 +77,7 @@ EOM
     </tr>
 
 % for my $unit (@$units) {
-  % my @members = @{ $unit->members($members_hash) };
+  % my @players = @{ $unit->players($players_hash) };
   % my $leader = $unit->leader;
     <tr>
       <td>
@@ -97,8 +97,8 @@ EOM
     % }
       </td>
       <td><%= $unit->message %></td>
-      <td><%= @members %>人</td>
-      <td><%= $_->player_name . ", " for @members %></td>
+      <td><%= @players %>人</td>
+      <td><%= $_->name . ", " for @players %></td>
     </tr>
 % }
   </table>
@@ -133,12 +133,12 @@ EOM
         <td>
          <form action="/player/unit/fire" method="post">
              <select name="target_id">
-            % my @members_without_leader = @{ $unit->members_without_leader($members_hash) };
-            % for my $member (@members_without_leader) {
-              <option value=<%= $member->player_id %>><%= $member->player_name %>
+            % my @players_without_leader = @{ $unit->players_without_leader($players_hash) };
+            % for my $player (@players_without_leader) {
+              <option value=<%= $player->player_id %>><%= $player->player_name %>
             % }
             </select>
-            %= submit_button('解雇', @members_without_leader ? () : (disabled => 'disabled'));
+            %= submit_button('解雇', @players_without_leader ? () : (disabled => 'disabled'));
           </form>
         </td>
       </tr>

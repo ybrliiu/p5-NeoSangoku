@@ -11,10 +11,12 @@ package Sangoku::Service::Outer {
       ? [$class->model('Country')->get($country_name)]
       : $class->model('Country')->get_all();
 
+    my $players = $class->model('Player')->get_all_joined_to_country_members();
+
     return {
       countries         => $countreis,
       positions_hash    => $class->model('Country::Position')->get_all_to_hash(),
-      players_hash      => $class->model('Player')->get_all_to_hash(),
+      players_hash      => $class->model('Player')->to_hash($players),
       towns             => $class->model('Town')->get_all(),
       (map {
         my $class_name = ucfirst $_;

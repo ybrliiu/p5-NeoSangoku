@@ -20,18 +20,18 @@ package Sangoku::DB::Row::Unit {
     return $self->leader_id eq $player->id;
   }
 
-  sub members {
-    my ($self, $members_hash) = @_;
-    return $self->{members} if exists $self->{members};
-    $self->{members} = ref $members_hash eq 'HASH'
-      ? [grep { $_->unit_id eq $self->id } values %$members_hash]
+  sub players {
+    my ($self, $players_hash) = @_;
+    return $self->{players} if exists $self->{players};
+    $self->{players} = ref $players_hash eq 'HASH'
+      ? [grep { $_->unit_id eq $self->id } values %$players_hash]
       : $self->model('Unit::Members')->search(unit_id => $self->id);
   }
 
-  sub members_without_leader {
-    my ($self, $members_hash) = @_;
-    if (ref $members_hash eq 'HASH') {
-      return [grep { $_->player_id ne $self->leader_id } @{ $self->members($members_hash) }];
+  sub players_without_leader {
+    my ($self, $players_hash) = @_;
+    if (ref $players_hash eq 'HASH') {
+      return [grep { $_->id ne $self->leader_id } @{ $self->players($players_hash) }];
     } else {
       # call SQL
     }

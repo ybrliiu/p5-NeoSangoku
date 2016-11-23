@@ -9,7 +9,7 @@ package Sangoku::Service::Player::Config {
   sub root {
     my ($class, $player_id) = @_;
 
-    my $player = $class->model('Player')->get($player_id);
+    my $player = $class->model('Player')->get_joined_to_country_members($player_id);
 
     return {
       %{ $player->constants },

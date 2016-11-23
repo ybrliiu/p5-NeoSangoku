@@ -12,7 +12,7 @@ package Sangoku::Service::Player::Mypage {
 
     my $config         = $class->config->{template}{player}{mypage};
     my $players_hash   = $class->model('Player')->get_all_to_hash;
-    my $player         = $players_hash->{$player_id};
+    my $player         = $class->model('Player')->get_joined($player_id);
     my $unit           = $player->unit;
     my $countreis_hash = $class->model('Country')->get_all_to_hash();
     my $country        = $player->country($countreis_hash);

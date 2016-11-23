@@ -10,13 +10,13 @@ package Sangoku::Service::Player::Unit {
   sub root {
     my ($class, $player_id) = @_;
 
-    my $player = $class->model('Player')->get($player_id);
-    my $members = $class->model('Unit::Members')->search(country_name => $player->country_name);
+    my $player = $class->model('Player')->get_joined_to_country_members($player_id);
+    my $players = $class->model('Player')->get_all_joined_to_unit_members();
 
     return {
       %{ $class->row('Unit')->constants() },
       player          => $player,
-      members_hash    => $class->model('Unit::Members')->to_hash($members),
+      players_hash    => $class->model('Player')->to_hash($players),
       units           => $class->model('Unit')->search(country_name => $player->country_name),
       country         => $player->country,
       countries_hash  => $class->model('Country')->get_all_to_hash,
