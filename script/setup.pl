@@ -22,7 +22,7 @@ say '使用するディレクトリを作成しています...';
 prepare_dir();
 say 'ディレクトリ作成完了';
 
-print "リセット後の更新開始日時を指定してください:";
+print "リセット後の更新開始年月日時を指定してください:";
 chomp(my $reset_time = <STDIN>);
 say '初期化中...';
 Sangoku::Service::Admin::ResetGame->init_data_all($reset_time);

@@ -24,12 +24,14 @@ subtest 'create&delete&get' => sub {
 subtest 'regist&erase' => sub {
   $TEST_CLASS->regist($TEST_CLASS->ADMINISTARTOR_DATA);
   get_id_and_check_name();
+  get_id_and_check_name_joined();
   $TEST_CLASS->erase($PLAYER_DATA->{id});
 };
 
 subtest 'init&get' => sub {
   $TEST_CLASS->init();
   get_id_and_check_name();
+  get_id_and_check_name_joined();
 };
 
 subtest 'delete_all' => sub {
@@ -39,10 +41,17 @@ subtest 'delete_all' => sub {
 sub get_id_and_check_name {
   ok(my $player = $TEST_CLASS->get($PLAYER_DATA->{id}));
   is $player->name, $PLAYER_DATA->{name};
-  ok($player = $TEST_CLASS->get_joined($PLAYER_DATA->{id}));
-  is $player->name, $PLAYER_DATA->{name};
   ok($player = $TEST_CLASS->get_by_name($PLAYER_DATA->{name}));
   is $player->id, $PLAYER_DATA->{id};
+}
+
+sub get_id_and_check_name_joined {
+  ok(my $player = $TEST_CLASS->get_joined_to_unit_members($PLAYER_DATA->{id}));
+  is $player->name, $PLAYER_DATA->{name};
+  ok($player = $TEST_CLASS->get_joined_to_country_members($PLAYER_DATA->{id}));
+  is $player->country_name, $TEST_CLASS->ADMINISTARTOR_DATA->{country_name};
+  ok($player = $TEST_CLASS->get_joined($PLAYER_DATA->{id}));
+  is $player->country_name, $TEST_CLASS->ADMINISTARTOR_DATA->{country_name};
 }
 
 done_testing();

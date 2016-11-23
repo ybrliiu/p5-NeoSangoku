@@ -2,7 +2,7 @@ package Sangoku::Model::Country::Members {
 
   use Mouse;
   use Sangoku;
-  with 'Sangoku::Model::Role::DB';
+  with 'Sangoku::Model::Role::DB::RelatePlayer';
 
   use constant TABLE_NAME => 'country_members';
 
@@ -20,11 +20,6 @@ package Sangoku::Model::Country::Members {
       country_name => $self->name,
       player_id    => $player_id,
     });
-  }
-
-  sub get_by_player_id {
-    my ($class, $player_id) = @_;
-    return $class->db->single(TABLE_NAME, {player_id => $player_id});
   }
 
   __PACKAGE__->meta->make_immutable();

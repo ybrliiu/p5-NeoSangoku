@@ -2,7 +2,7 @@ package Sangoku::Model::Unit::Members {
 
   use Mouse;
   use Sangoku;
-  with 'Sangoku::Model::Role::DB';
+  with 'Sangoku::Model::Role::DB::RelatePlayer';
 
   use constant TABLE_NAME => 'unit_members';
 
@@ -22,11 +22,6 @@ package Sangoku::Model::Unit::Members {
       player_name  => $player->name,
       country_name => $player->country_name,
     });
-  }
-
-  sub get_by_player_id {
-    my ($class, $player_id) = @_;
-    return $class->db->single(TABLE_NAME, {player_id => $player_id});
   }
 
   __PACKAGE__->meta->make_immutable();

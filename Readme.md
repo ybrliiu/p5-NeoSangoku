@@ -4,8 +4,10 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 # next
 ```      
 
-* Model new rolw (Members, Parent)
 * Serviceモジュールのチューニング、新メソッド実装
+* 3つのテーブルでjoin
+
+* 手紙ログ
 
 * t/ テストするモジュールのload部分をload関数に
 

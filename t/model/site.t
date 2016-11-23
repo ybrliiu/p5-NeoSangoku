@@ -16,7 +16,7 @@ subtest 'init' => sub {
 };
 
 subtest 'init_2' => sub {
-  my $start_time = '2016年11月20日21時';
+  my $start_time = '2016年11月24日19時';
   $TEST_CLASS->init($start_time);
   ok(my $site = $TEST_CLASS->get);
   is $site->term, 1;
