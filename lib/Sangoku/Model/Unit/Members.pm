@@ -19,7 +19,6 @@ package Sangoku::Model::Unit::Members {
     $self->db->do_insert(TABLE_NAME, {
       unit_id      => $self->id,
       player_id    => $player->id,
-      player_name  => $player->name,
       country_name => $player->country_name,
     });
   }

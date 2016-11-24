@@ -30,7 +30,6 @@ subtest 'add&get' => sub {
   is @$members, 1;
   my $member = $members->[0];
   is $member->player_id, $leader->id;
-  is $member->player_name, $leader->name;
   is $member->unit_id, $unit->id;
 
   {

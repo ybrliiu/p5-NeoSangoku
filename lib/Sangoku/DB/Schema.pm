@@ -427,7 +427,6 @@ package Sangoku::DB::Schema {
     columns (
       {name => 'unit_id', type => 4},
       {name => 'player_id', type => -1},
-      {name => 'player_name', type => -1},
       {name => 'country_name', type => -1},
     );
     row_class 'Sangoku::DB::Row::Unit::Members';
