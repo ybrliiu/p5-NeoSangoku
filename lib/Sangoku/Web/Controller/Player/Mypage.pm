@@ -15,6 +15,14 @@ package Sangoku::Web::Controller::Player::Mypage {
     $self->render();
   }
 
+  sub letter_log {
+    my ($self) = @_;
+    my $player_id = $self->session('id');
+    my $result = $self->service->letter_log($player_id);
+    $self->stash(%$result);
+    $self->render();
+  }
+
   sub _write_letter {
     my ($self, $json) = @_;
     my $player_id = $self->session('id');

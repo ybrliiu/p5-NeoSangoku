@@ -1,0 +1,206 @@
+<%# 手紙表示部 %>
+
+  <table class="table-<%= $country->color %> width-100pc">
+  <tbody>
+    <tr>
+      <th>
+        <a id="letter-link"></a><h2>手紙送信</h2>
+      </th>
+    </tr>
+    <tr><td>
+
+      <table class="layout-table">
+        <tbody>
+          <tr>
+            <td rowspan="2">
+              <%= text_area(profile => '', cols => 70, rows => 4, id => 'letter-message') %>
+            </td>
+            <td>
+              宛先リスト : 
+              <select id="letter-adr-list-type">
+                <option value="default">通常 / 履歴</option>
+                <option value="player">個人宛</option>
+                <option value="other-country">他国宛</option>
+              </select>
+              <input type="button" id="letter-switch-adr-list" value="切り替え">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              宛先 : 
+              <select id="letter-to">
+                <option data-letter-type="country" value="<%= $player->country_name %>">国宛</option>
+                <option data-letter-type="town" value="<%= $player->town_name %>">都市宛</option>
+              % if ($player->is_belong_unit) {
+                <option data-letter-type="unit" value="<%= $player->unit_id %>">部隊宛</option>
+              % }
+                <optgroup label="== 送信履歴 ==">
+                % for my $letter (@$transmission_history) {
+                  % my $name = $letter->receiver_name;
+                  <option data-letter-type="<%= $letter->letter_type %>" value="<%= $name %>"><%= $name %></option>
+                % }
+                </optgroup>
+              </select>
+              <input type="button" id="letter-submit" value="送信">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+<script>
+
+'use strict';
+
+(function () {
+
+  sangoku.namespace('player.mypage.SwitchAdrList');
+
+% my $player_adr_list;
+% for my $player (values %$players_hash) {
+  % my $name = $player->name;
+  % $player_adr_list .= qq{<option data-letter-type="player" value="$name">$name</option>};
+% }
+
+% my $country_adr_list;
+% for my $country (values %$countries_hash) {
+  % $country_adr_list .= qq{<option data-letter-type="country" value="@{[ $country->name ]}">@{[ $country->name ]}</option>};
+% }
+
+  sangoku.player.mypage.SwitchAdrList = function () {
+    sangoku.Base.apply(this, arguments);
+    this.letterAdrListType = document.getElementById('letter-adr-list-type');
+    this.letterTo = document.getElementById('letter-to');
+    this.defaultList = document.getElementById('letter-to').innerHTML;
+    this.countryList = '<%== $country_adr_list %>';
+    this.playerList = '<%== $player_adr_list %>';
+  };
+
+  var CLASS = sangoku.player.mypage.SwitchAdrList;
+
+  sangoku.inherit(sangoku.Base, CLASS);
+
+  var PROTOTYPE = CLASS.prototype;
+
+  var dispatch = {
+    'default' : 'defaultList',
+    'player' : 'playerList',
+    'other-country' : 'countryList',
+  };
+
+  PROTOTYPE.registFunctions = function () {
+    document.getElementById('letter-switch-adr-list').addEventListener('click', function () {
+      var type = this.letterAdrListType.value;
+      this.letterTo.innerHTML = this[dispatch[type]];
+    }.bind(this), false);
+  };
+
+}());
+
+(function () {
+
+  var c = new sangoku.player.mypage.SwitchAdrList();
+  c.registFunctions();
+
+}());
+
+</script>
+
+    </td></tr>
+  </tbody>
+  </table>
+</div>
+
+<%# 手紙タイトル表示関数 %>
+<% my $letter_title = begin %>
+ % my ($type, $title, $option) = @_;
+  <td id="<%= $type %>-letter-title<%= $option->{empty} ? '-empty' : '' %>" data-letter-type="<%= $type %>">
+    <strong><%= $title %></strong> <span><%= $unread_letter->{$type} ? "($unread_letter->{$type})" : '' %></span> 
+  </td>
+<% end %>
+
+<%# 手紙リスト表示関数 #%>
+<% my $letter_list = begin %>
+ % my ($type, $option) = @_;
+  <table id="<%= $type %>-letter" <%== $option->{show} ? '' : 'class="display-none"' %>>
+  <tbody>
+%= include('/parts/letter', (letters => $letter->{$type}));
+  </tbody>
+  </table>
+<% end %>
+
+<div class="grid letter-wrapper">
+
+  <table class="letter-title-wrapper">
+    <tbody>
+      <tr>
+        <%= $letter_title->(player => '個宛', {empty => 0}) %>
+        <%= $letter_title->(unit   => '部隊宛', {empty => 1}) %>
+        <%= $letter_title->(invite => '登用', {empty => 1}) %>
+      </tr>
+    </tbody>
+  </table>
+
+  <%= $letter_list->('player', {show => 1}) %>
+  <%= $letter_list->('unit', {show => 0}) %>
+  <%= $letter_list->('invite', {show => 0}) %>
+
+</div>
+
+<div class="grid-right letter-wrapper">
+  
+  <table class="letter-title-wrapper">
+    <tbody>
+      <tr>
+        <%= $letter_title->(country => '国宛', {empty => 0}) %>
+        <%= $letter_title->(town    => '都市宛', {empty => 1}) %>
+      </tr>
+    </tbody>
+  </table>
+
+  <%= $letter_list->('country', {show => 1}) %>
+  <%= $letter_list->('town', {show => 0}) %>
+
+<script>
+
+  'use strict';
+
+  (function () {
+
+    var limit = {
+    % for (keys %$letter_limit) {
+      '<%= $_ %>' : <%= $letter_limit->{$_} %>,
+    % }
+    };
+
+    var wsChat = new sangoku.player.mypage.WebSocketChat({
+      'uri' : '<%= url_for('/player/mypage/channel')->to_abs->scheme('ws') %>',
+      'limit' : limit,
+    });
+
+    /* if cant connect to ws server, run comet chat. */
+    var id;
+    var stop = function () { clearInterval(id); };
+    id = setTimeout(function () {
+      if (wsChat.ws.readyState !== wsChat.ws.OPEN) {
+        wsChat.switchComet();
+        var cometChat = new sangoku.player.mypage.CometChat({
+          'uriOfpolling' : '/player/mypage/polling',
+          'uriOfWriteLetter' : '/player/mypage/write-letter',
+          'uriOfWriteReadLetterId' : '/player/mypage/write-read-letter-id',
+          'limit' : limit,
+        });
+        cometChat.registFunctions();
+        cometChat.startPolling();
+        stop();
+      } else {
+        wsChat.registFunctions();
+        wsChat.startConfirmAckLoop();
+        stop();
+      }
+    }, 1000);
+
+  }());
+
+</script>
+

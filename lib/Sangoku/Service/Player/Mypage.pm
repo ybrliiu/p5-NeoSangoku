@@ -20,12 +20,12 @@ package Sangoku::Service::Player::Mypage {
     my $towns_hash     = $class->model('Town')->to_hash($towns);
     my $town           = $player->town($towns_hash);
 
-    my ($letter, $unread_letter, $transmission_history) = @{ $class->_root_letter({
+    my ($letter, $unread_letter, $transmission_history) = @{ $class->_get_letter({
       player  => $player,
       unit    => $unit,
       country => $country,
       town    => $town,
-      config  => $config,
+      config  => $config->{letter},
     }) };
 
     return {
@@ -43,12 +43,45 @@ package Sangoku::Service::Player::Mypage {
       map_log              => $class->model('MapLog')->get($config->{log}{map}),
       letter               => $letter,
       unread_letter        => $unread_letter,
-      template_config      => $config,
+      letter_limit         => $config->{letter},
       transmission_history => $transmission_history,
     };
   }
 
-  sub _root_letter {
+  sub letter_log {
+    my ($class, $player_id) = @_;
+
+    my $config         = $class->config->{template}{player}{mypage};
+    my $players_hash   = $class->model('Player')->get_all_to_hash;
+    my $player         = $class->model('Player')->get_joined($player_id);
+    my $unit           = $player->unit;
+    my $countreis_hash = $class->model('Country')->get_all_to_hash();
+    my $country        = $player->country($countreis_hash);
+    my $town           = $player->town;
+
+    my ($letter, $unread_letter, $transmission_history) = @{ $class->_get_letter({
+      player  => $player,
+      unit    => $unit,
+      country => $country,
+      town    => $town,
+      config  => $config->{letter_log},
+    }) };
+
+    return {
+      player               => $player,
+      players_hash         => $players_hash,
+      countries_hash       => $countreis_hash,
+      country              => $country,
+      unit                 => $unit,
+      town                 => $player->town,
+      letter               => $letter,
+      unread_letter        => $unread_letter,
+      letter_limit         => $config->{letter_log},
+      transmission_history => $transmission_history,
+    };
+  }
+
+  sub _get_letter {
     my ($class, $args) = @_;
     my ($player, $unit, $country, $town, $config) = map { $args->{$_} } qw/player unit country town config/;
     my $read_letter = $player->read_letter,
@@ -61,9 +94,9 @@ package Sangoku::Service::Player::Mypage {
       town    => $town->letter_model,
     );
 
-    my %letter = map { $_ => $letter_model{$_}->get( $config->{letter}{$_} ) } qw/town invite country/;
-    $letter{player} = $letter_model{player}->get_without_same_letter($player, $config->{letter}{player});
-    $letter{unit}   = $player->unit_letter($letter_model{unit}, $config->{letter}{unit});
+    my %letter      = map { $_ => $letter_model{$_}->get( $config->{$_} ) } qw/town invite country/;
+    $letter{player} = $letter_model{player}->get_without_same_letter($player, $config->{player});
+    $letter{unit}   = $player->unit_letter($letter_model{unit}, $config->{unit});
 
     my %unread_letter = map {
       my $key = $_;

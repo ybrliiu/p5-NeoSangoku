@@ -31,7 +31,7 @@
       <li><a href="/player/config">設定&戦績</a></li>
       <li><a href="/player/unit">部隊編成</a></li>
       <li><a href="/player/command-log">行動ログ</a></li>
-      <li><a href="/player/letter-log">手紙ログ</a></li>
+      <li><a href="/player/mypage/letter-log">手紙ログ</a></li>
       <li><a href="/player/logout">ログアウト</a></li>
     </ul>
   </li>
