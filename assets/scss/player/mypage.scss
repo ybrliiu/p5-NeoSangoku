@@ -1,0 +1,212 @@
+@charset "utf-8";
+
+@import '../parts/color';
+
+/* /player/mypage */
+
+#town-info {
+  line-height: 1em;
+  div { height: 6px; }
+  .center {
+    text-align: initial;
+    text-align: center;
+    font-weight: bold;
+  }
+  td:nth-child(2n) {
+    width: 60%;
+    text-align: right;
+  }
+  #town-name {
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+#log {
+  width: 100%;
+  th { width: 50%; }
+  td {
+    width: 50%;
+    background-color: $beige;
+  }
+}
+
+/* コマンド操作部 */
+#controll-command {
+
+  #command-result { width: 65% }
+  #command-list {
+    width: 50%;
+    text-align: center;
+  }
+  #cant-select-command-text { display: none; }
+
+  // to command/root.html.ep
+  #wrap-command {
+    height: 350px;
+    width: 100%;
+  }
+  #command {
+    width: 100%;
+    background-color: $black;
+    border-collapse: separate;
+    border-spacing: 1px;
+
+    %select-none {
+      span {
+        user-select: none;
+        @each $prefix in -webkit-, -moz-, -ms-, "" {
+          #{$prefix}user-select: none;
+        }
+      }
+    }
+
+    input { display: none; }
+    tr { background-color: $white; }
+    td {
+      text-align: center;
+      padding: 3px;
+      background-color: rgba(0,0,0,0);
+      @extend %select-none;
+      &:nth-child(1) { width: 10px; }
+    }
+    th {
+      @extend td;
+      background-color: $black;
+      color: $white;
+    }
+  }
+}
+
+/* コマンド付加情報選択部 */
+#choose-command-option {
+  display: none;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+@mixin command-option($width, $height) {
+  position: absolute;
+  background-color: #F8F8F8;
+  border: 1px #666 solid;
+  min-height: 200px;
+  min-width: 200px;
+  $p: %;
+  width: #{$width}#{$p};
+  height: #{$height}#{$p};
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.command-option-narrow { @include command-option(20, 20); }
+.command-option-nomal { @include command-option(50, 50); }
+.command-option-wide { @include command-option(80, 80); }
+
+
+/* 手紙送信部 */
+#letter-send { width: 100%; }
+
+// 手紙の関数
+$letter-radius: 5px;
+$letter-border: 3px;
+
+@mixin letter-title-base($color) {
+  padding: 8px;
+  border: solid $letter-border $color;
+  border-top-left-radius: $letter-radius;
+  border-top-right-radius: $letter-radius;
+  min-width: 100px;
+  text-align: center;
+}
+
+@mixin letter-title($color) {
+  @include letter-title-base($color);
+  background-color: $color;
+  color: $white;
+}
+
+@mixin letter-title-empty($color) {
+  @include letter-title-base($color);
+  background-color: $white;
+  color: $color;
+}
+
+@mixin letter($color) {
+  width: 100%;
+  background-color: $white;
+  border: solid $letter-border $color;
+  border-radius: $letter-radius;
+  border-collapse: separate;
+  border-spacing: 2px;
+  .line { background-color: $color; }
+}
+
+/* 手紙共通部品群 */
+$letter-padding: 5px;
+.letter-icon {
+  padding: $letter-padding 0px $letter-padding $letter-padding;
+  vertical-align: top;
+  width: 1px;
+}
+.letter-message {
+  padding: $letter-padding;
+  vertical-align: top;
+  font-weight: bold;
+  width: 100%;
+}
+.thin {
+  position: relative;
+  top: 0;
+  color: #444444;
+  font-weight: lighter;
+}
+
+/* 手紙タイトル表示外郭 */
+.letter-title-wrapper {
+  border-collapse: separate;
+  border-spacing: 7px 0;
+  margin-bottom: 0px !important;
+}
+
+/* 手紙表示外郭 */
+.letter-wrapper {
+  width: 50%;
+  min-height: 500px;
+  float: left;
+}
+
+/* 個宛 */
+#player-letter-title-empty { @include letter-title-empty($green); }
+#player-letter-title { @include letter-title($green); }
+#player-letter { @include letter($green); }
+
+/* 部隊宛 */
+#unit-letter-title-empty { @include letter-title-empty($orange); }
+#unit-letter-title { @include letter-title($orange); }
+#unit-letter { @include letter($orange); }
+
+/* 密書 */
+#invite-letter-title-empty { @include letter-title-empty($purple); }
+#invite-letter-title { @include letter-title($purple); }
+#invite-letter { @include letter($purple); }
+
+/* 国宛 */
+#country-letter-title-empty { @include letter-title-empty($blue); }
+#country-letter-title { @include letter-title($blue); }
+#country-letter { @include letter($blue); }
+
+/* 都市宛 */
+#town-letter-title-empty { @include letter-title-empty($darkred); }
+#town-letter-title { @include letter-title($darkred); }
+#town-letter { @include letter($darkred); }
+

@@ -22,6 +22,7 @@ package Sangoku::Web {
     $self->plugin(AssetPack => {pipes => [qw/Css Sass/]});
     $self->asset->process('base.css' => ('scss/base.scss'));
     $self->asset->process('country-table.css' => ('scss/country-table.scss'));
+    $self->asset->process('player/mypage.css' => ('scss/player/mypage.scss'));
 
     $self->plugin('Sangoku::TemplateFunctions');
     $self->plugin(FlashError => {validator_class => 'Sangoku::Validator'});
@@ -134,6 +135,7 @@ package Sangoku::Web {
         $mypage->post('/polling'             )->to(action => 'polling');
         $mypage->post('/write-letter'        )->to(action => 'write_letter');
         $mypage->post('/write-read-letter-id')->to(action => 'write_read_letter_id');
+        $mypage->get( '/letter-log'          )->to(action => 'letter_log');
 
         # /player/mypage/command
         {
@@ -141,15 +143,6 @@ package Sangoku::Web {
           $command->any( '/'     )->to(action => 'root');
           $command->post('/input')->to(action => 'input');
         }
-      }
-
-      # /player/letter
-      {
-        my $letter = $auth->any('/letter')->to(controller => 'Player::Letter');
-        $letter->any( '/'        )->to(action => 'root');
-        $letter->post('/channel' )->to(action => 'channel');
-        $letter->any( '/personal')->to(action => 'personal');
-        $letter->post('/send'    )->to(action => 'send');
       }
 
       # /player/config

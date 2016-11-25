@@ -31,13 +31,8 @@
       <li><a href="/player/config">設定&戦績</a></li>
       <li><a href="/player/unit">部隊編成</a></li>
       <li><a href="/player/command-log">行動ログ</a></li>
+      <li><a href="/player/letter-log">手紙ログ</a></li>
       <li><a href="/player/logout">ログアウト</a></li>
-    </ul>
-  </li>
-  <li>▼手紙
-    <ul>
-      <li><a href="/">個人宛手紙</a></li>
-      <li><a href="/">手紙ログ</a></li>
     </ul>
   </li>
   <li>▼国家情報
