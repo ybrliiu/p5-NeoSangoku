@@ -40,6 +40,7 @@ package Sangoku::Service::Player::Mypage {
       town                 => $player->town,
       command_list         => $class->model('Command')->get_list(),
       site                 => $class->model('Site')->get(),
+      login_list           => $class->model('LoginList')->get( $player ),
       map_log              => $class->model('MapLog')->get($config->{log}{map}),
       letter               => $letter,
       unread_letter        => $unread_letter,

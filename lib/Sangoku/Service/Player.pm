@@ -22,7 +22,7 @@ package Sangoku::Service::Player {
         unless $validator->is_error('id');
     }
 
-    $class->model('LoginList')->update_login_list($player)
+    $class->model('LoginList')->update($player)
       unless $validator->has_error();
 
     return $validator;

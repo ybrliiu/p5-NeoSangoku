@@ -144,7 +144,7 @@
     <tr>
       <td>支配都市数</td>
     % my @towns = @{ $country->towns($towns) };
-      <td colspan="3"><%= @towns %>都市(<%= $_->name . " " for @towns %>)</td>
+      <td colspan="3"><%= @towns %>都市(<%= $_->name . ' ' for @towns %>)</td>
     </tr>
     <tr>
       <td>税金</td>
@@ -154,7 +154,7 @@
     </tr>
     <tr>
       <td>online</td>
-      <td colspan="3"></td>
+      <td colspan="3"><%= $_->{display} . ' ' for @$login_list %></td>
     </tr>
     <tr>
       <td>外交状況</td>

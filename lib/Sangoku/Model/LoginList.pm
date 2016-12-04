@@ -10,18 +10,18 @@ package Sangoku::Model::LoginList {
 
   sub get {
     my ($class, $player) = @_;
-    croak '引数にplayerが指定されていません' unless defined $player;
+    croak '引数にplayerが指定されていません' unless ref $player eq 'Sangoku::DB::Row::Player';
 
-    my @login_list = grep { $_->{country_name} eq $player->country_name } values %{ $class->update_login_list($player) };
+    my @login_list = grep { $_->{country_name} eq $player->country_name } values %{ $class->update($player) };
     return \@login_list;
   }
 
   sub get_all {
     my ($class) = @_;
-    return [values %{ $class->update_login_list() }];
+    return [values %{ $class->update() }];
   }
 
-  sub update_login_list {
+  sub update {
     my ($class, $player) = @_;
 
     my $time = time;
@@ -31,7 +31,7 @@ package Sangoku::Model::LoginList {
       $login_list->{$player->id} = {
         id           => $player->id,
         country_name => $player->country_name,
-        display      => $player->id . '[' . $player->town_name . '] ',
+        display      => $player->name . '[' . $player->town_name . '] ',
         time         => $time + 180,
       };
     }

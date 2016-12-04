@@ -1,6 +1,6 @@
 package Sangoku::Web::Controller::Player::Config {
 
-  use Mojo::Base 'Mojolicious::Controller';
+  use Mojo::Base 'Sangoku::Web::Controller';
   use Sangoku;
 
   sub root {

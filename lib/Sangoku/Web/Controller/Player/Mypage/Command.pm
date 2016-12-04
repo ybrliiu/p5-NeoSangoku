@@ -1,7 +1,7 @@
 package Sangoku::Web::Controller::Player::Mypage::Command {
 
   use Sangoku;
-  use Mojo::Base 'Mojolicious::Controller';
+  use Mojo::Base 'Sangoku::Web::Controller';
 
   use Mojo::JSON qw/decode_json/;
 

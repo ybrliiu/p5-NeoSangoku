@@ -1,7 +1,7 @@
 package Sangoku::Web::Controller::Outer::Regist {
 
   use Sangoku;
-  use Mojo::Base 'Mojolicious::Controller';
+  use Mojo::Base 'Sangoku::Web::Controller';
 
   sub root {
     my ($self) = @_;
