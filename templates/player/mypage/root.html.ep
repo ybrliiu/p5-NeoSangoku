@@ -1,12 +1,13 @@
-% layout 'player';
-
-%= asset 'player/mypage.css';
-
-%= javascript '/js/sangoku/player/mypage/controll-command.js';
-%= javascript '/js/sangoku/player/mypage/input-command.js';
-%= javascript '/js/sangoku/player/mypage/chat.js';
-%= javascript '/js/sangoku/player/mypage/web-socket-chat.js';
-%= javascript '/js/sangoku/player/mypage/comet-chat.js';
+<% layout 'player' => (
+  CSS_FILES => ['player/mypage.css'],
+  JS_FILES  => [
+    '/js/sangoku/player/mypage/controll-command.js',
+    '/js/sangoku/player/mypage/input-command.js',
+    '/js/sangoku/player/mypage/chat.js',
+    '/js/sangoku/player/mypage/web-socket-chat.js',
+    '/js/sangoku/player/mypage/comet-chat.js',
+  ],
+); %>
 
 <style>
 
@@ -292,7 +293,7 @@
 
   'use strict';
 
-  (function () {
+  window.addEventListener('load', function () {
 
     var input = new sangoku.player.mypage.InputCommand();
     input.registFunctions();
@@ -301,6 +302,7 @@
     var controll = new sangoku.player.mypage.ControllCommand();
     controll.registFunctions();
 
-  }());
+  });
 
 </script>
+

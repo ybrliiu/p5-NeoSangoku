@@ -8,6 +8,9 @@
   <meta name="keywords" content="NEO三国志NET,三国志NET,ブラウザゲーム,オンラインゲーム,CGIゲーム,無料,戦略シミュレーションゲーム" />
   %= asset 'base.css';
   %= asset 'country-table.css';
+% for (@$CSS_FILES) {
+  %= asset $_;
+% }
   %= javascript '/js/sangoku.js';
   %= javascript '/js/sangoku/base.js';
 % content container => begin
@@ -26,5 +29,8 @@
   </div>
 </div>
 </section>
+% for (@$JS_FILES) {
+  %= javascript $_;
+% }
 </body>
 </html>

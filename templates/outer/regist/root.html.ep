@@ -1,6 +1,4 @@
-% layout 'default';
-
-%= javascript '/js/sangoku/util.js';
+% layout 'default' => (JS_FILES => [ '/js/sangoku/util.js']);
 
 <style>
 
@@ -452,7 +450,7 @@
   }());
 
   // init
-  (function () {
+  window.addEventListener('load', function () {
 
     var c = new sangoku.outer.Regist();
     c.registEvents();
@@ -462,7 +460,7 @@
     var util = new sangoku.Util;
     util.registOpenIconList();
 
-  }());
+  });
 
 </script>
 

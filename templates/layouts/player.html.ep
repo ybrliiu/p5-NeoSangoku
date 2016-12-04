@@ -2,8 +2,8 @@
 % extends 'layouts/wrapper';
 % content container => begin
 
-%= javascript '/js/jquery-3.1.0.min.js';
-%= javascript '/js/sangoku/player/menu.js';
+  %= javascript '/js/jquery-3.1.0.min.js';
+  %= javascript '/js/sangoku/player/menu.js';
 
 </head>
 <body>

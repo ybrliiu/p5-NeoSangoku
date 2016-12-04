@@ -1,6 +1,4 @@
-% layout 'default';
-
-%= javascript '/js/sangoku/sortable.js';
+% layout 'default' => (JS_FILES => ['/js/sangoku/sortable.js']);
 
 <style>
 
@@ -152,12 +150,12 @@
 
 'use strict';
 
-(function () {
+window.addEventListener('load', function () {
 
   var sortable = new sangoku.Sortable();
   sortable.registFunctions();
 
-}());
+});
 
 </script>
 

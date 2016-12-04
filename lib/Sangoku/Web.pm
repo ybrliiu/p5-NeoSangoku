@@ -23,6 +23,7 @@ package Sangoku::Web {
     $self->asset->process('base.css' => ('scss/base.scss'));
     $self->asset->process('country-table.css' => ('scss/country-table.scss'));
     $self->asset->process('player/mypage.css' => ('scss/player/mypage.scss'));
+    $self->asset->process('root.css' => ('scss/root.scss'));
 
     $self->plugin('Sangoku::TemplateFunctions');
     $self->plugin(FlashError => {validator_class => 'Sangoku::Validator'});

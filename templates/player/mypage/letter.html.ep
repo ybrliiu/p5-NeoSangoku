@@ -165,7 +165,7 @@
 
   'use strict';
 
-  (function () {
+  window.addEventListener('load', function () {
 
     var limit = {
     % for (keys %$letter_limit) {
@@ -200,7 +200,7 @@
       }
     }, 1000);
 
-  }());
+  });
 
 </script>
 

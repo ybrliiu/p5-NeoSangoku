@@ -1,6 +1,4 @@
-% layout 'player';
-
-%= javascript '/js/sangoku/util.js';
+% layout 'player' => (JS_FILES => ['/js/sangoku/util.js']);
 
 <style>
 
@@ -183,11 +181,11 @@
 
   'use strict';
 
-  (function () {
+  window.addEventListener('load', function () {
 
     var util = new sangoku.Util;
     util.registOpenIconList();
 
-  }());
+  });
 
 </script>

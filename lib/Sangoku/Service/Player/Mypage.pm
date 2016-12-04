@@ -137,8 +137,6 @@ package Sangoku::Service::Player::Mypage {
     my ($class, $args) = @_;
     validate_values($args => [qw/sender_id receiver_name message/]);
 
-    warn "sender_id : ", $args->{sender_id}, " receiver_name : ", $args->{receiver_name};
-
     my $player_model = $class->model('Player');
     my $sender   = $player_model->get($args->{sender_id});
     my $receiver = $player_model->get_by_name($args->{receiver_name});
