@@ -1,4 +1,5 @@
-% layout 'player' => (JS_FILES => ['/js/sangoku/util.js']);
+% layout 'player';
+% push @$JS_FILES, '/js/sangoku/util.js';
 
 <style>
 

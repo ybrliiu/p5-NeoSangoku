@@ -2,8 +2,7 @@
 % extends 'layouts/wrapper';
 % content container => begin
 
-  %= javascript '/js/jquery-3.1.0.min.js';
-  %= javascript '/js/sangoku/player/menu.js';
+% unshift @$JS_FILES, ('/js/jquery-3.1.0.min.js', '/js/sangoku/player/menu.js');
 
 </head>
 <body>
@@ -66,13 +65,12 @@
 
   'use strict';
 
-  // init
-  (function () {
+  window.addEventListener('load', function () {
     
     var c = new sangoku.player.Menu();
     c.registFunctionToList();
 
-  }());
+  });
 
 </script>
 

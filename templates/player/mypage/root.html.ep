@@ -1,12 +1,10 @@
-<% layout 'player' => (
-  CSS_FILES => ['player/mypage.css'],
-  JS_FILES  => [
-    '/js/sangoku/player/mypage/controll-command.js',
-    '/js/sangoku/player/mypage/input-command.js',
-    '/js/sangoku/player/mypage/chat.js',
-    '/js/sangoku/player/mypage/web-socket-chat.js',
-    '/js/sangoku/player/mypage/comet-chat.js',
-  ],
+% layout 'player' => (SCSS_FILES => ['player/mypage.css']);
+<% push @$JS_FILES, (
+  '/js/sangoku/player/mypage/controll-command.js',
+  '/js/sangoku/player/mypage/input-command.js',
+  '/js/sangoku/player/mypage/chat.js',
+  '/js/sangoku/player/mypage/web-socket-chat.js',
+  '/js/sangoku/player/mypage/comet-chat.js',
 ); %>
 
 <style>
