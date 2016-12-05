@@ -21,7 +21,7 @@ package Sangoku::DB::Row::Town {
       : $self->model('Country')->get($self->country_name);
   }
 
-  sub can_establish_nation {
+  sub is_dominated_by_country {
     my ($self) = @_;
     my $neutral_name = $self->model('Country')->NEUTRAL_DATA->{name};
     return $self->country_name eq $neutral_name;

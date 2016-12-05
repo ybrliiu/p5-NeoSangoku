@@ -6,7 +6,7 @@ package Sangoku::Web::Controller {
   # override
   sub render {
     my $self = shift;
-    $self->SUPER::render(@_, JS_FILES => [], CSS_FILES => []);
+    $self->SUPER::render(@_, JS_FILES => [], SCSS_FILES => []);
   }
 
 }

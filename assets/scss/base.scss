@@ -147,20 +147,29 @@ ul {
     }
   }
 
-  #error {
-    $error-red: #E74C3C;
-    background-color: rgba(#E74C3C, 0.3);
-    border: solid $error-red 4px;
+  @mixin show-message-field($color) {
+    background-color: rgba($color, 0.3);
+    border: solid $color 4px;
     border-radius: 4px;
     padding: 10px;
     font-size: 9pt;
-    color: $error-red;
+    color: $color;
     font-weight: bold;
     text-align: left;
     h2 {
-      color: $red;
+      color: $color;
       margin: 3px;
     }
+  }
+
+  #success {
+    $success-green: #16b6B6;
+    @include show-message-field($success-green);
+  }
+
+  #error {
+    $error-red: #E74C3C;
+    @include show-message-field($error-red);
   }
 
 }

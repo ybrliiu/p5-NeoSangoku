@@ -19,7 +19,9 @@ package Sangoku::Web::Controller::Player::Config {
       player_id => $player_id,
       icon      => $self->param('icon'),
     });
-    $self->flash_error($error);
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => '変更完了しました。');
     $self->redirect_to('/player/config');
   }
 
@@ -29,7 +31,9 @@ package Sangoku::Web::Controller::Player::Config {
     my $params = $self->req->params->to_hash;
     $params->{player_id} = $player_id;
     my $error = $self->service->change_equipments_name($params);
-    $self->flash_error($error);
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => '変更完了しました。');
     $self->redirect_to('/player/config');
   }
 
@@ -40,7 +44,9 @@ package Sangoku::Web::Controller::Player::Config {
       player_id => $player_id,
       loyalty   => $self->param('loyalty'),
     });
-    $self->flash_error($error);
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => '変更完了しました。');
     $self->redirect_to('/player/config');
   }
 
@@ -51,7 +57,9 @@ package Sangoku::Web::Controller::Player::Config {
       player_id   => $player_id,
       win_message => $self->param('win_message'),
     });
-    $self->flash_error($error);
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => '変更完了しました。');
     $self->redirect_to('/player/config');
   }
 
@@ -62,7 +70,9 @@ package Sangoku::Web::Controller::Player::Config {
       player_id => $player_id,
       profile   => $self->param('profile'),
     });
-    $self->flash_error($error);
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => 'プロフィールを更新しました。');
     $self->redirect_to('/player/config');
   }
 

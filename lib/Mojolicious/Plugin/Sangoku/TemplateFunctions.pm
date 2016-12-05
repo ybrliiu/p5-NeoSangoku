@@ -5,7 +5,7 @@ package Mojolicious::Plugin::Sangoku::TemplateFunctions {
 
   sub register {
     my ($self, $app) = @_;
-    $app->helper($_ => $self->can("_$_")) for qw/get_cookie show_error show_all_error/;
+    $app->helper($_ => $self->can("_$_")) for qw/get_cookie show_error show_all_error show_success_message/;
   }
 
   sub _get_cookie {
@@ -62,6 +62,32 @@ package Mojolicious::Plugin::Sangoku::TemplateFunctions {
     $str .= qq{
       </ul>
     </div>
+    };
+  }
+
+  sub _show_success_message {
+    my ($c, $option) = @_;
+    my $success = $c->flash('success');
+    my $str = '';
+    if (defined $success) {
+      if ($option->{grid}) {
+        $str .= qq{<div class="grid-right width-100pc">}
+          . _show_success_message_html($success, $option)
+          . qq{</div>};
+      } else {
+        $str .= _show_success_message_html($success, $option);
+      }
+    }
+    return $c->b($str);
+  }
+
+  sub _show_success_message_html {
+    my ($success, $option) = @_;
+    my $width = $option->{grid} ? 100 : 90;
+    my $str = qq{
+      <div id="success" class="width-${width}pc">
+        $success
+      </div>
     };
   }
 

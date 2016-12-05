@@ -46,7 +46,7 @@ package Sangoku::Service::Outer::Regist {
     my $town = $class->model('Town')->get($args->{town})->refetch({for_update => 1});
 
     my @is_input_country_form = grep { $args->{"country_$_"} } qw/name color/;
-    if ($town->can_establish_nation || @is_input_country_form) {
+    if ($town->is_dominated_by_country || @is_input_country_form) {
 
       $class->row('Country')->validate_regist_data($validator, $args);
 
@@ -75,7 +75,7 @@ package Sangoku::Service::Outer::Regist {
     my ($class, $param, $validator, $town) = @_;
 
     $validator->set_error_and_message(town => (cant_establish => 'その都市は既に他の国が支配しています。'))
-      unless $town->can_establish_nation;
+      unless $town->is_dominated_by_country;
 
     my $country = $class->model('Country')->get($param->{country_name});
     $validator->set_error(country_name => 'already_exist') if defined $country;

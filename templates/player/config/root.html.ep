@@ -14,6 +14,7 @@
 <div id="title"><h1>設定＆戦績</h1></div>
 
 %= show_all_error({grid => 1});
+%= show_success_message({grid => 1});
 
 <div class="grid-right width-100pc">
 

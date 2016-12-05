@@ -30,7 +30,7 @@
   
   'use strict';
 
-  (function () {
+  window.addEventListener('load', function () {
 
     sangoku.namespace('outer.IconList');
 
@@ -73,17 +73,16 @@
       }
     };
 
-  }());
+  });
 
 
-  // init
-  (function () {
+  window.addEventListener('load', function () {
 
     var c = new sangoku.outer.IconList();
     c.showExplain();
     c.registFunctionToIcons();
 
-  }());
+  });
 
 </script>
 
