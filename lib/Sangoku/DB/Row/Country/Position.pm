@@ -4,8 +4,6 @@ package Sangoku::DB::Row::Country::Position {
   use Sangoku;
   extends 'Sangoku::DB::Row';
 
-  use Sangoku::Model::Player;
-
   __PACKAGE__->_generate_methods();
 
   sub _generate_methods {

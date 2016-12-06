@@ -25,7 +25,7 @@ package Sangoku::DB::Row::Country {
     my ($self, $players_hash) = @_;
     my $players = ref $players_hash eq 'HASH'
       ? [sort { $b->class <=> $a->class } grep { $_->country_name eq $self->name } values %$players_hash]
-      : $self->model('Player')->search(country_name => $self->name);
+      : $self->model('Player')->search_joined_to_country_members(country_name => $self->name);
     return $players;
   }
 

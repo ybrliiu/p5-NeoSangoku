@@ -247,7 +247,7 @@ package Sangoku::DB::Schema {
 
   table {
     name 'player_command_record';
-    pk 'player_id','command_name';
+    pk 'player_id', 'command_name';
     columns (
       {name => 'player_id', type => -1},
       {name => 'command_name', type => -1},

@@ -18,10 +18,10 @@ package Sangoku::Service::Outer {
       positions_hash    => $class->model('Country::Position')->get_all_to_hash(),
       players_hash      => $class->model('Player')->to_hash($players),
       towns             => $class->model('Town')->get_all(),
-      (map {
+      ( map {
         my $class_name = ucfirst $_;
         $_ . 's_hash'   => $class->model("Player::$class_name")->get_all_to_hash()
-      } qw/book weapon guard/),
+      } qw/book weapon guard soldier/ ),
     };
   }
 

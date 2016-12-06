@@ -52,7 +52,7 @@
 
 'use strict';
 
-(function () {
+window.addEventListener('load', function () {
 
   sangoku.namespace('player.mypage.SwitchAdrList');
 
@@ -95,14 +95,14 @@
     }.bind(this), false);
   };
 
-}());
+});
 
-(function () {
+window.addEventListener('load', function () {
 
   var c = new sangoku.player.mypage.SwitchAdrList();
   c.registFunctions();
 
-}());
+});
 
 </script>
 

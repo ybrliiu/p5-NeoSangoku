@@ -2,7 +2,7 @@ package Sangoku::Model::Player {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::DB';
+  with 'Sangoku::Model::Role::DB::Player';
 
   use Sangoku::Model::Unit::Members;
   use Sangoku::Model::Country::Members;
@@ -13,6 +13,8 @@ package Sangoku::Model::Player {
     TABLE_NAME           => 'player',
     CHILD_RECORD_MODULES => [qw/Command CommandList CommandLog Profile ReadLetter/],
   };
+
+  __PACKAGE__->add_player_methods();
 
   sub ADMINISTARTOR_DATA() {
     my $site = load_config('site.conf')->{'site'};
@@ -88,24 +90,6 @@ package Sangoku::Model::Player {
 
     sub get_all_joined_to_unit_members {
       my ($class, $id) = @_;
-      my @rows = $class->db->search_by_sql($sql, [], TABLE_NAME);
-      return \@rows;
-    }
-  }
-
-  {
-    my $sql = "SELECT * FROM " . TABLE_NAME
-      . " INNER JOIN " . Sangoku::Model::Country::Members->TABLE_NAME
-      . " ON id = player_id";
-
-    sub get_joined_to_country_members {
-      my ($class, $id) = @_;
-      my @rows = $class->db->search_by_sql("$sql WHERE id = ?", [$id], TABLE_NAME);
-      return $rows[0];
-    }
-
-    sub get_all_joined_to_country_members {
-      my ($class) = @_;
       my @rows = $class->db->search_by_sql($sql, [], TABLE_NAME);
       return \@rows;
     }

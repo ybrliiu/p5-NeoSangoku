@@ -2,9 +2,11 @@ package Sangoku::Model::Player::Soldier {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::DB';
+  with 'Sangoku::Model::Role::DB::Player';
 
   use constant TABLE_NAME => 'player_soldier';
+
+  __PACKAGE__->add_player_methods();
 
   sub create {
     my ($class, $id) = @_;

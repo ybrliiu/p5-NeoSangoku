@@ -2,7 +2,7 @@
 
 (function () {
 
-  sangoku.namespace('sangoku.Sortable');
+  sangoku.namespace('Sortable');
 
   var NUMBER_CLASS = 'sort-by-number';
   var STRING_CLASS = 'sort-by-string';

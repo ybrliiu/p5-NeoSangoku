@@ -2,11 +2,13 @@ package Sangoku::Model::Player::Guard {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::DB';
+  with 'Sangoku::Model::Role::DB::Player';
 
   use Sangoku::Util qw/validate_values/;
 
   use constant TABLE_NAME => 'player_guard';
+
+  __PACKAGE__->add_player_methods();
 
   sub create {
     my ($class, $args) = @_;

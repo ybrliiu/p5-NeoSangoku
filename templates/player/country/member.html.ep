@@ -1,0 +1,77 @@
+% layout 'player';
+% push @$JS_FILES, '/js/sangoku/sortable.js';
+
+<div id="title"><h1><%= $country->name %> 所属武将一覧 (<%= @$players %>人)</h1></div>
+
+<div class="grid-right width-100pc">
+  <table class="sortable table-<%= $country->color %> width-100pc">
+    <tbody>
+      <tr>
+        <th></th>
+        <th class="sort-by-string">名前</th>
+        <th class="sort-by-number">武力</th>
+        <th class="sort-by-number">知力</th>
+        <th class="sort-by-number">統率力</th>
+        <th class="sort-by-number">人望</th>
+        <th class="sort-by-data">兵種 / 兵士数</th>
+        <th class="sort-by-number">攻撃力</th>
+        <th class="sort-by-number">守備力</th>
+        <th>装備</th>
+        <th class="sort-by-number">金</th>
+        <th class="sort-by-number">米</th>
+        <th class="sort-by-data">階級</th>
+        <th>コマンド</th>
+        <th class="sort-by-data">更新時間</th>
+      </tr>
+    % for my $player (@$players) {
+      <tr>
+        <td class="icon"><img src="<%= $player->icon_path %>"></td>
+        <td><%= $player->name %></td>
+        <td><%= $player->force %></td>
+        <td><%= $player->intellect %></td>
+        <td><%= $player->leadership %></td>
+        <td><%= $player->popular %></td>
+        % my $soldier = $player->soldier($soldiers_hash);
+        <td data-compare="<%= $soldier->num %>">
+          <%= $soldier->name %> (<%= $soldier->num %>人)
+        </td>
+        <td><%= $soldier->attack_power( $player ) %></td>
+        <td><%= $soldier->defense_power( $player ) %></td>
+        <td>
+          武器：<%= $player->weapon($weapons_hash)->name %>：威力：<%= $player->weapon($weapons_hash)->power %><br>
+          防具：<%= $player->guard($guards_hash)->name %>：威力：<%= $player->guard($guards_hash)->power %><br>
+          書物：<%= $player->book($books_hash)->name %>：威力：<%= $player->book($books_hash)->power %>
+        </td>
+        <td><%= $player->money %></td>
+        <td><%= $player->rice %></td>
+        <td data-compare="<%= $player->lank %>">
+          Lv.<%= $player->lank %> <%= $player->lank_name %>
+        </td>
+        <td>
+        % my @command = @{ $player->command(4) };
+        % for (0 .. @command - 1) {
+          <%= $_ + 1 %>：<%= $command[$_]->detail %><br>
+        % }
+        </td>
+        <td data-compare="<%= $player->update_time %>">
+          <%= $player->format_update_time %>
+        </td>
+      </tr>
+    % }
+    </tbody>
+  </table>
+</div>
+
+<script>
+
+'use strict';
+
+window.addEventListener('load', function () {
+
+  var sortable = new sangoku.Sortable();
+  sortable.registFunctions();
+
+});
+
+</script>
+

@@ -64,8 +64,8 @@ package Sangoku::Model::Role::DB {
   }
 
   sub search {
-    my ($class, $name, $value) = @_;
-    my @rows = $class->db->search($class->TABLE_NAME, {$name => $value});
+    my ($class, $name, $value, $option) = @_;
+    my @rows = $class->db->search( $class->TABLE_NAME, {$name => $value}, ref $option eq 'HASH' ? $option : () );
     return \@rows;
   }
 
