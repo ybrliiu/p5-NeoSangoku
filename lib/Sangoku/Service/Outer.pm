@@ -21,7 +21,7 @@ package Sangoku::Service::Outer {
       ( map {
         my $class_name = ucfirst $_;
         $_ . 's_hash'   => $class->model("Player::$class_name")->get_all_to_hash()
-      } qw/book weapon guard soldier/ ),
+      } @{ $class->row('Player')->EQUIPMENT_LIST }, 'soldier' ),
     };
   }
 

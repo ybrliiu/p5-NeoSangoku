@@ -18,7 +18,6 @@ subtest 'get' => sub {
 
   my $player2 = Sangoku::Model::Player->get(TEST_PLAYER_DATA->{player}{id});
   ok(my $list = $TEST_CLASS->get($player2));
-  diag $_->{display} for @$list;
 };
 
 subtest 'get_all' => sub {

@@ -30,7 +30,6 @@ package Sangoku::Model::Town::Guards {
     };
 
     $self->db->do_insert(TABLE_NAME, {%where, order => $order});
-
   }
 
   sub get {

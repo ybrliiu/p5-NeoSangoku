@@ -6,9 +6,25 @@ package Sangoku::Service::Player::Country {
 
   use Sangoku::Util qw/validate_values/;
 
+  sub root {
+    my ($class, $player_id) = @_;
+    my $player       = $class->model('Player')->get_joined_to_country_members($player_id);
+    my $players      = $class->model('Player')->search_joined_to_country_members(country_name => $player->country_name);
+    my $players_hash = $class->model('Player')->to_hash($players);
+    my $country      = $player->country;
+    my $towns        = $class->model('Town')->search(country_name => $player->country_name);
+    return {
+      player       => $player,
+      players      => $players,
+      players_hash => $players_hash,
+      country      => $country,
+      towns        => $towns,
+    };
+  }
+
   sub member {
     my ($class, $player_id) = @_;
-    my $player  = $class->model('Player')->get($player_id);
+    my $player  = $class->model('Player')->get_joined_to_country_members($player_id);
     my $country = $player->country;
     my $players = $country->players;
     return {

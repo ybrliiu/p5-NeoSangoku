@@ -29,10 +29,14 @@ package Sangoku::DB::Row::Town {
 
   sub guards {
     my ($self, $guards_hash) = @_;
-    return $self->{guards} if exists $self->{guards};
-    $self->{guards} = ref $guards_hash eq 'HASH'
-      ? $guards_hash->{$self->name}
-      : $self->model('Town::Guards')->new(name => $self->name)->get();
+    $self->model('Town::Guards')->new(name => $self->name)->get();
+  }
+
+  sub stay_players {
+    my ($self, $players) = @_;
+    ref $players eq 'ARRAY'
+      ? [ grep { $self->name eq $_->town_name } @$players ]
+      : $self->model('Player')->search(town_name => $self->name);
   }
 
   sub icon_path {

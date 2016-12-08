@@ -2,18 +2,18 @@ package Sangoku::Model::Player {
 
   use Sangoku;
   use Mouse;
-  with 'Sangoku::Model::Role::DB::Player';
 
   use Sangoku::Model::Unit::Members;
   use Sangoku::Model::Country::Members;
   use Sangoku::Util qw/load_child_module validate_values load_config/;
-  load_child_module(__PACKAGE__);
+  __PACKAGE__->load_child_module();
 
   use constant {
     TABLE_NAME           => 'player',
     CHILD_RECORD_MODULES => [qw/Command CommandList CommandLog Profile ReadLetter/],
   };
 
+  with 'Sangoku::Model::Role::DB::Player';
   __PACKAGE__->add_player_methods();
 
   sub ADMINISTARTOR_DATA() {
@@ -109,7 +109,7 @@ package Sangoku::Model::Player {
       $_ eq 'Profile' ? $model->init($args->{profile}) : $model->init;
     }
 
-    for (qw/weapon guard book/) {
+    for (@{ Sangoku::DB::Row::Player->EQUIPMENT_LIST }) {
       my $pkg = ucfirst $_;
       "$class::$pkg"->create($args->{$_});
     }

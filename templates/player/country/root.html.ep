@@ -1,0 +1,107 @@
+% layout 'player';
+% push @$JS_FILES, '/js/sangoku/sortable.js';
+
+<div id="title"><h1><%= $country->name %> 国データ</h1></div>
+
+<div class="centering">
+
+  <div class="width-80pc">
+    <table class="sortable table-<%= $country->color %> width-100pc">
+      <tbody>
+        <tr>
+          <th colspan="11"><h2>都市データ</h2></th>
+        </tr>
+        <tr>
+          <th class="sort-by-string">都市名</th>
+          <th class="sort-by-data">相場</th>
+          <th class="sort-by-data">農民</th>
+          <th class="sort-by-data">民忠</th>
+          <th class="sort-by-data">農業</th>
+          <th class="sort-by-data">商業</th>
+          <th class="sort-by-data">技術</th>
+          <th class="sort-by-data">城壁</th>
+          <th class="sort-by-data">城壁耐久力</th>
+          <th class="sort-by-data">滞在武将</th>
+          <th class="sort-by-data">城の守備</th>
+        </tr>
+      % for my $town (@$towns) {
+        <tr>
+          <td class="middle"><%= $town->name %></td>
+          <td data-compare="<%= $town->price %>">
+            <%= $town->price %>
+          </td>
+          <td data-compare="<%= $town->farmer %>">
+            <%= $town->farmer %> / <%= $town->farmer_max %>
+          </td>
+          <td data-compare="<%= $town->loyalty %>">
+            <%= $town->loyalty %>
+          </td>
+          <td data-compare="<%= $town->farm %>">
+            <%= $town->farm %> / <%= $town->farm_max %>
+          </td>
+          <td data-compare="<%= $town->business %>">
+            <%= $town->business %> / <%= $town->business_max %>
+          </td>
+          <td data-compare="<%= $town->technology %>">
+            <%= $town->technology %> / <%= $town->technology_max %>
+          </td>
+          <td data-compare="<%= $town->wall %>">
+            <%= $town->wall %> / <%= $town->wall_max %>
+          </td>
+          <td data-compare="<%= $town->wall_power %>">
+            <%= $town->wall_power %> / <%= $town->wall_power_max %>
+          </td>
+          % my @stay_players = @{ $town->stay_players( $players ) };
+          <td data-compare="<%= @stay_players %>">
+            (<%= @stay_players %> 人) <%= $_->name . ' ' for @stay_players %>
+          </td>
+          % my @guards = @{ $town->guards };
+          <td data-compare="<%= @guards %>">
+            (<%= @guards %>人) <%= $_-> name . ' ' for @guards  %>
+          </td>
+        </tr>
+      % }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="width-60pc">
+    <table class="table-<%= $country->color %> width-100pc">
+      <tbody>
+        <tr>
+          <th colspan="3"><h2>役職データ</h2></th>
+        </tr>
+        <tr>
+          <th>役職</th>
+          <th colspan="2">名前</th>
+        </tr>
+        % my $position = $country->position;
+        % for my $position_id (@{ $position->POSITION_LIST }) {
+        <tr>
+          <td class="icon middle"><%= $position->position_name( $position_id ) %></td>
+          % my $name_method = $position_id . '_name';
+          <td class="middle"><%= $position->$name_method( $players_hash ) %></td>
+          % my $icon_path_method = $position_id . '_icon_path';
+          <td class="icon"><img src="<%= $position->$icon_path_method( $players_hash ) %>"></td>
+        </tr>
+        % }
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+<script>
+
+'use strict';
+
+window.addEventListener('load', function () {
+
+  var sortable = new sangoku.Sortable();
+  sortable.registFunctions();
+
+});
+
+</script>
+
