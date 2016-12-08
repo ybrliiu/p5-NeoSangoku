@@ -3,7 +3,6 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 
 # next
 ```      
-* 役職名 (player_list, mypage)
 * role generate系 importでやる
 
 * 都市滞在一覧

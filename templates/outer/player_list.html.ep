@@ -66,11 +66,11 @@
     </th></tr>
 
     <tr>
-      <th>君主</th>
+      <th><%= $country->position->position_name('king') %></th>
       <td class="color"><%= $country->position($positions_hash)->king_name($players_hash) %></td>
-      <th>宰相</th>
+      <th><%= $country->position->position_name('premier') %></th>
       <td class="color"><%= $country->position($positions_hash)->premier_name($players_hash) %></td>
-      <th>軍師</th>
+      <th><%= $country->position->position_name('strategist') %></th>
       <td class="color"><%= $country->position($positions_hash)->strategist_name($players_hash) %></td>
     </tr>
 

@@ -129,16 +129,16 @@
   <table class="table-<%= $country->color %> width-100pc">
     <tr><th colspan="4"><h2><%= $country->name %></h2></th></tr>
     <tr>
-      <td>君主</td>
+      <td><%= $country->position->position_name('king') %></td>
       <td class="middle"><%= $country->position->king_name %></td>
-      <td>宰相</td>
+      <td><%= $country->position->position_name('premier') %></td>
       <td class="middle"><%= $country->position->premier_name %></td>
     </tr>
     <tr>
-      <td>軍師</td><td class="middle">
-      <%= $country->position->strategist %></td>
-      <td>大将軍</td>
-      <td class="middle"><%= $country->position->great_general %></td>
+      <td><%= $country->position->position_name('strategist') %></td><td class="middle">
+      <%= $country->position->strategist_name %></td>
+      <td><%= $country->position->position_name('great_general') %></td>
+      <td class="middle"><%= $country->position->great_general_name %></td>
     </tr>
     <tr>
       <td>支配都市数</td>
