@@ -408,7 +408,7 @@
   
   'use strict';
 
-  (function () {
+  window.addEventListener('load', function () {
 
     sangoku.namespace('outer.Regist');
 
@@ -448,9 +448,8 @@
 
     };
 
-  }());
+  });
 
-  // init
   window.addEventListener('load', function () {
 
     var c = new sangoku.outer.Regist();

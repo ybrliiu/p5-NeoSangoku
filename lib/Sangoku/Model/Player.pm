@@ -2,6 +2,7 @@ package Sangoku::Model::Player {
 
   use Sangoku;
   use Mouse;
+  with 'Sangoku::Model::Role::DB::Player';
 
   use Sangoku::Model::Unit::Members;
   use Sangoku::Model::Country::Members;
@@ -12,9 +13,6 @@ package Sangoku::Model::Player {
     TABLE_NAME           => 'player',
     CHILD_RECORD_MODULES => [qw/Command CommandList CommandLog Profile ReadLetter/],
   };
-
-  with 'Sangoku::Model::Role::DB::Player';
-  __PACKAGE__->add_player_methods();
 
   sub ADMINISTARTOR_DATA() {
     my $site = load_config('site.conf')->{'site'};

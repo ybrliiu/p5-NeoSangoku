@@ -6,8 +6,6 @@ package Sangoku::Model::Player::Soldier {
 
   use constant TABLE_NAME => 'player_soldier';
 
-  __PACKAGE__->add_player_methods();
-
   sub create {
     my ($class, $id) = @_;
     $class->db->do_insert(TABLE_NAME, {player_id => $id});

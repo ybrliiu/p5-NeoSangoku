@@ -197,10 +197,11 @@ package Sangoku::Web {
       # /player/country
       {
         my $country = $auth->any('/country')->to(controller => 'Player::Country');
-        $country->any('/'          )->to(action => 'root');
-        $country->any('/member'    )->to(action => 'member');
-        $country->any('/conference')->to(action => 'conference');
-        $country->any('/law'       )->to(action => 'law');
+        $country->any('/'                        )->to(action => 'root');
+        $country->any('/member'                  )->to(action => 'member');
+        $country->any('/conference'              )->to(action => 'conference');
+        $country->any('/create-conference-thread')->to(action => 'create_conference_thread');
+        $country->any('/law'                     )->to(action => 'law');
 
         # /player/country/headquarters
         {

@@ -8,8 +8,6 @@ package Sangoku::Model::Player::Guard {
 
   use constant TABLE_NAME => 'player_guard';
 
-  __PACKAGE__->add_player_methods();
-
   sub create {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id power/]);

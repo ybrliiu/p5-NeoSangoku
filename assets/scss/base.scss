@@ -431,7 +431,7 @@ label {
   }
 }
 
-input.field-with-error {
+textarea.field-with-error, input.field-with-error {
   border: 1px $red solid;
 }
 

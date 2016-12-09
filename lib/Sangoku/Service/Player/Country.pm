@@ -6,6 +6,8 @@ package Sangoku::Service::Player::Country {
 
   use Sangoku::Util qw/validate_values/;
 
+  use constant NUMBER_OF_THREADS_PER_PAGE => 5;
+
   sub root {
     my ($class, $player_id) = @_;
     my $player       = $class->model('Player')->get_joined_to_country_members($player_id);
@@ -37,6 +39,49 @@ package Sangoku::Service::Player::Country {
         $_ . 's_hash' => $class->model($model_name)->to_hash($list);
       } @{ $player->EQUIPMENT_LIST }, 'soldier' ),
     };
+  }
+
+  sub conference {
+    my ($class, $player_id, $page) = @_;
+    $page //= 0;
+
+    my $player  = $class->model('Player')->get_joined_to_country_members($player_id);
+    my $country = $player->country;
+    my $threads = $class->model('Country::ConferenceThread')->new(name => $country->name)->get_by_page($page, NUMBER_OF_THREADS_PER_PAGE); 
+    my $thread  = $class->row('Country::ConferenceThread');
+
+    return {
+      player                 => $player,
+      country                => $country,
+      threads                => $threads,
+      THREAD_TITLE_LEN_MIN   => $thread->TITLE_LEN_MIN,
+      THREAD_TITLE_LEN_MAX   => $thread->TITLE_LEN_MAX,
+      THREAD_MESSAGE_LEN_MAX => $thread->MESSAGE_LEN_MAX,
+    };
+  }
+
+  sub create_conference_thread {
+    my ($class, $args) = @_;
+    validate_values($args => [qw/player_id title message/]);
+
+    my $txn = $class->txn;
+    my $validator = $class->validator($args);
+
+    $class->row('Country::ConferenceThread')->validate_new_thread($validator);
+    if ( $validator->has_error ) {
+      $txn->rollback;
+      return $validator;
+    }
+
+    my $player = $class->model('Player')->get_joined_to_country_members( $args->{player_id} );
+    $class->model('Country::ConferenceThread')->new(name => $player->country_name)->add({
+      sender  => $player,
+      title   => $args->{title},
+      message => $args->{message},
+    });
+
+    $txn->commit;
+    return $validator;
   }
   
 }

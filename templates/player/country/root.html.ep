@@ -6,11 +6,16 @@
 <div class="centering">
 
   <div class="width-80pc">
-    <table class="sortable table-<%= $country->color %> width-100pc">
+    <table class="table-<%= $country->color %> width-100pc">
       <tbody>
         <tr>
           <th colspan="11"><h2>都市データ</h2></th>
         </tr>
+      </tbody>
+    </table>
+
+    <table class="sortable table-<%= $country->color %> width-100pc touch-top">
+      <tbody>
         <tr>
           <th class="sort-by-string">都市名</th>
           <th class="sort-by-data">相場</th>
@@ -82,7 +87,9 @@
           % my $name_method = $position_id . '_name';
           <td class="middle"><%= $position->$name_method( $players_hash ) %></td>
           % my $icon_path_method = $position_id . '_icon_path';
-          <td class="icon"><img src="<%= $position->$icon_path_method( $players_hash ) %>"></td>
+          <td class="icon">
+            <img src="<%= $position->$icon_path_method( $players_hash ) %>">
+          </td>
         </tr>
         % }
       </tbody>

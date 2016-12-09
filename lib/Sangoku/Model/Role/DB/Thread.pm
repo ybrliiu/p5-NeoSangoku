@@ -15,13 +15,17 @@ package Sangoku::Model::Role::DB::Thread {
 
   sub get {
     my ($class, $limit, $offset) = @_;
-
     my @rows = $class->db->search($class->TABLE_NAME, {$class->_additional_condition}, {
         order_by => 'id DESC',
         defined $limit ? (limit => $limit) : (),
         defined $offset ? (offset => $offset) : (),
     });
     return \@rows;
+  }
+
+  sub get_by_page {
+    my ($class, $page, $thread_num) = @_;
+    $class->get($thread_num, $page * $thread_num);
   }
 
 }

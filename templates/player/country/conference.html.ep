@@ -1,0 +1,146 @@
+% layout 'player';
+
+<style>
+
+#thread-form input[type="text"], textarea {
+  margin: 0 0 5px 0;
+  max-width: 100%;
+  width: 100%;
+}
+
+#thread-form td {
+  padding: 7px;
+  border: 1px <%= $config->{color}{'border-darkred'} %> solid;
+  background-color: <%= $config->{color}{lightdarkred} %>;
+}
+
+#thread-list {
+  width: 80%;
+  border: 3px <%= $config->{countrycolor}{$country->color} %> solid;
+}
+
+#thread-list td {
+  background-color: <%= $config->{color}{white} %>;
+  border: 1px <%= $config->{color}{white} %>;
+}
+
+#thread-list a {
+  text-decoration: underline;
+}
+
+.thread {
+  width: 70%;
+  margin-bottom: 20px;
+  padding: 7.5px;
+  background-color: <%= $config->{countrycolor2}{$country->color} %>;
+  border-radius: 3px;
+  box-shadow: 4px 4px rgba(0, 0, 0, 0.4);
+  text-align: left;
+}
+
+.thread .title {
+  font-size: 18px;
+  padding: 5px;
+  color: <%= $config->{countrycolor2}{$country->color} %>;
+  background-color: <%= $config->{countrycolor}{$country->color} %>;
+}
+
+.thread .status {
+  padding: 5px;
+}
+
+.thread .message {
+  border: 1px #BBB solid;
+  padding: 7.5px;
+  background-color: #FCFCFC;
+  border-radius: 3px;
+}
+
+</style>
+
+<div id="title"><h1><%= $country->name %> 会議室</h1></div>
+
+<div class="centering">
+  
+  %= show_all_error;
+  %= show_success_message;
+
+  <div id="thread-form" class="width-50pc">
+    <table class="tile-table width-100pc">
+      <tbody>
+        <tr>
+          <th colspan="2"><h2>新規スレッド作成</h2></th>
+        </tr>
+        <tr>
+          <td>
+            <form action="/player/country/create-conference-thread" method="post" class="width-100pc">
+              %= label_for title => '題名';
+              <br>
+              <%= text_field('title', class => $error->emphasis('title'),
+                placeholder => "全角で${THREAD_TITLE_LEN_MIN}文字以上${THREAD_TITLE_LEN_MAX}文字以内"); %>
+              <br>
+              %= label_for message => '本文';
+              <br>
+              <%= text_area(message => '', class => $error->emphasis('message'), rows => 8,  
+                placeholder => "全角で${THREAD_MESSAGE_LEN_MAX}文字以内"); %>
+              <br>
+              <%= submit_button '送信' %>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div id="thread-list">
+    <table class="table-<%= $country->color %> width-100pc">
+      <tbody>
+        <tr>
+          <th><h2>スレッド一覧</h2></th>
+        </tr>
+        <tr>
+          <td>
+          % for (0 .. @$threads - 1) {
+            % my $thread = $threads->[$_];
+            <a href="#thread-<%= $thread->id %>"><%= $_ %> : <%= $thread->title %></a> / 
+          % }
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+% for (0 .. @$threads - 1) {
+  % my $thread = $threads->[$_];
+  <div class="thread">
+    <a id="thread-<%= $thread->id %>"></a>
+    <table class="width-100pc">
+      <tbody>
+        <tr>
+          <th colspan="2" class="title">
+            <h2><%= $thread->title %></h2>
+          </th>
+        </tr>
+        <tr>
+          <td colspan="2" class="status">
+            投稿者 : <%= $thread->name %> (<%= $thread->time %>)
+          </td>
+        <tr>
+          <td class="icon">
+            <img src="<%= $thread->icon_path %>">
+          </td>
+          <td class="message"><%= $thread->message %></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+          % for my $reply (@{ $thread->replies }) {
+              <%= $reply->message %> 
+          % }
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+% }
+
+</div>

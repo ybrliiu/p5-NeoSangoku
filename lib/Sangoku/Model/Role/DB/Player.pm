@@ -6,35 +6,34 @@ package Sangoku::Model::Role::DB::Player {
 
   use Sangoku::Model::Country::Members;
 
-  sub add_player_methods {
-    my ($class) = @_;
-
-    my $sql = <<"EOS";
+    sub _sql_of_country_members {
+      my ($class) = @_;
+      state $sql = {};
+      return $sql->{$class} if exists $sql->{$class};
+      $sql->{$class} = <<"EOS";
 SELECT * FROM @{[ $class->TABLE_NAME ]}
   INNER JOIN @{[ Sangoku::Model::Country::Members->TABLE_NAME ]}
   ON @{[ $class->TABLE_NAME ]}.@{[ $class->primary_key ]} = @{[ Sangoku::Model::Country::Members->TABLE_NAME ]}.player_id
 EOS
+    }
 
-    $class->meta->add_method(get_joined_to_country_members => sub {
+    sub get_joined_to_country_members {
       my ($class, $id) = @_;
-      my @rows = $class->db->search_by_sql("$sql WHERE id = ?", [$id], $class->TABLE_NAME);
+      my @rows = $class->db->search_by_sql( $class->_sql_of_country_members . " WHERE id = ?", [$id], $class->TABLE_NAME );
       return $rows[0];
-    });
+    }
 
-    $class->meta->add_method(get_all_joined_to_country_members => sub {
+    sub get_all_joined_to_country_members {
       my ($class) = @_;
-      my @rows = $class->db->search_by_sql($sql, [], $class->TABLE_NAME);
+      my @rows = $class->db->search_by_sql( $class->_sql_of_country_members, [], $class->TABLE_NAME );
       return \@rows;
-    });
+    }
 
-    $class->meta->add_method(search_joined_to_country_members => sub {
+    sub search_joined_to_country_members {
       my ($class, $name, $value) = @_;
-      my @rows = $class->db->search_by_sql("$sql WHERE $name = ?", [$value], $class->TABLE_NAME);
-      use Data::Dumper;
-      warn Dumper [ map { $_->player_id } @rows ];
+      my @rows = $class->db->search_by_sql( $class->_sql_of_country_members . " WHERE $name = ?", [$value], $class->TABLE_NAME );
       return \@rows;
-    });
-  }
+    }
 
 }
 

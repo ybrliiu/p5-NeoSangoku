@@ -36,11 +36,11 @@
   </li>
   <li>▼国家情報
     <ul>
-      <li><a href="/">会議室</a></li>
-      <li><a href="/">国法</a></li>
+      <li><a href="/player/country/conference">会議室</a></li>
+      <li><a href="/player/country/law">国法</a></li>
       <li><a href="/player/country/">国データ</a></li>
       <li><a href="/player/country/member">国の武将データ</a></li>
-      <li><a href="/">司令部</a></li>
+      <li><a href="/player/country/headquoters">司令部</a></li>
     </ul>
   </li>
   <li>▼都市情報

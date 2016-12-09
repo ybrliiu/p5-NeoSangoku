@@ -7,9 +7,16 @@ package Sangoku::Service::Outer {
   sub player_list {
     my ($class, $country_name) = @_;
 
-    my $countreis = defined $country_name
-      ? [$class->model('Country')->get($country_name)]
-      : $class->model('Country')->get_all();
+    my $countreis = do {
+      if (defined $country_name) {
+        [$class->model('Country')->get($country_name)];
+      } else {
+        my $countreis = $class->model('Country')->get_all;
+        my $neutral   = shift @$countreis;
+        push @$countreis, $neutral;
+        $countreis;
+      }
+    };
 
     my $players = $class->model('Player')->get_all_joined_to_country_members();
 
