@@ -75,7 +75,7 @@ package Sangoku::Web {
     );
     for (sort keys(%{ $self->config->{'countrycolor'} })) {
       $country_table .=
-        ".table-$_ { \@include country-table-base(@{[ $self->config->{'countrycolor'}{$_} ]},@{[ $self->config->{'countrycolor2'}{$_} ]}); }\n";
+        ".table-$_ { \@include country-table-base(@{[ $self->config->{'countrycolor'}{$_} ]}, @{[ $self->config->{'countrycolor2'}{$_} ]}); }\n";
     }
     spurt $country_table, project_root_dir() . '/assets/scss/country-table.scss';
   }
@@ -201,6 +201,7 @@ package Sangoku::Web {
         $country->any('/member'                  )->to(action => 'member');
         $country->any('/conference'              )->to(action => 'conference');
         $country->any('/create-conference-thread')->to(action => 'create_conference_thread');
+        $country->any('/write-conference-reply'  )->to(action => 'write_conference_reply');
         $country->any('/law'                     )->to(action => 'law');
 
         # /player/country/headquarters

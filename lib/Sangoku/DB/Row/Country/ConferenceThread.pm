@@ -24,7 +24,7 @@ package Sangoku::DB::Row::Country::ConferenceThread {
       name      => $self->country_name,
       thread_id => $self->id,
     );
-    return $model->get_all;
+    return $model->get;
   }
 
   sub icon_path {

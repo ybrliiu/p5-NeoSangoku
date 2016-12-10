@@ -5,7 +5,7 @@ package Sangoku::Service::Outer::Regist {
   with 'Sangoku::Service::Role::Base';
 
   use List::Util qw/sum/;
-  use Sangoku::Util qw/validate_values/;
+  use Sangoku::Util qw/validate_values escape/;
 
   sub root {
     my ($class) = @_;
@@ -37,6 +37,7 @@ package Sangoku::Service::Outer::Regist {
     my ($class, $args) = @_;
     validate_values($args => [qw/name icon town id pass
       force intellect leadership popular loyalty profile confirm_rule/]);
+    $args->{profile} = escape( $args->{profile} );
 
     my $validator = $class->validator($args);
     my $txn = $class->txn;

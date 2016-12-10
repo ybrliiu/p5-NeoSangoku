@@ -84,6 +84,34 @@ package Sangoku::Service::Player::Country {
     $txn->commit;
     return $validator;
   }
+
+  sub write_conference_reply {
+    my ($class, $args) = @_;
+    validate_values($args => [qw/player_id thread_id message/]);
+    $args->{message} = escape( $args->{message} );
+
+    my $txn = $class->txn;
+    my $validator = $class->validator($args);
+
+    $class->row('Country::ConferenceReply')->validate_message($validator);
+    if ( $validator->has_error ) {
+      $txn->rollback;
+      return $validator;
+    }
+
+    my $player = $class->model('Player')->get_joined_to_country_members( $args->{player_id} );
+    my $model  = $class->model('Country::ConferenceReply')->new({
+      name      => $player->country_name,
+      thread_id => $args->{thread_id},
+    });
+    $model->add({
+      sender  => $player,
+      message => $args->{message},
+    });
+
+    $txn->commit;
+    return $validator;
+  }
   
 }
 

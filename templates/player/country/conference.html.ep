@@ -2,59 +2,109 @@
 
 <style>
 
+<% my $scss = '
+
 #thread-form input[type="text"], textarea {
   margin: 0 0 5px 0;
   max-width: 100%;
   width: 100%;
-}
 
-#thread-form td {
-  padding: 7px;
-  border: 1px <%= $config->{color}{'border-darkred'} %> solid;
-  background-color: <%= $config->{color}{lightdarkred} %>;
+  td {
+    padding: 7px;
+    border: 1px ' . $config->{color}{"border-darkred"} . ' solid;
+    background-color: ' . $config->{color}{lightdarkred} . ';
+  }
 }
 
 #thread-list {
   width: 80%;
-  border: 3px <%= $config->{countrycolor}{$country->color} %> solid;
-}
-
-#thread-list td {
-  background-color: <%= $config->{color}{white} %>;
-  border: 1px <%= $config->{color}{white} %>;
-}
-
-#thread-list a {
-  text-decoration: underline;
+  border: 3px ' . $config->{countrycolor}{$country->color} . ' solid;
+  
+  td {
+    background-color: ' . $config->{color}{white} . ';
+    border: 1px ' . $config->{color}{white} . ';
+  }
+  
+  a {
+    text-decoration: underline;
+  }
 }
 
 .thread {
+
+  $gap: 10px;
+
   width: 70%;
   margin-bottom: 20px;
   padding: 7.5px;
-  background-color: <%= $config->{countrycolor2}{$country->color} %>;
+  background-color: ' . $config->{countrycolor2}{$country->color} . ';
   border-radius: 3px;
-  box-shadow: 4px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px rgba(0, 0, 0, 0.25);
   text-align: left;
+  display: flex;
+  flex-wrap: wrap; 
+  align-items: center;
+
+  .title {
+    font-size: 18px;
+    padding: 5px;
+    color: ' . $config->{countrycolor2}{$country->color} . ';
+    background-color: rgba(' . $config->{countrycolor}{$country->color} . ', 0.8);
+    width: 100%;
+  }
+  
+  .status {
+    padding: $gap $gap 0 $gap;
+    font-weight: bold;
+    width: 100%;
+  }
+  
+  .wrap-message {
+    width: 100%;
+    padding: $gap;
+    display: flex;
+    align-items: center;
+  }
+  
+  .message {
+    border: 1px #BBB solid;
+    padding: 7.5px;
+    background-color: #FCFCFC;
+    border-radius: 3px;
+    width: calc(100% - 64px);
+    min-height: 64px;
+  }
+  
+  .reply-form {
+    width: 100%;
+    text-align: right;
+    padding: $gap;
+    textarea {
+      width: 50%;
+    }
+  }
+  
+  .reply-list {
+    width: 100%;
+    background-color: rgba(' . $config->{countrycolor}{$country->color} . ', 0.2);
+    padding: $gap $gap 0 $gap;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .reply {
+    width: 100%;
+    background-color: rgba(' . $config->{countrycolor}{$country->color} . ', 0.3);
+    border: 1px rgba(' . $config->{countrycolor}{$country->color} . ', 0.6) solid;
+    margin-bottom: $gap;
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 
-.thread .title {
-  font-size: 18px;
-  padding: 5px;
-  color: <%= $config->{countrycolor2}{$country->color} %>;
-  background-color: <%= $config->{countrycolor}{$country->color} %>;
-}
+'; %>
 
-.thread .status {
-  padding: 5px;
-}
-
-.thread .message {
-  border: 1px #BBB solid;
-  padding: 7.5px;
-  background-color: #FCFCFC;
-  border-radius: 3px;
-}
+%== scss_to_css(\$scss, 1);
 
 </style>
 
@@ -76,11 +126,13 @@
             <form action="/player/country/create-conference-thread" method="post" class="width-100pc">
               %= label_for title => '題名';
               <br>
+              %= show_error('title');
               <%= text_field('title', class => $error->emphasis('title'),
                 placeholder => "全角で${THREAD_TITLE_LEN_MIN}文字以上${THREAD_TITLE_LEN_MAX}文字以内"); %>
               <br>
               %= label_for message => '本文';
               <br>
+              %= show_error('message');
               <%= text_area(message => '', class => $error->emphasis('message'), rows => 8,  
                 placeholder => "全角で${THREAD_MESSAGE_LEN_MAX}文字以内"); %>
               <br>
@@ -112,34 +164,46 @@
 
 % for (0 .. @$threads - 1) {
   % my $thread = $threads->[$_];
+  <a id="thread-<%= $thread->id %>"></a>
   <div class="thread">
-    <a id="thread-<%= $thread->id %>"></a>
-    <table class="width-100pc">
-      <tbody>
-        <tr>
-          <th colspan="2" class="title">
-            <h2><%= $thread->title %></h2>
-          </th>
-        </tr>
-        <tr>
-          <td colspan="2" class="status">
-            投稿者 : <%= $thread->name %> (<%= $thread->time %>)
-          </td>
-        <tr>
-          <td class="icon">
-            <img src="<%= $thread->icon_path %>">
-          </td>
-          <td class="message"><%== $thread->message %></td>
-        </tr>
-        <tr>
-          <td colspan="2">
-          % for my $reply (@{ $thread->replies }) {
-              <%= $reply->message %> 
-          % }
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+    <div class="title">
+      <h2><%= $_ %> : <%= $thread->title %></h2>
+    </div>
+
+    <div class="status">
+      投稿者 : <%= $thread->name %> (<%= $thread->time %>)
+    </div>
+
+    <div class="wrap-message">
+      <img class="icon" src="<%= $thread->icon_path %>">
+      <div class="message"><%== $thread->message %></div>
+    </div>
+
+    <form class="reply-form" action="/player/country/write-conference-reply" method="post">
+      %= show_error('reply');
+      <%= text_area(reply => '', class => $error->emphasis('reply'), rows => 5,
+        placeholder => "全角で${THREAD_MESSAGE_LEN_MAX}文字以内") %>
+      <br>
+      %= hidden_field(thread_id => $thread->id);
+      %= submit_button '返信';
+    </form>
+
+    <div class="reply-list">
+    % for my $reply (@{ $thread->replies }) {
+      <div class="reply">
+        <div class="status">
+          From : <%= $reply->name %> (<%= $reply->time %>)
+        </div>
+
+        <div class="wrap-message">
+          <img src="<%= $reply->icon_path %>">
+          <div class="message"><%== $reply->message %></div>
+        </div>
+      </div>
+    % }
+    </div>
+
   </div>
 % }
 

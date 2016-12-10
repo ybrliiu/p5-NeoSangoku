@@ -42,6 +42,20 @@ package Sangoku::Web::Controller::Player::Country {
     $self->redirect_to('/player/country/conference');
   }
 
+  sub write_conference_reply {
+    my ($self) = @_;
+    my $player_id = $self->session('id');
+    my $error = $self->service->write_conference_reply({
+      player_id => $player_id,
+      thread_id => $self->param('thread_id'),
+      message   => $self->param('reply'),
+    });
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => '投稿完了しました。');
+    $self->redirect_to( '/player/country/conference#thread-' . $self->param('thread_id') );
+  }
+
 }
 
 1;

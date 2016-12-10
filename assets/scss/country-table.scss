@@ -1,21 +1,21 @@
 /* 各国色テーブル */
 // 雛形読み込み
 @import 'country-table-base';
-.table-aqua { @include country-table-base(#66cccc,#ccffff); }
-.table-beige { @include country-table-base(#ac8a3a,#fffff8); }
-.table-black { @include country-table-base(#000000,#ffffff); }
-.table-blue { @include country-table-base(#0000ff,#99ccff); }
-.table-darkaqua { @include country-table-base(#0f6080,#efffff); }
-.table-darkblue { @include country-table-base(#000080,#cfefff); }
-.table-darkgreen { @include country-table-base(#006000,#c8ffc8); }
-.table-darkred { @include country-table-base(#800000,#ffcfcf); }
-.table-gray { @include country-table-base(#666666,#f1f1f1); }
-.table-green { @include country-table-base(#008000,#66ee66); }
-.table-karekusa { @include country-table-base(#404000,#cccca8); }
-.table-lightgreen { @include country-table-base(#00dd00,#ddffdd); }
-.table-orange { @include country-table-base(#ff6633,#ffcc99); }
-.table-pink { @include country-table-base(#ff69B4,#ffd0db); }
-.table-purple { @include country-table-base(#400040,#fff0ff); }
-.table-red { @include country-table-base(#ff0000,#ffccbb); }
-.table-skyblue { @include country-table-base(#6666cc,#a5aadd); }
-.table-yellow { @include country-table-base(#ffd700,#fffdcf); }
+.table-aqua { @include country-table-base(#66cccc, #ccffff); }
+.table-beige { @include country-table-base(#ac8a3a, #fffff8); }
+.table-black { @include country-table-base(#000000, #ffffff); }
+.table-blue { @include country-table-base(#0000ff, #99ccff); }
+.table-darkaqua { @include country-table-base(#0f6080, #efffff); }
+.table-darkblue { @include country-table-base(#000080, #cfefff); }
+.table-darkgreen { @include country-table-base(#006000, #c8ffc8); }
+.table-darkred { @include country-table-base(#800000, #ffcfcf); }
+.table-gray { @include country-table-base(#666666, #f1f1f1); }
+.table-green { @include country-table-base(#008000, #66ee66); }
+.table-karekusa { @include country-table-base(#404000, #cccca8); }
+.table-lightgreen { @include country-table-base(#00dd00, #ddffdd); }
+.table-orange { @include country-table-base(#ff6633, #ffcc99); }
+.table-pink { @include country-table-base(#ff69B4, #ffd0db); }
+.table-purple { @include country-table-base(#400040, #fff0ff); }
+.table-red { @include country-table-base(#ff0000, #ffccbb); }
+.table-skyblue { @include country-table-base(#6666cc, #a5aadd); }
+.table-yellow { @include country-table-base(#ffd700, #fffdcf); }
