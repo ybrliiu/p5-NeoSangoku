@@ -5,7 +5,7 @@ package Sangoku::Service::Player::Mypage {
   with 'Sangoku::Service::Role::Base';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/validate_values/;
+  use Sangoku::Util qw/validate_values escape/;
 
   sub root {
     my ($class, $player_id) = @_;
@@ -121,7 +121,9 @@ package Sangoku::Service::Player::Mypage {
 
   sub write_letter {
     my ($class, $args) = @_;
+    validate_values($args => [qw/type message/]);
     my $type = $args->{type};
+    $args->{message} = escape( $args->{message} );
 
     state $switch_method = {map { $_ => "_write_${_}_letter" } qw/player unit country town/};
 

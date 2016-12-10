@@ -19,6 +19,7 @@ requires qw/Exception::Tiny 0.2.1/;
 requires qw/Cache::SharedMemoryBackend/;
 requires qw/IPC::ShareLite/;
 
+requires qw/HTML::Escape/;
 requires qw/HTML::FillInForm::Lite/;
 requires qw/Data::Structure::Util/;
 

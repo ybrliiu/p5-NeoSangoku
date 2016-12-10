@@ -5,7 +5,7 @@ package Sangoku::Service::Player::Unit {
   with 'Sangoku::Service::Role::Base';
 
   use Carp qw/croak/;
-  use Sangoku::Util qw/validate_values/;
+  use Sangoku::Util qw/validate_values escape/;
 
   sub root {
     my ($class, $player_id) = @_;
@@ -41,6 +41,7 @@ package Sangoku::Service::Player::Unit {
   sub change_info {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id name message/]);
+    $args->{message} = escape( $args->{message} );
 
     my $validator = $class->validator($args);
     $class->row('Unit')->validate_name_and_message($validator);
@@ -76,6 +77,7 @@ package Sangoku::Service::Player::Unit {
   sub create {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id name message/]);
+    $args->{message} = escape( $args->{message} );
 
     my $validator = $class->validator($args);
     $class->row('Unit')->validate_name_and_message($validator);

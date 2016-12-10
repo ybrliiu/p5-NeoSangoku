@@ -129,7 +129,7 @@
           <td class="icon">
             <img src="<%= $thread->icon_path %>">
           </td>
-          <td class="message"><%= $thread->message %></td>
+          <td class="message"><%== $thread->message %></td>
         </tr>
         <tr>
           <td colspan="2">

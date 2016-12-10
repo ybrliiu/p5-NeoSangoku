@@ -7,6 +7,7 @@ package Sangoku::Util {
     qw/
       project_root_dir load_config validate_values minute_second
       daytime date datetime child_module_list load_child_module
+      escape
       load
     /,
   );
@@ -18,6 +19,7 @@ package Sangoku::Util {
   use Encode 'decode';
   use Path::Tiny;
   use Module::Load;
+  use HTML::Escape;
 
   use constant CONFIG_DIR_PATH => 'etc/config/';
 
@@ -118,6 +120,87 @@ package Sangoku::Util {
     return $color_code;
   }
 
+  # xmlエスケープ、特別に使用可能なタグのみエスケープしない
+  sub escape {
+    my ($str) = @_;
+    
+    # xmlエスケープ
+    my $result = escape_html($str);
+    
+    # \n→<br>
+    $result =~ s/\n/<br>/g;
+
+    # 使用可能なタグの変換
+    my @colors = qw/red blue darkblue lightblue black green/;
+    my @decorations = qw/b u i sub/;
+    my @tags = (@colors, @decorations, 'a');
+
+    for (0 .. $#tags){
+      my $tag = $tags[$_];
+      if($result =~ /&lt;$tag&gt;/){
+        if($_ < @colors + @decorations){
+          return $result if _validate($result, $tag);
+          if($_ < @colors){
+            $result = _make_color($result, $tag);
+          }elsif($_ < @colors + @decorations){
+            $result = _make_decoration($result, $tag);
+          }
+        }else{
+          $result = _make_link($result);
+        }
+      }
+    }
+    
+    return "$result"; # Mojo::ByteStreamオブジェクトを文字型に
+  }
+  
+  # 不正な形のタグが含まれていないか検査
+  sub _validate {
+    my ($str, $tag) = @_;
+    return 1 if $str =~ qr/&lt;$tag&gt;$/; # 末尾に開始タグがあればアウト
+    
+    my @validate = split(/&lt;$tag&gt;/,$str); # 開始タグで分割し、全てのタグに閉じタグがあるか検査
+    for (1 .. @validate - 1) {
+      return 1 if $validate[$_] !~ /&lt;\/$tag&gt;/;
+    }
+    return 0;
+  }
+  
+  # 色タグの作成
+  sub _make_color {
+    my ($str, $tag) = @_;
+    $str =~ s/&lt;$tag&gt;/<span style="color:$tag">/g;
+    $str =~ s/&lt;\/$tag&gt;/<\/span>/g;  
+    return $str;
+  }
+  
+  # 装飾タグの作成
+  sub _make_decoration {
+    my ($str, $tag) = @_;
+    $str =~ s/&lt;$tag&gt;/<$tag>/g;
+    $str =~ s/&lt;\/$tag&gt;/<\/$tag>/g;
+    return $str;
+  }   
+  
+  # リンクタグの検査、作成
+  sub _make_link {
+    my $str = shift;
+    return $str if $str =~ /&lt;a&gt;$/;
+    
+    my @validate = split(/&lt;a&gt;/, $str);
+    my (@url, @name);
+    for(1 .. @validate-1){
+      ($url[$_])  = $validate[$_] =~ /url:(.*?) name:/;          # URL抽出
+      ($name[$_]) = $validate[$_] =~ / name:(.*?)&lt;\/a&gt;/;   # リンク名抽出
+      return $str unless $name[$_] && $url[$_];                  # URLかリンク名、閉じタグがなければアウト
+      ($validate[$_]) = $validate[$_] =~ /(?<=&lt;\/a&gt;)(.*)/; # 閉じタグより後ろの部分を抽出
+    }
+    
+    my $result = $validate[0];
+    $result .= qq{<a href="$url[$_]">$name[$_]</a>$validate[$_]} for(1 .. @validate-1);
+    return $result;
+  }
+  
 }
 
 1;

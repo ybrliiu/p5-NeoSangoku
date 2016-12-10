@@ -33,8 +33,6 @@ EOM
 
 <div id="title"><h1>部隊編成</h1></div>
 
-%= show_all_error({grid => 1});
-
 <div class="grid-right" id="explain">
   <div>
 ここでは部隊の作成や、部隊に所属することなど部隊に関する操作ができます。<br>
@@ -51,6 +49,9 @@ EOM
 % }
   </div>
 </div>
+
+%= show_all_error({grid => 1});
+%= show_success_message({grid => 1});
   
 <div class="grid width-30pc">
 <%= include('parts/map', (
@@ -96,7 +97,7 @@ EOM
         <%= $_ + 1 %>：<%= $command[$_]->detail %><br>
     % }
       </td>
-      <td><%= $unit->message %></td>
+      <td><%== $unit->message %></td>
       <td><%= @players %>人</td>
       <td><%= $_->name . ", " for @players %></td>
     </tr>

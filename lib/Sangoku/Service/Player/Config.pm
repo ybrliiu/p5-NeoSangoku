@@ -4,7 +4,7 @@ package Sangoku::Service::Player::Config {
   use Sangoku;
   with 'Sangoku::Service::Role::Base';
 
-  use Sangoku::Util qw/validate_values/;
+  use Sangoku::Util qw/validate_values escape/;
 
   sub root {
     my ($class, $player_id) = @_;
@@ -80,6 +80,7 @@ package Sangoku::Service::Player::Config {
   sub set_profile {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id profile/]);
+    $args->{profile} = escape( $args->{profile} );
 
     my $model = $class->model('Player::Profile')->new(id => $args->{player_id});
     my $rec = $model->record->open('LOCK_EX');

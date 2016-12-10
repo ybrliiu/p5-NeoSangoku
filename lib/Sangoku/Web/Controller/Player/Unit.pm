@@ -16,6 +16,7 @@ package Sangoku::Web::Controller::Player::Unit {
     my ($self) = @_;
     my $player_id = $self->session('id');
     $self->service->break($player_id);
+    $self->flash(success => '部隊を解散しました。');
     $self->redirect_to('/player/unit');
   }
 
@@ -25,7 +26,9 @@ package Sangoku::Web::Controller::Player::Unit {
     my $param = $self->req->params->to_hash();
     $param->{player_id} = $player_id;
     my $error = $self->service->change_info($param);
-    $self->flash_error($error);
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => '部隊情報を変更しました。');
     $self->redirect_to('/player/unit');
   }
 
@@ -35,7 +38,9 @@ package Sangoku::Web::Controller::Player::Unit {
     my $param = $self->req->params->to_hash();
     $param->{player_id} = $player_id;
     my $error = $self->service->create($param);
-    $self->flash_error($error);
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => '部隊を作成しました。');
     $self->redirect_to('/player/unit');
   }
 
@@ -45,6 +50,7 @@ package Sangoku::Web::Controller::Player::Unit {
     my $param = $self->req->params->to_hash();
     $param->{player_id} = $player_id;
     $self->service->fire($param);
+    $self->flash(success => '解雇しました。');
     $self->redirect_to('/player/unit');
   }
 
@@ -55,7 +61,9 @@ package Sangoku::Web::Controller::Player::Unit {
     $param->{player_id} = $player_id;
     $param->{unit_id} //= undef;
     my $error = $self->service->join($param);
-    $self->flash_error($error);
+    $error->has_error
+      ? $self->flash_error($error)
+      : $self->flash(success => '部隊に入隊しました。');
     $self->redirect_to('/player/unit');
   }
 
@@ -63,6 +71,7 @@ package Sangoku::Web::Controller::Player::Unit {
     my ($self) = @_;
     my $player_id = $self->session('id');
     $self->service->switch_join_permit($player_id);
+    $self->flash(success => '入隊制限を切り替えました。');
     $self->redirect_to('/player/unit');
   }
 
@@ -70,6 +79,7 @@ package Sangoku::Web::Controller::Player::Unit {
     my ($self) = @_;
     my $player_id = $self->session('id');
     $self->service->quit($player_id);
+    $self->flash(success => '部隊から離脱しました。');
     $self->redirect_to('/player/unit');
   }
 

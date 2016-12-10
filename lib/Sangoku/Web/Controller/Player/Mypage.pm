@@ -27,7 +27,6 @@ package Sangoku::Web::Controller::Player::Mypage {
     my ($self, $json) = @_;
     my $player_id = $self->session('id');
     $json->{sender_id} = $player_id;
-    $json->{message} =~ s/(\n|\r\n|\r)/<br>/g;
     $self->service->write_letter($json);
   }
 

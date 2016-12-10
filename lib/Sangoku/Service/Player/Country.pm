@@ -4,7 +4,7 @@ package Sangoku::Service::Player::Country {
   use Sangoku;
   with 'Sangoku::Service::Role::Base';
 
-  use Sangoku::Util qw/validate_values/;
+  use Sangoku::Util qw/validate_values escape/;
 
   use constant NUMBER_OF_THREADS_PER_PAGE => 5;
 
@@ -63,6 +63,7 @@ package Sangoku::Service::Player::Country {
   sub create_conference_thread {
     my ($class, $args) = @_;
     validate_values($args => [qw/player_id title message/]);
+    $args->{message} = escape( $args->{message} );
 
     my $txn = $class->txn;
     my $validator = $class->validator($args);
