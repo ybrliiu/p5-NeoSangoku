@@ -5,11 +5,11 @@ package Sangoku::Web {
 
   use Sangoku::Util qw/project_root_dir load/;
   use Mojo::Util qw/encode spurt/;
+  use Path::Tiny;
 
   sub startup {
     my ($self) = @_;
     $self->plugin('Config', {file => "etc/config/$_.conf"}) for qw/app color hypnotoad NYTProf site/;
-    $self->generate_color_scss_files();
     $self->load_plugins();
     $self->setup();
     $self->regist_helpers();
@@ -20,6 +20,46 @@ package Sangoku::Web {
     my ($self) = @_;
 
     $self->plugin(AssetPack => {pipes => [qw/Css Sass/]});
+
+    $self->plugin('GenerateFile');
+    my $gen_file = $self->generate_file(
+      store_path  => $self->asset->store->paths->[0] . '/scss/',
+      watch_files => [ project_root_dir . 'etc/config/color.conf' ],
+    );
+    $gen_file->set_process(
+      'parts/_color.scss' => sub {
+        my $color = encode('utf-8', "// サイト汎用色一覧\n");
+        for (sort keys(%{ $self->config->{color} })) {
+          $color .= '$' . $_ . ': ' . $self->config->{color}{$_} . ";\n";
+        }
+        return $color;
+      }
+    )->set_process(
+      'country-table.scss' => sub {
+        my $country_table = encode(
+          'utf-8',
+          "/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country-table-base';\n"
+        );
+        for (sort keys(%{ $self->config->{countrycolor} })) {
+          $country_table .=
+            ".table-$_ { \@include country-table-base(@{[ $self->config->{countrycolor}{$_} ]}, @{[ $self->config->{countrycolor2}{$_} ]}); }\n";
+        }
+        return $country_table;
+      }
+    )->set_process(
+      'country-conference.scss' => sub {
+        my $country_conference = encode(
+          'utf-8',
+          "/* 各国会議室CSS */\n// 雛形読み込み\n\@import 'country-conference-base';\n"
+        );
+        for (sort keys(%{ $self->config->{countrycolor} })) {
+          $country_conference .=
+            ".country-conference-$_ { \@include country-conference-base(@{[ $self->config->{countrycolor}{$_} ]}, @{[ $self->config->{countrycolor2}{$_} ]}); }\n";
+        }
+        return $country_conference;
+    });
+    $gen_file->generate;
+
     $self->asset->process('base.css'               => 'scss/base.scss');
     $self->asset->process('country-table.css'      => 'scss/country-table.scss');
     $self->asset->process('country-conference.css' => 'scss/country-conference.scss');
@@ -58,34 +98,7 @@ package Sangoku::Web {
     $self->sessions->cookie_name( $session_config->{cookie_name} ); 
     $self->sessions->default_expiration( $session_config->{default_expiration} );  # セッションの有効期限(分)
 
-    $self->inactivity_timeout( $self->config->{app}{inactivity_timeout} );         # WebSocketのtimeoutにかかる時間
-  }
-
-  sub generate_color_scss_files {
-    my ($self) = @_;
-
-    my $color = encode('utf-8', "// サイト汎用色一覧\n");
-    for (sort keys(%{ $self->config->{color} })) {
-      $color .= '$' . $_ . ': ' . $self->config->{color}{$_} . ";\n";
-    }
-    spurt $color, project_root_dir() . '/assets/scss/parts/_color.scss';
-  
-    my $country_table = encode(
-      'utf-8',
-      "/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country-table-base';\n"
-    );
-    my $country_conference = encode(
-      'utf-8',
-      "/* 各国会議室CSS */\n// 雛形読み込み\n\@import 'country-conference-base';\n"
-    );
-    for (sort keys(%{ $self->config->{countrycolor} })) {
-      $country_table .=
-        ".table-$_ { \@include country-table-base(@{[ $self->config->{countrycolor}{$_} ]}, @{[ $self->config->{countrycolor2}{$_} ]}); }\n";
-      $country_conference .=
-        ".country-conference-$_ { \@include country-conference-base(@{[ $self->config->{countrycolor}{$_} ]}, @{[ $self->config->{countrycolor2}{$_} ]}); }\n";
-    }
-    spurt $country_table, project_root_dir() . '/assets/scss/country-table.scss';
-    spurt $country_conference, project_root_dir() . '/assets/scss/country-conference.scss';
+    $self->inactivity_timeout( $self->config->{app}{inactivity_timeout} );         # timeoutにかかる時間
   }
 
   sub setup_router {

@@ -5,13 +5,14 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 ```      
 
 * 会議室
- = SCSSファイル生成部分
  = navigate btn
  = page
  = 再編集用のタグ再置換ヘルパー定義
 
 * navigate button 修正
 * conference -> conference-room
+
+* SQL IN句で書けそうなところは修正する
 
 * フォーラム
 * 都市滞在一覧
