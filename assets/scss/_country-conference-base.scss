@@ -1,0 +1,107 @@
+// 各国ごとの会議室のcssの雛形
+
+@import 'config';
+@import 'parts/color';
+
+@mixin country-conference-base($color, $color2) {
+
+  #thread-form input[type="text"], textarea {
+    margin: 0 0 5px 0;
+    max-width: 100%;
+    width: 100%;
+  
+    td {
+      padding: 7px;
+      border: 1px $border-darkred solid;
+      background-color: $lightdarkred;
+    }
+  }
+  
+  #thread-list {
+    width: 80%;
+    border: 3px $color solid;
+    
+    td {
+      background-color: $white;
+      border: 1px $white;
+    }
+    
+    a {
+      text-decoration: underline;
+    }
+  }
+  
+  .thread {
+  
+    $gap: 10px;
+  
+    width: 70%;
+    margin-bottom: 20px;
+    padding: 7.5px;
+    background-color: $color2;
+    border-radius: 3px;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.25);
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: center;
+  
+    .title {
+      font-size: 18px;
+      padding: 5px;
+      color: $color2;
+      background-color: rgba($color, 0.8);
+      width: 100%;
+    }
+    
+    .status {
+      padding: $gap $gap 0 $gap;
+      font-weight: bold;
+      width: 100%;
+    }
+    
+    .wrap-message {
+      width: 100%;
+      padding: $gap;
+      display: flex;
+      align-items: center;
+    }
+    
+    .message {
+      border: 1px #BBB solid;
+      padding: 7.5px;
+      background-color: #FCFCFC;
+      border-radius: 3px;
+      width: calc(100% - #{$ICON_WIDTH});
+      min-height: $ICON_HEIGHT;
+    }
+    
+    .reply-form {
+      width: 100%;
+      text-align: right;
+      padding: $gap;
+      textarea {
+        width: 50%;
+      }
+    }
+    
+    .reply-list {
+      width: 100%;
+      background-color: rgba($color, 0.2);
+      padding: $gap $gap 0 $gap;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .reply {
+      width: 100%;
+      background-color: rgba($color, 0.3);
+      border: 1px rgba($color, 0.6) solid;
+      margin-bottom: $gap;
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  
+}
+

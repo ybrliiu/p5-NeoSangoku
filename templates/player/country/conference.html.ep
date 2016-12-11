@@ -1,116 +1,8 @@
-% layout 'player';
-
-<style>
-
-<% my $scss = '
-
-#thread-form input[type="text"], textarea {
-  margin: 0 0 5px 0;
-  max-width: 100%;
-  width: 100%;
-
-  td {
-    padding: 7px;
-    border: 1px ' . $config->{color}{"border-darkred"} . ' solid;
-    background-color: ' . $config->{color}{lightdarkred} . ';
-  }
-}
-
-#thread-list {
-  width: 80%;
-  border: 3px ' . $config->{countrycolor}{$country->color} . ' solid;
-  
-  td {
-    background-color: ' . $config->{color}{white} . ';
-    border: 1px ' . $config->{color}{white} . ';
-  }
-  
-  a {
-    text-decoration: underline;
-  }
-}
-
-.thread {
-
-  $gap: 10px;
-
-  width: 70%;
-  margin-bottom: 20px;
-  padding: 7.5px;
-  background-color: ' . $config->{countrycolor2}{$country->color} . ';
-  border-radius: 3px;
-  box-shadow: 4px 4px rgba(0, 0, 0, 0.25);
-  text-align: left;
-  display: flex;
-  flex-wrap: wrap; 
-  align-items: center;
-
-  .title {
-    font-size: 18px;
-    padding: 5px;
-    color: ' . $config->{countrycolor2}{$country->color} . ';
-    background-color: rgba(' . $config->{countrycolor}{$country->color} . ', 0.8);
-    width: 100%;
-  }
-  
-  .status {
-    padding: $gap $gap 0 $gap;
-    font-weight: bold;
-    width: 100%;
-  }
-  
-  .wrap-message {
-    width: 100%;
-    padding: $gap;
-    display: flex;
-    align-items: center;
-  }
-  
-  .message {
-    border: 1px #BBB solid;
-    padding: 7.5px;
-    background-color: #FCFCFC;
-    border-radius: 3px;
-    width: calc(100% - 64px);
-    min-height: 64px;
-  }
-  
-  .reply-form {
-    width: 100%;
-    text-align: right;
-    padding: $gap;
-    textarea {
-      width: 50%;
-    }
-  }
-  
-  .reply-list {
-    width: 100%;
-    background-color: rgba(' . $config->{countrycolor}{$country->color} . ', 0.2);
-    padding: $gap $gap 0 $gap;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .reply {
-    width: 100%;
-    background-color: rgba(' . $config->{countrycolor}{$country->color} . ', 0.3);
-    border: 1px rgba(' . $config->{countrycolor}{$country->color} . ', 0.6) solid;
-    margin-bottom: $gap;
-    display: flex;
-    flex-wrap: wrap;
-  }
-}
-
-'; %>
-
-%== scss_to_css(\$scss, 1);
-
-</style>
+% layout 'player', (SCSS_FILES => ['country-conference.css']);
 
 <div id="title"><h1><%= $country->name %> 会議室</h1></div>
 
-<div class="centering">
+<div class="country-conference-<%= $country->color %> centering">
   
   %= show_all_error;
   %= show_success_message;
@@ -183,7 +75,7 @@
     <form class="reply-form" action="/player/country/write-conference-reply" method="post">
       %= show_error('reply');
       <%= text_area(reply => '', class => $error->emphasis('reply'), rows => 5,
-        placeholder => "全角で${THREAD_MESSAGE_LEN_MAX}文字以内") %>
+        placeholder => "全角で${REPLY_MESSAGE_LEN_MAX}文字以内") %>
       <br>
       %= hidden_field(thread_id => $thread->id);
       %= submit_button '返信';

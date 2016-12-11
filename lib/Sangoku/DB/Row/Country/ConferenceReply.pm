@@ -6,10 +6,11 @@ package Sangoku::DB::Row::Country::ConferenceReply {
 
   use constant MESSAGE_LEN_MAX => 3000;
 
+  # message = reply 整合性取れてないけどいいのか?
   sub validate_message {
     my ($self, $validator) = @_;
     $validator->check(
-      message => ['NOT_NULL', [LENGTH => (0, MESSAGE_LEN_MAX)]],
+      reply => ['NOT_NULL', [LENGTH => (0, MESSAGE_LEN_MAX)]],
     );
   }
 

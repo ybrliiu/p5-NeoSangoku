@@ -1,0 +1,21 @@
+/* 各国会議室CSS */
+// 雛形読み込み
+@import 'country-conference-base';
+.country-conference-aqua { @include country-conference-base(#66cccc, #ccffff); }
+.country-conference-beige { @include country-conference-base(#ac8a3a, #fffff8); }
+.country-conference-black { @include country-conference-base(#000000, #ffffff); }
+.country-conference-blue { @include country-conference-base(#0000ff, #99ccff); }
+.country-conference-darkaqua { @include country-conference-base(#0f6080, #efffff); }
+.country-conference-darkblue { @include country-conference-base(#000080, #cfefff); }
+.country-conference-darkgreen { @include country-conference-base(#006000, #c8ffc8); }
+.country-conference-darkred { @include country-conference-base(#800000, #ffcfcf); }
+.country-conference-gray { @include country-conference-base(#666666, #f1f1f1); }
+.country-conference-green { @include country-conference-base(#008000, #66ee66); }
+.country-conference-karekusa { @include country-conference-base(#404000, #cccca8); }
+.country-conference-lightgreen { @include country-conference-base(#00dd00, #ddffdd); }
+.country-conference-orange { @include country-conference-base(#ff6633, #ffcc99); }
+.country-conference-pink { @include country-conference-base(#ff69B4, #ffd0db); }
+.country-conference-purple { @include country-conference-base(#400040, #fff0ff); }
+.country-conference-red { @include country-conference-base(#ff0000, #ffccbb); }
+.country-conference-skyblue { @include country-conference-base(#6666cc, #a5aadd); }
+.country-conference-yellow { @include country-conference-base(#ffd700, #fffdcf); }

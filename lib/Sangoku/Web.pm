@@ -20,10 +20,11 @@ package Sangoku::Web {
     my ($self) = @_;
 
     $self->plugin(AssetPack => {pipes => [qw/Css Sass/]});
-    $self->asset->process('base.css' => ('scss/base.scss'));
-    $self->asset->process('country-table.css' => ('scss/country-table.scss'));
-    $self->asset->process('player/mypage.css' => ('scss/player/mypage.scss'));
-    $self->asset->process('root.css' => ('scss/root.scss'));
+    $self->asset->process('base.css'               => 'scss/base.scss');
+    $self->asset->process('country-table.css'      => 'scss/country-table.scss');
+    $self->asset->process('country-conference.css' => 'scss/country-conference.scss');
+    $self->asset->process('player/mypage.css'      => 'scss/player/mypage.scss');
+    $self->asset->process('root.css'               => 'scss/root.scss');
 
     $self->plugin('Sangoku::TemplateFunctions');
     $self->plugin(FlashError => {validator_class => 'Sangoku::Validator'});
@@ -64,8 +65,8 @@ package Sangoku::Web {
     my ($self) = @_;
 
     my $color = encode('utf-8', "// サイト汎用色一覧\n");
-    for (sort keys(%{ $self->config->{'color'} })) {
-      $color .= '$' . $_ . ':' . $self->config->{'color'}{$_} . ";\n";
+    for (sort keys(%{ $self->config->{color} })) {
+      $color .= '$' . $_ . ': ' . $self->config->{color}{$_} . ";\n";
     }
     spurt $color, project_root_dir() . '/assets/scss/parts/_color.scss';
   
@@ -73,11 +74,18 @@ package Sangoku::Web {
       'utf-8',
       "/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country-table-base';\n"
     );
-    for (sort keys(%{ $self->config->{'countrycolor'} })) {
+    my $country_conference = encode(
+      'utf-8',
+      "/* 各国会議室CSS */\n// 雛形読み込み\n\@import 'country-conference-base';\n"
+    );
+    for (sort keys(%{ $self->config->{countrycolor} })) {
       $country_table .=
-        ".table-$_ { \@include country-table-base(@{[ $self->config->{'countrycolor'}{$_} ]}, @{[ $self->config->{'countrycolor2'}{$_} ]}); }\n";
+        ".table-$_ { \@include country-table-base(@{[ $self->config->{countrycolor}{$_} ]}, @{[ $self->config->{countrycolor2}{$_} ]}); }\n";
+      $country_conference .=
+        ".country-conference-$_ { \@include country-conference-base(@{[ $self->config->{countrycolor}{$_} ]}, @{[ $self->config->{countrycolor2}{$_} ]}); }\n";
     }
     spurt $country_table, project_root_dir() . '/assets/scss/country-table.scss';
+    spurt $country_conference, project_root_dir() . '/assets/scss/country-conference.scss';
   }
 
   sub setup_router {

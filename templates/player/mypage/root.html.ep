@@ -20,6 +20,13 @@
 
 </style>
 
+<div id="zukei">
+  <a href="/player/mypage"><div id="botan"><div id="reload"></div></div></a>
+  <div id="botan" onClick='window.scrollTo(0,0);'>
+    <div id="up_arrow"></div>
+  </div>
+</div>
+
 <div class="grid-around">
   <div id="country-command" class="width-100pc">
     <strong><h2><%= $country->name %>指令:</h2></strong><%= $country->command_message %>

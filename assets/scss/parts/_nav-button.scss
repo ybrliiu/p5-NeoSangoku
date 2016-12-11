@@ -27,6 +27,7 @@ $nav_button_zukei:#ffffff;
   position:fixed;
   right:0px;
   bottom:0px;
+  * { box-sizing: content-box; }
 }
 #botan {
   position:relative;
@@ -34,9 +35,9 @@ $nav_button_zukei:#ffffff;
   background-color:$nav_button_bg;
   width: 60px;
   height: 60px;
-  margin:0 20px 10px 0;
-  border-radius:8px;
-  border:none;
+  margin: 0 20px 10px 0;
+  border-radius: 8px;
+  border: none;
 }
 
 /* letter */

@@ -48,7 +48,7 @@ package Sangoku::Web::Controller::Player::Country {
     my $error = $self->service->write_conference_reply({
       player_id => $player_id,
       thread_id => $self->param('thread_id'),
-      message   => $self->param('reply'),
+      reply     => $self->param('reply'),
     });
     $error->has_error
       ? $self->flash_error($error)

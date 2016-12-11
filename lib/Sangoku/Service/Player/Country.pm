@@ -57,6 +57,7 @@ package Sangoku::Service::Player::Country {
       THREAD_TITLE_LEN_MIN   => $thread->TITLE_LEN_MIN,
       THREAD_TITLE_LEN_MAX   => $thread->TITLE_LEN_MAX,
       THREAD_MESSAGE_LEN_MAX => $thread->MESSAGE_LEN_MAX,
+      REPLY_MESSAGE_LEN_MAX  => $class->row('Country::ConferenceReply')->MESSAGE_LEN_MAX,
     };
   }
 
@@ -87,8 +88,8 @@ package Sangoku::Service::Player::Country {
 
   sub write_conference_reply {
     my ($class, $args) = @_;
-    validate_values($args => [qw/player_id thread_id message/]);
-    $args->{message} = escape( $args->{message} );
+    validate_values($args => [qw/player_id thread_id reply/]);
+    $args->{reply} = escape( $args->{reply} );
 
     my $txn = $class->txn;
     my $validator = $class->validator($args);
@@ -106,7 +107,7 @@ package Sangoku::Service::Player::Country {
     });
     $model->add({
       sender  => $player,
-      message => $args->{message},
+      message => $args->{reply},
     });
 
     $txn->commit;

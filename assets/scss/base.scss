@@ -1,5 +1,6 @@
 @charset "utf-8";
 
+@import 'config';      // 設定変数一覧
 @import 'parts/color'; // 色一覧 etc/config/color.conf より出力
 
 /* サイト全体の外観 */
@@ -234,7 +235,7 @@ ul {
 
 /* アイコン選択部 */
 #choosed-icon-frame {
-  width: 82px;
+  width: $ICON_WIDTH + 18px;
   background-color: $white;
   border: 3px $darkred inset;
   border-radius: 3px;
@@ -277,9 +278,9 @@ h2 {
 
 /* アイコン用 */
 .icon {
-  width:64px;
-  height:64px;
-  margin:0;
+  width: $ICON_WIDTH;
+  height: $ICON_HEIGHT;
+  margin: 0;
 }
 
 /* ---- 横線 */
