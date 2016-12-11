@@ -28,7 +28,7 @@ package Sangoku::Web {
     );
     $gen_file->set_process(
       'parts/_color.scss' => sub {
-        my $color = encode('utf-8', "// サイト汎用色一覧\n");
+        my $color = "// サイト汎用色一覧\n";
         for (sort keys(%{ $self->config->{color} })) {
           $color .= '$' . $_ . ': ' . $self->config->{color}{$_} . ";\n";
         }
@@ -36,11 +36,13 @@ package Sangoku::Web {
       }
     )->set_process(
       'country-table.scss' => sub {
-        my $country_table = encode(
-          'utf-8',
-          "/* 各国色テーブル */\n// 雛形読み込み\n\@import 'country-table-base';\n"
-        );
-        for (sort keys(%{ $self->config->{countrycolor} })) {
+        my $country_table = <<'EOS';
+/* 各国色テーブル */
+// 雛形読み込み
+@import 'country-table-base';
+
+EOS
+        for ( sort keys %{ $self->config->{countrycolor} } ) {
           $country_table .=
             ".table-$_ { \@include country-table-base(@{[ $self->config->{countrycolor}{$_} ]}, @{[ $self->config->{countrycolor2}{$_} ]}); }\n";
         }
@@ -48,11 +50,13 @@ package Sangoku::Web {
       }
     )->set_process(
       'country-conference.scss' => sub {
-        my $country_conference = encode(
-          'utf-8',
-          "/* 各国会議室CSS */\n// 雛形読み込み\n\@import 'country-conference-base';\n"
-        );
-        for (sort keys(%{ $self->config->{countrycolor} })) {
+        my $country_conference = <<'EOS';
+/* 各国会議室CSS */
+// 雛形読み込み
+@import 'country-conference-base';
+
+EOS
+        for ( sort keys %{ $self->config->{countrycolor} } ) {
           $country_conference .=
             ".country-conference-$_ { \@include country-conference-base(@{[ $self->config->{countrycolor}{$_} ]}, @{[ $self->config->{countrycolor2}{$_} ]}); }\n";
         }

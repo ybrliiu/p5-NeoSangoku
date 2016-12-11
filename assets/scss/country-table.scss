@@ -1,6 +1,7 @@
 /* 各国色テーブル */
 // 雛形読み込み
 @import 'country-table-base';
+
 .table-aqua { @include country-table-base(#66cccc, #ccffff); }
 .table-beige { @include country-table-base(#ac8a3a, #fffff8); }
 .table-black { @include country-table-base(#000000, #ffffff); }

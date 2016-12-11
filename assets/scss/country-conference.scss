@@ -1,6 +1,7 @@
 /* 各国会議室CSS */
 // 雛形読み込み
 @import 'country-conference-base';
+
 .country-conference-aqua { @include country-conference-base(#66cccc, #ccffff); }
 .country-conference-beige { @include country-conference-base(#ac8a3a, #fffff8); }
 .country-conference-black { @include country-conference-base(#000000, #ffffff); }
