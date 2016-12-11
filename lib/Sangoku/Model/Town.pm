@@ -19,16 +19,9 @@ package Sangoku::Model::Town {
     $towns_hash = $class->get_all_to_hash if ref $towns_hash ne 'HASH';
 
     my $map_data = [];
-    for my $i (0 .. 9) {
-      for my $j (0 .. 9) {
-        for (keys %$towns_hash) {
-          my $town = $towns_hash->{$_};
-          if ($town->y == $i && $town->x == $j) {
-            $map_data->[$i][$j] = $town;
-            delete $towns_hash->{$_};
-          }
-        }
-      }
+    for (keys %$towns_hash) {
+      my $town = $towns_hash->{$_};
+      $map_data->[ $town->y ][ $town->x ] = $town;
     }
 
     return $map_data;
