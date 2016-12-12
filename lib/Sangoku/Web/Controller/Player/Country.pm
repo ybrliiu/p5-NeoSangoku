@@ -22,7 +22,8 @@ package Sangoku::Web::Controller::Player::Country {
   sub conference {
     my ($self) = @_;
     my $player_id = $self->session('id');
-    my $result = $self->service->conference($player_id);
+    my $page      = $self->param('page');
+    my $result    = $self->service->conference($player_id, $page);
     $self->flash_error();
     $self->stash($result);
     $self->render_fill_error();

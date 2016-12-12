@@ -52,6 +52,8 @@ subtest 'get' => sub {
     my $thread = $list->[0];
     is $thread->title, '会議室スレッド1';
   }
+
+  is $OBJ->number_of_threads, 2;
 };
 
 subtest 'delete' => sub {

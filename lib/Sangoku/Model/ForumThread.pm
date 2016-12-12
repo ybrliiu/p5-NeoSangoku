@@ -18,6 +18,11 @@ package Sangoku::Model::ForumThread {
     });
   }
 
+  sub number_of_threads {
+    my ($class) = @_;
+    return $class->db->count(TABLE_NAME);
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 

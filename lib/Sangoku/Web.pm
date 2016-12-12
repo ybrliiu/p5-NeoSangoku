@@ -29,7 +29,7 @@ package Sangoku::Web {
     $gen_file->set_process(
       'parts/_color.scss' => sub {
         my $color = "// サイト汎用色一覧\n";
-        for (sort keys(%{ $self->config->{color} })) {
+        for ( sort keys %{ $self->config->{color} } ) {
           $color .= '$' . $_ . ': ' . $self->config->{color}{$_} . ";\n";
         }
         return $color;
@@ -150,7 +150,7 @@ EOS
       my $player = $r->any('/player')->to(controller => 'Player');
       $player->get('/logout')->to(action => 'logout');
       my $auth = $player->under->to(action => 'auth');
-      $auth->post('/login')->to(action => 'login');
+      $auth->post('/login'      )->to(action => 'login');
       $auth->any( '/command-log')->to(action => 'command_log');
 
       # /player/mypage
@@ -225,6 +225,7 @@ EOS
         $country->any('/'                        )->to(action => 'root');
         $country->any('/member'                  )->to(action => 'member');
         $country->any('/conference'              )->to(action => 'conference');
+        $country->any('/conference/:page'        )->to(action => 'conference');
         $country->any('/create-conference-thread')->to(action => 'create_conference_thread');
         $country->any('/write-conference-reply'  )->to(action => 'write_conference_reply');
         $country->any('/law'                     )->to(action => 'law');

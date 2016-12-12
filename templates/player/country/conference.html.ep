@@ -44,9 +44,10 @@
         </tr>
         <tr>
           <td>
-          % for (0 .. @$threads - 1) {
-            % my $thread = $threads->[$_];
-            <a href="#thread-<%= $thread->id %>"><%= $_ %> : <%= $thread->title %></a> / 
+          % my $threads_len = @$threads;
+          % for ( my ($i, $page) = (0, 0); $i < $threads_len; ($i++, $page += 0.2) ) {
+            % my $thread = $threads->[$i];
+            <a href="/player/country/conference/<%= int $page %>/#thread-<%= $thread->id %>"><%= $i %> : <%= $thread->title %></a> / 
           % }
           </td>
         </tr>
@@ -54,13 +55,13 @@
     </table>
   </div>
 
-% for (0 .. @$threads - 1) {
-  % my $thread = $threads->[$_];
+% for (0 .. @$show_threads - 1) {
+  % my $thread = $show_threads->[$_];
   <a id="thread-<%= $thread->id %>"></a>
   <div class="thread">
 
     <div class="title">
-      <h2><%= $_ %> : <%= $thread->title %></h2>
+      <h2><%= $thread->title %></h2>
     </div>
 
     <div class="status">
@@ -98,5 +99,13 @@
 
   </div>
 % }
+
+  <ul class="centering pagination">
+  % for (0 .. $max_page) {
+    <li>
+      <a <%== $_ eq $current_page ? 'class="current"' : '' %> href="/player/country/conference/<%= $_ %>"><%= $_ %></a>
+    </li>
+  % }
+  </ul>
 
 </div>

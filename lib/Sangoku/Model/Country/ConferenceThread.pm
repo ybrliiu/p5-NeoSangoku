@@ -24,6 +24,11 @@ package Sangoku::Model::Country::ConferenceThread {
     });
   }
 
+  sub number_of_threads {
+    my ($self) = @_;
+    $self->db->count(TABLE_NAME, '*', {country_name => $self->name});
+  }
+
   __PACKAGE__->meta->make_immutable();
 }
 

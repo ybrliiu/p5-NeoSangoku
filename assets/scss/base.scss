@@ -341,7 +341,6 @@ $border-form:#888888; // フォームの外枠の色
     display: inline;
     a {
       position: relative;
-      left: -22px;
       padding: 6px 9px;
       color: $darkred;
       background-color: $white;
@@ -358,6 +357,12 @@ $border-form:#888888; // フォームの外枠の色
       }
 
     }
+
+    &:before {
+      content: initial;
+      margin: initial;
+    }
+
   }
 }
 

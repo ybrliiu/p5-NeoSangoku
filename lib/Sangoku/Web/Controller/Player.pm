@@ -5,12 +5,12 @@ package Sangoku::Web::Controller::Player {
 
   sub auth {
     my ($self) = @_;
-
-    my ($id, $pass, $store) = map { $self->param($_) } qw/id pass store/;
     
     # auth if exist session
     my $session = $self->session('id');
     return 1 if $session;
+
+    my ($id, $pass, $store) = map { $self->param($_) // '' } qw/id pass store/;
 
     my $error = $self->service->auth($id, $pass);
     if ($error->has_error) {

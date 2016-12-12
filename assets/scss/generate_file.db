@@ -7,12 +7,12 @@ use utf8;
     name  => 'country-table.scss',
     mtime => 1481466501,
   },
-  'country-conference.scss' => {
-    name  => 'country-conference.scss',
-    mtime => 1481466501,
-  },
   'parts/_color.scss' => {
     name  => 'parts/_color.scss',
+    mtime => 1481466501,
+  },
+  'country-conference.scss' => {
+    name  => 'country-conference.scss',
     mtime => 1481466501,
   },
 

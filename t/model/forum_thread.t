@@ -23,6 +23,7 @@ subtest 'add&get' => sub {
 
   ok(my $list = $TEST_CLASS->get);
   is @$list, 2;
+  is $TEST_CLASS->number_of_threads, 2;
 
   my $thread = $list->[0];
   is $thread->message, 'あばばば';

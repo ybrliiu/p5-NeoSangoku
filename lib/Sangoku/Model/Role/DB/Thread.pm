@@ -4,6 +4,12 @@ package Sangoku::Model::Role::DB::Thread {
   use Mouse::Role;
   with 'Sangoku::Model::Role::DB';
 
+  use constant DEFAULT_PER_PAGE => 5;
+
+  has 'per_page' => (is => 'ro', isa => 'Str', default => DEFAULT_PER_PAGE);
+
+  requires 'number_of_threads';
+
   sub _additional_condition {
     my ($self) = @_;
 
@@ -24,8 +30,18 @@ package Sangoku::Model::Role::DB::Thread {
   }
 
   sub get_by_page {
-    my ($class, $page, $thread_num) = @_;
-    $class->get($thread_num, $page * $thread_num);
+    my ($self, $page, $threads) = @_;
+    if ( ref $threads eq 'ARRAY' ) {
+      my $num = $page * $self->per_page;
+      [ map { $threads->[$_] // () } $num .. $num + $self->per_page - 1 ];
+    } else {
+      $self->get($self->per_page, $page * $self->per_page);
+    }
+  }
+
+  sub max_page {
+    my ($self) = @_;
+    return int( ($self->number_of_threads - 1) / $self->per_page );
   }
 
 }

@@ -45,15 +45,22 @@ package Sangoku::Service::Player::Country {
     my ($class, $player_id, $page) = @_;
     $page //= 0;
 
-    my $player  = $class->model('Player')->get_joined_to_country_members($player_id);
-    my $country = $player->country;
-    my $threads = $class->model('Country::ConferenceThread')->new(name => $country->name)->get_by_page($page, NUMBER_OF_THREADS_PER_PAGE); 
-    my $thread  = $class->row('Country::ConferenceThread');
+    my $player        = $class->model('Player')->get_joined_to_country_members($player_id);
+    my $country       = $player->country;
+    my $threads_model = $class->model('Country::ConferenceThread')->new({
+      name     => $country->name,
+      per_page => NUMBER_OF_THREADS_PER_PAGE,
+    });
+    my $threads       = $threads_model->get;
+    my $thread        = $class->row('Country::ConferenceThread');
 
     return {
       player                 => $player,
       country                => $country,
       threads                => $threads,
+      show_threads           => $threads_model->get_by_page($page, $threads),
+      max_page               => $threads_model->max_page,
+      current_page           => $page,
       THREAD_TITLE_LEN_MIN   => $thread->TITLE_LEN_MIN,
       THREAD_TITLE_LEN_MAX   => $thread->TITLE_LEN_MAX,
       THREAD_MESSAGE_LEN_MAX => $thread->MESSAGE_LEN_MAX,
