@@ -1,5 +1,6 @@
 % layout 'player' => (SCSS_FILES => ['player/mypage.css']);
 <% push @$JS_FILES, (
+  '/js/sangoku/util.js',
   '/js/sangoku/player/mypage/controll-command.js',
   '/js/sangoku/player/mypage/input-command.js',
   '/js/sangoku/player/mypage/chat.js',
@@ -20,12 +21,27 @@
 
 </style>
 
-<div id="zukei">
-  <a href="/player/mypage"><div id="botan"><div id="reload"></div></div></a>
-  <div id="botan" onClick='window.scrollTo(0,0);'>
-    <div id="up_arrow"></div>
+<div id="navigate">
+  <a href="/player/mypage">
+    <div class="wrap-nav-btn">
+      <div id="reload"></div>
+    </div>
+  </a>
+  <div class="wrap-nav-btn">
+    <div id="up-arrow"></div>
   </div>
 </div>
+
+<script>
+
+'use strict';
+
+window.addEventListener('load', function () {
+  var c = new sangoku.Util();
+  c.navigator();
+});
+
+</script>
 
 <div class="grid-around">
   <div id="country-command" class="width-100pc">

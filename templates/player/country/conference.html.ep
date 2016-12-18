@@ -1,4 +1,25 @@
 % layout 'player', (SCSS_FILES => ['country-conference.css']);
+% push @$JS_FILES, '/js/sangoku/util.js';
+
+<div id="navigate">
+  <div class="wrap-nav-btn">
+    <div id="up-arrow"></div>
+  </div>
+  <div class="wrap-nav-btn">
+    <div id="down-arrow"></div>
+  </div>
+</div>
+
+<script>
+
+'use strict';
+
+window.addEventListener('load', function () {
+  var c = new sangoku.Util();
+  c.navigator();
+});
+
+</script>
 
 <div id="title"><h1><%= $country->name %> 会議室</h1></div>
 

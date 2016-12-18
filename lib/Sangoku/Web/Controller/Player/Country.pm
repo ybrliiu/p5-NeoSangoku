@@ -54,7 +54,7 @@ package Sangoku::Web::Controller::Player::Country {
     $error->has_error
       ? $self->flash_error($error)
       : $self->flash(success => '投稿完了しました。');
-    $self->redirect_to( '/player/country/conference#thread-' . $self->param('thread_id') );
+    $self->redirect_to('/player/country/conference');
   }
 
 }

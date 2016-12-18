@@ -5,8 +5,8 @@ CGIゲーム三国志NETを新しく作りなおしたゲームです。
 ```      
 
 * 会議室
-* navigate button 修正
  = 再編集用のタグ再置換ヘルパー定義
+* 司令部 削除機能
 
 * conference -> conference-room
 * conference, row もう1つ root 深く掘る, forum rooting名修正

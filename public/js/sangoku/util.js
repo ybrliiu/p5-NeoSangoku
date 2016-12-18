@@ -19,4 +19,24 @@
     }, false);
   };
 
+  PROTOTYPE.navigator = function () {
+
+    var upArrow = document.getElementById('up-arrow');
+    if (upArrow !== null) {
+      upArrow.parentNode.addEventListener('click', function () {
+        window.scrollTo(0, 0);
+      });
+    }
+  
+    var downArrow = document.getElementById('down-arrow');
+    if (downArrow !== null) {
+      var height = document.getElementsByTagName('html')[0].scrollHeight;
+      downArrow.parentNode.addEventListener('click', function () {
+        console.log( height );
+        window.scrollTo(0, height);
+      });
+    }
+
+  };
+
 }());

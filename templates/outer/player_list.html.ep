@@ -1,5 +1,8 @@
 % layout 'default';
-% push @$JS_FILES, '/js/sangoku/sortable.js';
+<% push @$JS_FILES, (
+  '/js/sangoku/sortable.js',
+  '/js/sangoku/util.js',
+); %>
 
 <style>
 
@@ -20,11 +23,25 @@
 </style>
 
 <!-- ナビゲートボタン -->
-<div id="zukei">
-  <div id="botan" onClick='window.scrollTo(0,0);'>
-    <div id="up_arrow"></div>
+<div id="navigate">
+  <div class="wrap-nav-btn">
+    <div id="up-arrow"></div>
+  </div>
+  <div class="wrap-nav-btn">
+    <div id="down-arrow"></div>
   </div>
 </div>
+
+<script>
+
+'use strict';
+
+window.addEventListener('load', function () {
+  var c = new sangoku.Util();
+  c.navigator();
+});
+
+</script>
 
 <section>
 <div class="centering">

@@ -1,7 +1,7 @@
 // ナビゲートボタンのscss
 
-$nav_button_bg:rgba(30,30,30,0.7);
-$nav_button_zukei:#ffffff;
+$nav-btn-bg:rgba(30,30,30,0.7);
+$nav-btn-color:#ffffff;
 
 // ベース関数
 @mixin base($size){
@@ -22,17 +22,18 @@ $nav_button_zukei:#ffffff;
   border-left:solid $size transparent;
 }
 
-/* ZUKEI */
-#zukei {
+/* navigate buttons */
+#navigate {
   position:fixed;
   right:0px;
   bottom:0px;
   * { box-sizing: content-box; }
 }
-#botan {
+
+.wrap-nav-btn {
   position:relative;
   float: left;
-  background-color:$nav_button_bg;
+  background-color: $nav-btn-bg;
   width: 60px;
   height: 60px;
   margin: 0 20px 10px 0;
@@ -41,22 +42,22 @@ $nav_button_zukei:#ffffff;
 }
 
 /* letter */
-#letter{
-	width:39px;
-	height:30px;
-	background-color:$nav_button_zukei;
+#letter {
+	width: 39px;
+	height: 30px;
+	background-color: $nav-btn-color;
   position: absolute;
-  left:18%;
-  bottom:25%;
+  left: 18%;
+  bottom: 25%;
   &:before{
     @include base2(0px);
-    @include border_4(20px,$nav_button_bg);
-    left:0px;
+    @include border_4(20px,$nav-btn-bg);
+    left: 0px;
     bottom:-10px;
   }
   &:after{
     @include base2(0px);
-    @include border_4(18px,$nav_button_zukei);
+    @include border_4(18px,$nav-btn-color);
     left:2px;
     bottom:-7px;
   }
@@ -71,13 +72,13 @@ $nav_button_zukei:#ffffff;
   left: 20%;
   border-style: solid;
   border-width: 0px 6px 6px 6px;
-  border-color: $nav_button_zukei;
+  border-color: $nav-btn-color;
   border-radius: 0 0 75px 75px;
   &:after {
     @include base2(13.5px);
     border-style: solid;
     border-width: 6px 0 0 6px;
-    border-color: $nav_button_zukei;
+    border-color: $nav-btn-color;
     border-radius: 75px 0 0 0;
     bottom: 13.5px;
     left: -6px;
@@ -86,7 +87,7 @@ $nav_button_zukei:#ffffff;
     @include base2(0px);
     border-style: solid;
     border-width: 9px;
-    border-color: transparent transparent transparent $nav_button_zukei;
+    border-color: transparent transparent transparent $nav-btn-color;
     bottom: 21px;
     left: 13.5px;
   }
@@ -102,34 +103,36 @@ $nav_button_zukei:#ffffff;
   	@include base2(16px);
   	top: $top2;
   	left: -8px;
-  	background: $nav_button_zukei;
+  	background: $nav-btn-color;
   }
 }
+
 /* up_arrow */
-#up_arrow{
+#up-arrow {
   @include arrow(-5%,16px);
-	border-bottom-color: $nav_button_zukei;
+	border-bottom-color: $nav-btn-color;
 }
+
 /* down_arrow */
-#down_arrow{
+#down-arrow {
   @include arrow(50%,-32px);
-	border-top-color: $nav_button_zukei;
+	border-top-color: $nav-btn-color;
 }
 
 /* command_mark */
-#com_in{
+#command-input {
   @include base(0px);
-  top:12%;
-  left:40%;
-  border-top: 36px solid $nav_button_zukei;
+  top: 12%;
+  left: 40%;
+  border-top: 36px solid $nav-btn-color;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-radius:6px;
+  border-radius: 6px;
   &:after{
     @include base2(8px);
-    left:-4px;
-    top:1px;
-    background-color:$nav_button_zukei;
-    border-radius:4px
+    left: -4px;
+    top: 1px;
+    background-color: $nav-btn-color;
+    border-radius: 4px
   }
 }
